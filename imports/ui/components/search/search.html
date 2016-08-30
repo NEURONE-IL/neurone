@@ -1,8 +1,25 @@
-<h1>Search!</h1>
-
-<ul>
-  <li ng-repeat="doc in search.documents">
-    {{doc.name}}
-    <p>{{doc.description}}</p>
-  </li>
-</ul>
+<div class="container">
+  <div class="text-center">   
+    <br><br>
+    <!--<img src="http://localhost/logo.png" class="img-responsive center-block">-->
+	<h1>My Search Engine</h1>
+    <br>
+    <div class="row center-block">
+      <div class="col-md-6 col-md-offset-2 search-box">
+        <input class="form-control input-lg" placeholder="Enter Text to Search" id="search_text" type="text">
+      </div>
+      <div class="col-md-1"><button class="btn btn-lg btn-success search-box" id="btn-search" onclick="DisplayResults();"><i class="fa fa-search"></i>Search</button></div>
+      <div class="col-md-3"></div>
+    </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+  <ul>
+    <li ng-repeat="doc in search.documents">
+      {{doc.name}}
+      <p>{{doc.description}}</p>
+    </li>
+  </ul>
+</div>
