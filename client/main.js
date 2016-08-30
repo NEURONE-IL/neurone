@@ -1,13 +1,46 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
+import { name as Search } from '../imports/ui/components/search/search';
+
 angular.module('prototype2', [
-  angularMeteor
+  angularMeteor,
+  Search
 ])
   
-  .controller('SearchCtrl', ['$scope', function($scope) {
+  /*
+  .controller('SearchCtrl', function($scope) {
+    'ngInject';
+
+    $reactive(this).attach($scope);
+
     $scope.message = "Hello World!";
-  }])
+
+    this.helpers({
+      documents() {
+        return Documents.find({});
+      }
+    });
+  })
+  */
+
+  /*
+  .component('search', {
+    templateUrl: 'client/search/search.html',
+    controllerAs: 'search',
+    controller($scope, $reactive) {
+      'ngInject';
+      $reactive(this).attach($scope);
+
+      $scope.message = "Hello World!";
+
+      this.helpers({
+        documents() {
+          return Documents.find({});
+        }
+      });
+    }
+  })*/
 ;
 
 
