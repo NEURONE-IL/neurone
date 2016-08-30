@@ -1,0 +1,1 @@
+snippets = new Mongo.Collection('snippets');
