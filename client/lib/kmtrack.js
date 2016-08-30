@@ -102,7 +102,7 @@ KMTrack.moveListener = function (evt) {
 	}
 
 	// dgacitua: Output is displayed through Javascript's console and stored on movement_output object
-	console.log('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
 	var movement_output = {
 		type: 'mouse_movement',
@@ -136,7 +136,7 @@ KMTrack.clickListener = function (evt) {
 	}
 
 	// dgacitua: Output is displayed through Javascript's console and stored on click_output object
-	console.log('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
 	var click_output = {
 		type: 'mouse_click',
@@ -161,7 +161,7 @@ KMTrack.keyListener = function(e) {
 	  chr = String.fromCharCode(e.keyCode || e.charCode),
 	  src = window.location.href.toString();
 
-	console.log('Key Pressed!   ' + 
+	logToConsole('Key Pressed!   ' + 
 		' timestamp:' + t + 
 		' keyCode:' + kc + 
 		' which:' + w + 

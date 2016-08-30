@@ -1,13 +1,13 @@
 import './configs.js';
 
 // dgacitua: Test for saving snippets
-function getSnippet() {
+getSnippet = function() {
   var snippet = window.getSelection().toString();
   saveSnippet(snippet);
 };
 
 // dgacitua: Save URL and Title of current browsed page
-function savePage() {
+savePage = function() {
   if (TRACKING_GLOBAL && TRACKING_LINKS) {
     var current_url = window.location.href;  //(window.content.document.location);
     var current_title = encodeURIComponent(document.title);
@@ -18,13 +18,13 @@ function savePage() {
       local_time: (new Date()).toJSON()
     };
 
-    post_json_request(backendUrl, '/visited_links', json);
-    console.log('Page Saved!');
+    //post_json_request(backendUrl, '/visited_links', json);
+    logToConsole('Page Saved!');
   }
 };
 
 // dgacitua: Save text passed as parameter as a snippet
-function saveSnippet(current_snippet) {
+saveSnippet = function(current_snippet) {
   if (TRACKING_GLOBAL && TRACKING_SNIPPETS && !isEmpty(current_snippet)) {
     var current_url = window.location.href;  //(window.content.document.location);
     var current_title = encodeURIComponent(document.title);
@@ -36,10 +36,10 @@ function saveSnippet(current_snippet) {
       local_time: (new Date()).toJSON()
     };
 
-    post_json_request(backendUrl, '/snippets', json);
+    //post_json_request(backendUrl, '/snippets', json);
 
     var message = 'Your current snippet has been saved!';
     alert(message);
-    console.log('Snippet Saved! ' + current_snippet);
+    logToConsole('Snippet Saved! ' + current_snippet);
   }
 }
