@@ -1,26 +1,24 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import template from './search.html';
-import { Documents } from '../../../api/documents';
+import template from './snippetList.html';
+import { Snippets } from '../../../api/snippets';
 
-class Search {
+class SnippetList {
   constructor($scope, $reactive) {
     'ngInject';
-
+    
     $reactive(this).attach($scope);
 
-    $scope.message = "Hello World!";
-
     this.helpers({
-      documents() {
-        return Documents.find({});
+      snippets() {
+        return Snippets.find({});
       }
     });
   }
 };
 
-const name = 'search';
+const name = 'snippetList';
 
 // create a module
 export default angular.module(name, [
@@ -28,6 +26,5 @@ export default angular.module(name, [
 ]).component(name, {
   template,
   controllerAs: name,
-  controller: Search
+  controller: SnippetList
 });
-
