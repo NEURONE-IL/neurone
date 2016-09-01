@@ -1,23 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
+import { SearchIndex } from '../lib/searchIndex.js';
+
 import { Documents } from '../imports/api/documents';
 import { Snippets } from '../imports/api/snippets';
 
 Meteor.startup(() => {
   if (Documents.find().count() === 0) {
-    const documents = [{
-      'name': 'Dubstep-Free Zone',
-      'description': 'Fast just got faster with Nexus S.'
-    }, {
-      'name': 'All dubstep all the time',
-      'description': 'Get it on!'
-    }, {
-      'name': 'Savage lounging',
-      'description': 'Leisure suit required. And only fiercest manners.'
-    }];
+    const documents = JSON.parse(Assets.getText('reuters100.json'));
  
     documents.forEach((document) => {
       Documents.insert(document)
     });
+
+    //SearchIndex.addToIndex(documents);
   }
 });

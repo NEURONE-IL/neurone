@@ -4,6 +4,8 @@ import './configs.js';
 import './linktrack.js';
 import './kmtrack.js';
 
+var SearchIndex = require('../../lib/searchIndex.js');
+
 Meteor.methods({
   'getSnippet': function() {
   	var snippetObject = saveSnippet();
@@ -20,5 +22,6 @@ Meteor.methods({
 });
 
 Meteor.startup(() => {
-  KMTrack.init();
+  //KMTrack.init();
+  //SearchIndex.clearIndex();
 });

@@ -1,35 +1,41 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
 
-import template from './search.html';
+import template from './documentsList.html';
+
 import { Documents } from '../../../api/documents';
 
-class Search {
+import { name as DocumentAdd } from './documentAdd';
+import { name as DocumentRemove } from './documentRemove';
+
+class DocumentsList {
   constructor($scope, $reactive) {
     'ngInject';
 
     $reactive(this).attach($scope);
 
-    $scope.message = "Hello World!";
-
     this.helpers({
-      documents() {
+      docs() {
         return Documents.find({});
       }
     });
   }
 };
 
-const name = 'search';
+const name = 'documentsList';
 
 // create a module
 export default angular.module(name, [
-  angularMeteor
+  angularMeteor,
+  uiRouter,
+  DocumentAdd,
+  DocumentRemove
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: Search
+  controller: DocumentsList
 })
 .config(config);
 
@@ -37,9 +43,8 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('search', {
-      url: '/search',
-      template: '<search></search>'
+    .state('documents', {
+      url: '/documents',
+      template: '<documents-list></documents-list>'
     });
 };
-

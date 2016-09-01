@@ -1,24 +1,7 @@
 <head>
-  <title>Prototype #2</title>
+  <title>Project Demo</title>
+  <base href="/">
 </head>
 <body ng-app="prototype2" ng-strict-di="">
-  <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Prototype #2</a>
-        <ul class="nav navbar-nav">
-          <li><a href="#">Search</a></li>
-          <li><a href="#">Documents</a></li>
-          <li><a href="#">Visited Links</a></li>
-          <li><a href="#">Snippets</a></li>
-        </ul>
-        <button type="button" class="btn btn-primary navbar-btn navbar-right" onclick="Meteor.methods('getSnippet')">Save Snippet</button>
-      </div>
-    </nav>
-    <div class="container">
-      <div ui-view></div>
-    </div>
-  </div>
-  <br>
-  <search></search>
+  <app></app>
 </body>
