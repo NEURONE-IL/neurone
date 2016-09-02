@@ -7,7 +7,7 @@ import { Documents } from '../../../api/documents';
 
 class DocumentRemove {
   remove() {
-    if (this.party) {
+    if (this.doc) {
       Documents.remove(this.doc._id);
     }
   }

@@ -39,7 +39,17 @@ function config($stateProvider) {
   $stateProvider
     .state('search', {
       url: '/search',
-      template: '<search></search>'
-    });
+      template: '<search></search>',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      }
+    }
+  });
 };
 

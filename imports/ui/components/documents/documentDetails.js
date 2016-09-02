@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
@@ -33,6 +35,16 @@ function config($stateProvider) {
 
   $stateProvider.state('documentDetails', {
     url: '/documents/:docId',
-    template: '<document-details></document-details>'
+    template: '<document-details></document-details>',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      }
+    }
   });
 };

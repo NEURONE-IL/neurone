@@ -11,6 +11,9 @@ class DocumentAdd {
   }
 
   submit() {
+    var date = new Date();
+    this.doc.date = date.toJSON();
+    this.doc.owner = Meteor.user()._id;
     Documents.insert(this.doc);
     this.reset();
   }
@@ -25,7 +28,8 @@ const name = 'documentAdd';
 // create a module
 export default angular.module(name, [
   angularMeteor
-]).component(name, {
+])
+.component(name, {
   template,
   controllerAs: name,
   controller: DocumentAdd

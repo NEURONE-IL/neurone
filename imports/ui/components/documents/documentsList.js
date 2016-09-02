@@ -45,6 +45,16 @@ function config($stateProvider) {
   $stateProvider
     .state('documents', {
       url: '/documents',
-      template: '<documents-list></documents-list>'
-    });
+      template: '<documents-list></documents-list>',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      }
+    }
+  });
 };

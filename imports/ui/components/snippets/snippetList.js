@@ -23,8 +23,30 @@ const name = 'snippetList';
 // create a module
 export default angular.module(name, [
   angularMeteor
-]).component(name, {
+])
+.component(name, {
   template,
   controllerAs: name,
   controller: SnippetList
-});
+})
+.config(config);
+
+function config($stateProvider) {
+  'ngInject';
+
+  $stateProvider
+    .state('snippetList', {
+      url: '/snippetList',
+      template: '<snippet-list></snippet-list>',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      }
+    }
+  });
+};
