@@ -14,6 +14,7 @@
  */
 
 import './configs.js';
+import Utils from './utils';
 
 /**
  * dpapathanasiou: Global variables found in the KMTrack namespace,
@@ -208,11 +209,11 @@ KMTrack.init = function() {
 // dgacitua: Stopper function for KMTrack
 KMTrack.stop = function() {
 	if (KMTrack.vars.enableTrack && KMTrack.vars.trackMouse) {
-    	KMTrack.removeEvent(KMTrack.vars.g, 'click', KMTrack.clickListener);		// Remove event for tracking mouse clicks
-    	KMTrack.removeEvent(KMTrack.vars.g, 'mousemove', KMTrack.moveListener);		// Remove event for tracking mouse movements
-    }
+  	KMTrack.removeEvent(KMTrack.vars.g, 'click', KMTrack.clickListener);		// Remove event for tracking mouse clicks
+  	KMTrack.removeEvent(KMTrack.vars.g, 'mousemove', KMTrack.moveListener);		// Remove event for tracking mouse movements
+  }
 
-    if (KMTrack.vars.enableTrack && KMTrack.vars.trackKeyboard) {
-    	KMTrack.removeEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Remove event for tracking key presses
-    }
+  if (KMTrack.vars.enableTrack && KMTrack.vars.trackKeyboard) {
+  	KMTrack.removeEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Remove event for tracking key presses
+  }
 };

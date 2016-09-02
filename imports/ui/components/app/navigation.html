@@ -4,9 +4,16 @@
     <ul class="nav navbar-nav">
       <li><a href="/search">Search</a></li>
       <li><a href="/documents">Documents</a></li>
-      <li><a href="#">Visited Links</a></li>
-      <li><a href="#">Snippets</a></li>
+      <li><a href="/links">Visited Links</a></li>
+      <li><a href="/snippets">Snippets</a></li>
     </ul>
-    <button type="button" class="btn btn-primary navbar-btn navbar-right" onclick="Meteor.methods('getSnippet')">Save Snippet</button>
+    <div class="navbar-right btn-group" role="group" ng-hide="navigation.isLoggedIn">
+      <button type="button" class="btn btn-success navbar-btn" ui-sref="register">Sign Up</button>
+      <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">Login</button>
+    </div>
+    <div class="navbar-right btn-group" role="group" ng-show="navigation.isLoggedIn">
+      <button type="button" class="btn btn-info navbar-btn" onclick="getSnippet()">Save Snippet</button>
+      <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">Logout</button>
+    </div>
   </div>
 </nav>

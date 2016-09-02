@@ -1,10 +1,13 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import template from './snippetList.html';
+import Utils from '../../../../client/lib/utils.js';
+
+import template from './snippetsList.html';
+
 import { Snippets } from '../../../api/snippets';
 
-class SnippetList {
+class SnippetsList {
   constructor($scope, $reactive) {
     'ngInject';
     
@@ -18,7 +21,7 @@ class SnippetList {
   }
 };
 
-const name = 'snippetList';
+const name = 'snippetsList';
 
 // create a module
 export default angular.module(name, [
@@ -27,7 +30,7 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: SnippetList
+  controller: SnippetsList
 })
 .config(config);
 
@@ -35,9 +38,9 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('snippetList', {
-      url: '/snippetList',
-      template: '<snippet-list></snippet-list>',
+    .state('snippets', {
+      url: '/snippets',
+      template: '<snippets-list></snippets-list>',
       resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
