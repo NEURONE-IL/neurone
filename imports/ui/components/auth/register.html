@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <form class="form-signin"> 
+    <h2 class="form-signin-heading">Register a new account</h2>
+    <input type="text" class="form-control" name="email" ng-model="register.credentials.email" placeholder="Email Address" required autofocus />
+    <input type="password" class="form-control" name="password" ng-model="register.credentials.password" placeholder="Password" required />
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="register.register()">Register</button>
+    <p>{{register.error.message}}</p>
+  </form>
+  <a role="button" class="btn btn-info" href="/login">Login</button>
+</div>
