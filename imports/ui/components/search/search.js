@@ -23,6 +23,7 @@ class Search {
       },
       //create a helper that returns the search results
       searchResults() {
+        console.log('ping2');
         var index, docs, searchResults;
         var search = this.searchSession; //Session.get('searchSession');
         var results = [];
@@ -54,11 +55,45 @@ class Search {
     });
   }
 
+  /*
+  //create a helper that returns the search results
+  searchResults() {
+    var index, docs, searchResults;
+    var search = this.searchSession; //Session.get('searchSession');
+    var results = [];
+    if (search) {
+      //create the index (see function above)
+      index = createIndex();
+      docs = Documents.find().fetch();
+      //for each todo available to the client...
+      _.each(docs, function (todo) {
+        //add the todo to the index
+        index.add(todo);
+      });
+      //process the search results
+      //[{ref: 'mongoId', score: 0.923},...]
+      searchResults = index.search(search);
+      //for each of the search results score...
+      _.each(searchResults, function (searchResult) {
+        //only add if the results are above zero, zero means no result
+        if (searchResult.score > 0) {
+          //add doc to the list of valid results
+          results.push(_.findWhere(docs, {_id: searchResult.ref}));
+        }
+      });
+    }
+    this.searchRes = results;
+    console.log(this.searchRes);
+    return results;
+  }
+  */
+
   doSearch() {
     var search;
     search = this.searchText;//event.target.value;
     this.searchSession = search; //Session.set('searchSession', search);
-    //this.helpers.searchResults();
+    console.log('ping: ' + this.searchSession);
+    this.searchResults;
   }
 
   createIndex() {
