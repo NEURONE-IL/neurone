@@ -5,13 +5,15 @@ import angularMeteor from 'angular-meteor';
 
 import template from './snippetsList.html';
 
-import { Snippets } from '../../../api/snippets';
+import { Snippets } from '../../../api/snippets/index';
 
 class SnippetsList {
   constructor($scope, $reactive) {
     'ngInject';
     
     $reactive(this).attach($scope);
+
+    this.subscribe('snippets');
 
     this.helpers({
       snippets() {

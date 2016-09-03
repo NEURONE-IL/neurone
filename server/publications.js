@@ -1,3 +1,4 @@
+/*
 Meteor.publish('docSearch', function(searchText) {
   var doc = {};
   var documentIds = searchDocuments(searchText);
@@ -8,3 +9,4 @@ Meteor.publish('docSearch', function(searchText) {
   }
   return Documents.find(doc);
 });
+*/

@@ -4,7 +4,7 @@ import uiRouter from 'angular-ui-router';
 
 import template from './documentsList.html';
 
-import { Documents } from '../../../api/documents';
+import { Documents } from '../../../api/documents/index';
 
 import { name as DocumentAdd } from './documentAdd';
 import { name as DocumentRemove } from './documentRemove';
@@ -14,6 +14,8 @@ class DocumentsList {
     'ngInject';
 
     $reactive(this).attach($scope);
+
+    this.subscribe('documents');
 
     this.helpers({
       docs() {

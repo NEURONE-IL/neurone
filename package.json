@@ -11,8 +11,7 @@
     "angular-ui-router": "^0.3.1",
     "bcrypt": "^0.8.7",
     "meteor-node-stubs": "^0.2.3",
-    "path": "^0.12.7",
-    "search-index": "^0.8.15"
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.8"
