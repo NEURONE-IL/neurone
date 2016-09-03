@@ -7,7 +7,7 @@ import Utils from './utils';
 import LinkTrack from './linktrack';
 import './kmtrack.js';
 
-//var SearchIndex = require('../../lib/searchIndex.js');
+import SearchIndex from '../../lib/searchIndex.js';
 
 getSnippet = function() {
 	var snippetObject = LinkTrack.saveSnippet();
@@ -25,5 +25,5 @@ getSnippet = function() {
 
 Meteor.startup(() => {
   //KMTrack.init();
-  //SearchIndex.clearIndex();
+  SearchIndex.aboutIndex();
 });
