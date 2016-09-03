@@ -39,4 +39,4 @@ exports.saveSnippet = function(current_snippet) {
   else {
     return null;
   }
-}
+};

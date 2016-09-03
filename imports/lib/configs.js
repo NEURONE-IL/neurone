@@ -1,5 +1,3 @@
-import './configs.js';
-
 LOGGING = true;
 TRACKING_GLOBAL = true;
 TRACKING_SNIPPETS = true;
