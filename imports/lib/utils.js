@@ -1,3 +1,5 @@
+import './configs.js';
+
 // dgacitua: Convenience logging function to Javascript Console
 exports.logToConsole = function(message) {
   if (LOGGING) {

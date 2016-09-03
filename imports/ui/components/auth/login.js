@@ -4,6 +4,8 @@ import uiRouter from 'angular-ui-router';
 
 import { Meteor } from 'meteor/meteor';
 
+import { KMTrack } from '../../../lib/kmtrack';
+
 import template from './login.html';
 
 import { name as Register } from './register';
@@ -30,6 +32,7 @@ class Login {
         if (err) {
           this.error = err;
         } else {
+          KMTrack.start();
           this.$state.go('search');
         }
       })

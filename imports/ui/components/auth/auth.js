@@ -6,8 +6,9 @@ import { Accounts } from 'meteor/accounts-base';
 
 import template from './auth.html';
 
-import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
+import { KMTrack } from '../../../lib/kmtrack';
 
+import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
 import { name as Login } from './login';
 import { name as Register } from './register';
 import { name as Password } from './password';
@@ -33,6 +34,7 @@ class Auth {
   }
 
   logout() {
+    KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }

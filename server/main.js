@@ -1,18 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 
-import { SearchIndex } from '../lib/searchIndex.js';
-
 import { Documents } from '../imports/api/documents';
 import { Snippets } from '../imports/api/snippets';
 
-Meteor.startup(() => {
+Meteor.startup(function () {
+  docIndex = 'docIndex'
+
   if (Documents.find().count() === 0) {
-    const documents = JSON.parse(Assets.getText('reuters100.json'));
+    //Documents._dropIndex(docIndex);
+
+    const loadedDocuments = JSON.parse(Assets.getText('reuters100.json'));
  
-    documents.forEach((document) => {
-      Documents.insert(document)
+    loadedDocuments.forEach(function (document) {
+      Documents.insert(document);
     });
 
-    //SearchIndex.addToIndex(documents);
+    Documents._ensureIndex({
+        title: 'text',
+        body: 'text'
+    }, {
+        name: 'docIndex'
+    });
   }
 });

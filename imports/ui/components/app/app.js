@@ -53,4 +53,4 @@ function run($rootScope, $state) {
       }
     }
   );
-}
+};

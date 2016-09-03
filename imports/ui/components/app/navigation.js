@@ -3,12 +3,14 @@ import angularMeteor from 'angular-meteor';
 
 import template from './navigation.html';
 
+import { KMTrack } from '../../../lib/kmtrack';
+
 import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
 import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import '../../../../client/lib/init';
+import '../../../lib/init';
 
 const name = 'navigation';
 
@@ -31,6 +33,7 @@ class Navigation {
   }
 
   logout() {
+    KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }

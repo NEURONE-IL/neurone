@@ -2,12 +2,8 @@ import { Meteor } from 'meteor/meteor';
 
 import { Snippets } from '../../imports/api/snippets';
 
-import './configs.js';
 import Utils from './utils';
 import LinkTrack from './linktrack';
-import './kmtrack.js';
-
-import SearchIndex from '../../lib/searchIndex.js';
 
 getSnippet = function() {
 	var snippetObject = LinkTrack.saveSnippet();
@@ -22,8 +18,3 @@ getSnippet = function() {
 	  Utils.logToConsole('Error while saving snippet');
 	}
 };
-
-Meteor.startup(() => {
-  //KMTrack.init();
-  SearchIndex.aboutIndex();
-});

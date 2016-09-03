@@ -103,7 +103,7 @@ KMTrack.moveListener = function (evt) {
 	}
 
 	// dgacitua: Output is displayed through Javascript's console and stored on movement_output object
-	logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
 	var movement_output = {
 		type: 'mouse_movement',
@@ -137,7 +137,7 @@ KMTrack.clickListener = function (evt) {
 	}
 
 	// dgacitua: Output is displayed through Javascript's console and stored on click_output object
-	logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
 	var click_output = {
 		type: 'mouse_click',
@@ -162,7 +162,7 @@ KMTrack.keyListener = function(e) {
 	  chr = String.fromCharCode(e.keyCode || e.charCode),
 	  src = window.location.href.toString();
 
-	logToConsole('Key Pressed!   ' + 
+	Utils.logToConsole('Key Pressed!   ' + 
 		' timestamp:' + t + 
 		' keyCode:' + kc + 
 		' which:' + w + 
@@ -188,8 +188,8 @@ KMTrack.keyListener = function(e) {
 
 // dpapathanasiou: An initialization function to set the KMTrack.vars.srvr
 // value and add the proper event handler for mouse tracking.
-//KMTrack.init = function(srvr) {
-KMTrack.init = function() {
+//KMTrack.start = function(srvr) {
+KMTrack.start = function() {
 	KMTrack.vars.w = window;
 	KMTrack.vars.d = document;
 	KMTrack.vars.e = KMTrack.vars.d.documentElement;
@@ -217,3 +217,5 @@ KMTrack.stop = function() {
   	KMTrack.removeEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Remove event for tracking key presses
   }
 };
+
+export { KMTrack };
