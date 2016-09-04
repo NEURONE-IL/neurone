@@ -13,4 +13,12 @@
     </form>
     </div>
   </div>
+  <hr>
+  <div>
+    <div ng-repeat="doc in searchResults.results">
+      <b><a ui-sref="documentDetails({ docId: doc._id })">{{doc.title}}</a></b>
+      <p>{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</p>
+      <br>
+    </div>
+  </div>
 </div>

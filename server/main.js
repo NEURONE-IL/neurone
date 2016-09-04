@@ -1,41 +1,38 @@
 import { Meteor } from 'meteor/meteor';
 
-import Lunr from '../imports/lib/lunr';
+import * as index from './lib/solrRequest';
 
 import { Documents } from '../imports/api/documents/index';
 import { Snippets } from '../imports/api/snippets/index';
 
 Meteor.startup(function () {
-  index = Lunr.createIndex();
+  //index = new Index();
 
   if (Documents.find().count() === 0) {
-   const loadedDocuments = JSON.parse(Assets.getText('reuters100.json'));
+    const loadedDocuments = JSON.parse(Assets.getText('reuters100.json'));
 
     loadedDocuments.forEach(function (document) {
       Documents.insert(document);
-      Lunr.addToIndex(index, document);
-    });
+    })
   }
-  /*
   else {
-    const loadedDocuments = JSON.parse(Assets.getText('reuters1.json'));
-
-    loadedDocuments.forEach(function (document) {
-      Documents.insert(document);
-      Lunr.addToIndex(index, document);
-    });
+    //index.ping();
   }
-  */
 
   Meteor.methods({
-    searchDocIndex: function(query) {
+    searchIndex: function(query) {
       check(query, String);
-      var searchResults = Lunr.searchIndex(index, query);
+      //console.log('Server call!');
 
-      if (searchResults == null) {
-        throw new Meteor.Error("search-null", "Search results are NULL");
-      }
-      return searchResults;
+      // Promise based modules: https://themeteorchef.com/snippets/promise-based-modules/
+      return index.searchIndex(query)
+        .then(function (result) {
+          //console.log('AR: ' + result);
+          return result;
+        })
+        .catch(function (error) {
+          throw new Meteor.Error('400', error);
+        });
     }
   });
 });
