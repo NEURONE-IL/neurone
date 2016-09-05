@@ -28,7 +28,7 @@ class SearchResults {
     
     Meteor.call('searchIndex', qt, function(error, result) {
       if (!error) {
-        var searchResult = result.response.docs;
+        var searchResult = result.content.response.docs;
         //this.results = searchResult.results.docs;
         console.log(searchResult);
         this.results = searchResult;

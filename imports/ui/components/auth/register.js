@@ -15,6 +15,7 @@ class Register {
     $reactive(this).attach($scope);
 
     this.credentials = {
+      //username: '',
       email: '',
       password: ''
     };
@@ -23,6 +24,8 @@ class Register {
   }
 
   register() {
+    //this.credentials.username = this.credentials.email;
+
     Accounts.createUser(this.credentials,
       this.$bindToContext((err) => {
         if (err) {

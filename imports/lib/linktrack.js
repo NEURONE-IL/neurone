@@ -4,7 +4,7 @@ import Utils from './utils.js';
 // dgacitua: Save URL and Title of current browsed page
 exports.savePage = function() {
   if (TRACKING_GLOBAL && TRACKING_LINKS) {
-    var current_url = window.location.href;  //(window.content.document.location);
+    var current_url = window.location.href.toString();  //(window.content.document.location);
     var current_title = document.title;
 
     var json = {
@@ -25,7 +25,7 @@ exports.saveSnippet = function(current_snippet) {
   var snippet = window.getSelection().toString();
 
   if (TRACKING_GLOBAL && TRACKING_SNIPPETS && !Utils.isEmpty(snippet)) {
-    var current_url = window.location.href;  //(window.content.document.location);
+    var current_url = window.location.href.toString();  //(window.content.document.location);
     var current_title = document.title;
 
     var json = {

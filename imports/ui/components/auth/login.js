@@ -33,6 +33,7 @@ class Login {
           this.error = err;
         } else {
           //KMTrack.start();
+          console.log(Meteor.user(), Meteor.user().emails[0].address);
           this.$state.go('search');
         }
       })

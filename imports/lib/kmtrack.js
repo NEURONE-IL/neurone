@@ -16,6 +16,11 @@
 import './configs.js';
 import Utils from './utils';
 
+import { Meteor } from 'meteor/meteor';
+import { Keystrokes } from '../api/keystrokes/index';
+import { MouseClicks } from '../api/mouseClicks/index';
+import { MouseCoordinates } from '../api/mouseCoordinates/index';
+
 /**
  * dpapathanasiou: Global variables found in the KMTrack namespace,
  * including the browser window dimensions,
@@ -92,7 +97,7 @@ KMTrack.moveListener = function (evt) {
 		y = evt.pageY,
 		w = KMTrack.vars.w.innerWidth || KMTrack.vars.e.clientWidth || KMTrack.vars.g.clientWidth,
 		h = KMTrack.vars.w.innerHeight|| KMTrack.vars.e.clientHeight|| KMTrack.vars.g.clientHeight,
-	  src = window.location;	// dgacitua: encodeURIComponent() has been removed
+	  src = window.location.href.toString();	// dgacitua: encodeURIComponent() has been removed
 
 	if (x == null && evt.clientX != null) {
 		x = evt.clientX + (KMTrack.vars.e && KMTrack.vars.e.scrollLeft || KMTrack.vars.g && KMTrack.vars.g.scrollLeft || 0)
@@ -104,18 +109,24 @@ KMTrack.moveListener = function (evt) {
 		- (KMTrack.vars.e && KMTrack.vars.e.clientTop  || KMTrack.vars.g && KMTrack.vars.g.clientTop  || 0);
 	}
 
-	// dgacitua: Output is displayed through Javascript's console and stored on movement_output object
-	Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	if (Meteor.user()) {
+		// dgacitua: Output is displayed through Javascript's console and stored on movement_output object
+		Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
-	var movement_output = {
-		type: 'mouse_movement',
-		x_pos: x,
-		y_pos: y,
-		w_scr: w,
-		h_scr: h,
-		timestamp: time,
-		src_url: src
-	};
+		var movement_output = {
+			type: 'mouse_movement',
+			x_pos: x,
+			y_pos: y,
+			w_scr: w,
+			h_scr: h,
+			local_time: time,
+			src_url: src,
+			owner: Meteor.userId(),
+    	username: Meteor.user().emails[0].address
+		};
+
+		MouseCoordinates.insert(movement_output);
+	}
 };
 
 // dgacitua: Modified method from moveListener() for registering mouse clicks
@@ -126,7 +137,7 @@ KMTrack.clickListener = function (evt) {
 	    y = evt.pageY,
 	    w = KMTrack.vars.w.innerWidth || KMTrack.vars.e.clientWidth || KMTrack.vars.g.clientWidth,
 	    h = KMTrack.vars.w.innerHeight|| KMTrack.vars.e.clientHeight|| KMTrack.vars.g.clientHeight,
-	  src = window.location;
+	  src = window.location.href.toString();
 
 	if (x == null && evt.clientX != null) {
 		x = evt.clientX + (KMTrack.vars.e && KMTrack.vars.e.scrollLeft || KMTrack.vars.g && KMTrack.vars.g.scrollLeft || 0)
@@ -138,18 +149,24 @@ KMTrack.clickListener = function (evt) {
 		- (KMTrack.vars.e && KMTrack.vars.e.clientTop  || KMTrack.vars.g && KMTrack.vars.g.clientTop  || 0);
 	}
 
-	// dgacitua: Output is displayed through Javascript's console and stored on click_output object
-	Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+	if (Meteor.user()) {
+		// dgacitua: Output is displayed through Javascript's console and stored on click_output object
+		Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
-	var click_output = {
-		type: 'mouse_click',
-		x_pos: x,
-		y_pos: y,
-		w_scr: w,
-		h_scr: h,
-		timestamp: time,
-		src_url: src
-	};
+		var click_output = {
+			type: 'mouse_click',
+			x_pos: x,
+			y_pos: y,
+			w_scr: w,
+			h_scr: h,
+			local_time: time,
+			src_url: src,
+			owner: Meteor.userId(),
+    	username: Meteor.user().emails[0].address
+		};
+
+		MouseClicks.insert(click_output);
+	}
 };
 
 // dgacitua: Listener for key tracking
@@ -164,28 +181,34 @@ KMTrack.keyListener = function(e) {
 	  chr = String.fromCharCode(e.keyCode || e.charCode),
 	  src = window.location.href.toString();
 
-	Utils.logToConsole('Key Pressed!   ' + 
-		' timestamp:' + t + 
-		' keyCode:' + kc + 
-		' which:' + w + 
-		' charCode:' + chc +
-		' char:' + chr +
-		(e.shiftKey ? ' +SHIFT' : '') +
-		(e.ctrlKey ? ' +CTRL' : '') +
-		(e.altKey ? ' +ALT' : '') +
-		(e.metaKey ? ' +META' : '') +
-		' src:' + src
-	);
+	if (Meteor.user()) {
+		Utils.logToConsole('Key Pressed!   ' + 
+			' timestamp:' + t + 
+			' keyCode:' + kc + 
+			' which:' + w + 
+			' charCode:' + chc +
+			' char:' + chr +
+			(e.shiftKey ? ' +SHIFT' : '') +
+			(e.ctrlKey ? ' +CTRL' : '') +
+			(e.altKey ? ' +ALT' : '') +
+			(e.metaKey ? ' +META' : '') +
+			' src:' + src
+		);
 
-	var key_output = {
-		type: 'key_press',
-		keyCode: kc,
-		which: w,
-		charCode: chc,
-		chr: chr,
-		timestamp: t,
-		src_url: src
-	};
+		var key_output = {
+			type: 'key_press',
+			keyCode: kc,
+			which: w,
+			charCode: chc,
+			chr: chr,
+			local_time: t,
+			src_url: src,
+			owner: Meteor.userId(),
+    	username: Meteor.user().emails[0].address
+		};
+
+		Keystrokes.insert(key_output);
+	}
 };
 
 // dpapathanasiou: An initialization function to set the KMTrack.vars.srvr

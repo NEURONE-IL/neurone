@@ -11,7 +11,7 @@ getSnippet = function() {
 
 	if (Meteor.user() && snippetObject != null) {
     snippetObject.owner = Meteor.userId();
-    snippetObject.username = Meteor.user().username;
+    snippetObject.username = Meteor.user().emails[0].address;
 	  Snippets.insert(snippetObject);
 	  Utils.logToConsole('Snippet Saved!');
 	}
@@ -25,7 +25,7 @@ getLink = function(state) {
 
 	if (Meteor.user() && linkObject != null) {
     linkObject.owner = Meteor.userId();
-    linkObject.username = Meteor.user().username;
+    linkObject.username = Meteor.user().emails[0].address;
     linkObject.state = state;
 	  VisitedLinks.insert(linkObject);
     Utils.logToConsole('Page Saved! ' + state);

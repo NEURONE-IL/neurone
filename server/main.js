@@ -5,6 +5,9 @@ import * as index from './lib/solrRequest';
 import { Documents } from '../imports/api/documents/index';
 import { Snippets } from '../imports/api/snippets/index';
 import { VisitedLinks } from '../imports/api/visitedLinks/index';
+import { Keystrokes } from '../imports/api/keystrokes/index';
+import { MouseClicks } from '../imports/api/mouseClicks/index';
+import { MouseCoordinates } from '../imports/api/mouseCoordinates/index';
 
 Meteor.startup(function () {
   //index = new Index();

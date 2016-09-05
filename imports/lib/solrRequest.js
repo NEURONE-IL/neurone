@@ -22,7 +22,7 @@ export function searchIndex(queryString) {
 
     HTTP.call('GET', finalUrl, function(error, result) {
       if (!error) {
-        var aux = JSON.parse(result.content);
+        var aux = JSON.parse(result);
         //console.log('Succesfull call!');
         resolve(aux);
       }
