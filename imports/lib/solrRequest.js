@@ -18,12 +18,10 @@ export function searchIndex(queryString) {
     var querySettings = 'indent=on&wt=json';
     var finalUrl = baseUrl + qt + '?' + queryField + '&' + querySettings;
 
-    //console.log(finalUrl);
-
     HTTP.call('GET', finalUrl, function(error, result) {
       if (!error) {
-        var aux = JSON.parse(result);
-        //console.log('Succesfull call!');
+        var aux = JSON.parse(result.content);
+        //console.log('Succesfull call to Solr!', aux);
         resolve(aux);
       }
       else {

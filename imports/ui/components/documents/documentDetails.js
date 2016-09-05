@@ -9,10 +9,20 @@ import template from './documentDetails.html';
 import { Documents } from '../../../api/documents/index';
 
 class DocumentDetails {
-  constructor($stateParams) {
+  constructor($scope, $reactive, $stateParams) {
     'ngInject';
 
-    this.doc = Documents.findOne($stateParams.docId);
+    $reactive(this).attach($scope);
+
+    this.subscribe('documentDetails');
+
+    this.paramId = $stateParams.docId.toString();
+    this.loadDocument(this.paramId);
+  }
+
+  loadDocument(docId) {
+    this.doc = Documents.findOne({ 'id': docId });
+    console.log('Loading document!', docId, this.doc);
   }
 };
 

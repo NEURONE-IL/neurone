@@ -27,5 +27,9 @@ if (Meteor.isServer) {
  
     return Documents.find({});
   });
+
+  Meteor.publish('documentDetails', function() {
+    return Documents.find({});
+  });
 }
 

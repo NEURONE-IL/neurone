@@ -1,6 +1,5 @@
 <div class="container">
   <div class="text-center">   
-    <br><br>
     <form class="row center-block" ng-submit="searchResults.doSearch()">
       <div class="col-md-6 col-md-offset-2 search-box">
         <input class="form-control" placeholder="Enter Text to Search" id="searchText" type="text" ng-model="searchResults.searchText">
@@ -12,9 +11,10 @@
   </div>
   <hr>
   <div>
-    <div ng-repeat="doc in searchResults.results">
-      <b>{{doc.title}}</b>
-      <p>{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</p>
+    <div ng-repeat="doc in searchResults.documents">
+      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title[0]}}</a></b>
+      [{{doc.date[0]}}]
+      <p>{{doc.body[0] | limitTo: 256}}{{doc.body[0].length > 256 ? '...' : ''}}</p>
       <br>
     </div>
   </div>

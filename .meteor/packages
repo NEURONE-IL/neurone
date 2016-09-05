@@ -25,6 +25,6 @@ velocity:html-reporter
 velocity:console-reporter
 accounts-password
 dotansimha:accounts-ui-angular
-lbee:lunr
 check
 http
+session

@@ -3,7 +3,9 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import template from './searchResults.html';
-import { Documents } from '../../../api/documents';
+import { Documents } from '../../../api/documents/index';
+
+import { name as DocumentDetails } from '../documents/documentDetails';
 
 class SearchResults {
   constructor($scope, $reactive, $state, $stateParams) {
@@ -13,25 +15,23 @@ class SearchResults {
 
     $reactive(this).attach($scope);
 
-    this.results = [{
-      title: "Title test",
-      body: "Body test"
-    }];
+    this.subscribe('documentDetails');
 
-    this.populateResults($stateParams.query);
+    this.documents = [];
+
+    this.getResults($stateParams.query);
   }
 
-  populateResults(queryText) {
+  getResults(queryText) {
     var qt = queryText ? queryText : '';
 
     check(qt, String);
-    
-    Meteor.call('searchIndex', qt, function(error, result) {
+
+    this.call('searchIndex', qt, function(error, result) {
       if (!error) {
-        var searchResult = result.content.response.docs;
-        //this.results = searchResult.results.docs;
-        console.log(searchResult);
-        this.results = searchResult;
+        var searchResult = result.response.docs;
+        console.log('searchIndex Call!', qt, searchResult);
+        this.documents = searchResult;
       }
       else {
         console.log(error);
@@ -41,7 +41,6 @@ class SearchResults {
 
   doSearch() {
     var queryText = this.searchText ? this.searchText.toString() : '';
-    //this.populateResults(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
 };
@@ -51,7 +50,8 @@ const name = 'searchResults';
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter
+  uiRouter,
+  DocumentDetails
 ])
 .component(name, {
   template,

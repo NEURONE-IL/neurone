@@ -31,7 +31,7 @@ Meteor.startup(function () {
       // Promise based modules: https://themeteorchef.com/snippets/promise-based-modules/
       return index.searchIndex(query)
         .then(function (result) {
-          //console.log('AR: ' + result);
+          //console.log('searchIndex Method!', result);
           return result;
         })
         .catch(function (error) {
