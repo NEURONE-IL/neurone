@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import { Snippets } from '../../imports/api/snippets';
+import { Snippets } from '../../imports/api/snippets/index';
+import { VisitedLinks } from '../../imports/api/visitedLinks/index';
 
 import Utils from './utils';
 import LinkTrack from './linktrack';
@@ -16,5 +17,17 @@ getSnippet = function() {
 	}
 	else {
 	  Utils.logToConsole('Error while saving snippet');
+	}
+};
+
+getLink = function(state) {
+	var linkObject = LinkTrack.savePage();
+
+	if (Meteor.user() && linkObject != null) {
+    linkObject.owner = Meteor.userId();
+    linkObject.username = Meteor.user().username;
+    linkObject.state = state;
+	  VisitedLinks.insert(linkObject);
+    Utils.logToConsole('Page Saved! ' + state);
 	}
 };

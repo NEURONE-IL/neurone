@@ -217,5 +217,3 @@ KMTrack.stop = function() {
   	KMTrack.removeEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Remove event for tracking key presses
   }
 };
-
-export { KMTrack };

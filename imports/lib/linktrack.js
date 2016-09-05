@@ -13,8 +13,10 @@ exports.savePage = function() {
       local_time: Utils.getTimestamp()
     };
 
-    //post_json_request(backendUrl, '/visited_links', json);
-    logToConsole('Page Saved!');
+    return json;
+  }
+  else {
+    return null;
   }
 };
 
@@ -33,7 +35,6 @@ exports.saveSnippet = function(current_snippet) {
       local_time: Utils.getTimestamp()
     };
 
-    //post_json_request(backendUrl, '/snippets', json);
     return json;
   }
   else {

@@ -4,6 +4,7 @@ import * as index from './lib/solrRequest';
 
 import { Documents } from '../imports/api/documents/index';
 import { Snippets } from '../imports/api/snippets/index';
+import { VisitedLinks } from '../imports/api/visitedLinks/index';
 
 Meteor.startup(function () {
   //index = new Index();

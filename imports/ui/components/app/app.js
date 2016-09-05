@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
@@ -11,6 +13,10 @@ import { name as Search } from '../search/search';
 import { name as DocumentsList } from '../documents/documentsList';
 import { name as DocumentDetails } from '../documents/documentDetails';
 import { name as SnippetsList } from '../snippets/snippetsList';
+import { name as VisitedLinksList } from '../visitedLinks/visitedLinksList';
+
+import '../../../lib/kmtrack';
+import '../../../lib/init';
 
 class App {}
 
@@ -26,6 +32,7 @@ export default angular.module(name, [
   DocumentsList,
   DocumentDetails,
   SnippetsList,
+  VisitedLinksList,
   Navigation
 ])
 .component(name, {
@@ -34,7 +41,8 @@ export default angular.module(name, [
   controller: App
 })
 .config(config)
-.run(run);
+.run(run)
+.run(setTrackers);
 
 function config($locationProvider, $urlRouterProvider) {
   'ngInject';
@@ -53,4 +61,20 @@ function run($rootScope, $state) {
       }
     }
   );
+};
+
+function setTrackers($rootScope) {
+  'ngInject';
+
+  $rootScope.$on('$viewContentLoading', function(event, viewConfig) {
+    //console.log('Exiting');
+    var state = 'end';
+    getLink(state);
+  });
+
+  $rootScope.$on('$viewContentLoaded', function(event) {
+    //console.log('Entering!');
+    var state = 'begin';
+    getLink(state);
+  });
 };

@@ -34,7 +34,7 @@ class Auth {
   }
 
   logout() {
-    KMTrack.stop();
+    //KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }
