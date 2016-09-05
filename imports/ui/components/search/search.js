@@ -5,11 +5,13 @@ import uiRouter from 'angular-ui-router';
 import template from './search.html';
 import { Documents } from '../../../api/documents';
 
-import SearchResultsService from './services/searchResultsService';
+import { name as SearchResults } from './searchResults';
 
 class Search {
   constructor($scope, $reactive, $state) {
     'ngInject';
+
+    this.$state = $state;
 
     $reactive(this).attach($scope);
 
@@ -17,18 +19,8 @@ class Search {
   }
 
   doSearch() {
-    console.log('doSearch()');
-    var query = this.searchText.toString();
-    
-    Meteor.call('searchIndex', query, function(error, result) {
-      if (!error) {
-        var searchResult = result;
-        console.log(searchResult);
-      }
-      else {
-        console.log(error);
-      }
-    });
+    var queryText = this.searchText ? this.searchText.toString() : '';
+    this.$state.go('searchResults', {query: queryText});
   }
 }
 
@@ -37,15 +29,15 @@ const name = 'search';
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter
+  uiRouter,
+  SearchResults
 ])
 .component(name, {
   template,
   controllerAs: name,
   controller: Search
 })
-.config(config)
-.service(SearchResultsService);
+.config(config);
 
 function config($stateProvider) {
   'ngInject';

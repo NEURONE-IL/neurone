@@ -2,71 +2,46 @@
 // Install solr server: https://www.digitalocean.com/community/tutorials/how-to-install-solr-5-2-1-on-ubuntu-14-04
 import { HTTP } from 'meteor/http';
 
-class SolrClient {
-  constructor() {
-    this.settings = {
+export const settings = {
       host: '127.0.0.1',
       port: 8983,
       path: '/solr',
       core: 'index'
     };
 
-    this.requestSettings = {};
+export const baseUrl = 'http://' + settings.host + ':' + settings.port + settings.path + '/' + settings.core;
 
-    /*
-    url: queryurl,
-    crossDomain: true,
-    dataType:'jsonp',
-    jsonpCallback: 'callback'
-    */
-
-    this.url = 'http://' + this.settings.host + ':' + this.settings.port + this.settings.path + '/' + this.settings.core;
-    // http://localhost:8983/solr/index/query?indent=on&q=*:*&wt=json
-  }
-
-  addToIndex(docs) {
-
-  }
-
-  ping() {
-    
-  }
-
-  search(queryString) {
-    check(queryString, String);
-
-    Future = Npm.require('fibers/future');    // TODO Elegant import
-    var myFuture = new Future();
-
+export function searchIndex(queryString) {
+  return new Promise(function(resolve, reject) {
     var qt = '/query';
     var queryField = 'q=' + queryString;
     var querySettings = 'indent=on&wt=json';
-    var finalUrl = this.url + qt + '?' + queryField + '&' + querySettings;
+    var finalUrl = baseUrl + qt + '?' + queryField + '&' + querySettings;
 
-    console.log(finalUrl);
+    //console.log(finalUrl);
 
-    HTTP.get(finalUrl, function(error, result) {
+    HTTP.call('GET', finalUrl, function(error, result) {
       if (!error) {
-        var aux = result;
-        console.log(aux);
-        myFuture.return(aux);
+        var aux = JSON.parse(result.content);
+        //console.log('Succesfull call!');
+        resolve(aux);
       }
       else {
         console.log(error);
-        myFuture.throw(error);
+        reject(error);
       }
     });
-
-    return myFuture.wait();
-  }
-
-  clear() {
-    
-  }
-
-  test() {
-    console.log('Connected with solr-client!');
-  }
+  })
 }
 
-export default SolrClient;
+export function addToIndex(doc) {
+
+}
+
+export function clearIndex() {
+
+}
+
+export function pingIndex() {
+
+}
