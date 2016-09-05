@@ -52,6 +52,8 @@ KMTrack.vars.enableTrack = TRACKING_GLOBAL;			// Enable mouse and keyboard track
 KMTrack.vars.trackMouse = TRACKING_MOUSE;			// Switch for mouse tracking
 KMTrack.vars.trackKeyboard = TRACKING_KEYBOARD;		// Switch for keyboard tracking
 
+KMTrack.vars.isTracking = false;
+
 // dgacitua: Get Unix timestamp
 KMTrack.getTimestamp = function() {
 	return Date.now ? Date.now() : (new Date().getTime());
@@ -199,11 +201,15 @@ KMTrack.start = function() {
 	if (KMTrack.vars.enableTrack && KMTrack.vars.trackMouse) {
 		KMTrack.addEvent(KMTrack.vars.g, 'click', KMTrack.clickListener);		// Add event for tracking mouse clicks
 		KMTrack.addEvent(KMTrack.vars.g, 'mousemove', KMTrack.moveListener);	// Add event for tracking mouse movements
+		KMTrack.vars.isTrackingMouse = true;
 	}
 
 	if (KMTrack.vars.enableTrack && KMTrack.vars.trackKeyboard) {
 		KMTrack.addEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Add event for tracking key presses
+		KMTrack.vars.isTrackingKeyboard = true;
 	}
+
+	KMTrack.vars.isTracking = true;
 };
 
 // dgacitua: Stopper function for KMTrack
@@ -211,9 +217,25 @@ KMTrack.stop = function() {
 	if (KMTrack.vars.enableTrack && KMTrack.vars.trackMouse) {
   	KMTrack.removeEvent(KMTrack.vars.g, 'click', KMTrack.clickListener);		// Remove event for tracking mouse clicks
   	KMTrack.removeEvent(KMTrack.vars.g, 'mousemove', KMTrack.moveListener);		// Remove event for tracking mouse movements
+  	//KMTrack.vars.isTrackingMouse = false;
   }
 
   if (KMTrack.vars.enableTrack && KMTrack.vars.trackKeyboard) {
   	KMTrack.removeEvent(KMTrack.vars.w, 'keydown', KMTrack.keyListener);		// Remove event for tracking key presses
+  	//KMTrack.vars.isTrackingKeyboard = false;
   }
+
+  KMTrack.vars.isTracking = false;
+};
+
+KMTrack.service = function() {
+	if (!KMTrack.vars.isTracking) {
+		KMTrack.start();
+	}
+};
+
+KMTrack.antiService = function() {
+	if (KMTrack.vars.isTracking) {
+		KMTrack.stop();
+	}
 };

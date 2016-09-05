@@ -70,11 +70,19 @@ function setTrackers($rootScope) {
     //console.log('Exiting');
     var state = 'end';
     getLink(state);
+
+    if (Meteor.user() == null) {
+      KMTrack.antiService();
+    }
   });
 
   $rootScope.$on('$viewContentLoaded', function(event) {
     //console.log('Entering!');
     var state = 'begin';
     getLink(state);
+
+    if (Meteor.user()) {
+      KMTrack.service();
+    }
   });
 };

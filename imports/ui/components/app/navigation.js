@@ -11,6 +11,7 @@ import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
 import '../../../lib/init';
+import '../../../lib/kmtrack';
 
 const name = 'navigation';
 
@@ -33,7 +34,7 @@ class Navigation {
   }
 
   logout() {
-    KMTrack.stop();
+    //KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }

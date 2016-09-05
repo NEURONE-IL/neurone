@@ -32,7 +32,7 @@ class Login {
         if (err) {
           this.error = err;
         } else {
-          KMTrack.start();
+          //KMTrack.start();
           this.$state.go('search');
         }
       })
