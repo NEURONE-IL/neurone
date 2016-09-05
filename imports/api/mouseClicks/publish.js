@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Keystrokes } from './collection';
+import { MouseClicks } from './collection';
 
 if (Meteor.isServer) {
-  Meteor.publish('keystrokes', function() {
+  Meteor.publish('mouseclicks', function() {
     const selector = { $and: [
       { owner: this.userId }, { owner: { $exists: true } }
     ]};
     
-    return Keystrokes.find(selector);
+    return MouseClicks.find(selector);
   });
 }

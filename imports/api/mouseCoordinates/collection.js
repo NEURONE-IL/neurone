@@ -1,15 +1,15 @@
 import { Mongo } from 'meteor/mongo';
 
-export const Keystrokes = new Mongo.Collection('keystrokes');
+export const MouseCoordinates = new Mongo.Collection('mousecoordinates');
 
-Keystrokes.allow({
-  insert(userId, ks) {
-    return userId && ks.owner === userId;
+MouseCoordinates.allow({
+  insert(userId, mc) {
+    return userId && mc.owner === userId;
   },
-  update(userId, ks, fields, modifier) {
-    return userId && ks.owner === userId;
+  update(userId, mc, fields, modifier) {
+    return userId && mc.owner === userId;
   },
-  remove(userId, ks) {
-    return userId && ks.owner === userId;
+  remove(userId, mc) {
+    return userId && mc.owner === userId;
   }
 });
