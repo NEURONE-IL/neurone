@@ -14,6 +14,7 @@ getSnippet = function() {
     snippetObject.username = Meteor.user().emails[0].address;
 	  Snippets.insert(snippetObject);
 	  Utils.logToConsole('Snippet Saved!');
+    alert('Your snippet has been saved!');
 	}
 	else {
 	  Utils.logToConsole('Error while saving snippet');
