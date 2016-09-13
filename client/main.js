@@ -11,7 +11,9 @@ angular.module('prototype2', [
 ]);
 
 Meteor.startup(function() {
+  /*
   if (Meteor.user()) {
     KMTrack.start();  
   }
+  */
 });

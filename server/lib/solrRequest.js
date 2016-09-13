@@ -3,13 +3,13 @@
 import { HTTP } from 'meteor/http';
 
 export const settings = {
-      host: '127.0.0.1',
+      host: process.env.SOLR_URL ? process.env.SOLR_URL : 'http://127.0.0.1',
       port: 8983,
       path: '/solr',
       core: 'index'
     };
 
-export const baseUrl = 'http://' + settings.host + ':' + settings.port + settings.path + '/' + settings.core;
+export const baseUrl = settings.host + ':' + settings.port + settings.path + '/' + settings.core;
 
 export function searchIndex(queryString) {
   return new Promise(function(resolve, reject) {

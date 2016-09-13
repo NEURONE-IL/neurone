@@ -20,10 +20,12 @@ module.exports = {
       cleanAfterBuild: true
     },
     env: {
-      ROOT_URL: 'http://162.243.206.218'
+      ROOT_URL: 'http://162.243.206.218',
+      SOLR_URL: 'http://162.243.206.218'
     },
 
     //dockerImage: 'kadirahq/meteord'
+    dockerImage: 'abernix/meteord:base',
     deployCheckWaitTime: 60
   },
 
