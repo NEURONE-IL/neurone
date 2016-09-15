@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import * as index from './lib/solrRequest';
+import DatabaseMethods from './databaseMethods';
 
 import { Documents } from '../imports/api/documents/index';
 import { Snippets } from '../imports/api/snippets/index';
