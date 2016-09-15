@@ -6,20 +6,23 @@ import uiRouter from 'angular-ui-router';
 
 import template from './app.html';
 
-import { name as Auth } from '../auth/auth';
-import { name as Home } from './home';
-import { name as Navigation } from './navigation';
+import { name as Auth } from './auth/auth';
+import { name as Home } from './views/home';
+import { name as Navigation } from './views/navigation';
+
+import { name as Search } from '../search/search';
+
+/*
 import { name as Search } from '../search/search';
 import { name as DocumentsList } from '../documents/documentsList';
 import { name as DocumentDetails } from '../documents/documentDetails';
 import { name as SnippetsList } from '../snippets/snippetsList';
 import { name as VisitedLinksList } from '../visitedLinks/visitedLinksList';
+*/
 
-import LinkTrackService from '../../../lib/es6_linktrack';
-import KMTrackService from '../../../lib/es6_kmtrack';
-
-//import '../../../lib/es6_kmtrack';
-//import '../../../lib/init';
+import SnippetTrackService from '../logger/services/snippetTrack';
+import LinkTrackService from '../logger/services/linkTrack';
+import KMTrackService from '../logger/services/kmTrack';
 
 class App {}
 
@@ -31,12 +34,12 @@ export default angular.module(name, [
   uiRouter,
   Home,
   Auth,
-  Search,
-  DocumentsList,
+  Navigation,
+  Search
+  /*DocumentsList,
   DocumentDetails,
   SnippetsList,
-  VisitedLinksList,
-  Navigation
+  VisitedLinksList,*/
 ])
 .component(name, {
   template,

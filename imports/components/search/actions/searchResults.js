@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import template from './searchResults.html';
-import { Documents } from '../../../api/documents/index';
+//import { Documents } from '../../../api/documents/index';
 
 import { name as DocumentDetails } from '../documents/documentDetails';
 

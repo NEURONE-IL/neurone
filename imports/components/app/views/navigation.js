@@ -1,25 +1,22 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
+import template from './navigation.html';
 
-import template from './auth.html';
+import { name as Login } from '../auth/login';
+import { name as Register } from '../auth/register';
+import { name as Password } from '../auth/password';
 
-import { KMTrack } from '../../../lib/kmtrack';
+import SnippetTrackService from '../../logger/services/snippetTrack';
 
-import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
-import { name as Login } from './login';
-import { name as Register } from './register';
-import { name as Password } from './password';
+const name = 'navigation';
 
-const name = 'auth';
-
-class Auth {
-  constructor($scope, $reactive, $state) {
+class Navigation {
+  constructor($scope, $reactive, $state, SnippetTrackService) {
     'ngInject';
 
     this.$state = $state;
+    this.sts = SnippetTrackService;
 
     $reactive(this).attach($scope);
 
@@ -33,8 +30,11 @@ class Auth {
     });
   }
 
+  saveSnippet() {
+    this.sts.saveSnippet();
+  }
+
   logout() {
-    //KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }
@@ -43,7 +43,6 @@ class Auth {
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  DisplayNameFilter,
   Login,
   Register,
   Password
@@ -51,5 +50,6 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Auth
-});
+  controller: Navigation
+})
+.service('SnippetTrackService', SnippetTrackService);

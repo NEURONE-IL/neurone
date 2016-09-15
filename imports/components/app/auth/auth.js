@@ -1,21 +1,21 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import template from './navigation.html';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+
+import template from './auth.html';
 
 import { KMTrack } from '../../../lib/kmtrack';
 
-import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
-import { name as Login } from '../auth/login';
-import { name as Register } from '../auth/register';
-import { name as Password } from '../auth/password';
+import { name as DisplayNameFilter } from '../../../filters/displayNameFilter';
+import { name as Login } from './login';
+import { name as Register } from './register';
+import { name as Password } from './password';
 
-import '../../../lib/init';
-// import '../../../lib/kmtrack';
+const name = 'auth';
 
-const name = 'navigation';
-
-class Navigation {
+class Auth {
   constructor($scope, $reactive, $state) {
     'ngInject';
 
@@ -34,6 +34,7 @@ class Navigation {
   }
 
   logout() {
+    //KMTrack.stop();
     Accounts.logout();
     this.$state.go('home');
   }
@@ -46,8 +47,9 @@ export default angular.module(name, [
   Login,
   Register,
   Password
-]).component(name, {
+])
+.component(name, {
   template,
   controllerAs: name,
-  controller: Navigation
+  controller: Auth
 });

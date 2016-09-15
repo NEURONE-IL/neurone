@@ -12,7 +12,7 @@
       <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">Login</button>
     </div>
     <div class="navbar-right btn-group" role="group" ng-show="navigation.isLoggedIn">
-      <button type="button" class="btn btn-info navbar-btn" onclick="getSnippet()">Save Snippet</button>
+      <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">Save Snippet</button>
       <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">Logout</button>
     </div>
   </div>

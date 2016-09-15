@@ -3,9 +3,13 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import template from './search.html';
-import { Documents } from '../../../api/documents';
+//import { Documents } from '../../../api/documents';
 
-import { name as SearchResults } from './searchResults';
+import { name as SearchResults } from './actions/searchResults';
+
+import { name as DocumentsList } from './documents/documentsList';
+import { name as SnippetsList } from './snippets/snippetsList';
+import { name as VisitedLinksList } from './visitedLinks/visitedLinksList';
 
 class Search {
   constructor($scope, $reactive, $state) {
@@ -30,7 +34,10 @@ const name = 'search';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
-  SearchResults
+  SearchResults,
+  DocumentsList,
+  SnippetsList,
+  VisitedLinksList
 ])
 .component(name, {
   template,
