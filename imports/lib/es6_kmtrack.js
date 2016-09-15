@@ -1,9 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import angular from 'angular';
-import angularMeteor from 'angular-meteor';
-
-import './configs.js';
+import './configs';
 import Utils from './utils';
 
 /**

@@ -15,10 +15,11 @@ import { name as DocumentDetails } from '../documents/documentDetails';
 import { name as SnippetsList } from '../snippets/snippetsList';
 import { name as VisitedLinksList } from '../visitedLinks/visitedLinksList';
 
+import LinkTrackService from '../../../lib/es6_linktrack';
 import KMTrackService from '../../../lib/es6_kmtrack';
 
 //import '../../../lib/es6_kmtrack';
-import '../../../lib/init';
+//import '../../../lib/init';
 
 class App {}
 
@@ -36,7 +37,6 @@ export default angular.module(name, [
   SnippetsList,
   VisitedLinksList,
   Navigation
-  //KMTrackService
 ])
 .component(name, {
   template,
@@ -44,6 +44,7 @@ export default angular.module(name, [
   controller: App
 })
 .service('KMTrackService', KMTrackService)
+.service('LinkTrackService', LinkTrackService)
 .config(config)
 .run(run)
 .run(setTrackers);
@@ -67,16 +68,17 @@ function run($rootScope, $state) {
   );
 };
 
-function setTrackers($rootScope, KMTrackService) {
+function setTrackers($rootScope, KMTrackService, LinkTrackService) {
   'ngInject';
 
+  lts = LinkTrackService;
   kmts = KMTrackService;
 
   $rootScope.$on('$viewContentLoading', function(event, viewConfig) {
     //console.log('Exiting');
     if (Meteor.user()) {
       var state = 'END';
-      getLink(state);
+      lts.saveVisitedLink(state);
       kmts.service();
     } else {
       kmts.antiService();
@@ -87,7 +89,7 @@ function setTrackers($rootScope, KMTrackService) {
     //console.log('Entering!');
     if (Meteor.user()) {
       var state = 'BEGIN';
-      getLink(state);
+      lts.saveVisitedLink(state);
       kmts.service();
     }
   });
