@@ -11,10 +11,10 @@
   </div>
   <hr>
   <div>
-    <div ng-repeat="doc in searchResults.documents">
-      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title[0]}}</a></b>
-      [{{doc.date[0]}}]
-      <p>{{doc.body[0] | limitTo: 256}}{{doc.body[0].length > 256 ? '...' : ''}}</p>
+    <div ng-repeat="doc in searchResults.documents track by doc._id">
+      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a></b>
+      [{{doc.date}}]
+      <p>{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</p>
       <br>
     </div>
   </div>

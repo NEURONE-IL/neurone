@@ -20,7 +20,7 @@ import { name as SnippetsList } from '../snippets/snippetsList';
 import { name as VisitedLinksList } from '../visitedLinks/visitedLinksList';
 */
 
-import SnippetTrackService from '../logger/services/snippetTrack';
+//import SnippetTrackService from '../logger/services/snippetTrack';
 import LinkTrackService from '../logger/services/linkTrack';
 import KMTrackService from '../logger/services/kmTrack';
 

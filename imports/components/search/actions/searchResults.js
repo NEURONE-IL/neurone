@@ -15,23 +15,22 @@ class SearchResults {
 
     $reactive(this).attach($scope);
 
-    this.subscribe('documentDetails');
+    this.subscribe('documents');
 
     this.documents = [];
 
     this.getResults($stateParams.query);
   }
-
+  
   getResults(queryText) {
     var qt = queryText ? queryText : '';
 
     check(qt, String);
 
-    this.call('searchIndex', qt, function(error, result) {
+    this.call('searchDocuments', qt, function(error, result) {
       if (!error) {
-        var searchResult = result.response.docs;
-        console.log('searchIndex Call!', qt, searchResult);
-        this.documents = searchResult;
+        this.documents = result;
+        //console.log('result', this.documents);
       }
       else {
         console.log(error);
