@@ -1,8 +1,24 @@
+/*
+
+IMPORTANT: Set the following environment variables
+
+export MUP_SERVER_HOST='1.2.3.4'
+export MUP_SERVER_USERNAME='root'
+export MUP_ROOT_URL='http://1.2.3.4'
+export MUP_MONGO_URL='mongodb://localhost/meteor'
+
+Then run
+
+mup setup
+mup deploy
+
+*/
+
 module.exports = {
   servers: {
     one: {
-      host: '162.243.206.218',
-      username: 'root'
+      host: process.env.MUP_SERVER_HOST || '127.0.0.1',
+      username: process.env.MUP_SERVER_USERNAME || 'root'
       // pem: '~/.ssh/id_rsa'
       // password:
       // or leave blank for authenticate from ssh-agent
@@ -20,8 +36,8 @@ module.exports = {
       cleanAfterBuild: true
     },
     env: {
-      ROOT_URL: 'http://162.243.206.218',
-      SOLR_URL: 'http://162.243.206.218'
+      ROOT_URL: process.env.MUP_ROOT_URL || 'http://localhost'
+      // MONGO_URL: process.env.MUP_MONGO_URL || 'mongodb://localhost/meteor'
     },
 
     //dockerImage: 'kadirahq/meteord'

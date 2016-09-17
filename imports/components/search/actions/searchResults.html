@@ -14,7 +14,7 @@
     <div ng-repeat="doc in searchResults.documents track by doc._id">
       <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a></b>
       [{{doc.date}}]
-      <p>{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</p>
+      <p>{{doc.body | limitTo: 384}}{{doc.body.length > 384 ? '...' : ''}}</p>
       <br>
     </div>
   </div>

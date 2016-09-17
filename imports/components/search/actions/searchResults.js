@@ -21,7 +21,7 @@ class SearchResults {
 
     this.getResults($stateParams.query);
   }
-  
+
   getResults(queryText) {
     var qt = queryText ? queryText : '';
 
@@ -64,7 +64,7 @@ function config($stateProvider) {
 
   $stateProvider
     .state('searchResults', {
-      url: '/searchResults/:query',
+      url: '/searchResults?query',
       template: '<search-results></search-results>',
       resolve: {
       currentUser($q) {
