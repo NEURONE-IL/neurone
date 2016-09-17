@@ -64,7 +64,7 @@ export default class KMTrackService {
     }
 
     if (Meteor.user()) {
-      //Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
       var movement_output = {
         type: 'mouse_movement',
@@ -78,7 +78,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      //Meteor.call('storeMouseCoordinates', movement_output, function(err, result) {});
+      Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
     }
   }
 
@@ -120,7 +120,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeMouseClicks', click_output, function(err, result) {});
+      Meteor.call('storeMouseClick', click_output, function(err, result) {});
     }
   }
 
@@ -160,7 +160,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeKeystrokes', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', key_output, function(err, result) {});
     }
   }
 
