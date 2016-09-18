@@ -19,6 +19,9 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 pbastowski:angular-babel
 pbastowski:require
 twbs:bootstrap
+fortawesome:fontawesome
+lbee:lunr
+ostrio:files
 urigo:static-templates
 sanjo:jasmine
 velocity:html-reporter
@@ -28,5 +31,3 @@ dotansimha:accounts-ui-angular
 check
 http
 session
-fortawesome:fontawesome
-lbee:lunr
