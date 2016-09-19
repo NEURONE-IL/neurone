@@ -14,23 +14,17 @@ class DisplayPage {
     $reactive(this).attach($scope);
 
     // https://github.com/meteor/meteor/issues/7189
-    //var page = require('../../../../public/pages/Yao Ming - Wikipedia, the free encyclopedia.html');
-    //var pageAssets = require('../../../../public/pages/Yao Ming - Wikipedia, the free encyclopedia_files');
-
-    //this.myPage = page;
+    this.documentPage = '';
 
     this.renderPage($stateParams.docName);
   }
 
-  // https://docs.angularjs.org/api/ng/directive/ngBindHtml
   renderPage(docName) {
-    var asset = '2016 Summer Olympics - Wikipedia, the free encyclopedia',
-     pagePath = 'pages/' + asset + '.html',
-     assetDir = 'pages/' + asset + '_archivos';
-
-    this.call('getPageAsset', pagePath, function(error, result) {
+    this.call('getDocumentPage', '2020SummerOlympics', function(error, result) {
       if (!error) {
-        this.pageAsset = result;
+        console.log(result);
+        this.documentPage = result;
+        this.cond = true;
       }
       else {
         console.log(error);
@@ -73,3 +67,5 @@ function config($stateProvider) {
     }
   });
 };
+
+// https://docs.angularjs.org/api/ng/directive/ngBindHtml

@@ -10,11 +10,15 @@ export default class DocumentParserService {
   }
 
   // dgacitua: http://docs.meteor.com/api/assets.html
-  static getTextAsset(filepath) {
-    return Assets.getText(filepath);
+  static getTextAsset(assetPath) {
+    return Assets.getText(assetPath);
   }
 
-  static getBinaryAsset(filepath) {
-    return Assets.getBinary(filepath);
+  static getBinaryAsset(assetPath) {
+    return Assets.getBinary(assetPath);
+  }
+
+  static getAbsolutePath(assetPath) {
+    return Assets.absoluteFilePath(assetPath);
   }
 }

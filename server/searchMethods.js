@@ -46,6 +46,22 @@ Meteor.methods({
 
     var bin = dpService.getBinaryAsset(path);
 
-    return html;
+    return bin;
+  },
+  getAssetPath: function(path) {
+    check(path, String);
+
+    const dpService = DocumentParserService;
+
+    var path = dpService.getAbsolutePath(path);
+
+    return path;
+  },
+  getDocumentPage: function(assetId) {
+    var asset = assetId,
+     pagePath = '/pages/' + asset + '.html',
+     assetDir = '/pages/' + asset + '_files';
+
+    return pagePath;
   }
 });

@@ -77,7 +77,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
   lts = LinkTrackService;
   kmts = KMTrackService;
 
-  $rootScope.$on('$viewContentLoading', function(event, viewConfig) {
+  $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
     //console.log('Exiting');
     if (Meteor.user()) {
       var state = 'END';
@@ -88,7 +88,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
     }
   });
 
-  $rootScope.$on('$viewContentLoaded', function(event) {
+  $rootScope.$on('$viewContentLoaded', function (event) {
     //console.log('Entering!');
     if (Meteor.user()) {
       var state = 'BEGIN';
@@ -96,4 +96,23 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
       kmts.service();
     }
   });
+
+  // http://stackoverflow.com/a/16204326
+  $rootScope.$on('$locationChangeSuccess', function () {
+    //console.log('$locationChangeSuccess changed!', new Date());
+  });
+
+  /*
+  // http://stackoverflow.com/a/27984921
+  $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    if (!current) {
+      // handle session start event
+      if (Meteor.user()) {
+        var state = 'RELOAD';
+        lts.saveVisitedLink(state);
+        kmts.service();
+      }
+    }
+  });
+  */
 };
