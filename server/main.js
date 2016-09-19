@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import * as index from './lib/solrRequest';
-import InvertedIndexService from '../imports/components/search/services/invertedIndex';
+//import * as index from './lib/solrRequest';
+
 import DatabaseMethods from './databaseMethods';
+import SearchMethods from './searchMethods';
 
 import { Documents } from '../imports/api/documents/index';
 
@@ -18,32 +19,4 @@ Meteor.startup(function () {
   else {
     console.log('Documents Loaded!');
   }
-
-  Meteor.methods({
-    searchDocuments: function(query) {
-      check(query, String);
-
-      const idxService = InvertedIndexService;
-
-      var allDocs = Documents.find({}),
-              idx = idxService.createIndex(),
-           search = [],
-         respDocs = [];
-
-      allDocs.forEach(function (doc) {
-        idxService.addDocument(idx, doc);
-      });
-
-      search = idxService.searchDocument(idx, query);
-      
-      search.forEach(function (obj) {
-        var docId = obj.ref,
-           docObj = Documents.findOne({id: docId});
-
-        respDocs.push(docObj);
-      });
-
-      return respDocs;
-    }
-  });
 });
