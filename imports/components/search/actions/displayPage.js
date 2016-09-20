@@ -20,6 +20,10 @@ class DisplayPage {
   }
 
   renderPage(docName) {
+    this.documentPage = 'OlympicsGames.html';
+    this.html = '';
+
+    /*
     this.call('getDocumentPage', '2020SummerOlympics', function(error, result) {
       if (!error) {
         console.log(result);
@@ -30,6 +34,7 @@ class DisplayPage {
         console.log(error);
       }
     });
+    */
   }
 };
 

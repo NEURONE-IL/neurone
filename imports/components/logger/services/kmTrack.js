@@ -64,7 +64,7 @@ export default class KMTrackService {
     }
 
     if (Meteor.user()) {
-      Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+      //Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
       var movement_output = {
         type: 'mouse_movement',
@@ -78,7 +78,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
+      //Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
     }
   }
 
@@ -106,7 +106,7 @@ export default class KMTrackService {
     }
 
     if (Meteor.user()) {
-      Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+      //Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
 
       var click_output = {
         type: 'mouse_click',
@@ -120,7 +120,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeMouseClick', click_output, function(err, result) {});
+      //Meteor.call('storeMouseClick', click_output, function(err, result) {});
     }
   }
 
@@ -135,6 +135,7 @@ export default class KMTrackService {
       src = window.location.href;
 
     if (Meteor.user()) {
+      /*
       Utils.logToConsole('Key Pressed!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
@@ -147,6 +148,7 @@ export default class KMTrackService {
         (evt.metaKey ? ' +META' : '') +
         ' src:' + src
       );
+      */
 
       var key_output = {
         type: 'key_press',
@@ -160,7 +162,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      //Meteor.call('storeKeystroke', key_output, function(err, result) {});
     }
   }
 

@@ -4,7 +4,7 @@ import uiRouter from 'angular-ui-router';
 
 import { Meteor } from 'meteor/meteor';
 
-import { KMTrack } from '../../../lib/kmtrack';
+import SessionTrackService from '../../logger/services/sessionTrack';
 
 import template from './login.html';
 
@@ -32,8 +32,8 @@ class Login {
         if (err) {
           this.error = err;
         } else {
-          //KMTrack.start();
-          console.log(Meteor.user(), Meteor.user().emails[0].address);
+          //console.log(Meteor.user(), Meteor.user().emails[0].address);
+          SessionTrackService.saveLogin();
           this.$state.go('search');
         }
       })

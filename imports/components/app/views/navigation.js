@@ -8,6 +8,7 @@ import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
 import SnippetTrackService from '../../logger/services/snippetTrack';
+import SessionTrackService from '../../logger/services/sessionTrack';
 
 const name = 'navigation';
 
@@ -35,6 +36,7 @@ class Navigation {
   }
 
   logout() {
+    SessionTrackService.saveLogout();
     Accounts.logout();
     this.$state.go('home');
   }
