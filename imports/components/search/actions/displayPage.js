@@ -20,7 +20,7 @@ class DisplayPage {
   }
 
   renderPage(docName) {
-    this.documentPage = 'OlympicsGames.html';
+    this.documentPage = '/pages/2016SummerOlympics.html';
     this.html = '';
 
     /*
