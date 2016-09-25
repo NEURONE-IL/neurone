@@ -1,4 +1,5 @@
 import { FilesCollection } from 'meteor/ostrio:files';
+import { fs } from 'fs';
 import { himalaya } from 'himalaya';
 import { sanitizeHtml } from 'sanitize-html';
 
@@ -30,5 +31,17 @@ export default class DocumentParserService {
       }
     });
     return cleanText;
+  }
+
+  static readTextFile(path) {
+    return fs.readFile(path, function(err, data) {
+      if (!err) {
+        console.log(data);
+        return data;  
+      }
+      else {
+        console.log(err);
+      }
+    });
   }
 }

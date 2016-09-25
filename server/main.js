@@ -22,9 +22,6 @@ Meteor.startup(function () {
   }
   else {
     console.log('Documents Already Loaded!');
-
-
-    //DocumentParserService.removeLinks(string);
-
+    console.log(Meteor.absolutePath);
   }
 });
