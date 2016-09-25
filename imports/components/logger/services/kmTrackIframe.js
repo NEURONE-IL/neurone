@@ -1,53 +1,35 @@
-import { Meteor } from 'meteor/meteor';
+//import KMTrackService from './kmTrack'
 
 import Utils from '../../../lib/utils';
 import LoggerConfigs from '../loggerConfigs';
 
-/**
- * 
- * KMTrack
- * Custom library for mouse tracking in Javascript
- * (adapted as AngularJS Service)
- * 
- * Created by Daniel Gacitua <daniel.gacitua@usach.cl>
- * 
- * License: MIT 
- * http://opensource.org/licenses/MIT
- * 
- * Based on Denis Papathanasiou's buckabuckaboo
- * https://github.com/dpapathanasiou/buckabuckaboo
- * 
- */
-
-export default class KMTrackService {
-  constructor($window, $document, $location) {
-    'ngInject';
-
-    this.$window = $window;
-    this.$document = $document;
-    this.$location = $location;
-
-    this.iframeSelected = false;
-    this.isTracking = false;
+export default class KMTrackIframeService {
+  constructor() {
+    this._isTracking = false;
+    this._iframeId = 'pageContainer';
+    this._iframeSelected = false;
   }
 
-
-  bindEvent(evt, fn) {
-    angular.element(this.$window).on(evt, fn);
-    console.log('BIND!', evt);
+  bindEventIframe(elem, evt, data, fn) {
+    elem.on(evt, data, fn);
+    //console.log('IFRAME Bind!', evt, elem);
   }
 
-  unbindEvent(evt, fn) {
-    angular.element(this.$window).off(evt, fn);
-    console.log('UNBIND!', evt);
+  unbindEventIframe(elem, evt, fn) {
+    elem.off(evt, fn);
+    //console.log('IFRAME Unbind!', evt, elem);
   }
 
   mouseMoveListener(evt) {
-    // From http://stackoverflow.com/a/23323821
+    // From http://stackoverflow.com/a/11744120/1319998
     var w = angular.element(window),
         d = angular.element(document)[0],
         e = d.documentElement,
         g = d.getElementsByTagName('body')[0],
+       pw = angular.element(parent.window),
+      ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
+       ol = ifm.position().left,
+       ot = ifm.position().top,
         x = evt.pageX,
         y = evt.pageY,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
@@ -64,6 +46,10 @@ export default class KMTrackService {
       y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
       - (e && e.clientTop  || g && g.clientTop  || 0);
     }
+
+    x += ol;
+    y += ot;
+    console.log(ol, ot);
 
     if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
       Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
@@ -90,8 +76,12 @@ export default class KMTrackService {
         d = angular.element(document)[0],
         e = d.documentElement,
         g = d.getElementsByTagName('body')[0],
-        x = evt.pageX,
-        y = evt.pageY,
+       pw = angular.element(parent.window),
+      ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
+       ol = ifm.position().left,
+       ot = ifm.position().top,
+        x = evt.pageX + ol,
+        y = evt.pageY + ot,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
       src = window.location.href,   //this.$location.absUrl(),
@@ -99,12 +89,12 @@ export default class KMTrackService {
 
     if (x == null && evt.clientX != null) {
       x = evt.clientX + (e && e.scrollLeft || g && g.scrollLeft || 0)
-      - (e && e.clientLeft || g && g.clientLeft || 0);
+      - (e && e.clientLeft || g && g.clientLeft || 0) + ol;
     }
 
     if (y == null && evt.clientY != null) {
       y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
-      - (e && e.clientTop  || g && g.clientTop  || 0);
+      - (e && e.clientTop  || g && g.clientTop  || 0) + ot;
     }
 
     if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
@@ -166,30 +156,70 @@ export default class KMTrackService {
     }
   }
 
-  startTrack() {
-    this.bindEvent('mousemove', this.mouseMoveListener);
-    this.bindEvent('click', this.mouseClickListener);
-    this.bindEvent('keydown', this.keystrokeListener);
+  onPageContainerListener() {
+    // From http://stackoverflow.com/q/9314666
+    this._iframeSelected = true;
+    //console.log('IFRAME Selected!', this._iframeSelected);
+  }
 
-    this.isTracking = true;
+  offPageContainerListener() {
+    // From http://stackoverflow.com/q/9314666
+    this._iframeSelected = false;
+    //console.log('IFRAME Not Selected!', this._iframeSelected);
+  }
+
+  startTrack() {
+    var pageContainer = Utils.getAngularElementById(this._iframeId);
+    
+    if (pageContainer) {
+      //this.bindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
+      //this.bindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
+
+      var iframe = document.getElementById(this._iframeId);
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+      var data = {
+        iframeId: this._iframeId,
+        iframeOffsetX: pageContainer.position().left,
+        iframeOffsetY: pageContainer.position().top
+      }
+      console.log(this.frameId, iframe, innerDoc, data);
+
+      this.bindEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener);
+      this.bindEventIframe(angular.element(innerDoc), 'click', data, this.mouseClickListener);
+      this.bindEventIframe(angular.element(innerDoc), 'keydown', data, this.keystrokeListener);
+    }
+
+    this._isTracking = true;
   }
 
   stopTrack() {
-    this.unbindEvent('mousemove', this.mouseMoveListener);
-    this.unbindEvent('click', this.mouseClickListener);
-    this.unbindEvent('keydown', this.keystrokeListener);
+    var pageContainer = Utils.getAngularElementById(this._iframeId);
+    
+    if (pageContainer) {
+      //this.unbindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
+      //this.unbindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
 
-    this.isTracking = false;
+      var iframe = document.getElementById(this._iframeId);
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      //console.log(this.frameId, iframe, innerDoc);
+
+      this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
+      this.unbindEventIframe(angular.element(innerDoc), 'click', this.mouseClickListener);
+      this.unbindEventIframe(angular.element(innerDoc), 'keydown', this.keystrokeListener);
+    }
+
+    this._isTracking = false;
   }
 
   service() {
-    if (!this.isTracking) {
+    if (!this._isTracking) {
       this.startTrack();
     }
   }
 
   antiService() {
-    if (this.isTracking) {
+    if (this._isTracking) {
       this.stopTrack();
     }
   }

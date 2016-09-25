@@ -1,5 +1,6 @@
 import { FilesCollection } from 'meteor/ostrio:files';
 import { himalaya } from 'himalaya';
+import { sanitizeHtml } from 'sanitize-html';
 
 export default class DocumentParserService {
   constructor() {}
@@ -20,5 +21,14 @@ export default class DocumentParserService {
 
   static getAbsolutePath(assetPath) {
     return Assets.absoluteFilePath(assetPath);
+  }
+
+  static removeLinks(htmlString) {
+    var cleanText = sanitizeHtml(htmlString, {
+      exclusiveFilter: function(frame) {
+        return frame.tag === 'a' && !frame.text.trim();
+      }
+    });
+    return cleanText;
   }
 }

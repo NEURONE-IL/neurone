@@ -1,8 +1,10 @@
-<h1>Snippet List</h1>
-<ul>
-  <li ng-repeat="snip in snippetsList.snippets">
-    <b>{{snip.title}}</b> [{{snip.local_time | date: "yyyy-MM-dd HH:mm:ss.sss"}}]
-    {{snip.url}}
-    {{snip.snipped_text}}
-  </li>
-</ul>
+<div class="container">
+  <h1>Snippet List</h1>
+    <ul>
+    <li ng-repeat="snip in snippetsList.snippets">
+      <b>{{snip.title}}</b> [{{snip.local_time | date: "yyyy-MM-dd HH:mm:ss.sss"}}]
+      {{snip.url}}
+      {{snip.snipped_text}}
+    </li>
+  </ul>
+</div>

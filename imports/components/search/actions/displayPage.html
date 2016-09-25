@@ -1,1 +1,3 @@
-<div ng-include="displayPage.documentPage"></div>
+<!--<div id="pageContainer" ng-include="displayPage.documentPage"></div>-->
+<!--<div id="pageContainer"></div>-->
+<iframe id="pageContainer" ng-src="{{displayPage.documentPage}}" ng-onload="displayPage.startTrackingLoader()"></iframe>

@@ -48,6 +48,7 @@ export default angular.module(name, [
 })
 .service('KMTrackService', KMTrackService)
 .service('LinkTrackService', LinkTrackService)
+.directive('ngOnload', ngOnloadDirective)
 .config(config)
 .run(run)
 .run(setTrackers);
@@ -115,4 +116,19 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
     }
   });
   */
+};
+
+// From https://gist.github.com/mikaturunen/f0b45def06bc83ccea9e
+function ngOnloadDirective() {
+  // TODO convert to project's code format
+  return {
+    restrict: "A",
+      scope: {
+        callback: "&ngOnload"
+      },
+      link: (scope, element, attrs) => {
+        // hooking up the onload event
+        element.on("load", () => scope.callback());
+      }
+  };
 };

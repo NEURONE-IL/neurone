@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-//import * as index from './lib/solrRequest';
-
 import ServerMethods from './serverMethods';
 import DatabaseMethods from './databaseMethods';
 import SearchMethods from './searchMethods';
+
+import DocumentParserService from '../imports/components/search/services/documentParser';
 
 import { Documents } from '../imports/api/documents/index';
 
@@ -22,5 +22,9 @@ Meteor.startup(function () {
   }
   else {
     console.log('Documents Already Loaded!');
+
+
+    //DocumentParserService.removeLinks(string);
+
   }
 });

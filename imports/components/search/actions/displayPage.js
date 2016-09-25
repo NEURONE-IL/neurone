@@ -5,38 +5,37 @@ import uiRouter from 'angular-ui-router';
 
 import template from './displayPage.html';
 
+import KMTrackIframeService from '../../logger/services/kmTrackIframe'
+
 class DisplayPage {
-  constructor($scope, $reactive, $state, $stateParams) {
+  constructor($scope, $reactive, $state, $stateParams, KMTrackIframeService) {
     'ngInject';
+
+    kmtis = KMTrackIframeService;
 
     this.$state = $state;
 
+    $scope.$on('$stateChangeStart', function (event) {
+      console.log("IFRAME Out!");
+      kmtis.antiService();
+    });
+
     $reactive(this).attach($scope);
 
-    // https://github.com/meteor/meteor/issues/7189
     this.documentPage = '';
-
     this.renderPage($stateParams.docName);
   }
 
+  // From https://github.com/meteor/meteor/issues/7189
   renderPage(docName) {
-    this.documentPage = '/pages/2016SummerOlympics.html';
-    this.html = '';
-
-    /*
-    this.call('getDocumentPage', '2020SummerOlympics', function(error, result) {
-      if (!error) {
-        console.log(result);
-        this.documentPage = result;
-        this.cond = true;
-      }
-      else {
-        console.log(error);
-      }
-    });
-    */
+    this.documentPage = '/olympic_games2.html';
   }
-};
+
+  startTrackingLoader() {
+    console.log("IFRAME In!");
+    kmtis.service();
+  }
+}
 
 const name = 'displayPage';
 
@@ -51,7 +50,8 @@ export default angular.module(name, [
   controllerAs: name,
   controller: DisplayPage
 })
-.config(config);
+.config(config)
+.service('KMTrackIframeService', KMTrackIframeService);
 
 function config($stateProvider) {
   'ngInject';

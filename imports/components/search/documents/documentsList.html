@@ -1,11 +1,13 @@
-<!--
-<document-add></document-add>
-<hr>
--->
-<h1>Document List</h1>
-<ul>
-  <li ng-repeat="doc in documentsList.docs">
-    <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a> [{{doc.date}}]</b>
-    <!--<document-remove doc="doc"></document-remove>-->
-  </li>
-</ul>
+<div class="container">
+  <!--
+  <document-add></document-add>
+  <hr>
+  -->
+  <h1>Document List</h1>
+  <ul>
+    <li ng-repeat="doc in documentsList.docs">
+      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a> [{{doc.date}}]</b>
+      <!--<document-remove doc="doc"></document-remove>-->
+    </li>
+  </ul>
+</div>

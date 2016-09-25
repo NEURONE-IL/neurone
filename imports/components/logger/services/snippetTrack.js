@@ -6,7 +6,9 @@ export default class SnippetTrackService {
   constructor() {}
 
   saveSnippet() {
-    var snippet = window.getSelection().toString();
+    var iframeElement = document.getElementById('pageContainer'),
+         iframeWindow = iframeElement.contentWindow || iframeElement,
+              snippet = iframeWindow.getSelection().toString() || window.getSelection().toString();
 
     if (!Utils.isEmpty(snippet)) {
       var current_url = window.location.href;
