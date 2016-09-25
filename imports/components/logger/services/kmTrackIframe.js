@@ -47,19 +47,30 @@ export default class KMTrackIframeService {
       - (e && e.clientTop  || g && g.clientTop  || 0);
     }
 
-    x += ol;
-    y += ot;
-    console.log(ol, ot);
+    var docX = x + ol,
+        docY = y + ot,
+        winX = docX - ifm.contents().scrollLeft(),
+        winY = docY - ifm.contents().scrollTop()
+        docW = ifm.contents().width() + ol,
+        docH = ifm.contents().height() + ot,
+        winW = w,
+        winH = h;
+
+    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
     if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
-      Utils.logToConsole('Mouse Movement! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var movement_output = {
         type: 'mouse_movement',
-        x_pos: x,
-        y_pos: y,
-        w_scr: w,
-        h_scr: h,
+        x_pos: winX,
+        y_pos: winY,
+        w_scr: winW,
+        h_scr: winH,
+        x_doc: docX,
+        y_doc: docY,
+        w_doc: docW,
+        h_doc: docH,
         local_time: time,
         src_url: src,
         owner: Meteor.userId(),
@@ -97,15 +108,30 @@ export default class KMTrackIframeService {
       - (e && e.clientTop  || g && g.clientTop  || 0) + ot;
     }
 
+    var docX = x + ol,
+        docY = y + ot,
+        winX = docX - ifm.contents().scrollLeft(),
+        winY = docY - ifm.contents().scrollTop()
+        docW = ifm.contents().width() + ol,
+        docH = ifm.contents().height() + ot,
+        winW = w,
+        winH = h;
+
+    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
+
     if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
-      Utils.logToConsole('Mouse Click! X:' + x + ' Y:' + y + ' W:' + w + ' H:' + h + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var click_output = {
         type: 'mouse_click',
-        x_pos: x,
-        y_pos: y,
-        w_scr: w,
-        h_scr: h,
+        x_pos: winX,
+        y_pos: winY,
+        w_scr: winW,
+        h_scr: winH,
+        x_doc: docX,
+        y_doc: docY,
+        w_doc: docW,
+        h_doc: docH,
         local_time: time,
         src_url: src,
         owner: Meteor.userId(),

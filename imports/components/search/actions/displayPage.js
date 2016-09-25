@@ -16,7 +16,7 @@ class DisplayPage {
     this.$state = $state;
 
     $scope.$on('$stateChangeStart', function (event) {
-      console.log("IFRAME Out!");
+      //console.log("IFRAME Out!");
       kmtis.antiService();
     });
 
@@ -28,11 +28,11 @@ class DisplayPage {
 
   // From https://github.com/meteor/meteor/issues/7189
   renderPage(docName) {
-    this.documentPage = '/olympic_games2.html';
+    this.documentPage = '/olympic_games.html';
   }
 
   startTrackingLoader() {
-    console.log("IFRAME In!");
+    //console.log("IFRAME In!");
     kmtis.service();
   }
 }
@@ -73,4 +73,15 @@ function config($stateProvider) {
   });
 };
 
-// https://docs.angularjs.org/api/ng/directive/ngBindHtml
+/*
+.component(name, {
+  controllerAs: name,
+  controller: DisplayPage,
+  templateUrl:  ['$stateParams',
+    function($stateParams) {
+      console.log($stateParams.docName);
+      return '/olympic_games.html';
+    }
+  ]
+})
+*/
