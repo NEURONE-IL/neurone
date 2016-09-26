@@ -11,14 +11,7 @@ import { name as Home } from './views/home';
 import { name as Navigation } from './views/navigation';
 
 import { name as Search } from '../search/search';
-
-/*
-import { name as Search } from '../search/search';
-import { name as DocumentsList } from '../documents/documentsList';
-import { name as DocumentDetails } from '../documents/documentDetails';
-import { name as SnippetsList } from '../snippets/snippetsList';
-import { name as VisitedLinksList } from '../visitedLinks/visitedLinksList';
-*/
+import { name as Showcase } from '../showcase/showcase';
 
 //import SnippetTrackService from '../logger/services/snippetTrack';
 import LinkTrackService from '../logger/services/linkTrack';
@@ -35,11 +28,8 @@ export default angular.module(name, [
   Home,
   Auth,
   Navigation,
+  Showcase,
   Search
-  /*DocumentsList,
-  DocumentDetails,
-  SnippetsList,
-  VisitedLinksList,*/
 ])
 .component(name, {
   template,
@@ -120,13 +110,12 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
 
 // From https://gist.github.com/mikaturunen/f0b45def06bc83ccea9e
 function ngOnloadDirective() {
-  // TODO convert to project's code format
   return {
     restrict: "A",
       scope: {
         callback: "&ngOnload"
       },
-      link: (scope, element, attrs) => {
+      link: function(scope, element, attrs) {
         // hooking up the onload event
         element.on("load", () => scope.callback());
       }

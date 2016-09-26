@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="text-center">   
+  <div class="smallSearch text-center">   
     <form class="row center-block" ng-submit="searchResults.doSearch()">
       <div class="col-md-6 col-md-offset-2 search-box">
         <input class="form-control" placeholder="Enter Text to Search" id="searchText" type="text" ng-model="searchResults.searchText">
@@ -7,12 +7,14 @@
       <div class="col-md-1"><button type="submit" class="btn btn-success search-box" id="btn-search"><i class="fa fa-search"></i> Search</button></div>
       <div class="col-md-3"></div>
     </form>
-    </div>
   </div>
   <hr>
-  <div>
+  <div id="searchResults">
     <div ng-repeat="doc in searchResults.documents track by doc._id">
-      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a></b>
+      <!--<b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a></b>
+      [{{doc.date}}]
+      <p>{{doc.body | limitTo: 384}}{{doc.body.length > 384 ? '...' : ''}}</p>-->
+      <b><a ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a></b>
       [{{doc.date}}]
       <p>{{doc.body | limitTo: 384}}{{doc.body.length > 384 ? '...' : ''}}</p>
       <br>

@@ -57,11 +57,10 @@ Meteor.methods({
 
     return path;
   },
-  getDocumentPage: function(assetId) {
-    var asset = assetId,
-     pagePath = '/pages/' + asset + '.html',
-     assetDir = '/pages/' + asset + '_files';
+  getDocumentPage: function(documentName) {
+    var doc = Documents.findOne({ docName: documentName }),
+      route = doc.route;
 
-    return pagePath;
+    return '/' + route;
   }
 });

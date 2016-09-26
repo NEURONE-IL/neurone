@@ -6,7 +6,8 @@
   <h1>Document List</h1>
   <ul>
     <li ng-repeat="doc in documentsList.docs">
-      <b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a> [{{doc.date}}]</b>
+      <!--<a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a> [{{doc.date}}]</b>-->
+      <b><a ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a> [{{doc.date}}]</b>
       <!--<document-remove doc="doc"></document-remove>-->
     </li>
   </ul>

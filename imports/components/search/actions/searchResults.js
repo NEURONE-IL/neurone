@@ -3,9 +3,6 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import template from './searchResults.html';
-//import { Documents } from '../../../api/documents/index';
-
-import { name as DocumentDetails } from '../documents/documentDetails';
 
 class SearchResults {
   constructor($scope, $reactive, $state, $stateParams) {
@@ -14,8 +11,6 @@ class SearchResults {
     this.$state = $state;
 
     $reactive(this).attach($scope);
-
-    this.subscribe('documents');
 
     this.documents = [];
 
@@ -49,8 +44,7 @@ const name = 'searchResults';
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter,
-  DocumentDetails
+  uiRouter
 ])
 .component(name, {
   template,

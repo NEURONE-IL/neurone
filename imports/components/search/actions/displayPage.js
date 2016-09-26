@@ -28,7 +28,17 @@ class DisplayPage {
 
   // From https://github.com/meteor/meteor/issues/7189
   renderPage(docName) {
-    this.documentPage = '/olympic_games.html';
+    this.call('getDocumentPage', docName, function(error, result) {
+      if (!error) {
+        this.documentPage = result;
+        //console.log('result', this.documents);
+      }
+      else {
+        console.log(error);
+      }
+    });
+
+    //this.documentPage = '/olympic_games.html';
   }
 
   startTrackingLoader() {
