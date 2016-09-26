@@ -50,7 +50,7 @@ export default class KMTrackIframeService {
     var docX = x + ol,
         docY = y + ot,
         winX = docX - ifm.contents().scrollLeft(),
-        winY = docY - ifm.contents().scrollTop()
+        winY = docY - ifm.contents().scrollTop(),
         docW = ifm.contents().width() + ol,
         docH = ifm.contents().height() + ot,
         winW = w,
@@ -111,7 +111,7 @@ export default class KMTrackIframeService {
     var docX = x + ol,
         docY = y + ot,
         winX = docX - ifm.contents().scrollLeft(),
-        winY = docY - ifm.contents().scrollTop()
+        winY = docY - ifm.contents().scrollTop(),
         docW = ifm.contents().width() + ol,
         docH = ifm.contents().height() + ot,
         winW = w,
