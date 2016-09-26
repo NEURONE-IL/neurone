@@ -63,18 +63,18 @@ export default class KMTrackIframeService {
 
       var movement_output = {
         type: 'mouse_movement',
-        x_pos: winX,
-        y_pos: winY,
-        w_scr: winW,
-        h_scr: winH,
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        src_url: src,
+        x_win: winX,
+        y_win: winY,
+        w_win: winW,
+        h_win: winH,
         x_doc: docX,
         y_doc: docY,
         w_doc: docW,
         h_doc: docH,
-        local_time: time,
-        src_url: src,
-        owner: Meteor.userId(),
-        username: Meteor.user().emails[0].address
+        local_time: time
       };
 
       //Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
@@ -124,18 +124,18 @@ export default class KMTrackIframeService {
 
       var click_output = {
         type: 'mouse_click',
-        x_pos: winX,
-        y_pos: winY,
-        w_scr: winW,
-        h_scr: winH,
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        src_url: src,
+        x_win: winX,
+        y_win: winY,
+        w_win: winW,
+        h_win: winH,
         x_doc: docX,
         y_doc: docY,
         w_doc: docW,
         h_doc: docH,
-        local_time: time,
-        src_url: src,
-        owner: Meteor.userId(),
-        username: Meteor.user().emails[0].address
+        local_time: time
       };
 
       //Meteor.call('storeMouseClick', click_output, function(err, result) {});
