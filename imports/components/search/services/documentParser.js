@@ -1,7 +1,7 @@
-import { FilesCollection } from 'meteor/ostrio:files';
-import { fs } from 'fs';
-import { himalaya } from 'himalaya';
-import { sanitizeHtml } from 'sanitize-html';
+import FilesCollection from 'meteor/ostrio:files';
+import fs from 'fs';
+import himalaya from 'himalaya';
+import sanitizeHtml from 'sanitize-html';
 
 export default class DocumentParserService {
   constructor() {}
@@ -11,36 +11,33 @@ export default class DocumentParserService {
     return json;
   }
 
-  // dgacitua: http://docs.meteor.com/api/assets.html
-  static getTextAsset(assetPath) {
-    return Assets.getText(assetPath);
-  }
-
-  static getBinaryAsset(assetPath) {
-    return Assets.getBinary(assetPath);
-  }
-
-  static getAbsolutePath(assetPath) {
-    return Assets.absoluteFilePath(assetPath);
-  }
-
   static removeLinks(htmlString) {
     var cleanText = sanitizeHtml(htmlString, {
       exclusiveFilter: function(frame) {
-        return frame.tag === 'a' && !frame.text.trim();
+        return frame.tag === 'a';
       }
     });
     return cleanText;
   }
 
-  static readTextFile(path) {
-    return fs.readFile(path, function(err, data) {
+  static readTextFile(path, callback) {
+    fs.readFile(path, function(err, data) {
       if (!err) {
-        console.log(data);
-        return data;  
+        return callback(null, data.toString());
       }
       else {
-        console.log(err);
+        return callback(err);        
+      }
+    });
+  }
+
+  static writeTextFile(path, text) {
+    fs.writeFile(path, text, function(err) {
+      if (!err) {
+        console.log('File written!', path);
+      }
+      else {
+        return console.log(err);
       }
     });
   }

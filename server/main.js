@@ -30,6 +30,22 @@ Meteor.startup(function () {
   }
   else {
     console.log('Documents Already Loaded!');
-    console.log(Meteor.absolutePath);
+    
+    var filePath = Meteor.absolutePath + '/public/olympic_games.html',
+      htmlString = '';
+
+    /*
+    DocumentParserService.readTextFile(filePath, function(error, response) {
+      if (!error) {
+        htmlString = response;
+        temp1 = DocumentParserService.removeLinks(htmlString);
+        newPath = Meteor.absolutePath + '/public/olympic_games2.html';
+        DocumentParserService.writeTextFile(newPath, temp1);
+      }
+      else {
+        console.log(err);
+      }
+    });
+    */
   }
 });
