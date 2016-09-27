@@ -95,7 +95,7 @@ export default class KMTrackService {
         local_time: time
       };
 
-      //Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
+      Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
     }
   }
 
@@ -152,7 +152,7 @@ export default class KMTrackService {
         local_time: time
       };
 
-      //Meteor.call('storeMouseClick', click_output, function(err, result) {});
+      Meteor.call('storeMouseClick', click_output, function(err, result) {});
     }
   }
 
@@ -192,7 +192,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      //Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', key_output, function(err, result) {});
     }
   }
 
