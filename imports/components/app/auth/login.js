@@ -4,7 +4,7 @@ import uiRouter from 'angular-ui-router';
 
 import { Meteor } from 'meteor/meteor';
 
-import SessionTrackService from '../../logger/services/sessionTrack';
+import { SessionTrackService } from '../../logger/logger';
 
 import template from './login.html';
 

@@ -13,9 +13,7 @@ import { name as Navigation } from './views/navigation';
 import { name as Search } from '../search/search';
 import { name as Showcase } from '../showcase/showcase';
 
-//import SnippetTrackService from '../logger/services/snippetTrack';
-import LinkTrackService from '../logger/services/linkTrack';
-import KMTrackService from '../logger/services/kmTrack';
+import { LinkTrackService, KMTrackService } from '../logger/logger';
 
 class App {}
 

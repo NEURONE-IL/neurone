@@ -5,7 +5,7 @@ import uiRouter from 'angular-ui-router';
 
 import template from './displayPage.html';
 
-import KMTrackIframeService from '../../logger/services/kmTrackIframe'
+import { KMTrackIframeService } from '../../logger/logger';
 
 class DisplayPage {
   constructor($scope, $reactive, $state, $stateParams, KMTrackIframeService) {

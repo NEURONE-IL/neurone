@@ -7,8 +7,7 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import SnippetTrackService from '../../logger/services/snippetTrack';
-import SessionTrackService from '../../logger/services/sessionTrack';
+import { SessionTrackService, SnippetTrackService } from '../../logger/logger';
 
 const name = 'navigation';
 
