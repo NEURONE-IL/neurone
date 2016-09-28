@@ -1,15 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 
 import Utils from '../../../lib/utils';
+import LoggerConfigs from '../loggerConfigs';
 
 export default class SnippetTrackService {
   constructor() {}
 
   saveSnippet() {
-    var iframeElement = document.getElementById('pageContainer'),
-         iframeWindow = iframeElement.contentWindow || iframeElement,
-              snippet = iframeWindow.getSelection().toString() || window.getSelection().toString();
-
+    var iframeElement = document.getElementById(LoggerConfigs),
+         iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement : null,
+              snippet = iframeWindow ? iframeWindow.getSelection().toString() || window.getSelection().toString() : window.getSelection().toString();
+    
     if (!Utils.isEmpty(snippet)) {
       var current_url = window.location.href;
       var current_title = document.title;

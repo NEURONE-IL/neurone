@@ -22,10 +22,10 @@ export default class KMTrackIframeService {
 
   mouseMoveListener(evt) {
     // From http://stackoverflow.com/a/11744120/1319998
-    var w = angular.element(window),
-        d = angular.element(document)[0],
-        e = d.documentElement,
-        g = d.getElementsByTagName('body')[0],
+    var w = evt.data.w,
+        d = evt.data.d,
+        e = evt.data.e,
+        g = evt.data.g,
        pw = angular.element(parent.window),
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
        ol = ifm.position().left,
@@ -83,10 +83,10 @@ export default class KMTrackIframeService {
 
   mouseClickListener(evt) {
     // From http://stackoverflow.com/a/11744120/1319998
-    var w = angular.element(window),
-        d = angular.element(document)[0],
-        e = d.documentElement,
-        g = d.getElementsByTagName('body')[0],
+    var w = evt.data.w,
+        d = evt.data.d,
+        e = evt.data.e,
+        g = evt.data.g,
        pw = angular.element(parent.window),
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
        ol = ifm.position().left,
@@ -150,7 +150,49 @@ export default class KMTrackIframeService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
+      src = window.location.href,
+     cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
+
+    if (Meteor.user() && LoggerConfigs.keyboardLogging && !cond) {
+      Utils.logToConsole('Key Pressed!   ' + 
+        ' timestamp:' + t + 
+        ' keyCode:' + kc + 
+        ' which:' + w + 
+        ' charCode:' + chc +
+        ' char:' + chr +
+        (evt.shiftKey ? ' +SHIFT' : '') +
+        (evt.ctrlKey ? ' +CTRL' : '') +
+        (evt.altKey ? ' +ALT' : '') +
+        (evt.metaKey ? ' +META' : '') +
+        ' src:' + src
+      );
+
+      var key_output = {
+        type: 'key_press',
+        keyCode: kc,
+        which: w,
+        charCode: chc,
+        chr: chr,
+        local_time: t,
+        src_url: src,
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address
+      };
+
+      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+    }
+  }
+
+  keycharListener(evt) {
+    evt = evt || event;
+      
+    var t = Utils.getTimestamp(),
+       kc = evt.keyCode,
+        w = evt.which,
+      chc = evt.charCode,
+      chr = String.fromCharCode(kc || chc),
       src = window.location.href;
+     //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
@@ -206,14 +248,17 @@ export default class KMTrackIframeService {
 
       var data = {
         iframeId: this._iframeId,
-        iframeOffsetX: pageContainer.position().left,
-        iframeOffsetY: pageContainer.position().top
-      }
-      console.log(this.frameId, iframe, innerDoc, data);
+        w: angular.element(window),
+        d: angular.element(document),
+        e: angular.element(document)[0].documentElement,
+        g: angular.element(document)[0].getElementsByTagName('body')[0]
+      };
+      //console.log(this.frameId, iframe, innerDoc, data);
 
       this.bindEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener);
       this.bindEventIframe(angular.element(innerDoc), 'click', data, this.mouseClickListener);
       this.bindEventIframe(angular.element(innerDoc), 'keydown', data, this.keystrokeListener);
+      this.bindEventIframe(angular.element(innerDoc), 'keypress', data, this.keycharListener);
     }
 
     this._isTracking = true;
@@ -233,6 +278,7 @@ export default class KMTrackIframeService {
       this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
       this.unbindEventIframe(angular.element(innerDoc), 'click', this.mouseClickListener);
       this.unbindEventIframe(angular.element(innerDoc), 'keydown', this.keystrokeListener);
+      this.unbindEventIframe(angular.element(innerDoc), 'keypress', this.keycharListener);
     }
 
     this._isTracking = false;
