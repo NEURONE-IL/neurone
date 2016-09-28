@@ -7,6 +7,7 @@ import { Keystrokes } from '../imports/api/keystrokes/index';
 import { MouseClicks } from '../imports/api/mouseClicks/index';
 import { MouseCoordinates } from '../imports/api/mouseCoordinates/index';
 import { SessionLogs } from '../imports/api/sessionLogs/index';
+import { Queries } from '../imports/api/queries/index';
 
 export default Meteor.methods({
   storeKeystroke: function(jsonObject) {
@@ -47,6 +48,14 @@ export default Meteor.methods({
     jsonObject.server_time = time;
     jsonObject.clientAddress = ipAddr;
     SessionLogs.insert(jsonObject);
-    console.log('Session Log Stored!', ipAddr, state, time);
+    //console.log('Session Log Stored!', ipAddr, state, time);
+  },
+  storeQuery: function(jsonObject) {
+    var time = ServerUtils.getTimestamp(),
+       query = jsonObject.query;
+
+    jsonObject.server_time = time;
+    Queries.insert(jsonObject);
+    console.log('Query Stored!', query, time);
   }
 });

@@ -4,6 +4,8 @@ import uiRouter from 'angular-ui-router';
 
 import template from './searchResults.html';
 
+import { QueryTrackService } from '../../logger/logger';
+
 class SearchResults {
   constructor($scope, $reactive, $state, $stateParams) {
     'ngInject';
@@ -35,6 +37,7 @@ class SearchResults {
 
   doSearch() {
     var queryText = this.searchText ? this.searchText.toString() : '';
+    QueryTrackService.saveQuery(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
 };

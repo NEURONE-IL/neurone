@@ -22,7 +22,7 @@ export default class LinkTrackService {
 
       Meteor.call('storeVisitedLink', linkObject, function(err, result) {});
 
-      Utils.logToConsole('Page Saved! ' + state);
+      Utils.logToConsole('Page Saved! ' + state + ' ' + current_url);
     }
   }
 }

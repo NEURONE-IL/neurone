@@ -4,6 +4,8 @@ import uiRouter from 'angular-ui-router';
 
 import template from './search.html';
 
+import { QueryTrackService } from '../logger/logger';
+
 import { name as SearchResults } from './actions/searchResults';
 import { name as DisplayPage } from './actions/displayPage';
 
@@ -20,6 +22,7 @@ class Search {
 
   doSearch() {
     var queryText = this.searchText ? this.searchText.toString() : '';
+    QueryTrackService.saveQuery(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
 }
