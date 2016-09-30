@@ -13,11 +13,11 @@
       </li>
       <!--<li><a href="/page/test">HTML Doc Test</a></li>-->
     </ul>
-    <div class="navbar-right btn-group" role="group" ng-hide="navigation.isLoggedIn">
+    <div class="navbar-right btn-group" role="group" ng-if="!navigation.isLoggedIn">
       <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
       <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>
     </div>
-    <div class="navbar-right btn-group" role="group" ng-show="navigation.isLoggedIn">
+    <div class="navbar-right btn-group" role="group" ng-if="navigation.isLoggedIn">
       <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">Save Snippet</button>
       <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
     </div>
