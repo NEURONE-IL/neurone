@@ -1,3 +1,5 @@
 node_modules/
-private/pages/*
+private/pages/
+
 public/*
+!public/i18n/

@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
+import angularTranslate from 'angular-translate';
+import angularTranslateLoader from 'angular-translate-loader-static-files';
 
 import template from './app.html';
 
@@ -23,6 +25,8 @@ const name = 'app';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
+  angularTranslate,
+  angularTranslateLoader,
   Home,
   Auth,
   Navigation,
@@ -41,18 +45,26 @@ export default angular.module(name, [
 .run(run)
 .run(setTrackers);
 
-function config($locationProvider, $urlRouterProvider) {
+function config($locationProvider, $urlRouterProvider, $translateProvider) {
   'ngInject';
  
+  // uiRouter settings
   $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise('/home');
+
+  // angularTranslate settings
+  $translateProvider.useStaticFilesLoader({
+      prefix: 'i18n/locale-',
+      suffix: '.json'
+    });
+  $translateProvider.useSanitizeValueStrategy('escape');
+  $translateProvider.preferredLanguage('en');
 };
 
 function run($rootScope, $state) {
   'ngInject';
 
-  $rootScope.$on('$stateChangeError',
-   (event, toState, toParams, fromState, fromParams, error) => {
+  $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
       if (error === 'AUTH_REQUIRED') {
         $state.go('login');
       }

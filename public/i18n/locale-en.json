@@ -1,0 +1,19 @@
+{
+  "app": {
+    "pageTitle": "Project Demo",
+    "navbarTitle": "Project Demo",
+    "search": "Search",
+    "documents": "Documents",
+    "loggedData": "Logged Data",
+    "visitedLinks": "Visited Links",
+    "snippets": "Snippets"  
+  },
+  "auth": {
+    "registerButton": "Register",
+    "loginButton": "Login",
+    "logoutButton": "Logout"
+  },
+  "search": {
+    "searchEngineTitle": "My Search Engine"
+  }
+}

@@ -1,25 +1,25 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="/">Project Demo</a>
+    <a class="navbar-brand" href="/">{{"app.navbarTitle" | translate}}</a>
     <ul class="nav navbar-nav">
-      <li><a href="/search">Search</a></li>
-      <li><a href="/documents">Documents</a></li>
+      <li><a href="/search">{{"app.search" | translate}}</a></li>
+      <li><a href="/documents">{{"app.documents" | translate}}</a></li>
       <li class="dropdown" ng-show="navigation.isLoggedIn">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logged Data <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"app.loggedData" | translate}} <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="/visitedLinks">Visited Links</a></li>
-          <li><a href="/snippets">Snippets</a></li>
+          <li><a href="/visitedLinks">{{"app.visitedLinks" | translate}}</a></li>
+          <li><a href="/snippets">{{"app.snippets" | translate}}</a></li>
         </ul>
       </li>
       <!--<li><a href="/page/test">HTML Doc Test</a></li>-->
     </ul>
     <div class="navbar-right btn-group" role="group" ng-hide="navigation.isLoggedIn">
-      <button type="button" class="btn btn-success navbar-btn" ui-sref="register">Register</button>
-      <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">Login</button>
+      <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
+      <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>
     </div>
     <div class="navbar-right btn-group" role="group" ng-show="navigation.isLoggedIn">
       <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">Save Snippet</button>
-      <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">Logout</button>
+      <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
     </div>
   </div>
 </nav>
