@@ -8,18 +8,22 @@ import template from './displayPage.html';
 import { KMTrackIframeService } from '../../logger/logger';
 
 class DisplayPage {
-  constructor($scope, $reactive, $state, $stateParams, KMTrackIframeService) {
+  constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService) {
     'ngInject';
 
     kmtis = KMTrackIframeService;
 
     this.$state = $state;
 
+    $rootScope.$broadcast('setRelevantPageButton', true);
+
+    // dgacitua: Execute on iframe end
     $scope.$on('$stateChangeStart', function (event) {
-      //console.log("IFRAME Out!");
       kmtis.antiService();
+      $rootScope.$broadcast('setRelevantPageButton', false);
     });
 
+    // dgacitua: Execute on iframe start
     $reactive(this).attach($scope);
 
     this.documentPage = '';

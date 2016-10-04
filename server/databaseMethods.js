@@ -8,6 +8,7 @@ import { MouseClicks } from '../imports/api/mouseClicks/index';
 import { MouseCoordinates } from '../imports/api/mouseCoordinates/index';
 import { SessionLogs } from '../imports/api/sessionLogs/index';
 import { Queries } from '../imports/api/queries/index';
+import { RelevantPages } from '../imports/api/relevantPages/index';
 
 export default Meteor.methods({
   storeKeystroke: function(jsonObject) {
@@ -57,5 +58,13 @@ export default Meteor.methods({
     jsonObject.server_time = time;
     Queries.insert(jsonObject);
     console.log('Query Stored!', query, time);
+  },
+  storeRelevantPage: function(jsonObject) {
+    var time = ServerUtils.getTimestamp();
+        page = jsonObject.url;
+
+    jsonObject.server_time = time;
+    RelevantPages.insert(jsonObject);
+    console.log('Relevant Page Stored!', page, time);
   }
 });

@@ -16,6 +16,7 @@ import { name as Search } from '../search/search';
 import { name as Showcase } from '../showcase/showcase';
 
 import { LinkTrackService, KMTrackService } from '../logger/logger';
+import LoggerConfigs from '../logger/loggerConfigs';
 
 class App {}
 
@@ -99,23 +100,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService) {
   });
 
   // http://stackoverflow.com/a/16204326
-  $rootScope.$on('$locationChangeSuccess', function () {
-    //console.log('$locationChangeSuccess changed!', new Date());
-  });
-
-  /*
   // http://stackoverflow.com/a/27984921
-  $rootScope.$on('$routeChangeStart', function (event, next, current) {
-    if (!current) {
-      // handle session start event
-      if (Meteor.user()) {
-        var state = 'RELOAD';
-        lts.saveVisitedLink(state);
-        kmts.service();
-      }
-    }
-  });
-  */
 };
 
 // From https://gist.github.com/mikaturunen/f0b45def06bc83ccea9e

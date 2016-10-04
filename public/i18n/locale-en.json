@@ -4,16 +4,33 @@
     "navbarTitle": "Project Demo",
     "search": "Search",
     "documents": "Documents",
-    "loggedData": "Logged Data",
+    "showcase": "Showcase",
     "visitedLinks": "Visited Links",
-    "snippets": "Snippets"  
+    "snippets": "Snippets",
+    "relevantPages": "Relevant Pages",
+    "i18n": "Internationalization"
   },
   "auth": {
     "registerButton": "Register",
     "loginButton": "Login",
     "logoutButton": "Logout"
   },
+  "actions": {
+    "snippetButton": "Save Snippet",
+    "relevantPageButton": "Mark as Relevant"
+  },
   "search": {
-    "searchEngineTitle": "My Search Engine"
+    "searchEngineTitle": "My Search Engine",
+    "searchButton": "Search"
+  },
+  "showcase": {
+    "documentList": "Document List",
+    "visitedLinksList": "Visited Links List",
+    "snippetsList": "Snippets List",
+    "relevantPagesList": "Relevant Pages List"
+  },
+  "alerts": {
+    "snippetAlert": "Your snippet has been saved",
+    "relevantPageAlert": "Current page has been marked"
   }
 }

@@ -5,21 +5,23 @@
       <li><a href="/search">{{"app.search" | translate}}</a></li>
       <li><a href="/documents">{{"app.documents" | translate}}</a></li>
       <li class="dropdown" ng-show="navigation.isLoggedIn">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"app.loggedData" | translate}} <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"app.showcase" | translate}} <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="/visitedLinks">{{"app.visitedLinks" | translate}}</a></li>
           <li><a href="/snippets">{{"app.snippets" | translate}}</a></li>
+          <li><a href="/relevantPages">{{"app.relevantPages" | translate}}</a></li>
+          <li><a href="/internationalization">{{"app.i18n" | translate}}</a></li>
         </ul>
       </li>
-      <!--<li><a href="/page/test">HTML Doc Test</a></li>-->
     </ul>
+    <div class="navbar-right btn-group" role="group" ng-if="navigation.isLoggedIn">
+      <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">{{"actions.snippetButton" | translate}}</button>
+      <button type="button" class="btn btn-warning navbar-btn" ng-click="navigation.saveRelevantPage()">{{"actions.relevantPageButton" | translate}}</button>
+      <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
+    </div>
     <div class="navbar-right btn-group" role="group" ng-if="!navigation.isLoggedIn">
       <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
       <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>
-    </div>
-    <div class="navbar-right btn-group" role="group" ng-if="navigation.isLoggedIn">
-      <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">Save Snippet</button>
-      <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
     </div>
   </div>
 </nav>

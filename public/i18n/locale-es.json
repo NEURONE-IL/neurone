@@ -1,0 +1,36 @@
+{
+  "app": {
+    "pageTitle": "Demo Proyecto",
+    "navbarTitle": "Demo Proyecto",
+    "search": "Búsqueda",
+    "documents": "Documentos",
+    "showcase": "Muestra Funcional",
+    "visitedLinks": "Enlaces Visitados",
+    "snippets": "Recortes",
+    "relevantPages": "Páginas Relevantes",
+    "i18n": "Internacionalización"
+  },
+  "auth": {
+    "registerButton": "Registrarse",
+    "loginButton": "Iniciar Sesión",
+    "logoutButton": "Cerrar Sesión"
+  },
+  "actions": {
+    "snippetButton": "Guardar Recorte",
+    "relevantPageButton": "Marcar como Relevante"
+  },
+  "search": {
+    "searchEngineTitle": "Mi Motor de Búsqueda",
+    "searchButton": "Buscar"
+  },
+  "showcase": {
+    "documentList": "Lista de Documentos",
+    "visitedLinksList": "Lista de Enlaces Visitados",
+    "snippetsList": "Lista de Recortes",
+    "relevantPagesList": "Lista de Páginas Relevantes"
+  },
+  "alerts": {
+    "snippetAlert": "Tu recorte se ha guardado",
+    "relevantPageAlert": "La página actual ha sido marcada"
+  }
+}

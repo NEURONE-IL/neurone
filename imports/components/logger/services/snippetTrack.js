@@ -7,7 +7,7 @@ export default class SnippetTrackService {
   constructor() {}
 
   saveSnippet() {
-    var iframeElement = document.getElementById(LoggerConfigs),
+    var iframeElement = document.getElementById(LoggerConfigs.iframeId),
          iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement : null,
               snippet = iframeWindow ? iframeWindow.getSelection().toString() || window.getSelection().toString() : window.getSelection().toString();
     

@@ -4,3 +4,4 @@ export QueryTrackService from './services/queryTrack';
 export LinkTrackService from './services/linkTrack';
 export SessionTrackService from './services/sessionTrack';
 export SnippetTrackService from './services/snippetTrack';
+export RelevantPageTrackService from './services/relevantPageTrack';

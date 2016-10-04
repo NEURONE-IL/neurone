@@ -7,16 +7,24 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import { SessionTrackService, SnippetTrackService } from '../../logger/logger';
+import { SessionTrackService, SnippetTrackService, RelevantPageTrackService } from '../../logger/logger';
 
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $reactive, $state, SnippetTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, RelevantPageTrackService, SnippetTrackService) {
     'ngInject';
+
+    console.log('RelevantPage3', $rootScope.isOnPage);
 
     this.$state = $state;
     this.sts = SnippetTrackService;
+    this.rps = RelevantPageTrackService;
+
+    $rootScope.$on('setRelevantPageButton', function(event, data) {
+      $rootScope.isOnPage = data;
+      console.log('isOnPage', data, $rootScope.isOnPage);
+    });
 
     $reactive(this).attach($scope);
 
@@ -26,12 +34,20 @@ class Navigation {
       },
       currentUser() {
         return Meteor.user();
+      },
+      isVisitingDocument() {
+        console.log('isOnPage', $rootScope.isOnPage);
+        return !!$rootScope.isOnPage;
       }
     });
   }
 
   saveSnippet() {
     this.sts.saveSnippet();
+  }
+
+  saveRelevantPage() {
+    this.rps.saveRelevantPage();
   }
 
   logout() {
@@ -53,4 +69,5 @@ export default angular.module(name, [
   controllerAs: name,
   controller: Navigation
 })
-.service('SnippetTrackService', SnippetTrackService);
+.service('SnippetTrackService', SnippetTrackService)
+.service('RelevantPageTrackService', RelevantPageTrackService);

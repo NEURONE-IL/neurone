@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Queries } from './collection';
+import { RelevantPages } from './collection';
 
 if (Meteor.isServer) {
-  Meteor.publish('queries', function() {
+  Meteor.publish('relevantPages', function() {
     const selector = { $and: [
       { owner: this.userId }, { owner: { $exists: true } }
     ]};
     
-    return Queries.find(selector);
+    return RelevantPages.find(selector);
   });
 }
