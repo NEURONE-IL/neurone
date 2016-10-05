@@ -1,4 +1,4 @@
-# Prototype #2
+# NEURONE: oNlinE inqUiry expeRimentatiON systEm
 
 Created by Daniel Gacitua
 
