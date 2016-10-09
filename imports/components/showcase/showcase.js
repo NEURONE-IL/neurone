@@ -7,7 +7,7 @@ import template from './showcase.html';
 import { name as DocumentsList } from './documents/documentsList';
 import { name as SnippetsList } from './snippets/snippetsList';
 import { name as VisitedLinksList } from './visitedLinks/visitedLinksList';
-import { name as RelevantPagesList } from './relevantPages/relevantPagesList';
+import { name as BookmarksList } from './bookmarks/bookmarksList';
 import { name as Internationalization } from './i18n/i18n';
 
 class Showcase {}
@@ -21,7 +21,7 @@ export default angular.module(name, [
   DocumentsList,
   SnippetsList,
   VisitedLinksList,
-  RelevantPagesList,
+  BookmarksList,
   Internationalization
 ])
 .component(name, {

@@ -7,7 +7,7 @@
     "showcase": "Muestra Funcional",
     "visitedLinks": "Enlaces Visitados",
     "snippets": "Recortes",
-    "relevantPages": "Páginas Relevantes",
+    "bookmarks": "Marcadores",
     "i18n": "Internacionalización"
   },
   "auth": {
@@ -17,20 +17,22 @@
   },
   "actions": {
     "snippetButton": "Guardar Recorte",
-    "relevantPageButton": "Marcar como Relevante"
+    "bookmarkButton": "Marcar",
+    "unbookmarkButton": "Desmarcar"
   },
   "search": {
-    "searchEngineTitle": "Mi Motor de Búsqueda",
+    "searchEngineTitle": "Mi Buscador",
     "searchButton": "Buscar"
   },
   "showcase": {
     "documentList": "Lista de Documentos",
     "visitedLinksList": "Lista de Enlaces Visitados",
     "snippetsList": "Lista de Recortes",
-    "relevantPagesList": "Lista de Páginas Relevantes"
+    "bookmarksList": "Lista de Marcadores"
   },
   "alerts": {
-    "snippetAlert": "Tu recorte se ha guardado",
-    "relevantPageAlert": "La página actual ha sido marcada"
+    "error": "Error no definido",
+    "snippetSaved": "Tu recorte se ha guardado",
+    "bookmarkSaved": "La página actual ha sido marcada"
   }
 }

@@ -7,19 +7,19 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import { SessionTrackService, SnippetTrackService, RelevantPageTrackService } from '../../logger/logger';
+import { SessionTrackService, SnippetTrackService, BookmarkTrackService } from '../../logger/logger';
 
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, RelevantPageTrackService, SnippetTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService) {
     'ngInject';
 
     console.log('RelevantPage3', $rootScope.isOnPage);
 
     this.$state = $state;
     this.sts = SnippetTrackService;
-    this.rps = RelevantPageTrackService;
+    this.bms = BookmarkTrackService;
 
     $rootScope.$on('setRelevantPageButton', function(event, data) {
       $rootScope.isOnPage = data;
@@ -46,8 +46,8 @@ class Navigation {
     this.sts.saveSnippet();
   }
 
-  saveRelevantPage() {
-    this.rps.saveRelevantPage();
+  saveBookmark() {
+    this.bms.saveBookmark();
   }
 
   logout() {
@@ -70,4 +70,4 @@ export default angular.module(name, [
   controller: Navigation
 })
 .service('SnippetTrackService', SnippetTrackService)
-.service('RelevantPageTrackService', RelevantPageTrackService);
+.service('BookmarkTrackService', BookmarkTrackService);

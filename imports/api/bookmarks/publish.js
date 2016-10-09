@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { RelevantPages } from './collection';
+import { Bookmarks } from './collection';
 
 if (Meteor.isServer) {
-  Meteor.publish('relevantPages', function() {
+  Meteor.publish('bookmarks', function() {
     const selector = { $and: [
       { owner: this.userId }, { owner: { $exists: true } }
     ]};
     
-    return RelevantPages.find(selector);
+    return Bookmarks.find(selector);
   });
 }

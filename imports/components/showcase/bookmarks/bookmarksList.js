@@ -1,27 +1,27 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import template from './relevantPagesList.html';
+import template from './bookmarksList.html';
 
-import { RelevantPages } from '../../../api/relevantPages/index';
+import { Bookmarks } from '../../../api/bookmarks/index';
 
-class RelevantPagesList {
+class BookmarksList {
   constructor($scope, $reactive) {
     'ngInject';
     
     $reactive(this).attach($scope);
 
-    this.subscribe('relevantPages');
+    this.subscribe('bookmarks');
 
     this.helpers({
       links() {
-        return RelevantPages.find({});
+        return Bookmarks.find({});
       }
     });
   }
 };
 
-const name = 'relevantPagesList';
+const name = 'bookmarksList';
 
 // create a module
 export default angular.module(name, [
@@ -30,7 +30,7 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: RelevantPagesList
+  controller: BookmarksList
 })
 .config(config);
 
@@ -38,9 +38,9 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('relevantPages', {
-      url: '/relevantPages',
-      template: '<relevant-pages-list></relevant-pages-list>',
+    .state('bookmarks', {
+      url: '/bookmarks',
+      template: '<bookmarks-list></bookmarks-list>',
       resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

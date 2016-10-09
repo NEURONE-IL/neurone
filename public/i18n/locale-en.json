@@ -7,7 +7,7 @@
     "showcase": "Showcase",
     "visitedLinks": "Visited Links",
     "snippets": "Snippets",
-    "relevantPages": "Relevant Pages",
+    "bookmarks": "Bookmarks",
     "i18n": "Internationalization"
   },
   "auth": {
@@ -17,7 +17,8 @@
   },
   "actions": {
     "snippetButton": "Save Snippet",
-    "relevantPageButton": "Mark as Relevant"
+    "bookmarkButton": "Bookmark",
+    "unbookmarkButton": "Unbookmark"
   },
   "search": {
     "searchEngineTitle": "My Search Engine",
@@ -25,12 +26,13 @@
   },
   "showcase": {
     "documentList": "Document List",
-    "visitedLinksList": "Visited Links List",
-    "snippetsList": "Snippets List",
-    "relevantPagesList": "Relevant Pages List"
+    "visitedLinksList": "Visited Link List",
+    "snippetsList": "Snippet List",
+    "bookmarksList": "Bookmark List"
   },
   "alerts": {
-    "snippetAlert": "Your snippet has been saved",
-    "relevantPageAlert": "Current page has been marked"
+    "error": "Undefined Error",
+    "snippetSaved": "Your snippet has been saved",
+    "bookmarkSaved": "Current page has been bookmarked"
   }
 }
