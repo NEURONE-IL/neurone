@@ -3,5 +3,6 @@ export default LoggerConfigs = {
   keyboardLogging: true,
   mouseCoordsLogging: true,
   mouseClicksLogging: true,
-  iframeId: 'pageContainer'
+  iframeId: 'pageContainer',
+  eventThrottle: 100		// Mousemove and scroll throttling in miliseconds, set to 0 for no throttling
 }

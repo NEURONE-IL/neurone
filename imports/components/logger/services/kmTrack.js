@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
+import '../lib/limit.js';
+
 import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
@@ -29,16 +31,32 @@ export default class KMTrackService {
 
     this.iframeSelected = false;
     this.isTracking = false;
+
+    this.mouseScroll = {
+      winX: 0,
+      winY: 0,
+      docX: 0,
+      docY: 0,
+      lastScrolledWinX: 0,
+      lastScrolledWinY: 0,
+      lastScrolledDocX: 0,
+      lastScrolledDocY: 0
+    }
   }
 
   bindEvent(evt, data, fn) {
     angular.element(this.$window).on(evt, data, fn);
-    console.log('BIND!', evt);
+    Utils.logToConsole('BIND!', evt);
+  }
+
+  bindThrottledEvent(evt, data, fn, delay) {
+    angular.element(this.$window).on(evt, data, fn.throttle(delay));
+    Utils.logToConsole('BIND THROTTLED!', evt, delay);
   }
 
   unbindEvent(evt, fn) {
     angular.element(this.$window).off(evt, fn);
-    console.log('UNBIND!', evt);
+    Utils.logToConsole('UNBIND!', evt);
   }
 
   mouseMoveListener(evt) {
@@ -47,8 +65,6 @@ export default class KMTrackService {
         d = evt.data.d,
         e = evt.data.e,
         g = evt.data.g,
-        x = evt.pageX,
-        y = evt.pageY,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
       src = window.location.href,   //this.$location.absUrl(),
@@ -65,27 +81,15 @@ export default class KMTrackService {
       src = window.location.href,   //this.$location.absUrl(),
      time = Utils.getTimestamp();
     */
-
-    if (x == null && evt.clientX != null) {
-      x = evt.clientX + (e && e.scrollLeft || g && g.scrollLeft || 0)
-      - (e && e.clientLeft || g && g.clientLeft || 0);
-    }
-
-    if (y == null && evt.clientY != null) {
-      y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
-      - (e && e.clientTop  || g && g.clientTop  || 0);
-    }
-
-    var docX = x,
-        docY = y,
-        winX = docX - d.scrollLeft(),
-        winY = docY - d.scrollTop(),
+    
+    var docX = evt.pageX,
+        docY = evt.pageY,
+        winX = evt.clientX,
+        winY = evt.clientY,
         docW = d.width(),
         docH = d.height(),
         winW = w,
         winH = h;
-
-    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
     if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
       Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
@@ -135,26 +139,14 @@ export default class KMTrackService {
      time = Utils.getTimestamp();
     */
 
-    if (x == null && evt.clientX != null) {
-      x = evt.clientX + (e && e.scrollLeft || g && g.scrollLeft || 0)
-      - (e && e.clientLeft || g && g.clientLeft || 0);
-    }
-
-    if (y == null && evt.clientY != null) {
-      y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
-      - (e && e.clientTop  || g && g.clientTop  || 0);
-    }
-
-    var docX = x,
-        docY = y,
-        winX = docX - d.scrollLeft(),
-        winY = docY - d.scrollTop(),
+    var docX = evt.pageX,
+        docY = evt.pageY,
+        winX = evt.clientX,
+        winY = evt.clientY,
         docW = d.width(),
         docH = d.height(),
         winW = w,
         winH = h;
-
-    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
     if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
       Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
@@ -176,6 +168,45 @@ export default class KMTrackService {
       };
 
       Meteor.call('storeMouseClick', click_output, function(err, result) {});
+    }
+  }
+
+  scrollListener(evt) {
+    // From http://stackoverflow.com/a/23323821
+    var w = evt.data.w,
+        d = evt.data.d,
+        e = evt.data.e,
+        g = evt.data.g,
+        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+        h = window.innerHeight || e.clientHeight || g.clientHeight,
+      src = window.location.href,
+     time = Utils.getTimestamp();
+    
+    var scrollX = window.scrollX,
+        scrollY = window.scrollY,
+        docW = d.width(),
+        docH = d.height(),
+        winW = w,
+        winH = h;
+
+    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+
+      var movement_output = {
+        type: 'scroll',
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        src_url: src,
+        x_scr: scrollX,
+        y_scr: scrollY,
+        w_win: winW,
+        h_win: winH,
+        w_doc: docW,
+        h_doc: docH,
+        local_time: time
+      };
+
+      //Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
     }
   }
 
@@ -259,7 +290,7 @@ export default class KMTrackService {
 
       Meteor.call('storeKeystroke', key_output, function(err, result) {});
     }
-  }a
+  }
 
   startTrack() {
     var data = {
@@ -269,7 +300,8 @@ export default class KMTrackService {
       g: angular.element(document)[0].getElementsByTagName('body')[0]
     };
 
-    this.bindEvent('mousemove', data, this.mouseMoveListener);
+    this.bindThrottledEvent('mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
+    this.bindThrottledEvent('scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
     this.bindEvent('click', data, this.mouseClickListener);
     this.bindEvent('keydown', data, this.keystrokeListener);
     this.bindEvent('keypress', data, this.keycharListener);
@@ -279,6 +311,7 @@ export default class KMTrackService {
 
   stopTrack() {
     this.unbindEvent('mousemove', this.mouseMoveListener);
+    this.unbindEvent('scroll', this.scrollListener);
     this.unbindEvent('click', this.mouseClickListener);
     this.unbindEvent('keydown', this.keystrokeListener);
     this.unbindEvent('keypress', this.keycharListener);
