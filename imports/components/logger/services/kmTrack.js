@@ -204,7 +204,7 @@ export default class KMTrackService {
 
 
       Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      //Meteor.call('storeMouseCoordinate', movement_output, (err, result) => {});
+      Meteor.call('storeScrollMove', movement_output, (err, result) => {});
     }
   }
 

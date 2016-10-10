@@ -6,6 +6,7 @@ import { VisitedLinks } from '../imports/api/visitedLinks/index';
 import { Keystrokes } from '../imports/api/keystrokes/index';
 import { MouseClicks } from '../imports/api/mouseClicks/index';
 import { MouseCoordinates } from '../imports/api/mouseCoordinates/index';
+import { ScrollMoves } from '../imports/api/scrollMoves/index';
 import { SessionLogs } from '../imports/api/sessionLogs/index';
 import { Queries } from '../imports/api/queries/index';
 import { Bookmarks } from '../imports/api/bookmarks/index';
@@ -28,6 +29,12 @@ export default Meteor.methods({
     jsonObject.server_time = time;
     MouseCoordinates.insert(jsonObject);
     //console.log('Mouse Coordinate Stored!', time);
+  },
+  storeScrollMove: function(jsonObject) {
+    var time = ServerUtils.getTimestamp();
+    jsonObject.server_time = time;
+    ScrollMoves.insert(jsonObject);
+    //console.log('Scroll Move Stored!', time);
   },
   storeVisitedLink: function(jsonObject) {
     var time = ServerUtils.getTimestamp();
@@ -57,7 +64,7 @@ export default Meteor.methods({
 
     jsonObject.server_time = time;
     Queries.insert(jsonObject);
-    console.log('Query Stored!', query, time);
+    //console.log('Query Stored!', query, time);
   },
   storeBookmark: function(jsonObject) {
     var time = ServerUtils.getTimestamp();
@@ -65,6 +72,6 @@ export default Meteor.methods({
 
     jsonObject.server_time = time;
     Bookmarks.insert(jsonObject);
-    console.log('Bookmark Stored!', page, time);
+    //console.log('Bookmark Stored!', page, time);
   }
 });
