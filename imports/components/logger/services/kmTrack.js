@@ -60,39 +60,37 @@ export default class KMTrackService {
   }
 
   mouseMoveListener(evt) {
-    // From http://stackoverflow.com/a/23323821
-    var w = evt.data.w,
-        d = evt.data.d,
-        e = evt.data.e,
-        g = evt.data.g,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,   //this.$location.absUrl(),
-     time = Utils.getTimestamp();
-    /*
-    var w = angular.element(window),
-        d = angular.element(document),
-        e = d[0].documentElement,
-        g = d[0].getElementsByTagName('body')[0],
-        x = evt.pageX,
-        y = evt.pageY,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,   //this.$location.absUrl(),
-     time = Utils.getTimestamp();
-    */
-    
-    var docX = evt.pageX,
-        docY = evt.pageY,
-        winX = evt.clientX,
-        winY = evt.clientY,
-        docW = d.width(),
-        docH = d.height(),
-        winW = w,
-        winH = h;
-
     if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
-      Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      // From http://stackoverflow.com/a/23323821
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,   //this.$location.absUrl(),
+       time = Utils.getTimestamp();
+      /*
+      var w = angular.element(window),
+          d = angular.element(document),
+          e = d[0].documentElement,
+          g = d[0].getElementsByTagName('body')[0],
+          x = evt.pageX,
+          y = evt.pageY,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,   //this.$location.absUrl(),
+       time = Utils.getTimestamp();
+      */
+      
+      var docX = evt.pageX,
+          docY = evt.pageY,
+          winX = evt.clientX,
+          winY = evt.clientY,
+          docW = d.width(),
+          docH = d.height(),
+          winW = w,
+          winH = h;
 
       var movement_output = {
         type: 'mouse_movement',
@@ -110,47 +108,46 @@ export default class KMTrackService {
         local_time: time
       };
 
-      Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
+      Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Meteor.call('storeMouseCoordinate', movement_output, (err, result) => {});
     }
   }
 
   mouseClickListener(evt) {
-    // From http://stackoverflow.com/a/11744120/1319998
-    var w = evt.data.w,
-        d = evt.data.d,
-        e = evt.data.e,
-        g = evt.data.g,
-        x = evt.pageX,
-        y = evt.pageY,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,
-     time = Utils.getTimestamp();
-    /*
-    var w = angular.element(window),
-        d = angular.element(document),
-        e = d[0].documentElement,
-        g = d[0].getElementsByTagName('body')[0],
-        x = evt.pageX,
-        y = evt.pageY,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,   //this.$location.absUrl(),
-     time = Utils.getTimestamp();
-    */
-
-    var docX = evt.pageX,
-        docY = evt.pageY,
-        winX = evt.clientX,
-        winY = evt.clientY,
-        docW = d.width(),
-        docH = d.height(),
-        winW = w,
-        winH = h;
-
     if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
-      Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      // From http://stackoverflow.com/a/11744120/1319998
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+          x = evt.pageX,
+          y = evt.pageY,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,
+       time = Utils.getTimestamp();
+      /*
+      var w = angular.element(window),
+          d = angular.element(document),
+          e = d[0].documentElement,
+          g = d[0].getElementsByTagName('body')[0],
+          x = evt.pageX,
+          y = evt.pageY,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,   //this.$location.absUrl(),
+       time = Utils.getTimestamp();
+      */
 
+      var docX = evt.pageX,
+          docY = evt.pageY,
+          winX = evt.clientX,
+          winY = evt.clientY,
+          docW = d.width(),
+          docH = d.height(),
+          winW = w,
+          winH = h;
+      
       var click_output = {
         type: 'mouse_click',
         owner: Meteor.userId(),
@@ -167,30 +164,29 @@ export default class KMTrackService {
         local_time: time
       };
 
-      Meteor.call('storeMouseClick', click_output, function(err, result) {});
+      Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Meteor.call('storeMouseClick', click_output, (err, result) => {});
     }
   }
 
   scrollListener(evt) {
-    // From http://stackoverflow.com/a/23323821
-    var w = evt.data.w,
-        d = evt.data.d,
-        e = evt.data.e,
-        g = evt.data.g,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,
-     time = Utils.getTimestamp();
-    
-    var scrollX = window.scrollX,
-        scrollY = window.scrollY,
-        docW = d.width(),
-        docH = d.height(),
-        winW = w,
-        winH = h;
-
     if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
-      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      // From http://stackoverflow.com/a/23323821
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,
+       time = Utils.getTimestamp();
+      
+      var scrollX = window.scrollX,
+          scrollY = window.scrollY,
+          docW = d.width(),
+          docH = d.height(),
+          winW = w,
+          winH = h;
 
       var movement_output = {
         type: 'scroll',
@@ -206,7 +202,9 @@ export default class KMTrackService {
         local_time: time
       };
 
-      //Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
+
+      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      //Meteor.call('storeMouseCoordinate', movement_output, (err, result) => {});
     }
   }
 
@@ -218,11 +216,11 @@ export default class KMTrackService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href,
-     cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
+      src = window.location.href;
+    //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging && cond) {
-      Utils.logToConsole('Key Pressed!   ' + 
+    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
+      Utils.logToConsole('Keydown!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -236,7 +234,7 @@ export default class KMTrackService {
       );
 
       var key_output = {
-        type: 'key_press',
+        type: 'key_down',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -247,7 +245,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', key_output, (err, result) => {});
     }
   }
 
@@ -263,7 +261,7 @@ export default class KMTrackService {
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Key Pressed!   ' + 
+      Utils.logToConsole('Keypress!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -288,7 +286,7 @@ export default class KMTrackService {
         username: Meteor.user().emails[0].address
       };
 
-      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', key_output, (err, result) => {});
     }
   }
 
