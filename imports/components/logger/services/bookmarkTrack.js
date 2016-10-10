@@ -3,8 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
-const name = 'bookmarkTrackService';
-
 export default class BookmarkTrackService {
   constructor($translate) {
     'ngInject';
