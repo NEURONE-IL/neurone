@@ -12,11 +12,12 @@ import { name as Logger } from '../../logger/logger';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService) {
+  constructor($scope, $rootScope, $q, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService) {
     'ngInject';
 
     console.log('RelevantPage3', $rootScope.isOnPage);
 
+    this.$q = $q;
     this.$state = $state;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
@@ -52,9 +53,10 @@ class Navigation {
   }
 
   logout() {
-    this.ses.saveLogout();
-    Accounts.logout();
-    this.$state.go('home');
+    var p1 = this.ses.saveLogout();
+    var p2 = Accounts.logout();
+
+    this.$q.all([p1, p2]).then(this.$state.go('home'));
   }
 }
 

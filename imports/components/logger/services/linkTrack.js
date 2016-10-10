@@ -1,28 +1,30 @@
 import { Meteor } from 'meteor/meteor';
 
 import Utils from '../loggerUtils';
+import LoggerConfigs from '../loggerConfigs';
 
 export default class LinkTrackService {
   constructor() {}
 
-  saveVisitedLink(state) {
-    var current_url = window.location.href;
-    var current_title = document.title;
+  saveVisitedLink(linkState) {
+    if (Meteor.user()) {
+      var linkObject = {
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        state: linkState,
+        title: document.title,
+        url: window.location.href,
+        local_time: Utils.getTimestamp()
+      };
 
-    var linkObject = {
-      title: current_title,
-      url: current_url,
-      local_time: Utils.getTimestamp()
-    };
-
-    if (Meteor.user() && linkObject != null) {
-      linkObject.owner = Meteor.userId();
-      linkObject.username = Meteor.user().emails[0].address;
-      linkObject.state = state;
-
-      Meteor.call('storeVisitedLink', linkObject, function(err, result) {});
-
-      Utils.logToConsole('Page Saved! ' + state + ' ' + current_url);
+      Meteor.call('storeVisitedLink', linkObject, (err, result) => {
+        if (!err) {
+          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.url, linkObject.local_time);
+        }
+        else {
+          Utils.logToConsole('Unknown Error');
+        }
+      });
     }
   }
 }

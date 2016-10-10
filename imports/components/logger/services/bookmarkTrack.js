@@ -29,12 +29,12 @@ export default class BookmarkTrackService {
       Meteor.call('storeBookmark', bookmarkObject, (err, result) => {
         if (!err) {
           var msg = this.$translate.instant('alerts.bookmarkSaved');
-          Utils.logToConsole(msg);
+          Utils.logToConsole('Bookmark Saved!', bookmarkObject.title, bookmarkObject.url, bookmarkObject.local_time);
           return msg;
         }
         else {
           var msg = this.$translate.instant('alerts.error');
-          Utils.logToConsole(msg);
+          Utils.logToConsole('Unknown Error');
           return msg;
         }
       });

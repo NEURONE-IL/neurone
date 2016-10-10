@@ -1,8 +1,12 @@
+import LoggerConfigs from './loggerConfigs';
+
 export default class Utils {
   // dgacitua: Convenience logging function to Javascript Console
   // http://stackoverflow.com/a/4116634
   static logToConsole(...messages) {
-    for (let i=0; i<messages.length; i++) console.log(messages[i]);
+    if (LoggerConfigs.consoleLogging) {
+      console.log(...messages);
+    }
   }
 
   // dgacitua: Check if string is empty

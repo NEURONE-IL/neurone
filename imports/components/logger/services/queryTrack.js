@@ -7,23 +7,24 @@ export default class QueryTrackService {
   constructor() {}
 
   saveQuery(queryText) {
-    var current_url = window.location.href;
-    var current_title = document.title;
-
-    var queryObject = {
-      title: current_title,
-      url: current_url,
-      local_time: Utils.getTimestamp()
-    };
-
     if (Meteor.user() && !Utils.isEmpty(queryText)) {
-      queryObject.owner = Meteor.userId();
-      queryObject.username = Meteor.user().emails[0].address;
-      queryObject.query = queryText;
+      var queryObject = {
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        query: queryText,
+        title: document.title,
+        url: window.location.href,
+        local_time: Utils.getTimestamp()
+      };
 
-      Meteor.call('storeQuery', queryObject, function(err, result) {});
-
-      Utils.logToConsole('Query Saved! ' + queryText);
+      Meteor.call('storeQuery', queryObject, (err, result) => {
+        if (!err) {
+          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.local_time);
+        }
+        else {
+          Utils.logToConsole('Unknown Error');
+        }
+      });
     }
   }
 }
