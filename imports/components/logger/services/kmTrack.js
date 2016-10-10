@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../../../lib/utils';
+import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 /**

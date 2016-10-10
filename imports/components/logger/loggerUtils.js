@@ -1,9 +1,8 @@
-import './configs.js';
-
 export default class Utils {
   // dgacitua: Convenience logging function to Javascript Console
-  static logToConsole(message) {
-    console.log(message);
+  // http://stackoverflow.com/a/4116634
+  static logToConsole(...messages) {
+    for (let i=0; i<messages.length; i++) console.log(messages[i]);
   }
 
   // dgacitua: Check if string is empty

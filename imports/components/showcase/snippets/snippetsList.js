@@ -1,8 +1,6 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-//import Utils from '../../lib/utils.js';
-
 import template from './snippetsList.html';
 
 import { Snippets } from '../../../api/snippets/index';

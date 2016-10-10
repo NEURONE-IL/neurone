@@ -1,6 +1,6 @@
 //import KMTrackService from './kmTrack'
 
-import Utils from '../../../lib/utils';
+import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class KMTrackIframeService {

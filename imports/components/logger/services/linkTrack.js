@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../../../lib/utils';
+import Utils from '../loggerUtils';
 
 export default class LinkTrackService {
   constructor() {}
