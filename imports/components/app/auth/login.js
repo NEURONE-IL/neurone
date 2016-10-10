@@ -4,17 +4,18 @@ import uiRouter from 'angular-ui-router';
 
 import { Meteor } from 'meteor/meteor';
 
-import { SessionTrackService } from '../../logger/logger';
-
 import template from './login.html';
 
 import { name as Register } from './register';
 
+import { name as Logger } from '../../logger/logger';
+
 class Login {
-  constructor($scope, $reactive, $state) {
+  constructor($scope, $reactive, $state, SessionTrackService) {
     'ngInject';
 
     this.$state = $state;
+    this.sts = SessionTrackService;
 
     $reactive(this).attach($scope);
 
@@ -33,7 +34,7 @@ class Login {
           this.error = err;
         } else {
           //console.log(Meteor.user(), Meteor.user().emails[0].address);
-          SessionTrackService.saveLogin();
+          this.sts.saveLogin();
           this.$state.go('search');
         }
       })
@@ -46,7 +47,8 @@ const name = 'login';
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter
+  uiRouter,
+  Logger
 ])
 .component(name, {
   template,

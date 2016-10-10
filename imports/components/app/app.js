@@ -15,7 +15,7 @@ import { name as Navigation } from './views/navigation';
 import { name as Search } from '../search/search';
 import { name as Showcase } from '../showcase/showcase';
 
-import { LinkTrackService, KMTrackService } from '../logger/logger';
+import { name as Logger } from '../logger/logger';
 import LoggerConfigs from '../logger/loggerConfigs';
 
 class App {}
@@ -28,6 +28,7 @@ export default angular.module(name, [
   uiRouter,
   angularTranslate,
   angularTranslateLoader,
+  Logger,
   Home,
   Auth,
   Navigation,
@@ -39,8 +40,6 @@ export default angular.module(name, [
   controllerAs: name,
   controller: App
 })
-.service('KMTrackService', KMTrackService)
-.service('LinkTrackService', LinkTrackService)
 .directive('ngOnload', ngOnloadDirective)
 .config(config)
 .run(run)

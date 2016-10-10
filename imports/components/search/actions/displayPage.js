@@ -5,7 +5,7 @@ import uiRouter from 'angular-ui-router';
 
 import template from './displayPage.html';
 
-import { KMTrackIframeService } from '../../logger/logger';
+import { name as Logger } from '../../logger/logger';
 
 class DisplayPage {
   constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService) {
@@ -53,19 +53,18 @@ class DisplayPage {
 
 const name = 'displayPage';
 
-// create a module
 export default angular.module(name, [
   angularMeteor,
   angularSanitize,
-  uiRouter
+  uiRouter,
+  Logger
 ])
 .component(name, {
   template,
   controllerAs: name,
   controller: DisplayPage
 })
-.config(config)
-.service('KMTrackIframeService', KMTrackIframeService);
+.config(config);
 
 function config($stateProvider) {
   'ngInject';

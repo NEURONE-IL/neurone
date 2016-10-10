@@ -4,13 +4,14 @@ import uiRouter from 'angular-ui-router';
 
 import template from './searchResults.html';
 
-import { QueryTrackService } from '../../logger/logger';
+import { name as Logger } from '../../logger/logger';
 
 class SearchResults {
-  constructor($scope, $reactive, $state, $stateParams) {
+  constructor($scope, $reactive, $state, $stateParams, QueryTrackService) {
     'ngInject';
 
     this.$state = $state;
+    this.qts = QueryTrackService;
 
     $reactive(this).attach($scope);
 
@@ -27,7 +28,6 @@ class SearchResults {
     this.call('searchDocuments', qt, function(error, result) {
       if (!error) {
         this.documents = result;
-        //console.log('result', this.documents);
       }
       else {
         console.log(error);
@@ -37,17 +37,17 @@ class SearchResults {
 
   doSearch() {
     var queryText = this.searchText ? this.searchText.toString() : '';
-    QueryTrackService.saveQuery(queryText);
+    this.qts.saveQuery(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
 };
 
 const name = 'searchResults';
 
-// create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter
+  uiRouter,
+  Logger
 ])
 .component(name, {
   template,

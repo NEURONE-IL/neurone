@@ -6,7 +6,7 @@ import LoggerConfigs from '../loggerConfigs';
 export default class QueryTrackService {
   constructor() {}
 
-  static saveQuery(queryText) {
+  saveQuery(queryText) {
     var current_url = window.location.href;
     var current_title = document.title;
 

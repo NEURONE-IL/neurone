@@ -5,7 +5,7 @@ import Utils from '../../../lib/utils';
 export default class SessionTrackService {
   constructor() {}
 
-  static saveSessionLog(currentState) {
+  saveSessionLog(currentState) {
     if (Meteor.user()) {
       var time = Utils.getTimestamp(),
        logType = currentState,
@@ -25,11 +25,11 @@ export default class SessionTrackService {
     }
   }
 
-  static saveLogin() {
+  saveLogin() {
     this.saveSessionLog('LOGIN');
   }
 
-  static saveLogout() {
+  saveLogout() {
     this.saveSessionLog('LOGOUT');
   }
 }

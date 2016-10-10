@@ -7,12 +7,12 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import { SessionTrackService, SnippetTrackService, BookmarkTrackService } from '../../logger/logger';
+import { name as Logger } from '../../logger/logger';
 
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService) {
     'ngInject';
 
     console.log('RelevantPage3', $rootScope.isOnPage);
@@ -20,6 +20,7 @@ class Navigation {
     this.$state = $state;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
+    this.ses = SessionTrackService;
 
     $rootScope.$on('setRelevantPageButton', function(event, data) {
       $rootScope.isOnPage = data;
@@ -51,7 +52,7 @@ class Navigation {
   }
 
   logout() {
-    SessionTrackService.saveLogout();
+    this.ses.saveLogout();
     Accounts.logout();
     this.$state.go('home');
   }
@@ -60,6 +61,7 @@ class Navigation {
 // create a module
 export default angular.module(name, [
   angularMeteor,
+  Logger,
   Login,
   Register,
   Password
@@ -68,6 +70,4 @@ export default angular.module(name, [
   template,
   controllerAs: name,
   controller: Navigation
-})
-.service('SnippetTrackService', SnippetTrackService)
-.service('BookmarkTrackService', BookmarkTrackService);
+});

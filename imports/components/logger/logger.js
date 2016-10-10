@@ -1,7 +1,18 @@
-export KMTrackService from './services/kmTrack';
-export KMTrackIframeService from './services/kmTrackIframe';
-export QueryTrackService from './services/queryTrack';
-export LinkTrackService from './services/linkTrack';
-export SessionTrackService from './services/sessionTrack';
-export SnippetTrackService from './services/snippetTrack';
-export BookmarkTrackService from './services/bookmarkTrack';
+import KMTrackService from './services/kmTrack';
+import KMTrackIframeService from './services/kmTrackIframe';
+import QueryTrackService from './services/queryTrack';
+import LinkTrackService from './services/linkTrack';
+import SessionTrackService from './services/sessionTrack';
+import SnippetTrackService from './services/snippetTrack';
+import BookmarkTrackService from './services/bookmarkTrack';
+
+const name = 'logger';
+
+export default angular.module(name, [])
+.service('KMTrackService', KMTrackService)
+.service('KMTrackIframeService', KMTrackIframeService)
+.service('QueryTrackService', QueryTrackService)
+.service('LinkTrackService', LinkTrackService)
+.service('SessionTrackService', SessionTrackService)
+.service('SnippetTrackService', SnippetTrackService)
+.service('BookmarkTrackService', BookmarkTrackService);
