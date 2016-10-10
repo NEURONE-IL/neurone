@@ -15,20 +15,19 @@ class Navigation {
   constructor($scope, $rootScope, $q, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService) {
     'ngInject';
 
-    console.log('RelevantPage3', $rootScope.isOnPage);
-
     this.$q = $q;
     this.$state = $state;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
 
-    $rootScope.$on('setRelevantPageButton', function(event, data) {
-      $rootScope.isOnPage = data;
-      console.log('isOnPage', data, $rootScope.isOnPage);
-    });
-
     $reactive(this).attach($scope);
+
+    this.navbarMessage = 'TEST!';
+
+    $rootScope.$on('setRelevantPageButton', (event, data) => {
+      this.isOnPage = data;
+    });
 
     this.helpers({
       isLoggedIn() {
@@ -37,9 +36,8 @@ class Navigation {
       currentUser() {
         return Meteor.user();
       },
-      isVisitingDocument() {
-        console.log('isOnPage', $rootScope.isOnPage);
-        return !!$rootScope.isOnPage;
+      enablePageHelpers() {
+        return this.isOnPage;
       }
     });
   }

@@ -24,6 +24,11 @@ iframe {
   margin-top: 20px;
 }
 
+.horizontal-button-margin {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component
