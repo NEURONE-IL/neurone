@@ -202,7 +202,6 @@ export default class KMTrackService {
         local_time: time
       };
 
-
       Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', movement_output, (err, result) => {});
     }

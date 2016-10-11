@@ -1,4 +1,4 @@
-//import KMTrackService from './kmTrack'
+import '../lib/limit.js'
 
 import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
@@ -12,12 +12,14 @@ export default class KMTrackIframeService {
 
   bindEventIframe(elem, evt, data, fn) {
     elem.on(evt, data, fn);
-    //console.log('IFRAME Bind!', evt, elem);
+  }
+
+  bindThrottledEventIframe(elem, evt, data, fn, delay) {
+    elem.on(evt, data, fn.throttle(delay));
   }
 
   unbindEventIframe(elem, evt, fn) {
     elem.off(evt, fn);
-    //console.log('IFRAME Unbind!', evt, elem);
   }
 
   mouseMoveListener(evt) {
@@ -30,27 +32,15 @@ export default class KMTrackIframeService {
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
        ol = ifm.position().left,
        ot = ifm.position().top,
-        x = evt.pageX,
-        y = evt.pageY,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,   //this.$location.absUrl(),
+      src = window.location.href,
      time = Utils.getTimestamp();
 
-    if (x == null && evt.clientX != null) {
-      x = evt.clientX + (e && e.scrollLeft || g && g.scrollLeft || 0)
-      - (e && e.clientLeft || g && g.clientLeft || 0);
-    }
-
-    if (y == null && evt.clientY != null) {
-      y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
-      - (e && e.clientTop  || g && g.clientTop  || 0);
-    }
-
-    var docX = x + ol,
-        docY = y + ot,
-        winX = docX - ifm.contents().scrollLeft(),
-        winY = docY - ifm.contents().scrollTop(),
+    var docX = evt.pageX + ol,
+        docY = evt.pageY + ot,
+        winX = evt.clientX + ol,
+        winY = evt.clientY + ot,
         docW = ifm.contents().width() + ol,
         docH = ifm.contents().height() + ot,
         winW = w,
@@ -91,33 +81,19 @@ export default class KMTrackIframeService {
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
        ol = ifm.position().left,
        ot = ifm.position().top,
-        x = evt.pageX + ol,
-        y = evt.pageY + ot,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,   //this.$location.absUrl(),
+      src = window.location.href,
      time = Utils.getTimestamp();
 
-    if (x == null && evt.clientX != null) {
-      x = evt.clientX + (e && e.scrollLeft || g && g.scrollLeft || 0)
-      - (e && e.clientLeft || g && g.clientLeft || 0) + ol;
-    }
-
-    if (y == null && evt.clientY != null) {
-      y = evt.clientY + (e && e.scrollTop  || g && g.scrollTop  || 0)
-      - (e && e.clientTop  || g && g.clientTop  || 0) + ot;
-    }
-
-    var docX = x + ol,
-        docY = y + ot,
-        winX = docX - ifm.contents().scrollLeft(),
-        winY = docY - ifm.contents().scrollTop(),
+    var docX = evt.pageX + ol,
+        docY = evt.pageY + ot,
+        winX = evt.clientX + ol,
+        winY = evt.clientY + ot,
         docW = ifm.contents().width() + ol,
         docH = ifm.contents().height() + ot,
         winW = w,
         winH = h;
-
-    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
     if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
       Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
@@ -142,6 +118,48 @@ export default class KMTrackIframeService {
     }
   }
 
+  scrollListener(evt) {
+    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+      // From http://stackoverflow.com/a/23323821
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+         pw = angular.element(parent.window),
+        ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
+         ol = ifm.position().left,
+         ot = ifm.position().top,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+        src = window.location.href,
+       time = Utils.getTimestamp();
+      
+      var scrollX = ifm.contents().scrollLeft(),
+          scrollY = ifm.contents().scrollTop(),
+          docW = ifm.contents().width() + ol,
+          docH = ifm.contents().height() + ot,
+          winW = w,
+          winH = h;
+
+      var movement_output = {
+        type: 'scroll',
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        src_url: src,
+        x_scr: scrollX,
+        y_scr: scrollY,
+        w_win: winW,
+        h_win: winH,
+        w_doc: docW,
+        h_doc: docH,
+        local_time: time
+      };
+
+      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Meteor.call('storeScrollMove', movement_output, (err, result) => {});
+    }
+  }
+
   keystrokeListener(evt) {
     evt = evt || event;
       
@@ -150,10 +168,9 @@ export default class KMTrackIframeService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href,
-     cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
+      src = window.location.href;
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging && !cond) {
+    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
@@ -168,7 +185,7 @@ export default class KMTrackIframeService {
       );
 
       var key_output = {
-        type: 'key_press',
+        type: 'key_down',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -192,7 +209,6 @@ export default class KMTrackIframeService {
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
       src = window.location.href;
-     //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
@@ -255,7 +271,8 @@ export default class KMTrackIframeService {
       };
       //console.log(this.frameId, iframe, innerDoc, data);
 
-      this.bindEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener);
+      this.bindThrottledEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
+      this.bindThrottledEventIframe(angular.element(innerDoc), 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
       this.bindEventIframe(angular.element(innerDoc), 'click', data, this.mouseClickListener);
       this.bindEventIframe(angular.element(innerDoc), 'keydown', data, this.keystrokeListener);
       this.bindEventIframe(angular.element(innerDoc), 'keypress', data, this.keycharListener);
@@ -276,6 +293,7 @@ export default class KMTrackIframeService {
       //console.log(this.frameId, iframe, innerDoc);
 
       this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
+      this.unbindEventIframe(angular.element(innerDoc), 'scroll', this.mouseMoveListener);
       this.unbindEventIframe(angular.element(innerDoc), 'click', this.mouseClickListener);
       this.unbindEventIframe(angular.element(innerDoc), 'keydown', this.keystrokeListener);
       this.unbindEventIframe(angular.element(innerDoc), 'keypress', this.keycharListener);
