@@ -32,7 +32,8 @@
   },
   "alerts": {
     "error": "Undefined Error",
-    "snippetSaved": "Your snippet has been saved",
-    "bookmarkSaved": "Current page has been bookmarked"
+    "snippetSaved": "Snippet saved!",
+    "bookmarkSaved": "Bookmark saved!",
+    "bookmarkRemoved": "Bookmark removed!"
   }
 }

@@ -11,19 +11,16 @@ class DisplayPage {
   constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService) {
     'ngInject';
 
-    kmtis = KMTrackIframeService;
-
     this.$state = $state;
-
-    $rootScope.$broadcast('setRelevantPageButton', true);
+    this.$rootScope = $rootScope;
+    this.kmtis = KMTrackIframeService;
 
     // dgacitua: Execute on iframe end
-    $scope.$on('$stateChangeStart', function (event) {
-      kmtis.antiService();
-      $rootScope.$broadcast('setRelevantPageButton', false);
+    $scope.$on('$stateChangeStart', (event) => {
+      this.kmtis.antiService();
+      this.$rootScope.$broadcast('setDocumentHelpers', false);
     });
 
-    // dgacitua: Execute on iframe start
     $reactive(this).attach($scope);
 
     this.documentPage = '';
@@ -45,9 +42,10 @@ class DisplayPage {
     //this.documentPage = '/olympic_games.html';
   }
 
+  // dgacitua: Execute on iframe start
   startTrackingLoader() {
-    //console.log("IFRAME In!");
-    kmtis.service();
+    this.kmtis.service();
+    this.$rootScope.$broadcast('setDocumentHelpers', true);
   }
 }
 

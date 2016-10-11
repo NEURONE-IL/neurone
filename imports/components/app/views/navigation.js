@@ -17,37 +17,99 @@ class Navigation {
 
     this.$q = $q;
     this.$state = $state;
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
 
     $reactive(this).attach($scope);
 
-    this.navbarMessage = 'TEST!';
+    this.navbarMessage = '';
 
-    $rootScope.$on('setRelevantPageButton', (event, data) => {
-      this.isOnPage = data;
+    this.$rootScope.$on('setDocumentHelpers', (event, data) => {
+      var url = window.location.href.toString();
+
+      this.bms.isBookmarked((err, result) => {
+        if (!err) {
+          this.isOnPage = data;
+          this.isBookmarked = result;
+          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
+          this.$scope.$apply();
+        }
+        else {
+          console.log(err);
+        }
+      });
+      /*
+      this.call('isBookmark', url, (err, result) => {
+        if (!err) {
+          this.isOnPage = data;
+          this.isBookmarked = result;
+          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
+        }
+        else {
+          console.log(err);
+        }
+      });
+      */
     });
 
     this.helpers({
-      isLoggedIn() {
+      isLoggedIn: () => {
         return !!Meteor.userId();
       },
-      currentUser() {
+      currentUser: () => {
         return Meteor.user();
       },
-      enablePageHelpers() {
+      enablePageHelpers: () => {
         return this.isOnPage;
+      },
+      enableBookmark: () => {
+        return this.isBookmarked;
       }
     });
   }
 
   saveSnippet() {
-    this.sts.saveSnippet();
+    this.sts.saveSnippet((err, res) => {
+      if (!err) {
+        this.navbarMessage = res;
+        this.$scope.$apply();
+      }
+    });
   }
 
   saveBookmark() {
-    this.bms.saveBookmark();
+    this.bms.saveBookmark((err, res) => {
+      if (!err) {
+        this.navbarMessage = res;
+        this.$scope.$apply();
+
+        this.bms.isBookmarked((err, res2) => {
+          if (!err) {
+            this.isBookmarked = res2;
+            this.$scope.$apply();
+          }
+        });
+      }
+    });
+  }
+
+  removeBookmark() {
+    this.bms.removeBookmark((err, res) => {
+      if (!err) {
+        this.navbarMessage = res;
+        this.$scope.$apply();
+        
+        this.bms.isBookmarked((err, res2) => {
+          if (!err) {
+            this.isBookmarked = res2;
+            this.$scope.$apply();
+          }
+        });
+      }
+    });
   }
 
   logout() {

@@ -73,5 +73,15 @@ export default Meteor.methods({
     jsonObject.server_time = time;
     Bookmarks.insert(jsonObject);
     //console.log('Bookmark Stored!', page, time);
+  },
+  removeBookmark: function(userId, currentUrl) {
+    Bookmarks.remove({ owner: userId, url: currentUrl });
+  },
+  getBookmark: function(currentUrl) {
+    return Bookmarks.find({ url: currentUrl }).fetch();
+  },
+  isBookmark: function(currentUrl) {
+    var bkms = Bookmarks.find({ url: currentUrl }).fetch();
+    return bkms.length > 0;
   }
 });

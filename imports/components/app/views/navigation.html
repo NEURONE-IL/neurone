@@ -15,15 +15,12 @@
       </li>
     </ul>
     <div ng-if="navigation.isLoggedIn">
-      <div class="navbar-right btn-group" role="group">
-        <button type="button" class="btn btn-danger navbar-btn" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
-      </div>
-      <div class="navbar-right btn-group horizontal-button-margin" role="group" ng-if="navigation.isOnPage">
-        <button type="button" class="btn btn-info navbar-btn" ng-click="navigation.saveSnippet()">{{"actions.snippetButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn" ng-click="navigation.saveBookmark()">{{"actions.bookmarkButton" | translate}}</button>
-      </div>
+      <button type="button" class="btn btn-danger navbar-btn navbar-right horizontal-button-margin" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
+      <button type="button" class="btn btn-warning navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage && !navigation.isBookmarked" ng-click="navigation.saveBookmark()">{{"actions.bookmarkButton" | translate}}</button>
+      <button type="button" class="btn btn-warning navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage && navigation.isBookmarked" ng-click="navigation.removeBookmark()">{{"actions.unbookmarkButton" | translate}}</button>
+      <button type="button" class="btn btn-info navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage" ng-click="navigation.saveSnippet()">{{"actions.snippetButton" | translate}}</button>
       <div class="navbar-text navbar-right horizontal-button-margin">{{navigation.navbarMessage}}</div>
-    </div>    
+    </div>
     <div class="navbar-right btn-group" role="group" ng-if="!navigation.isLoggedIn">
       <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
       <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>

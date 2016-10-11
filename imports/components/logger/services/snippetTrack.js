@@ -10,7 +10,7 @@ export default class SnippetTrackService {
     this.$translate = $translate;
   }
 
-  saveSnippet() {
+  saveSnippet(callback) {
     var iframeElement = document.getElementById(LoggerConfigs.iframeId),
          iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement : null,
               snippet = iframeWindow ? iframeWindow.getSelection().toString() || window.getSelection().toString() : window.getSelection().toString();
@@ -29,12 +29,12 @@ export default class SnippetTrackService {
         if (!err) {
           var msg = this.$translate.instant('alerts.snippetSaved');
           Utils.logToConsole('Snippet Saved!', snippetObject.url, snippetObject.snipped_text, snippetObject.local_time);
-          return msg;
+          callback(null, msg);
         }
         else {
           var msg = this.$translate.instant('alerts.error');
           Utils.logToConsole('Unknown Error');
-          return msg;
+          callback(msg);
         }
       });
     }
