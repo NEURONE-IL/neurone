@@ -6,19 +6,26 @@ import uiRouter from 'angular-ui-router';
 import template from './displayPage.html';
 
 import { name as Logger } from '../../logger/logger';
+import { name as ActionBlocker } from '../services/actionBlockerIframe';
 
 class DisplayPage {
-  constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService) {
+  constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
     this.kmtis = KMTrackIframeService;
+    this.abs = ActionBlockerIframeService;
 
     // dgacitua: Execute on iframe end
     $scope.$on('$stateChangeStart', (event) => {
       this.kmtis.antiService();
+      this.abs.antiService();
       this.$rootScope.$broadcast('setDocumentHelpers', false);
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      
     });
 
     $reactive(this).attach($scope);
@@ -44,8 +51,10 @@ class DisplayPage {
 
   // dgacitua: Execute on iframe start
   startTrackingLoader() {
-    this.kmtis.service();
+    // TODO fix quick right click between transitions
     this.$rootScope.$broadcast('setDocumentHelpers', true);
+    this.abs.service();
+    this.kmtis.service();
   }
 }
 
@@ -55,7 +64,8 @@ export default angular.module(name, [
   angularMeteor,
   angularSanitize,
   uiRouter,
-  Logger
+  Logger,
+  ActionBlocker
 ])
 .component(name, {
   template,
@@ -83,16 +93,3 @@ function config($stateProvider) {
     }
   });
 };
-
-/*
-.component(name, {
-  controllerAs: name,
-  controller: DisplayPage,
-  templateUrl:  ['$stateParams',
-    function($stateParams) {
-      console.log($stateParams.docName);
-      return '/olympic_games.html';
-    }
-  ]
-})
-*/

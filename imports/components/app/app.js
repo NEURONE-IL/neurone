@@ -15,6 +15,7 @@ import { name as Navigation } from './views/navigation';
 import { name as Search } from '../search/search';
 import { name as Showcase } from '../showcase/showcase';
 
+import { name as ActionBlocker } from './services/actionBlocker';
 import { name as Logger } from '../logger/logger';
 import LoggerConfigs from '../logger/loggerConfigs';
 
@@ -29,6 +30,7 @@ export default angular.module(name, [
   angularTranslate,
   angularTranslateLoader,
   Logger,
+  ActionBlocker,
   Home,
   Auth,
   Navigation,
@@ -72,29 +74,36 @@ function run($rootScope, $state) {
   );
 };
 
-function setTrackers($rootScope, KMTrackService, LinkTrackService) {
+function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlockerService) {
   'ngInject';
 
   lts = LinkTrackService;
   kmts = KMTrackService;
-
-  $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
-    //console.log('Exiting');
-    if (Meteor.user()) {
-      var state = 'END';
-      lts.saveVisitedLink(state);
-      kmts.service();
-    } else {
-      kmts.antiService();
-    }
-  });
+  abs = ActionBlockerService;
 
   $rootScope.$on('$viewContentLoaded', function (event) {
-    //console.log('Entering!');
     if (Meteor.user()) {
       var state = 'BEGIN';
       lts.saveVisitedLink(state);
       kmts.service();
+      abs.service();
+    }
+    else {
+      kmts.antiService();
+      abs.antiService();
+    }
+  });
+
+  $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
+    if (Meteor.user()) {
+      var state = 'END';
+      lts.saveVisitedLink(state);
+      kmts.service();
+      abs.service();
+    }
+    else {
+      kmts.antiService();
+      abs.antiService();
     }
   });
 
