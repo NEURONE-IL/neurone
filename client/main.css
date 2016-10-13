@@ -29,6 +29,28 @@ iframe {
   margin-right: 5px !important;
 }
 
+a.search-result-title {
+  font-size: 18px;
+}
+
+a.search-result-title:link {
+  color: #1a0dab;
+}
+
+a.search-result-title:visited {
+  color: #609;
+}
+
+.search-result-url {
+  font-size: 14px;
+  color: #006621;
+}
+
+.search-result-snippet {
+  font-size: 13px;
+  color: #545454;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

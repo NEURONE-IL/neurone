@@ -8,6 +8,7 @@
     ],
     "docName": "OlympicGames",
     "route": "olympic_games.html",
+    "url": "https://en.wikipedia.org/wiki/Olympic_Games",
     "id": "1"
   },
   {
@@ -20,6 +21,7 @@
     ],
     "docName": "ParalympicGames",
     "route": "paralympic_games.html",
+    "url": "https://en.wikipedia.org/wiki/Paralympic_Games",
     "id": "2"
   },
     {
@@ -33,6 +35,7 @@
     ],
     "docName": "DreamTeam",
     "route": "1992_united_states_men's_olympic_basketball_team.html",
+    "url": "https://en.wikipedia.org/wiki/1992_United_States_men%27s_Olympic_basketball_team",
     "id": "3"
   },
   {
@@ -47,6 +50,7 @@
     ],
     "docName": "2016SummerOlympics",
     "route": "2016_summer_olympics.html",
+    "url": "https://en.wikipedia.org/wiki/2016_Summer_Olympics",
     "id": "4"
   },
   {
@@ -61,6 +65,7 @@
     ],
     "docName": "2016SummerParalympics",
     "route": "2016_summer_paralympics.html",
+    "url": "https://en.wikipedia.org/wiki/2016_Summer_Paralympics",
     "id": "5"
   },
   {
@@ -75,6 +80,7 @@
     ],
     "docName": "2020SummerOlympics",
     "route": "2020_summer_olympics.html",
+    "url": "https://en.wikipedia.org/wiki/2020_Summer_Olympics",
     "id": "6"
   },
   {
@@ -89,6 +95,7 @@
     ],
     "docName": "2020SummerParalympics",
     "route": "2020_summer_paralympics.html",
+    "url": "https://en.wikipedia.org/wiki/2020_Summer_Paralympics",
     "id": "7"
   },
   {
@@ -101,6 +108,7 @@
     ],
     "docName": "SportOfAthletics",
     "route": "sport_of_athletics.html",
+    "url": "https://en.wikipedia.org/wiki/Sport_of_athletics",
     "id": "8"
   },
   {
@@ -113,6 +121,7 @@
     ],
     "docName": "SwimmingSport",
     "route": "swimming_(sport).html",
+    "url": "https://en.wikipedia.org/wiki/Swimming_(sport)",
     "id": "9"
   },
   {
@@ -125,6 +134,7 @@
     ],
     "docName": "Running",
     "route": "running.html",
+    "url": "https://en.wikipedia.org/wiki/Running",
     "id": "10"
   },
   {
@@ -137,6 +147,7 @@
     ],
     "docName": "Gymnastics",
     "route": "gymnastics.html",
+    "url": "",
     "id": "11"
   },
   {
@@ -150,6 +161,7 @@
     ],
     "docName": "AssociationFootball",
     "route": "association_football.html",
+    "url": "https://en.wikipedia.org/wiki/Gymnastics",
     "id": "12"
   },
   {
@@ -162,6 +174,7 @@
     ],
     "docName": "Basketball",
     "route": "basketball.html",
+    "url": "https://en.wikipedia.org/wiki/Basketball",
     "id": "13"
   },
   {
@@ -174,6 +187,7 @@
     ],
     "docName": "LionelMessi",
     "route": "lionel_messi.html",
+    "url": "https://en.wikipedia.org/wiki/Lionel_Messi",
     "id": "14"
   },
   {
@@ -186,6 +200,7 @@
     ],
     "docName": "CristianoRonaldo",
     "route": "cristiano_ronaldo.html",
+    "url": "https://en.wikipedia.org/wiki/Cristiano_Ronaldo",
     "id": "15"
   },
   {
@@ -198,6 +213,7 @@
     ],
     "docName": "Yao Ming",
     "route": "yao_ming.html",
+    "url": "https://en.wikipedia.org/wiki/Yao_Ming",
     "id": "16"
   },
   {
@@ -210,6 +226,7 @@
     ],
     "docName": "MichaelJordan",
     "route": "michael_jordan.html",
+    "url": "https://en.wikipedia.org/wiki/Michael_Jordan",
     "id": "17"
   },
   {
@@ -222,6 +239,7 @@
     ],
     "docName": "NadiaComaneci",
     "route": "nadia_comăneci.html",
+    "url": "https://en.wikipedia.org/wiki/Nadia_Com%C4%83neci",
     "id": "18"
   },
   {
@@ -234,6 +252,7 @@
     ],
     "docName": "SimoneBiles",
     "route": "simone_biles.html",
+    "url": "https://en.wikipedia.org/wiki/Simone_Biles",
     "id": "19"
   },
   {
@@ -246,6 +265,7 @@
     ],
     "docName": "LarisaLatynina",
     "route": "larisa_latynina.html",
+    "url": "https://en.wikipedia.org/wiki/Larisa_Latynina",
     "id": "20"
   },
   {
@@ -258,6 +278,7 @@
     ],
     "docName": "SawaoKato",
     "route": "sawao_kato.html",
+    "url": "https://en.wikipedia.org/wiki/Sawao_Kato",
     "id": "21"
   },
   {
@@ -270,6 +291,7 @@
     ],
     "docName": "MichaelPhelps",
     "route": "michael_phelps.html",
+    "url": "https://en.wikipedia.org/wiki/Michael_Phelps",
     "id": "22"
   },
   {
@@ -282,6 +304,7 @@
     ],
     "docName": "RyanLochte",
     "route": "ryan_lochte.html",
+    "url": "https://en.wikipedia.org/wiki/Ryan_Lochte",
     "id": "23"
   },
   {
@@ -294,6 +317,7 @@
     ],
     "docName": "UsainBolt",
     "route": "usain_bolt.html",
+    "url": "https://en.wikipedia.org/wiki/Usain_Bolt",
     "id": "24"
   },
   {
@@ -306,6 +330,7 @@
     ],
     "docName": "JustinGatlin",
     "route": "justin_gatlin.html",
+    "url": "https://en.wikipedia.org/wiki/Justin_Gatlin",
     "id": "25"
   }
 ]

@@ -11,12 +11,9 @@
   <hr>
   <div id="searchResults">
     <div ng-repeat="doc in searchResults.documents track by doc._id">
-      <!--<b><a ui-sref="documentDetails({ docId: doc.id })">{{doc.title}}</a></b>
-      [{{doc.date}}]
-      <p>{{doc.body | limitTo: 384}}{{doc.body.length > 384 ? '...' : ''}}</p>-->
-      <b><a ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a></b>
-      [{{doc.date}}]
-      <p>{{doc.body | limitTo: 384}}{{doc.body.length > 384 ? '...' : ''}}</p>
+      <a class="search-result-title" ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a>
+      <div class="search-result-url">{{doc.url}}</div>
+      <div class="search-result-snippet">{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</div>
       <br>
     </div>
   </div>

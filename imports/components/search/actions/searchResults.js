@@ -17,6 +17,7 @@ class SearchResults {
 
     this.documents = [];
 
+    this.searchText = $stateParams.query;
     this.getResults($stateParams.query);
   }
 
