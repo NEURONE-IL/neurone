@@ -19,11 +19,29 @@ class ActionBlockerService {
     evt.preventDefault();
   }
 
+  blockCut(evt) {
+    console.log('Cut Blocked!');
+    evt.preventDefault();
+  }
+
+  blockCopy(evt) {
+    console.log('Copy Blocked!');
+    evt.preventDefault();
+  }
+
+  blockPaste(evt) {
+    console.log('Paste Blocked!');
+    evt.preventDefault();
+  }
+
   service() {
     if (!this.isTracking) {
       var data = {};
       this.bindEvent('contextmenu', data, this.blockRightClick);
-      console.log('bindEvent!');
+      this.bindEvent('cut', data, this.blockCut);
+      this.bindEvent('copy', data, this.blockCopy);
+      this.bindEvent('paste', data, this.blockPaste);
+
       this.isTracking = true;
     }
   }
@@ -31,7 +49,9 @@ class ActionBlockerService {
   antiService() {
     if (this.isTracking) {
       this.unbindEvent('contextmenu', this.blockRightClick);
-      console.log('unbindEvent!');
+      this.unbindEvent('cut', this.blockCopy);
+      this.unbindEvent('copy', this.blockCopy);
+      this.unbindEvent('paste', this.blockPaste);
       this.isTracking = false;
     }
   }

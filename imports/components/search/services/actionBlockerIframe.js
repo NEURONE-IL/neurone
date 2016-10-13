@@ -9,12 +9,10 @@ class ActionBlockerIframeService {
 
   bindEvent(elem, evt, data, fn) {
     elem.on(evt, data, fn);
-    console.log('bindIframe');
   }
 
   unbindEvent(elem, evt, fn) {
     elem.off(evt, fn);
-    console.log('unbindIframe');
   }
 
   blockRightClick(evt) {
@@ -22,16 +20,32 @@ class ActionBlockerIframeService {
     evt.preventDefault();
   }
 
+  blockCut(evt) {
+    console.log('Cut Blocked!');
+    evt.preventDefault();
+  }
+
+  blockCopy(evt) {
+    console.log('Copy Blocked!');
+    evt.preventDefault();
+  }
+
+  blockPaste(evt) {
+    console.log('Paste Blocked!');
+    evt.preventDefault();
+  }
+
   service() {
-    console.log('bindname', this.isTracking, this.iframeId);
     if (!this.isTracking) {
       var iframe = document.getElementById(this.iframeId);
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
       var data = {};
 
       this.bindEvent(angular.element(innerDoc), 'contextmenu', data, this.blockRightClick);
+      this.bindEvent(angular.element(innerDoc), 'cut', data, this.blockCut);
+      this.bindEvent(angular.element(innerDoc), 'copy', data, this.blockCopy);
+      this.bindEvent(angular.element(innerDoc), 'paste', data, this.blockPaste);
       this.isTracking = true;
-      console.log('bindIframe1');
     }
   }
 
@@ -41,8 +55,10 @@ class ActionBlockerIframeService {
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
       this.unbindEvent(angular.element(innerDoc), 'contextmenu', this.blockRightClick);
+      this.unbindEvent(angular.element(innerDoc), 'cut', this.blockCut);
+      this.unbindEvent(angular.element(innerDoc), 'copy', this.blockCopy);
+      this.unbindEvent(angular.element(innerDoc), 'paste', this.blockPaste);
       this.isTracking = false;
-      console.log('unbindIframe1');
     }
   }
 }
