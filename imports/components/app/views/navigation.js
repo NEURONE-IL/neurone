@@ -28,6 +28,10 @@ class Navigation {
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';
 
+    this.$scope.$on('$stateChangeSuccess', (event) => {
+      this.navbarMessage = '';
+    });
+
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
       var url = window.location.href.toString();
 
@@ -77,9 +81,10 @@ class Navigation {
       if (!err) {
         this.$scope.$apply(() => {
           this.navbarMessage = res;
-          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000); 
+          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+          this.navbarMessageElement.stop(true, true);
+          this.navbarMessageElement.fadeIn(0);
+          this.navbarMessageElement.fadeOut(5000); 
         });
       }
     });
@@ -90,9 +95,10 @@ class Navigation {
       if (!err) {
         this.$scope.$apply(() => {
           this.navbarMessage = res;
-          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000);
+          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+          this.navbarMessageElement.stop(true, true);
+          this.navbarMessageElement.fadeIn(0);
+          this.navbarMessageElement.fadeOut(5000);
         });
 
         this.bms.isBookmarked((err, res2) => {
@@ -110,9 +116,10 @@ class Navigation {
       if (!err) {
         this.$scope.$apply(() => {
           this.navbarMessage = res;
-          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
-          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000);
+          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+          this.navbarMessageElement.stop(true, true);
+          this.navbarMessageElement.fadeIn(0);
+          this.navbarMessageElement.fadeOut(5000);
         });
         
         this.bms.isBookmarked((err, res2) => {
