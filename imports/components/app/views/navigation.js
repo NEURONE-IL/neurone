@@ -26,6 +26,7 @@ class Navigation {
     $reactive(this).attach($scope);
 
     this.navbarMessage = '';
+    this.navbarMessageId = 'navbarMessage';
 
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
       var url = window.location.href.toString();
@@ -74,8 +75,12 @@ class Navigation {
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
       if (!err) {
-        this.navbarMessage = res;
-        this.$scope.$apply();
+        this.$scope.$apply(() => {
+          this.navbarMessage = res;
+          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000); 
+        });
       }
     });
   }
@@ -83,8 +88,12 @@ class Navigation {
   saveBookmark() {
     this.bms.saveBookmark((err, res) => {
       if (!err) {
-        this.navbarMessage = res;
-        this.$scope.$apply();
+        this.$scope.$apply(() => {
+          this.navbarMessage = res;
+          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000);
+        });
 
         this.bms.isBookmarked((err, res2) => {
           if (!err) {
@@ -99,8 +108,12 @@ class Navigation {
   removeBookmark() {
     this.bms.removeBookmark((err, res) => {
       if (!err) {
-        this.navbarMessage = res;
-        this.$scope.$apply();
+        this.$scope.$apply(() => {
+          this.navbarMessage = res;
+          angular.element(document.getElementById(this.navbarMessageId)).stop(true, true);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeIn(0);
+          angular.element(document.getElementById(this.navbarMessageId)).fadeOut(5000);
+        });
         
         this.bms.isBookmarked((err, res2) => {
           if (!err) {
