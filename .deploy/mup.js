@@ -4,6 +4,7 @@ IMPORTANT: Set the following environment variables
 
 export MUP_SERVER_HOST='1.2.3.4'
 export MUP_SERVER_USERNAME='root'
+export MUP_SERVER_PASSWORD='password'
 export MUP_ROOT_URL='http://1.2.3.4'
 export MUP_MONGO_URL='mongodb://localhost/meteor'
 
@@ -18,15 +19,15 @@ module.exports = {
   servers: {
     one: {
       host: process.env.MUP_SERVER_HOST || '127.0.0.1',
-      username: process.env.MUP_SERVER_USERNAME || 'root'
+      username: process.env.MUP_SERVER_USERNAME || 'root',
+      password: process.env.MUP_SERVER_PASSWORD || 'password'
       // pem: '~/.ssh/id_rsa'
-      // password:
       // or leave blank for authenticate from ssh-agent
     }
   },
 
   meteor: {
-    name: 'prototype2',
+    name: 'neurone',
     path: '..',
     servers: {
       one: {}

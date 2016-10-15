@@ -19,10 +19,10 @@ Created by Daniel Gacitua
 3. Clone this repository
 4. Set the following environment variables in your development machine (replace values with the ones of your production machine)
 
-        export MUP_SERVER_HOST='1.2.3.4'
+        export MUP_SERVER_HOST='192.168.1.2'
         export MUP_SERVER_USERNAME='root'
-        export MUP_ROOT_URL='http://1.2.3.4'
-        export MUP_MONGO_URL='mongodb://localhost/meteor'
+        export MUP_ROOT_URL='http://192.168.1.2'
+        export MUP_MONGO_URL='mongodb://192.168.1.2/meteor'
 
 5. Open a terminal in project's root directory, run `cd .deploy`
 6. Run `mup setup`

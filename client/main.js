@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import { name as App } from '../imports/components/app/app';
 
-angular.module('prototype2', [
+angular.module('neurone', [
   angularMeteor,
   App
 ]);

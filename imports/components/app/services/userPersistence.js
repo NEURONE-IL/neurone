@@ -12,16 +12,16 @@ export default class UserPersistenceService {
   // TODO Generate Auth Token
   setCookie(token) {
     this.authToken = token;
-    $cookies.put("prototype2_authToken", token);
+    $cookies.put("neurone_authToken", token);
   }
 
   getCookie() {
-    this.authToken = $cookies.get("prototype2_authToken");
+    this.authToken = $cookies.get("neurone_authToken");
     return this.authToken;
   }
 
   clearCookie() {
     this.authToken = '';
-    $cookies.remove("prototype2_authToken");
+    $cookies.remove("neurone_authToken");
   }
 }
