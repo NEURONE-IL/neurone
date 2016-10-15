@@ -1,6 +1,6 @@
 # NEURONE: oNlinE inqUiry expeRimentatiON systEm
 
-Created by Daniel Gacitua
+Created by Daniel Gacitúa
 
 ## Install Instructions
 
@@ -21,6 +21,7 @@ Created by Daniel Gacitua
 
         export MUP_SERVER_HOST='192.168.1.2'
         export MUP_SERVER_USERNAME='root'
+        export MUP_SERVER_PASSWORD='password'
         export MUP_ROOT_URL='http://192.168.1.2'
         export MUP_MONGO_URL='mongodb://192.168.1.2/meteor'
 

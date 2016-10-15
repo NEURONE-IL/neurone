@@ -2,11 +2,11 @@
 
 IMPORTANT: Set the following environment variables
 
-export MUP_SERVER_HOST='1.2.3.4'
+export MUP_SERVER_HOST='192.168.1.2'
 export MUP_SERVER_USERNAME='root'
 export MUP_SERVER_PASSWORD='password'
-export MUP_ROOT_URL='http://1.2.3.4'
-export MUP_MONGO_URL='mongodb://localhost/meteor'
+export MUP_ROOT_URL='http://192.168.1.2'
+export MUP_MONGO_URL='mongodb://192.168.1.2/meteor'
 
 Then run
 
