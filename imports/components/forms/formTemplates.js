@@ -3,6 +3,9 @@ import ParagraphQuestion from './templates/paragraph';
 import MultipleChoiceQuestion from './templates/multipleChoice';
 import CheckboxQuestion from './templates/checkbox';
 import ListQuestion from './templates/list';
+import DateQuestion from './templates/date';
+import TimeQuestion from './templates/time';
+
 
 const name = 'formTemplates';
 
@@ -15,6 +18,8 @@ function questionDirective($compile) {
   var multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
   var checkboxQuestionTemplate = CheckboxQuestion.template;
   var listQuestionTemplate = ListQuestion.template;
+  var dateQuestionTemplate = DateQuestion.template;
+  var timeQuestionTemplate = TimeQuestion.template;
 
   var getTemplate = (questionType) => {
     var template = '';
@@ -34,6 +39,12 @@ function questionDirective($compile) {
         break;
       case 'list':
         template = listQuestionTemplate;
+        break;
+      case 'date':
+        template = dateQuestionTemplate;
+        break;
+      case 'time':
+        template = timeQuestionTemplate;
         break;
     }
 
@@ -66,4 +77,6 @@ export default angular.module(name, [])
 .component('multipleChoiceQuestion', MultipleChoiceQuestion)
 .component('checkboxQuestion', CheckboxQuestion)
 .component('listQuestion', ListQuestion)
+.component('dateQuestion', DateQuestion)
+.component('timeQuestion', TimeQuestion)
 .directive('question', questionDirective);

@@ -1,0 +1,8 @@
+<div class="form-group">
+  <label for="rangeAnswer">
+    {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
+  </label>
+  <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
+  <!-- TODO -->
+  <input type="range" class="form-control" ng-model="$ctrl.data.answer" ng-attr-min="$ctrl.data.min" ng-attr-max="$ctrl.data.max" ng-required="$ctrl.data.required">
+</div>

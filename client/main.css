@@ -51,6 +51,11 @@ a.search-result-title:visited {
   color: #545454;
 }
 
+.help-block {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component
@@ -87,7 +92,7 @@ hr{
   margin-bottom: 15px;
 }
 
-label{
+label.login {
   margin-bottom: 15px;
 }
 

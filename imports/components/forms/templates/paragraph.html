@@ -1,5 +1,7 @@
-<div>
-  <b>{{$ctrl.data.title}}<br/></b>
-  <i ng-show="$ctrl.data.hint">{{$ctrl.data.hint}}<br/></i>
-  <textarea id="paragraphAnswer" class="form-control" rows="3" ng-model="$ctrl.data.answer"/>
+<div class="form-group">
+  <label for="paragraphAnswer">
+    {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
+  </label>
+  <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
+  <textarea id="paragraphAnswer" class="form-control" rows="3" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" placeholder="{{$ctrl.data.placeholder}}">
 </div>

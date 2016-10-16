@@ -1,7 +1,7 @@
 <div class="form-group">
-  <label for="textAnswer">
+  <label for="timeAnswer">
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
-  <input id="textAnswer" type="text" class="form-control" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" placeholder="{{$ctrl.data.placeholder}}">
+  <input type="time" id="timeAnswer" name="input" ng-model="$ctrl.data.answer" placeholder="HH:mm:ss" ng-required="$ctrl.data.required">
 </div>

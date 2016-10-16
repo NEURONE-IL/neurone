@@ -15,16 +15,19 @@ class FormsExample {
       {
         type: 'text',
         title: 'Text Question',
-        hint: 'Some hint text'
+        hint: 'Some hint text',
+        required: false
       },
       {
         type: 'paragraph',
         title: 'Paragraph Question',
-        hint: 'Another hint text'
+        hint: 'Another hint text',
+        required: false
       },
       {
         type: 'multipleChoice',
         title: 'Choose your side',
+        required: false,
         options: [
             'Left',
             'Center',
@@ -34,6 +37,7 @@ class FormsExample {
       {
         type: 'checkbox',
         title: 'Pick your favourites',
+        required: false,
         options: [
             'Italiano',
             'Chacarero',
@@ -45,11 +49,22 @@ class FormsExample {
       {
         type: 'list',
         title: 'Choose your destiny',
+        required: true,
         options: [
             'Blue pill',
             'Red pill'
           ]
       },
+      {
+        type: 'date',
+        title: 'Insert your birthdate',
+        required: true
+      },
+      {
+        type: 'time',
+        title: 'What time is it now?',
+        required: true
+      }
     ];
 
     this.answers = '';

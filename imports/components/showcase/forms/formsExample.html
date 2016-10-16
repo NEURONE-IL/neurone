@@ -1,12 +1,13 @@
 <div class="container">
   <h1>Forms Example</h1>
-  <form>
+  <form ng-submit="formsExample.showAnswers()">
     <div ng-repeat="question in formsExample.questions track by $index">
       <question data="question"></question>
-      <br/>
+      <br>
     </div>
-    <input type="submit" ng-click="formsExample.showAnswers()" value="Submit!"/>
-    <hr/>
+    <input type="submit" value="Submit!">
+    <span><b>*</b> Required answer</span>
+    <hr>
     <pre>{{formsExample.answers}}</pre>
   </form>
 </div>

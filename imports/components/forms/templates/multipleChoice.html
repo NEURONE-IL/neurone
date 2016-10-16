@@ -1,9 +1,11 @@
-<div>
-  <b>{{$ctrl.data.title}}<br/></b>
-  <i ng-show="$ctrl.data.hint">{{$ctrl.data.hint}}<br/></i>
+<div class="form-group">
+  <label for="multipleChoiceAnswer">
+    {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
+  </label>
+  <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
   <div id="multipleChoiceAnswer" class="radio" ng-repeat="option in $ctrl.data.options track by $index">
     <label>
-      <input type="radio" ng-model="$ctrl.data.answer" ng-value="option">
+      <input type="radio" name="{{$ctrl.data.title}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required">
       {{option}}
     </label>
   </div>
