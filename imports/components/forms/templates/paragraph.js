@@ -1,4 +1,4 @@
-import template from './paragraph.html'
+import template from './paragraph.html';
 
 export default ParagraphQuestion = {
   bindings: {

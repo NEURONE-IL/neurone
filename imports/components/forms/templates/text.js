@@ -1,4 +1,4 @@
-import template from './text.html'
+import template from './text.html';
 
 export default TextQuestion = {
   bindings: {

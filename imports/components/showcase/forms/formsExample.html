@@ -1,8 +1,12 @@
 <div class="container">
+  <h1>Forms Example</h1>
   <form>
-    <text-question data="formsExample.ex1"></text-question>
-    <paragraph-question data="formsExample.ex2"></paragraph-question>
+    <div ng-repeat="question in formsExample.questions track by $index">
+      <question data="question"></question>
+      <br/>
+    </div>
     <input type="submit" ng-click="formsExample.showAnswers()" value="Submit!"/>
+    <hr/>
     <pre>{{formsExample.answers}}</pre>
   </form>
 </div>

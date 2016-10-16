@@ -11,15 +11,18 @@ class FormsExample {
     
     $reactive(this).attach($scope);
 
-    this.ex1 = {
-      title: 'Text Question',
-      hint: 'Some hint text'
-    };
-
-    this.ex2 = {
-      title: 'Paragraph Question',
-      hint: 'Another hint text'
-    };
+    this.questions = [
+      {
+        type: 'text',
+        title: 'Text Question',
+        hint: 'Some hint text'
+      },
+      {
+        type: 'paragraph',
+        title: 'Paragraph Question',
+        hint: 'Another hint text'
+      }
+    ];
 
     this.answers = '';
   }
@@ -29,7 +32,9 @@ class FormsExample {
   }
 
   showAnswers() {
-    this.answers = this.ex1.title + ': ' + this.ex1.answer + '\n' + this.ex2.title + ': ' +  this.ex2.answer;
+    this.questions.forEach((question) => {
+      this.answers += question.title + ': ' + question.answer + '\n'
+    });
   }
 };
 
