@@ -8,7 +8,8 @@
     "visitedLinks": "Visited Links",
     "snippets": "Snippets",
     "bookmarks": "Bookmarks",
-    "i18n": "Internationalization"
+    "i18n": "Internationalization",
+    "forms": "Forms"
   },
   "auth": {
     "registerButton": "Register",

@@ -9,6 +9,7 @@ import { name as SnippetsList } from './snippets/snippetsList';
 import { name as VisitedLinksList } from './visitedLinks/visitedLinksList';
 import { name as BookmarksList } from './bookmarks/bookmarksList';
 import { name as Internationalization } from './i18n/i18n';
+import { name as FormsExample } from './forms/formsExample';
 
 class Showcase {}
 
@@ -22,7 +23,8 @@ export default angular.module(name, [
   SnippetsList,
   VisitedLinksList,
   BookmarksList,
-  Internationalization
+  Internationalization,
+  FormsExample
 ])
 .component(name, {
   template,
