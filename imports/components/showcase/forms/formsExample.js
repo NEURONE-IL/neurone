@@ -21,7 +21,35 @@ class FormsExample {
         type: 'paragraph',
         title: 'Paragraph Question',
         hint: 'Another hint text'
-      }
+      },
+      {
+        type: 'multipleChoice',
+        title: 'Choose your side',
+        options: [
+            'Left',
+            'Center',
+            'Right'
+          ]
+      },
+      {
+        type: 'checkbox',
+        title: 'Pick your favourites',
+        options: [
+            'Italiano',
+            'Chacarero',
+            'Lomito',
+            'Choripán',
+            'Churrasco'
+          ]
+      },
+      {
+        type: 'list',
+        title: 'Choose your destiny',
+        options: [
+            'Blue pill',
+            'Red pill'
+          ]
+      },
     ];
 
     this.answers = '';
@@ -32,9 +60,22 @@ class FormsExample {
   }
 
   showAnswers() {
+    this.answers = '';
+    this.answerArray = [];
+
     this.questions.forEach((question) => {
-      this.answers += question.title + ': ' + question.answer + '\n'
+      var response = {
+        type: question.type,
+        title: question.title,
+        hint: question.hint || '',
+        answer: question.answer || ''
+      };
+
+      this.answerArray.push(response);
+      this.answers += question.title + ': ' + (question.answer || '') + '\n';
     });
+
+    console.log(this.answerArray);
   }
 };
 

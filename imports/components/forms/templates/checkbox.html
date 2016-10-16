@@ -1,0 +1,10 @@
+<div>
+  <b>{{$ctrl.data.title}}<br/></b>
+  <i ng-show="$ctrl.data.hint">{{$ctrl.data.hint}}<br/></i>
+  <div id="checkboxAnswer" class="checkbox" ng-repeat="option in $ctrl.data.options track by $index">
+    <label>
+      <input type="checkbox" ng-model="$ctrl.data.answer[option]" ng-value="option">
+      {{option}}
+    </label>
+  </div>
+</div>

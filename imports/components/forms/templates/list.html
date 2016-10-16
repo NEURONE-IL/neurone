@@ -1,0 +1,7 @@
+<div>
+  <b>{{$ctrl.data.title}}<br/></b>
+  <i ng-show="$ctrl.data.hint">{{$ctrl.data.hint}}<br/></i>
+  <select id="listAnswer" class="form-control" ng-model="$ctrl.data.answer">
+    <option ng-repeat="option in $ctrl.data.options track by $index" ng-value="option">{{option}}</option>
+  </select>
+</div>

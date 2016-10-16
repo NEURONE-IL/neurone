@@ -1,0 +1,10 @@
+<div>
+  <b>{{$ctrl.data.title}}<br/></b>
+  <i ng-show="$ctrl.data.hint">{{$ctrl.data.hint}}<br/></i>
+  <div id="multipleChoiceAnswer" class="radio" ng-repeat="option in $ctrl.data.options track by $index">
+    <label>
+      <input type="radio" ng-model="$ctrl.data.answer" ng-value="option">
+      {{option}}
+    </label>
+  </div>
+</div>
