@@ -3,6 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import template from './formsExample.html';
 
+import Utils from '../../globalUtils';
 import { name as FormTemplates } from '../../forms/formTemplates';
 
 class FormsExample {
@@ -11,61 +12,76 @@ class FormsExample {
     
     $reactive(this).attach($scope);
 
-    this.questions = [
-      {
-        type: 'text',
-        title: 'Text Question',
-        hint: 'Some hint text',
-        required: false
-      },
-      {
-        type: 'paragraph',
-        title: 'Paragraph Question',
-        hint: 'Another hint text',
-        required: false
-      },
-      {
-        type: 'multipleChoice',
-        title: 'Choose your side',
-        required: false,
-        options: [
-            'Left',
-            'Center',
-            'Right'
-          ]
-      },
-      {
-        type: 'checkbox',
-        title: 'Pick your favourites',
-        required: false,
-        options: [
-            'Italiano',
-            'Chacarero',
-            'Lomito',
-            'Choripán',
-            'Churrasco'
-          ]
-      },
-      {
-        type: 'list',
-        title: 'Choose your destiny',
-        required: true,
-        options: [
-            'Blue pill',
-            'Red pill'
-          ]
-      },
-      {
-        type: 'date',
-        title: 'Insert your birthdate',
-        required: true
-      },
-      {
-        type: 'time',
-        title: 'What time is it now?',
-        required: true
-      }
-    ];
+    this.form = {
+      formId: 1,
+        questions: [
+        {
+          questionId: 1,
+          type: 'text',
+          title: 'Name an Olympic Athlete',
+          hint: 'Remember to search some documents first!',
+          required: true
+        },
+        {
+          questionId: 2,
+          type: 'paragraph',
+          title: 'Name your favourite olympic sport and explain why you like it',
+          hint: 'You can write a small paragraph here',
+          required: false
+        },
+        {
+          questionId: 3,
+          type: 'multipleChoice',
+          title: 'Which city was host of 2016 Summer Olympics?',
+          required: true,
+          other: false,
+          options: [
+              'Sydney',
+              'London',
+              'Rio',
+              'Tokyo'
+            ]
+        },
+        {
+          questionId: 4,
+          type: 'checkbox',
+          title: 'Pick your favourite sports!',
+          required: true,
+          other: false,
+          options: [
+              'Running',
+              'Swimming',
+              'Gymnastics',
+              'Football',
+              'Basketball'
+            ]
+        },
+        {
+          questionId: 5,
+          type: 'list',
+          title: 'Pick your favourite gymnast!',
+          required: true,
+          options: [
+              'Nadia Comaneci',
+              'Simone Biles',
+              'Larisa Latynina',
+              'Sawao Kato'
+            ]
+        },
+        {
+          questionId: 6,
+          type: 'date',
+          title: 'Insert your birthdate',
+          hint: 'It doesn\'t have to be your real one',
+          required: false
+        },
+        {
+          type: 'time',
+          title: 'What time is it now?',
+          required: false
+        }
+      ]
+    };
 
     this.answers = '';
   }
@@ -78,19 +94,40 @@ class FormsExample {
     this.answers = '';
     this.answerArray = [];
 
-    this.questions.forEach((question) => {
+    this.form.questions.forEach((question) => {
       var response = {
         type: question.type,
+        questionId: question.questionId,
         title: question.title,
-        hint: question.hint || '',
         answer: question.answer || ''
       };
+
+      if (question.otherAnswer) {
+        response.otherAnswer = question.otherAnswer;
+      }
 
       this.answerArray.push(response);
       this.answers += question.title + ': ' + (question.answer || '') + '\n';
     });
 
-    console.log(this.answerArray);
+    if (Meteor.user()) {
+      var formAnswer = {
+        owner: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        formId: this.form.formId,
+        answers: this.answerArray,
+        local_time: Utils.getTimestamp()
+      }
+
+      Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
+        if (!err) {
+          console.log('Answer registered!', formAnswer.owner, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.local_time);
+        }
+        else {
+          console.log('Unknown Error');
+        }
+      });
+    }
   }
 };
 

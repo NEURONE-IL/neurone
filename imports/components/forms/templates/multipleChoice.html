@@ -3,10 +3,23 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
-  <div id="multipleChoiceAnswer" class="radio" ng-repeat="option in $ctrl.data.options track by $index">
-    <label>
-      <input type="radio" name="{{$ctrl.data.title}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required">
-      {{option}}
-    </label>
+  <div id="multipleChoiceAnswer">
+    <div class="radio" ng-repeat="option in $ctrl.data.options track by $index">
+      <label>
+        <input type="radio" name="{{$ctrl.data.title}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required && !$ctrl.data.isOtherAnswer">
+        {{option}}
+      </label>
+    </div>
+    <!--
+    <div class="radio" ng-if="$ctrl.data.other">
+      <label>
+        <input type="radio" name="{{$ctrl.data.title}}" ng-model="$ctrl.data.isOtherAnswer" value="Other" ng-required="$ctrl.data.required">
+        Other: 
+        <span class="form-inline">
+          <input id="otherAnswer" type="text" class="form-control" ng-model="$ctrl.data.otherAnswer" ng-required="$ctrl.data.isOtherAnswer" placeholder="{{$ctrl.data.placeholder}}">
+        </span>
+      </label>
+    </div>
+    -->
   </div>
 </div>

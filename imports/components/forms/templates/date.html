@@ -3,5 +3,5 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
-  <input type="date" id="dateAnswer" name="input" ng-model="$ctrl.data.answer" placeholder="yyyy-MM-dd" ng-required="$ctrl.data.required">
+  <input type="date" id="dateAnswer" class="form-control" name="input" ng-model="$ctrl.data.answer" placeholder="yyyy-MM-dd" ng-required="$ctrl.data.required">
 </div>

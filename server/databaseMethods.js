@@ -10,6 +10,7 @@ import { ScrollMoves } from '../imports/api/scrollMoves/index';
 import { SessionLogs } from '../imports/api/sessionLogs/index';
 import { Queries } from '../imports/api/queries/index';
 import { Bookmarks } from '../imports/api/bookmarks/index';
+import { FormAnswers } from '../imports/api/formAnswers/index';
 
 export default Meteor.methods({
   storeKeystroke: function(jsonObject) {
@@ -66,12 +67,16 @@ export default Meteor.methods({
     Queries.insert(jsonObject);
     //console.log('Query Stored!', query, time);
   },
-  storeBookmark: function(jsonObject) {
+  storeKeystroke: function(jsonObject) {
     var time = ServerUtils.getTimestamp();
-        page = jsonObject.url;
-
     jsonObject.server_time = time;
-    Bookmarks.insert(jsonObject);
+    Keystrokes.insert(jsonObject);
+    //console.log('Keystroke Stored!', time);
+  },
+  storeFormAnswer: function(jsonObject) {
+    var time = ServerUtils.getTimestamp();
+    jsonObject.server_time = time;
+    FormAnswers.insert(jsonObject);
     //console.log('Bookmark Stored!', page, time);
   },
   removeBookmark: function(userId, currentUrl) {
