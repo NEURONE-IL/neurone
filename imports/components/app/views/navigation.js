@@ -78,57 +78,55 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      if (!err) {
-        this.$scope.$apply(() => {
-          this.navbarMessage = res;
-          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-          this.navbarMessageElement.stop(true, true);
-          this.navbarMessageElement.fadeIn(0);
-          this.navbarMessageElement.fadeOut(5000); 
-        });
-      }
+      this.$scope.$apply(() => {
+        this.navbarMessage = res ? res : err;
+        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        this.navbarMessageElement.stop(true, true);
+        this.navbarMessageElement.fadeIn(0);
+        this.navbarMessageElement.fadeOut(5000); 
+      });
     });
   }
 
   saveBookmark() {
     this.bms.saveBookmark((err, res) => {
-      if (!err) {
-        this.$scope.$apply(() => {
-          this.navbarMessage = res;
-          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-          this.navbarMessageElement.stop(true, true);
-          this.navbarMessageElement.fadeIn(0);
-          this.navbarMessageElement.fadeOut(5000);
-        });
+      this.$scope.$apply(() => {
+        this.navbarMessage = res ? res : err;
+        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        this.navbarMessageElement.stop(true, true);
+        this.navbarMessageElement.fadeIn(0);
+        this.navbarMessageElement.fadeOut(5000);
 
-        this.bms.isBookmarked((err, res2) => {
-          if (!err) {
-            this.isBookmarked = res2;
-            this.$scope.$apply();
-          }
-        });
-      }
+        if (!err) {
+          this.bms.isBookmarked((err2, res2) => {
+            if (!err2) {
+              this.isBookmarked = res2;
+              this.$scope.$apply();
+            }
+          });
+        }
+      });
     });
   }
 
   removeBookmark() {
     this.bms.removeBookmark((err, res) => {
-      if (!err) {
-        this.$scope.$apply(() => {
-          this.navbarMessage = res;
-          this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-          this.navbarMessageElement.stop(true, true);
-          this.navbarMessageElement.fadeIn(0);
-          this.navbarMessageElement.fadeOut(5000);
-        });
-        
-        this.bms.isBookmarked((err, res2) => {
-          if (!err) {
-            this.isBookmarked = res2;
-            this.$scope.$apply();
-          }
-        });
-      }
+      this.$scope.$apply(() => {
+        this.navbarMessage = res ? res : err;
+        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        this.navbarMessageElement.stop(true, true);
+        this.navbarMessageElement.fadeIn(0);
+        this.navbarMessageElement.fadeOut(5000);
+
+        if (!err) {
+          this.bms.isBookmarked((err2, res2) => {
+            if (!err2) {
+              this.isBookmarked = res2;
+              this.$scope.$apply();
+            }
+          });
+        }
+      });
     });
   }
 

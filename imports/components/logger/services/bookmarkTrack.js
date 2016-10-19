@@ -4,9 +4,10 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class BookmarkTrackService {
-  constructor($translate) {
+  constructor($state, $translate) {
     'ngInject';
 
+    this.$state = $state;
     this.$translate = $translate;
   }
 
@@ -15,12 +16,11 @@ export default class BookmarkTrackService {
   }
 
   isBookmarked(callback) {
-    var url = window.location.href.toString();
+    var url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
-    Meteor.call('getBookmark', url, (err, result) => {
+    Meteor.call('isBookmark', url, (err, result) => {
       if(!err) {
-        //console.log(url, result);
-        callback(null, result.length > 0);
+        callback(null, result);
       }
       else {
         console.log('Error getting current page as bookmark!');
@@ -35,7 +35,7 @@ export default class BookmarkTrackService {
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         title: document.title,
-        url: window.location.href,
+        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: false}),
         local_time: Utils.getTimestamp()
       };
 
@@ -57,7 +57,7 @@ export default class BookmarkTrackService {
   removeBookmark(callback) {
     if (Meteor.user()) {
       var userId = Meteor.userId(),
-             url = window.location.href.toString();
+             url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       Meteor.call('removeBookmark', userId, url, (err, result) => {
         if (!err) {

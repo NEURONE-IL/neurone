@@ -4,9 +4,10 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class SnippetTrackService {
-  constructor($translate) {
+  constructor($state, $translate) {
     'ngInject';
 
+    this.$state = $state;
     this.$translate = $translate;
   }
 
@@ -21,7 +22,7 @@ export default class SnippetTrackService {
         username: Meteor.user().emails[0].address,
         snipped_text: snippet,
         title: document.title,
-        url: window.location.href,
+        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: false}),
         local_time: Utils.getTimestamp()
       };
 

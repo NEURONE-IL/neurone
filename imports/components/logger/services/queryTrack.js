@@ -4,7 +4,11 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class QueryTrackService {
-  constructor() {}
+  constructor($state) {
+    'ngInject';
+
+    this.$state = $state;
+  }
 
   saveQuery(queryText) {
     if (Meteor.user() && !Utils.isEmpty(queryText)) {
@@ -13,7 +17,7 @@ export default class QueryTrackService {
         username: Meteor.user().emails[0].address,
         query: queryText,
         title: document.title,
-        url: window.location.href,
+        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: false}),
         local_time: Utils.getTimestamp()
       };
 

@@ -67,26 +67,28 @@ export default Meteor.methods({
     Queries.insert(jsonObject);
     //console.log('Query Stored!', query, time);
   },
-  storeKeystroke: function(jsonObject) {
+  storeBookmark: function(jsonObject) {
     var time = ServerUtils.getTimestamp();
     jsonObject.server_time = time;
-    Keystrokes.insert(jsonObject);
-    //console.log('Keystroke Stored!', time);
+    Bookmarks.insert(jsonObject);
+    //console.log('Bookmark Stored!', time);
+  },
+  removeBookmark: function(userId, currentUrl) {
+    Bookmarks.remove({ owner: userId, url: currentUrl });
+  },
+  getBookmarks: function(currentUrl) {
+    return Bookmarks.find({ url: currentUrl }).fetch();
+  },
+  isBookmark: function(currentUrl) {
+    var bkms = Bookmarks.find({ url: currentUrl }).fetch();
+    var result = bkms.length > 0
+    //console.log('Is bookmark?', currentUrl, result);
+    return result;
   },
   storeFormAnswer: function(jsonObject) {
     var time = ServerUtils.getTimestamp();
     jsonObject.server_time = time;
     FormAnswers.insert(jsonObject);
-    //console.log('Bookmark Stored!', page, time);
-  },
-  removeBookmark: function(userId, currentUrl) {
-    Bookmarks.remove({ owner: userId, url: currentUrl });
-  },
-  getBookmark: function(currentUrl) {
-    return Bookmarks.find({ url: currentUrl }).fetch();
-  },
-  isBookmark: function(currentUrl) {
-    var bkms = Bookmarks.find({ url: currentUrl }).fetch();
-    return bkms.length > 0;
+    //console.log('Form Answer Stored!', page, time);
   }
 });

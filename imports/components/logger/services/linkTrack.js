@@ -18,7 +18,7 @@ export default class LinkTrackService {
         username: Meteor.user().emails[0].address,
         state: linkState,
         title: document.title,
-        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: true}),
+        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: false}),
         local_time: Utils.getTimestamp()
       };
 
