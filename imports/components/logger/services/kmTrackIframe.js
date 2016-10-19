@@ -4,7 +4,11 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class KMTrackIframeService {
-  constructor() {
+  constructor($state) {
+    'ngInject';
+
+    this.$state = $state;
+
     this._isTracking = false;
     this._iframeId = 'pageContainer';
     this._iframeSelected = false;
@@ -34,7 +38,8 @@ export default class KMTrackIframeService {
        ot = ifm.position().top,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false}),
      time = Utils.getTimestamp();
 
     var docX = evt.pageX + ol,
@@ -83,7 +88,8 @@ export default class KMTrackIframeService {
        ot = ifm.position().top,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
-      src = window.location.href,
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false}),
      time = Utils.getTimestamp();
 
     var docX = evt.pageX + ol,
@@ -131,7 +137,8 @@ export default class KMTrackIframeService {
          ot = ifm.position().top,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
        time = Utils.getTimestamp();
       
       var scrollX = ifm.contents().scrollLeft(),
@@ -168,7 +175,8 @@ export default class KMTrackIframeService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href;
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
@@ -208,7 +216,8 @@ export default class KMTrackIframeService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href;
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
@@ -264,6 +273,7 @@ export default class KMTrackIframeService {
 
       var data = {
         iframeId: this._iframeId,
+        s: this.$state,
         w: angular.element(window),
         d: angular.element(document),
         e: angular.element(document)[0].documentElement,

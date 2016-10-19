@@ -22,12 +22,11 @@ import LoggerConfigs from '../loggerConfigs';
  */
 
 export default class KMTrackService {
-  constructor($window, $document, $location) {
+  constructor($window, $state) {
     'ngInject';
 
     this.$window = $window;
-    this.$document = $document;
-    this.$location = $location;
+    this.$state = $state;
 
     this.iframeSelected = false;
     this.isTracking = false;
@@ -68,7 +67,8 @@ export default class KMTrackService {
           g = evt.data.g,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,   //this.$location.absUrl(),
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
        time = Utils.getTimestamp();
       /*
       var w = angular.element(window),
@@ -79,7 +79,7 @@ export default class KMTrackService {
           y = evt.pageY,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,   //this.$location.absUrl(),
+        src = window.location.href,
        time = Utils.getTimestamp();
       */
       
@@ -124,7 +124,8 @@ export default class KMTrackService {
           y = evt.pageY,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
        time = Utils.getTimestamp();
       /*
       var w = angular.element(window),
@@ -135,7 +136,7 @@ export default class KMTrackService {
           y = evt.pageY,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,   //this.$location.absUrl(),
+        src = window.location.href,
        time = Utils.getTimestamp();
       */
 
@@ -178,7 +179,8 @@ export default class KMTrackService {
           g = evt.data.g,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
        time = Utils.getTimestamp();
       
       var scrollX = window.scrollX,
@@ -215,7 +217,8 @@ export default class KMTrackService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href;
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
     //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
@@ -256,7 +259,8 @@ export default class KMTrackService {
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
-      src = window.location.href;
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (Meteor.user() && LoggerConfigs.keyboardLogging) {
@@ -294,7 +298,8 @@ export default class KMTrackService {
       w: angular.element(window),
       d: angular.element(document),
       e: angular.element(document)[0].documentElement,
-      g: angular.element(document)[0].getElementsByTagName('body')[0]
+      g: angular.element(document)[0].getElementsByTagName('body')[0],
+      s: this.$state
     };
 
     this.bindThrottledEvent('mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
