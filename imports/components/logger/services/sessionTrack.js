@@ -6,7 +6,7 @@ export default class SessionTrackService {
   constructor() {}
 
   saveSessionLog(currentState) {
-    if (Meteor.user()) {
+    if (!!Meteor.userId()) {
       var sessionLog = {
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,

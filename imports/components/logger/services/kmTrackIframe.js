@@ -53,7 +53,7 @@ export default class KMTrackIframeService {
 
     //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
-    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var movement_output = {
@@ -101,7 +101,7 @@ export default class KMTrackIframeService {
         winW = w,
         winH = h;
 
-    if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
       Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var click_output = {
@@ -125,7 +125,7 @@ export default class KMTrackIframeService {
   }
 
   scrollListener(evt) {
-    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       // From http://stackoverflow.com/a/23323821
       var w = evt.data.w,
           d = evt.data.d,
@@ -178,7 +178,7 @@ export default class KMTrackIframeService {
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
@@ -219,7 +219,7 @@ export default class KMTrackIframeService {
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Key Pressed!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 

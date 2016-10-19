@@ -33,8 +33,6 @@ class Navigation {
     });
 
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
-      var url = window.location.href.toString();
-
       this.bms.isBookmarked((err, result) => {
         if (!err) {
           this.isOnPage = data;
@@ -46,18 +44,6 @@ class Navigation {
           console.log(err);
         }
       });
-      /*
-      this.call('isBookmark', url, (err, result) => {
-        if (!err) {
-          this.isOnPage = data;
-          this.isBookmarked = result;
-          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
-        }
-        else {
-          console.log(err);
-        }
-      });
-      */
     });
 
     this.helpers({

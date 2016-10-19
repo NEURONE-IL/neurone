@@ -59,7 +59,7 @@ export default class KMTrackService {
   }
 
   mouseMoveListener(evt) {
-    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       // From http://stackoverflow.com/a/23323821
       var w = evt.data.w,
           d = evt.data.d,
@@ -114,7 +114,7 @@ export default class KMTrackService {
   }
 
   mouseClickListener(evt) {
-    if (Meteor.user() && LoggerConfigs.mouseClicksLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
       // From http://stackoverflow.com/a/11744120/1319998
       var w = evt.data.w,
           d = evt.data.d,
@@ -171,7 +171,7 @@ export default class KMTrackService {
   }
 
   scrollListener(evt) {
-    if (Meteor.user() && LoggerConfigs.mouseCoordsLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       // From http://stackoverflow.com/a/23323821
       var w = evt.data.w,
           d = evt.data.d,
@@ -221,7 +221,7 @@ export default class KMTrackService {
       src = s.href(s.current.name, s.params, {absolute: false});
     //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Keydown!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
@@ -263,7 +263,7 @@ export default class KMTrackService {
       src = s.href(s.current.name, s.params, {absolute: false});
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
-    if (Meteor.user() && LoggerConfigs.keyboardLogging) {
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       Utils.logToConsole('Keypress!   ' + 
         ' timestamp:' + t + 
         ' keyCode:' + kc + 
