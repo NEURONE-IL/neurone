@@ -1,20 +1,24 @@
 <div class="container">
-  <h1>Forms Example</h1>
-  <span><b>*</b> Required answer</span>
-  <hr>
-  <form ng-submit="formsExample.showAnswers()">
-    <div ng-repeat="question in formsExample.form.questions track by $index">
-      <question data="question"></question>
-      <br>
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8">
+      <h1>Forms Example</h1>
+      <span><b>*</b> Required answer</span>
+      <hr>
+      <form ng-submit="formsExample.showAnswers()">
+        <div ng-repeat="question in formsExample.form.questions track by $index">
+          <question data="question"></question>
+          <br>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <span><b>IMPORTANT!</b> All your answers are being registered!</span>
+        </div>
+      </form>
+      <hr>
+      <div>
+        <h3>Your Answers</h3>
+        <pre>{{formsExample.answers}}</pre>
+      </div>
     </div>
-    <div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <span><b>IMPORTANT!</b> All your answers are being registered!</span>
-    </div>
-  </form>
-  <hr>
-  <div>
-    <h3>Your Answers</h3>
-    <pre>{{formsExample.answers}}</pre>
   </div>
 </div>
