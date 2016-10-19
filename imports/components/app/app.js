@@ -81,7 +81,8 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
   kmts = KMTrackService;
   abs = ActionBlockerService;
 
-  $rootScope.$on('$viewContentLoaded', function (event) {
+  // http://stackoverflow.com/a/20786262
+  $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
     if (Meteor.user()) {
       var state = 'BEGIN';
       lts.saveVisitedLink(state);
@@ -94,7 +95,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
     }
   });
 
-  $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
+  $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
     if (Meteor.user()) {
       var state = 'END';
       lts.saveVisitedLink(state);
