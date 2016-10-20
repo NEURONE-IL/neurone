@@ -10,16 +10,9 @@ import { Documents } from '../imports/api/documents/index';
 
 Meteor.startup(function () {
   console.log('Loading Documents...');
+  var sm = SearchMethods;
 
   if (Documents.find().count() === 0) {  
-    /*
-    const loadedDocuments = JSON.parse(Assets.getText('reuters100.json'));
-
-    loadedDocuments.forEach(function (document) {
-      Documents.insert(document);
-    });
-    */
-
     const loadedDocuments = JSON.parse(Assets.getText('olympics.json'));
 
     loadedDocuments.forEach(function(doc) {
@@ -30,22 +23,6 @@ Meteor.startup(function () {
   }
   else {
     console.log('Documents Already Loaded!');
-    
-    var filePath = Meteor.absolutePath + '/public/olympic_games.html',
-      htmlString = '';
-
-    /*
-    DocumentParserService.readTextFile(filePath, function(error, response) {
-      if (!error) {
-        htmlString = response;
-        temp1 = DocumentParserService.removeLinks(htmlString);
-        newPath = Meteor.absolutePath + '/public/olympic_games2.html';
-        DocumentParserService.writeTextFile(newPath, temp1);
-      }
-      else {
-        console.log(err);
-      }
-    });
-    */
+    Meteor.call('createSearchIndex');
   }
 });

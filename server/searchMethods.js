@@ -3,7 +3,39 @@ import DocumentParserService from '../imports/components/search/services/documen
 
 import { Documents } from '../imports/api/documents/index';
 
+var idxService = InvertedIndexService,
+   searchIndex = {};
+
 Meteor.methods({
+  createSearchIndex: () => {
+    console.log('Generating Search Index...');
+
+    var allDocs = Documents.find({});
+    
+    searchIndex = idxService.createIndex();
+
+    allDocs.forEach((doc) => {
+      idxService.addDocument(searchIndex, doc);
+    });
+  },
+  searchDocuments: (query) => {
+    check(query, String);
+
+    var search = [],
+      respDocs = [];
+
+    search = idxService.searchDocument(searchIndex, query);
+    
+    search.forEach((obj) => {
+      var docId = obj.ref,
+         docObj = Documents.findOne({id: docId});
+
+      respDocs.push(docObj);
+    });
+
+    return respDocs;
+  },
+  /*
   searchDocuments: function(query) {
     check(query, String);
 
@@ -29,7 +61,8 @@ Meteor.methods({
 
     return respDocs;
   },
-  getPageAsset: function(path) {
+  */
+  getPageAsset: (path) => {
     check(path, String);
 
     const dpService = DocumentParserService;
@@ -39,7 +72,7 @@ Meteor.methods({
 
     return html;
   },
-  getBinaryAsset: function(path) {
+  getBinaryAsset: (path) => {
     check(path, String);
 
     const dpService = DocumentParserService;
@@ -48,7 +81,7 @@ Meteor.methods({
 
     return bin;
   },
-  getAssetPath: function(path) {
+  getAssetPath: (path) => {
     check(path, String);
 
     const dpService = DocumentParserService;
@@ -57,7 +90,7 @@ Meteor.methods({
 
     return path;
   },
-  getDocumentPage: function(documentName) {
+  getDocumentPage: (documentName) => {
     var doc = Documents.findOne({ docName: documentName }),
       route = doc.route;
 
