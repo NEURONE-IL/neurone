@@ -56,6 +56,10 @@ a.search-result-title:visited {
   margin-bottom: 0px;
 }
 
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

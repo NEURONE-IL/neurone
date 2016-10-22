@@ -76,9 +76,34 @@ class FormsExample {
           required: false
         },
         {
+          questionId: 7,
           type: 'time',
           title: 'What time is it now?',
           required: false
+        },
+        {
+          questionId: 8,
+          type: 'scale',
+          title: 'How much do you like the NEURONE Platform?',
+          hint: 'Use the scale below! :)',
+          required: true,
+          min: 1,
+          max: 10,
+          step: 1,
+          minLabel: 'I don\'t like it!',
+          maxLabel: 'I like it very much!'
+        },
+        {
+          questionId: 9,
+          type: 'scale',
+          title: 'How happy are you now?',
+          hint: 'Use the scale below! :)',
+          required: false,
+          min: 0,
+          max: 100,
+          step: 10,
+          minLabel: 'I\'m sad :(',
+          maxLabel: 'I\'m happy! :)'
         }
       ]
     };

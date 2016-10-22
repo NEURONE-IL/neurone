@@ -20,6 +20,7 @@ Meteor.startup(function () {
     });
 
     console.log('Documents Loaded!');
+    Meteor.call('createSearchIndex');
   }
   else {
     console.log('Documents Already Loaded!');
