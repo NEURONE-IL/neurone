@@ -1,23 +1,24 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
 
-import template from './formsExample.html';
+import template from './formCtrl.html';
 
-import Utils from '../../globalUtils';
-import { name as Question } from '../../forms/modules/question';
+import Utils from '../globalUtils';
+import { name as Question } from './modules/question';
 
-class FormsExample {
-  constructor($scope, $reactive) {
+class FormCtrl {
+  constructor($scope, $reactive, $stateParams) {
     'ngInject';
 
     this.$scope = $scope;
-    
+
     $reactive(this).attach($scope);
 
     this.form = {};
     this.answers = '';
 
-    Meteor.call('getForm', 1, (err, result) => {
+    Meteor.call('getForm', Utils.parseStringAsInteger($stateParams.formId), (err, result) => {
       if (!err) {
         this.form = result;
         this.$scope.$apply();
@@ -28,7 +29,7 @@ class FormsExample {
     });
   }
 
-  showAnswers() {
+  submit() {
     this.answers = '';
     this.answerArray = [];
 
@@ -67,19 +68,20 @@ class FormsExample {
       });
     }
   }
-};
+}
 
-const name = 'formsExample';
+const name = 'formCtrl';
 
 // create a module
 export default angular.module(name, [
   angularMeteor,
+  uiRouter,
   Question
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: FormsExample
+  controller: FormCtrl
 })
 .config(config);
 
@@ -87,9 +89,9 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('formsExample', {
-      url: '/formsExample',
-      template: '<forms-example></forms-example>',
+    .state('form', {
+      url: '/form?formId',
+      template: '<form-ctrl></form-ctrl>',
       resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

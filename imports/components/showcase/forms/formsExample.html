@@ -3,7 +3,7 @@
     <div class="col-md-offset-2 col-md-8">
       <h1>Forms Example</h1>
       <span><b>*</b> Required answer</span>
-      <hr>
+      <br>
       <form ng-submit="formsExample.showAnswers()">
         <div ng-repeat="question in formsExample.form.questions track by $index">
           <question data="question"></question>
@@ -14,7 +14,7 @@
           <span><b>IMPORTANT!</b> All your answers are being registered!</span>
         </div>
       </form>
-      <hr>
+      <br>
       <div>
         <h3>Your Answers</h3>
         <pre>{{formsExample.answers}}</pre>

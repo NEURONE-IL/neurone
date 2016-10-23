@@ -13,6 +13,7 @@ import { name as Home } from './views/home';
 import { name as Navigation } from './views/navigation';
 
 import { name as Search } from '../search/search';
+import { name as Forms } from '../forms/formCtrl';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as ActionBlocker } from './services/actionBlocker';
@@ -35,7 +36,8 @@ export default angular.module(name, [
   Auth,
   Navigation,
   Showcase,
-  Search
+  Search,
+  Forms
 ])
 .component(name, {
   template,

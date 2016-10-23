@@ -37,6 +37,7 @@ class ActionBlockerService {
   service() {
     if (!this.isTracking) {
       var data = {};
+      
       this.bindEvent('contextmenu', data, this.blockRightClick);
       this.bindEvent('cut', data, this.blockCut);
       this.bindEvent('copy', data, this.blockCopy);
@@ -49,9 +50,10 @@ class ActionBlockerService {
   antiService() {
     if (this.isTracking) {
       this.unbindEvent('contextmenu', this.blockRightClick);
-      this.unbindEvent('cut', this.blockCopy);
+      this.unbindEvent('cut', this.blockCut);
       this.unbindEvent('copy', this.blockCopy);
       this.unbindEvent('paste', this.blockPaste);
+
       this.isTracking = false;
     }
   }

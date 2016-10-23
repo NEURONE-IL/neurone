@@ -16,6 +16,14 @@
     "loginButton": "Login",
     "logoutButton": "Logout"
   },
+  "home": {
+    "welcome": "Welcome to NEURONE!",
+    "acronym": "oNlinE inqUiry expeRimentatiON systEm",
+    "p1": "Please register and login with your email to test this demo",
+    "p2": "This demo features: HTML Document Preview, Document Search, Snippet Grabbing Tool, Bookmark Tool, Forms and Interaction Tracking",
+    "p3": "The current document loaded set is a very small selection of Olympics and Paralympics articles from Wikipedia",
+    "p4": "Please note that all your mouse and keyboard interactions as well as your session data, login information and visited pages will be logged"
+  },
   "actions": {
     "snippetButton": "Save Snippet",
     "bookmarkButton": "Bookmark",
@@ -36,5 +44,12 @@
     "snippetSaved": "Snippet saved!",
     "bookmarkSaved": "Bookmark saved!",
     "bookmarkRemoved": "Bookmark removed!"
+  },
+  "form": {
+    "title": "Questionnaire",
+    "instructions": "Now you must answer some questions!",
+    "requiredAnswer": "Required answer",
+    "submitButton": "Submit",
+    "submitted": "Your answers have been submitted!"
   }
 }

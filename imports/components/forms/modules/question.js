@@ -1,11 +1,11 @@
-import TextQuestion from './templates/text';
-import ParagraphQuestion from './templates/paragraph';
-import MultipleChoiceQuestion from './templates/multipleChoice';
-import CheckboxQuestion from './templates/checkbox';
-import ListQuestion from './templates/list';
-import ScaleQuestion from './templates/scale';
-import DateQuestion from './templates/date';
-import TimeQuestion from './templates/time';
+import TextQuestion from '../templates/text';
+import ParagraphQuestion from '../templates/paragraph';
+import MultipleChoiceQuestion from '../templates/multipleChoice';
+import CheckboxQuestion from '../templates/checkbox';
+import ListQuestion from '../templates/list';
+import ScaleQuestion from '../templates/scale';
+import DateQuestion from '../templates/date';
+import TimeQuestion from '../templates/time';
 
 //import ScaleCtrl from './controllers/scaleCtrl';
 
