@@ -14,6 +14,7 @@ import { name as Navigation } from './views/navigation';
 
 import { name as Search } from '../search/search';
 import { name as Forms } from '../forms/formCtrl';
+import { name as Synthesis } from '../synthesis/synthesis';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as ActionBlocker } from './services/actionBlocker';
@@ -37,7 +38,8 @@ export default angular.module(name, [
   Navigation,
   Showcase,
   Search,
-  Forms
+  Forms,
+  Synthesis
 ])
 .component(name, {
   template,
@@ -69,11 +71,10 @@ function run($rootScope, $state) {
   'ngInject';
 
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-      if (error === 'AUTH_REQUIRED') {
-        $state.go('login');
-      }
+    if (error === 'AUTH_REQUIRED') {
+      $state.go('login');
     }
-  );
+  });
 };
 
 function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlockerService) {

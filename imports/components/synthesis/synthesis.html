@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <h1>Synthesis</h1>
+      <p>{{synthesis.question}}</p>
+      <form>
+        <ng-wig ng-model="synthesis.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
+        <br>
+        <button type="submit" class="btn btn-primary">{{"synthesis.submitButton" | translate}}</button>
+        <span ng-if="formCtrl.answers">{{"synthesis.submitted" | translate}}</span>
+        <div>{{synthesis.answer}}</div>
+      </form>
+      <br>
+    </div>
+    <div class="col-md-3">
+      <div id="snippetList" class="row">
+        <h2>{{"synthesis.snippets" | translate}}</h2>
+      </div>
+      <div id="bookmarkList" class="row">
+        <h2>{{"synthesis.bookmarks" | translate}}</h2>
+      </div>
+    </div>
+  </div>
+</div>

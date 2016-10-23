@@ -8,17 +8,18 @@ import Utils from '../globalUtils';
 import { name as Question } from './modules/question';
 
 class FormCtrl {
-  constructor($scope, $reactive, $stateParams) {
+  constructor($scope, $reactive, $state, $stateParams) {
     'ngInject';
 
     this.$scope = $scope;
+    this.$state = $state;
 
     $reactive(this).attach($scope);
 
     this.form = {};
     this.answers = '';
 
-    Meteor.call('getForm', Utils.parseStringAsInteger($stateParams.formId), (err, result) => {
+    Meteor.call('getForm', Utils.parseStringAsInteger($stateParams.id), (err, result) => {
       if (!err) {
         this.form = result;
         this.$scope.$apply();
@@ -90,7 +91,7 @@ function config($stateProvider) {
 
   $stateProvider
     .state('form', {
-      url: '/form?formId',
+      url: '/form?id',
       template: '<form-ctrl></form-ctrl>',
       resolve: {
       currentUser($q) {

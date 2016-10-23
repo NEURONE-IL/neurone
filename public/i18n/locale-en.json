@@ -51,5 +51,12 @@
     "requiredAnswer": "Required answer",
     "submitButton": "Submit",
     "submitted": "Your answers have been submitted!"
+  },
+  "synthesis": {
+    "title": "Synthesis",
+    "submitButton": "Submit",
+    "submitted": "Your answer has been submitted!",
+    "snippets": "Your Snippets",
+    "bookmarks": "Your Bookmarks"
   }
 }
