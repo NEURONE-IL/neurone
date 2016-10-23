@@ -1,5 +1,7 @@
 import ServerUtils from './lib/utils';
 
+import UserAgent from 'useragent';
+
 import { Documents } from '../imports/api/documents/index';
 import { Snippets } from '../imports/api/snippets/index';
 import { VisitedLinks } from '../imports/api/visitedLinks/index';
@@ -52,12 +54,17 @@ export default Meteor.methods({
   storeSessionLog: function(jsonObject) {
     var time = ServerUtils.getTimestamp(),
       ipAddr = this.connection.clientAddress,
+         rua = this.connection.httpHeaders['user-agent'],     // raw user agent
+         oua = rua ? UserAgent.parse(rua) : '',               // object user agent
+     browser = oua ? oua.family + ' ' + oua.major : 'undefined';    
        state = jsonObject.state;
 
     jsonObject.server_time = time;
     jsonObject.clientAddress = ipAddr;
+    jsonObject.clientBrowser = browser;
+    jsonObject.userAgent = rua;
     SessionLogs.insert(jsonObject);
-    //console.log('Session Log Stored!', ipAddr, state, time);
+    //console.log('Session Log Stored!', state, ipAddr, browser, time);
   },
   storeQuery: function(jsonObject) {
     var time = ServerUtils.getTimestamp(),
