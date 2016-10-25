@@ -21,10 +21,46 @@ class Synthesis {
 
     this.question = 'Some question';    // TODO Load from database ($stateParams.id)
     this.answer = '';
+    this.snippets = [];
+    this.bookmarks = [];
+    
+    this.getSnippets();
+    this.getBookmarks();
+
+    console.log('Snippets', this.snippets);
+    console.log('Bookmarks', this.bookmarks);
   }
 
   submit() {
 
+  }
+
+  getSnippets() {
+    if (!!Meteor.userId()) {
+      this.call('getSnippets', Meteor.userId(), (err, res) => {
+        if (!err) {
+          //console.log('Snippets', res);
+          this.snippets = res;
+        }
+        else {
+          console.log(err);
+        }
+      });
+    }
+  }
+
+  getBookmarks() {
+    if (!!Meteor.userId()) {
+      this.call('getBookmarks', Meteor.userId(), (err, res) => {
+        if (!err) {
+          //console.log('Bookmarks', res);
+          this.bookmarks = res;
+        }
+        else {
+          console.log(err);
+        }
+      });
+    }
   }
 }
 

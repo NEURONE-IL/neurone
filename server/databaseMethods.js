@@ -155,5 +155,15 @@ export default Meteor.methods({
     }
 
     return form;
+  },
+  getSnippets: function(userId) {
+    check(userId, String);
+
+    return Snippets.find({ owner: userId }).fetch();
+  },
+  getBookmarks: function(userId) {
+    check(userId, String);
+
+    return Bookmarks.find({ owner: userId }).fetch();
   }
 });
