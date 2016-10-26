@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
+import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
 
@@ -29,6 +30,7 @@ const name = 'app';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
+  uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
   Logger,

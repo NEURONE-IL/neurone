@@ -21,6 +21,7 @@ class DisplayPage {
     $scope.$on('$stateChangeStart', (event) => {
       this.kmtis.antiService();
       this.abs.antiService();
+      this.$rootScope.documentTitle = '';
       this.$rootScope.$broadcast('setDocumentHelpers', false);
     });
 
@@ -31,15 +32,17 @@ class DisplayPage {
     $reactive(this).attach($scope);
 
     this.documentPage = '';
+    this.documentTitle = '';
     this.renderPage($stateParams.docName);
   }
 
   // From https://github.com/meteor/meteor/issues/7189
   renderPage(docName) {
-    this.call('getDocumentPage', docName, function(error, result) {
+    this.call('getDocument', docName, (error, result) => {
       if (!error) {
-        this.documentPage = result;
-        //console.log('result', this.documents);
+        this.documentPage = result.routeUrl;
+        this.documentTitle = result.title;
+        this.$rootScope.documentTitle = result.title;
       }
       else {
         console.log(error);

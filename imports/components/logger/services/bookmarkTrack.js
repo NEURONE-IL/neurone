@@ -4,10 +4,11 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class BookmarkTrackService {
-  constructor($state, $translate) {
+  constructor($state, $rootScope, $translate) {
     'ngInject';
 
     this.$state = $state;
+    this.$rootScope = $rootScope;
     this.$translate = $translate;
   }
 
@@ -31,11 +32,14 @@ export default class BookmarkTrackService {
 
   saveBookmark(callback) {
     if (Meteor.user()) {
+      var pageTitle = this.$rootScope.documentTitle,
+            pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
+
       var bookmarkObject = {
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        title: document.title,
-        url: this.$state.href(this.$state.current.name, this.$state.params, {absolute: false}),
+        title: (pageTitle ? pageTitle : document.title),
+        url: (pageUrl ? pageUrl : window.location.href),
         local_time: Utils.getTimestamp()
       };
 

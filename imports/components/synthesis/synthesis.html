@@ -3,12 +3,12 @@
     <div class="col-md-8 col-sm-8 col-xs-8 synthesis-sidebar">
       <h1>Synthesis</h1>
       <p>{{synthesis.question}}</p>
-      <form>
+      <form ng-submit="synthesis.submit()">
         <ng-wig ng-model="synthesis.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
         <br>
         <button type="submit" class="btn btn-primary">{{"synthesis.submitButton" | translate}}</button>
-        <span ng-if="formCtrl.answers">{{"synthesis.submitted" | translate}}</span>
-        <div>{{synthesis.answer}}</div>
+        <span ng-if="synthesis.answer">{{"synthesis.submitted" | translate}}</span>
+        <button class="button" ng-click="synthesis.showSnippetModal()">modal</button>
       </form>
       <br>
     </div>

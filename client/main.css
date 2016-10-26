@@ -73,12 +73,10 @@ a.search-result-title:visited {
 
 .panel.synthesis-element {
   margin: 5px 0 0 0;
-  max-height: 50vh;
 }
 
 .synthesis-element-body {
-  min-height: calc(50% - 30px);
-  max-height: calc(50% - 30px);
+  max-height: 225px;
   overflow-y: auto;
 }
 

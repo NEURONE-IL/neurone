@@ -9,13 +9,18 @@ import '../../lib/ngWig/plugins/forecolor.ngWig';
 import '../../lib/ngWig/plugins/clear-styles.ngWig';
 
 import template from './synthesis.html';
+import templateSnippet from './templates/snippetModal.html';
+
+import { name as SnippetModal } from './templates/snippetModal';
+//import { name as BookmarkModal } from './templates/bookmarkModal';
 
 class Synthesis {
-  constructor($scope, $reactive, $state, $stateParams) {
+  constructor($scope, $reactive, $state, $stateParams, $uibModal) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
+    this.$uibModal = $uibModal;
 
     $reactive(this).attach($scope);
 
@@ -27,8 +32,8 @@ class Synthesis {
     this.getSnippets();
     this.getBookmarks();
 
-    console.log('Snippets', this.snippets);
-    console.log('Bookmarks', this.bookmarks);
+    //console.log('Snippets', this.snippets);
+    //console.log('Bookmarks', this.bookmarks);
   }
 
   submit() {
@@ -39,7 +44,6 @@ class Synthesis {
     if (!!Meteor.userId()) {
       this.call('getSnippets', Meteor.userId(), (err, res) => {
         if (!err) {
-          //console.log('Snippets', res);
           this.snippets = res;
         }
         else {
@@ -53,7 +57,6 @@ class Synthesis {
     if (!!Meteor.userId()) {
       this.call('getBookmarks', Meteor.userId(), (err, res) => {
         if (!err) {
-          //console.log('Bookmarks', res);
           this.bookmarks = res;
         }
         else {
@@ -61,6 +64,25 @@ class Synthesis {
         }
       });
     }
+  }
+
+  showSnippetModal(snippetId) {
+    var modalInstance = this.$uibModal.open({
+      //animation: $ctrl.animationsEnabled,
+      ariaLabelledBy: 'Snippet',
+      ariaDescribedBy: 'Snippet',
+      templateUrl: './templates/snippetModal.html',
+      controller: SnippetModal,
+      controllerAs: '$ctrl',
+      size: 'sm',
+      //appendTo: parentElem,
+      resolve: {}
+    });
+    //this.$uibModal.
+  }
+
+  showBookmarkModal(bookmarkId) {
+
   }
 }
 

@@ -12,6 +12,7 @@
     "angular-translate": "^2.12.1",
     "angular-translate-loader-static-files": "^2.12.1",
     "angular-translate-storage-local": "^2.12.1",
+    "angular-ui-bootstrap": "^2.2.0",
     "angular-ui-router": "^0.3.1",
     "bcrypt": "^0.8.7",
     "himalaya": "^0.2.0",

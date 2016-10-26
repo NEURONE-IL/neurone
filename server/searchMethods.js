@@ -90,10 +90,10 @@ Meteor.methods({
 
     return path;
   },
-  getDocumentPage: (documentName) => {
-    var doc = Documents.findOne({ docName: documentName }),
-      route = doc.route;
+  getDocument: (documentName) => {
+    var doc = Documents.findOne({ docName: documentName });
+    doc.routeUrl = '/' + doc.route;
 
-    return '/' + route;
+    return doc;
   }
 });
