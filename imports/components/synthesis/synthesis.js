@@ -11,7 +11,7 @@ import '../../lib/ngWig/plugins/clear-styles.ngWig';
 import template from './synthesis.html';
 import templateSnippet from './templates/snippetModal.html';
 
-import { name as SnippetModal } from './templates/snippetModal';
+//import { name as SnippetModal } from './templates/snippetModal';
 //import { name as BookmarkModal } from './templates/bookmarkModal';
 
 class Synthesis {

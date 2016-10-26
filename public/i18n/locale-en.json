@@ -33,7 +33,7 @@
   "search": {
     "searchEngineTitle": "My Search Engine",
     "searchButton": "Search",
-    "noResults": "There is no results available with your search query"
+    "noResults": "Your search query matched no results"
   },
   "showcase": {
     "documentList": "Document List",
