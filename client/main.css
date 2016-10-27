@@ -80,6 +80,10 @@ a.search-result-title:visited {
   overflow-y: auto;
 }
 
+.form-asterisk {
+  color: #FF0000;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

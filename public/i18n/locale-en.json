@@ -20,10 +20,11 @@
   "home": {
     "welcome": "Welcome to NEURONE!",
     "acronym": "oNlinE inqUiry expeRimentatiON systEm",
-    "p1": "Please register and login with your email to test this demo",
-    "p2": "This demo features: HTML Document Preview, Document Search, Snippet Grabbing Tool, Bookmark Tool, Forms and Interaction Tracking",
-    "p3": "The current document loaded set is a very small selection of Olympics and Paralympics articles from Wikipedia",
-    "p4": "Please note that all your mouse and keyboard interactions as well as your session data, login information and visited pages will be logged"
+    "p1": "Please register and login with your email to test this demo.",
+    "p2": "This demo features: HTML Document Preview, Document Search, Forms and Interaction Tracking.",
+    "p3": "The current document loaded set is a very small selection of Olympics and Paralympics articles from Wikipedia.",
+    "p4": "Please note that all your mouse and keyboard interactions as well as your session data and visited pages will be recorded once you log in to NEURONE.",
+    "p5": "All the data collected on this demo (at this state) will be used exclusively as statistics for improving the platform, and they will not be part of the final study."
   },
   "actions": {
     "snippetButton": "Save Snippet",

@@ -38,10 +38,10 @@ export default angular.module(name, [
   Home,
   Auth,
   Navigation,
-  Showcase,
+  //Showcase,
   Search,
-  Forms,
-  Synthesis
+  //Synthesis,
+  Forms
 ])
 .component(name, {
   template,

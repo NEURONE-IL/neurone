@@ -7,8 +7,13 @@ export default class Utils {
 
   // dgacitua: Convert string to integer, else return it as string
   static parseStringAsInteger(str) {
-    if (!isNaN(str)) {
-      return parseInt(str, 10);
+    if (typeof str === 'string' || str instanceof String) {
+      if (!isNaN(str)) {
+        return parseInt(str, 10);
+      }
+      else {
+        return str.toString();
+      }  
     }
     else {
       return str;

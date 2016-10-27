@@ -88,5 +88,56 @@
     "step": 10,
     "minLabel": "I'm sad :(",
     "maxLabel": "I'm happy! :)"
+  },
+  {
+    "questionId": "st1_1",
+    "type": "multipleChoice",
+    "title": "While you were searching, did you get relevant results to your queries?",
+    "hint": "Consider only queries related to olympics and sports topics",
+    "required": true,
+    "other": false,
+    "options": [
+        "Yes, all the time",
+        "Some of them where relevant",
+        "No, they weren't"
+      ]
+  },
+  {
+    "questionId": "st1_2",
+    "type": "scale",
+    "title": "Rate the difficulty of completing the assignments in the NEURONE demo",
+    "hint": "Use the scale below",
+    "required": true,
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "minLabel": "Very Easy",
+    "maxLabel": "Very Hard"
+  },
+  {
+    "questionId": "st1_3",
+    "type": "scale",
+    "title": "Rate your experience in the NEURONE demo (was it good?)",
+    "hint": "Use the scale below",
+    "required": true,
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "minLabel": "Not good",
+    "maxLabel": "Very good!"
+  },
+  {
+    "questionId": "st1_4",
+    "type": "paragraph",
+    "title": "Did you have any problem while using the NEURONE demo?",
+    "hint": "If so, please tell us what happened so we can improve the software",
+    "required": false
+  },
+  {
+    "questionId": "st1_5",
+    "type": "paragraph",
+    "title": "Do you have any suggestion to improve what you have seen in this demo?",
+    "hint": "Any feedback is appreciated",
+    "required": false
   }
 ]

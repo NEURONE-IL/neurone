@@ -139,13 +139,14 @@ export default Meteor.methods({
     //console.log('Form Answer Stored!', page, time);
   },
   getForm: function(formId) {
-    check(formId, Match.OneOf(String, Number));
+    check(formId, Match.OneOf(Number, String));
 
     var questionnaire = FormQuestionnaires.findOne({ questionnaireId: formId }),
                  form = {};
 
     if (questionnaire) {
       form.formId = questionnaire.questionnaireId;
+      form.instructions = questionnaire.instructions;
       form.questions = [];
 
       questionnaire.questions.forEach((q) => {
