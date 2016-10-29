@@ -1,6 +1,8 @@
-.deploy/deployDev.sh
+.deploy/remoteDeployMUP.sh
 node_modules/
 private/pages/
+remoteDeployPassenger.sh
+neuroneapp.tar.gz
 
 public/*
 !public/removeAnchor.sh
