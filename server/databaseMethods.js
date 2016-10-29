@@ -78,9 +78,9 @@ export default Meteor.methods({
       ipAddr = this.connection.clientAddress,
          rua = this.connection.httpHeaders['user-agent'],     // raw user agent
          oua = rua ? UserAgent.parse(rua) : '',               // object user agent
-     browser = rua ? oua.toAgent() : 'undefined',
-          os = rua ? oua.os.toString() : 'undefined',
-      device = rua ? oua.device.toString() : 'undefined',
+     browser = oua ? oua.toAgent() : 'undefined',
+          os = oua ? oua.os.toString() : 'undefined',
+      device = oua ? oua.device.toString() : 'undefined',
        state = jsonObject.state;
 
     jsonObject.server_time = time;
