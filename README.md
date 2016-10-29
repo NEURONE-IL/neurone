@@ -12,6 +12,8 @@ Created by Daniel Gacitúa
 
 ### Production
 
+#### Quick deploy (through Meteor Up)
+
 **NOTE:** A Virtual Private Server (VPS) or a local machine with SSH access is needed to run this project in production mode.
 
 1. Install Node.js 4.5.0+, MongoDB 3.2+ and Meteor 1.4+ on your development machine
@@ -28,3 +30,17 @@ Created by Daniel Gacitúa
 5. Open a terminal in project's root directory, run `cd .deploy`
 6. Run `mup setup`
 7. Run `mup deploy`
+
+#### Advanced deploy (through Passenger and Nginx)
+
+Follow instructions available on [Deploying a Meteor app with Passenger to production](https://www.phusionpassenger.com/library/walkthroughs/deploy/meteor/). In that walkthrough, select **Nginx** as integration mode, **Open Source** as Passenger edition and Meteor version **>=1.4**.
+
+After your first successful deploy, you can use the automatic deployment scripts for Passenger available in this repo by setting the following environment variables (in your development machine):
+
+```
+# Replace values with your server's SSH configuration
+export PASSENGER_SERVER_HOST='192.168.1.2'
+export PASSENGER_SERVER_USERNAME='root'
+```
+
+For running an automatic deploy to your Passenger server, enter to NEURONE's root directory in your terminal and run `./passenger/init.sh`

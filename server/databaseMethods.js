@@ -91,7 +91,7 @@ export default Meteor.methods({
     jsonObject.userAgent = rua;
 
     SessionLogs.insert(jsonObject);
-    console.log('Session Log Stored!', state, ipAddr, browser, os, device, time);
+    //console.log('Session Log Stored!', state, ipAddr, browser, os, device, time);
   },
   storeQuery: function(jsonObject) {
     check(jsonObject, Object);
