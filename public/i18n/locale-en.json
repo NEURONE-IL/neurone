@@ -15,7 +15,13 @@
   "auth": {
     "registerButton": "Register",
     "loginButton": "Login",
-    "logoutButton": "Logout"
+    "logoutButton": "Logout",
+    "registerMessage": "Register in NEURONE",
+    "loginMessage": "Login to NEURONE",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password"
   },
   "home": {
     "welcome": "Welcome to NEURONE!",

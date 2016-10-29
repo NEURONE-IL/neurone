@@ -17,6 +17,7 @@ class SearchResults {
 
     this.documents = [];
 
+    this.resultsReady = false;
     this.searchText = $stateParams.query;
     this.getResults($stateParams.query);
   }
@@ -29,8 +30,10 @@ class SearchResults {
     this.call('searchDocuments', qt, function(error, result) {
       if (!error) {
         this.documents = result;
+        this.resultsReady = true;
       }
       else {
+        this.resultsReady = true;
         console.log(error);
       }
     });

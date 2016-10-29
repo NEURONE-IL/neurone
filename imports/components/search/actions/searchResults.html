@@ -16,7 +16,7 @@
       <div class="search-result-snippet">{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</div>
       <br>
     </div>
-    <div ng-if="searchResults.documents.length <= 0">
+    <div ng-if="searchResults.resultsReady && searchResults.documents.length <= 0">
       <h3 class="text-center">{{"search.noResults" | translate}}</h3>
     </div>
   </div>
