@@ -29,6 +29,7 @@ export default class Indexer {
         });
 
         InvertedIndex.generate();
+        InvertedIndex.save();
       }
       else {
         console.error(err);
@@ -51,7 +52,7 @@ export default class Indexer {
           var docRoute = DocumentParser.getHtmlRoute(file),
                docData = Documents.findOne({ route: docRoute });
 
-          if (!!docData) {
+          if (docData==={} || !docData) {
             DocumentParser.removeLinks(file);
 
             var docObj = DocumentParser.parseDocument(file);
@@ -67,6 +68,7 @@ export default class Indexer {
         Documents.remove({ route: { $nin: syncedList }});
 
         InvertedIndex.generate();
+        InvertedIndex.save();
       }
       else {
         console.error(err);
@@ -74,7 +76,12 @@ export default class Indexer {
     }));
   }
 
-  static generateInvertedIndex() {
-    InvertedIndex.generate();
+  static loadInvertedIndex() {
+    InvertedIndex.load();
+    InvertedIndex.save();
+  }
+
+  static getDocumentCount() {
+    return Documents.find().count();
   }
 }

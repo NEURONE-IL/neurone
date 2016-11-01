@@ -3,6 +3,7 @@ import { lunr } from 'meteor/lbee:lunr';
 import ServerUtils from '../lib/utils';
 
 import { Documents } from '../../imports/api/documents/index';
+import { Indexes } from '../../imports/api/indexes/index';
 
 var searchIndex = {};
 
@@ -21,6 +22,33 @@ export default class InvertedIndex {
     allDocs.forEach((doc) => {
       searchIndex.add(doc);
     });
+  }
+
+  static load() {
+    var currentIndex = Indexes.findOne({}, {sort: {DateTime: -1, limit: 1}});
+
+    if (currentIndex) {
+      console.log('Loading Inverted Index...');
+      searchIndex = lunr.Index.load(JSON.parse(currentIndex.index));
+    }
+    else {
+      this.generate();
+    }
+  }
+
+  static save() {
+    console.log('Saving Inverted Index...');
+
+    var serializedIndex = { index: JSON.stringify(searchIndex) },
+           currentIndex = Indexes.findOne({}, {sort: {DateTime: -1, limit: 1}});
+
+    if (currentIndex) {
+      var currentId = currentIndex._id;
+      Indexes.update({ _id: currentId }, serializedIndex);
+    }
+    else {
+      Indexes.insert(serializedIndex);
+    }    
   }
 
   static searchDocuments(query) {

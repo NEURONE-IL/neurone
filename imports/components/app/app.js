@@ -38,9 +38,9 @@ export default angular.module(name, [
   Home,
   Auth,
   Navigation,
-  //Showcase,
+  Showcase,
   Search,
-  //Synthesis,
+  Synthesis,
   Forms
 ])
 .component(name, {
