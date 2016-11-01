@@ -34,3 +34,4 @@ session@1.1.7
 jalik:ufs
 ostrio:meteor-root
 socialize:user-presence
+osv:mongo-counter

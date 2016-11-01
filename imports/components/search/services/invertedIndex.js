@@ -1,6 +1,6 @@
 import { lunr } from 'meteor/lbee:lunr';
 
-export default class InvertedIndexService {
+export default class InvertedIndex {
   constructor() {}
 
   static createIndex() {

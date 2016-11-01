@@ -1,22 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 
-//import ServerMethods from './serverMethods';
-//import DatabaseMethods from './databaseMethods';
-//import SearchMethods from './searchMethods';
-
-//import DocumentParserService from '../imports/components/search/services/documentParser';
-
 import { Documents } from '../imports/api/documents/index';
 import { FormQuestions } from '../imports/api/formQuestions/index';
 import { FormQuestionnaires } from '../imports/api/formQuestionnaires/index';
+
+import Indexer from './documentIndexer/indexer';
 
 Meteor.startup(function () {
   console.log('Welcome to NEURONE Server Platform!');
 
   // dgacitua: Preloading of HTML documents
-  console.log('Loading Documents...');
-
-  if (Documents.find().count() === 0) {  
+  if (Documents.find().count() === 0) {
+    console.log('Generating Document Collection...');
+    Indexer.generateDocumentCollection();
+    /*
     const loadedDocuments = JSON.parse(Assets.getText('olympics.json'));
 
     loadedDocuments.forEach(function(doc) {
@@ -24,11 +21,12 @@ Meteor.startup(function () {
     });
 
     console.log('Documents Loaded!');
-    Meteor.call('createSearchIndex');
+    */
+    
   }
   else {
-    console.log('Documents Already Loaded!');
-    Meteor.call('createSearchIndex');
+    console.log('Updating Document Collection...');
+    Indexer.updateDocumentCollection();
   }
 
   // dgacitua: Preloading of Form questions
@@ -63,5 +61,8 @@ Meteor.startup(function () {
     console.log('Questionnaires Already Loaded!');
   }
 
-  console.log('NEURONE Server Platform is ready!')
+  console.log('NEURONE Server Platform is ready!');
+
+  //Meteor.call('parseDocument', '/public/sawao_kato.html');
+  //Meteor.call('testIndexer');
 });

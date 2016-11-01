@@ -10,4 +10,9 @@ export default class ServerUtils {
   static getTimestamp() {
     return Date.now ? Date.now() : (new Date().getTime());  
   }
+
+  static getDate() {
+    var date = new Date();
+    return date.toString();
+  }
 }
