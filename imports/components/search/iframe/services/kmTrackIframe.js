@@ -1,7 +1,7 @@
-import '../lib/limit.js'
+import '../../../../lib/limit'
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../logger/loggerUtils';
+import LoggerConfigs from '../../../logger/loggerConfigs';
 
 export default class KMTrackIframeService {
   constructor($state) {
@@ -9,21 +9,24 @@ export default class KMTrackIframeService {
 
     this.$state = $state;
 
-    this._isTracking = false;
-    this._iframeId = 'pageContainer';
-    this._iframeSelected = false;
+    this.isTracking = false;
+    this.iframeId = LoggerConfigs.iframeId;
+    this.iframeSelected = false;
   }
 
   bindEventIframe(elem, evt, data, fn) {
     elem.on(evt, data, fn);
+    Utils.logToConsole('IFRAME BIND!', elem, evt);
   }
 
   bindThrottledEventIframe(elem, evt, data, fn, delay) {
     elem.on(evt, data, fn.throttle(delay));
+    Utils.logToConsole('IFRAME BIND THROTTLED!', elem, evt, delay);
   }
 
   unbindEventIframe(elem, evt, fn) {
     elem.off(evt, fn);
+    Utils.logToConsole('IFRAME UNBIND!', elem, evt);
   }
 
   mouseMoveListener(evt) {
@@ -54,7 +57,7 @@ export default class KMTrackIframeService {
     //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
 
     if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
-      Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var movement_output = {
         type: 'mouse_movement',
@@ -102,7 +105,7 @@ export default class KMTrackIframeService {
         winH = h;
 
     if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
-      Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
 
       var click_output = {
         type: 'mouse_click',
@@ -162,7 +165,7 @@ export default class KMTrackIframeService {
         local_time: time
       };
 
-      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', movement_output, (err, result) => {});
     }
   }
@@ -179,8 +182,8 @@ export default class KMTrackIframeService {
       src = s.href(s.current.name, s.params, {absolute: false});
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Key Pressed!   ' + 
-        ' timestamp:' + t + 
+      Utils.logToConsole('Key Pressed!', 
+        'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
@@ -220,8 +223,8 @@ export default class KMTrackIframeService {
       src = s.href(s.current.name, s.params, {absolute: false});
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Key Pressed!   ' + 
-        ' timestamp:' + t + 
+      Utils.logToConsole('Key Pressed!',
+        'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
@@ -251,28 +254,28 @@ export default class KMTrackIframeService {
 
   onPageContainerListener() {
     // From http://stackoverflow.com/q/9314666
-    this._iframeSelected = true;
-    //console.log('IFRAME Selected!', this._iframeSelected);
+    this.iframeSelected = true;
+    //console.log('IFRAME Selected!', this.iframeSelected);
   }
 
   offPageContainerListener() {
     // From http://stackoverflow.com/q/9314666
-    this._iframeSelected = false;
-    //console.log('IFRAME Not Selected!', this._iframeSelected);
+    this.iframeSelected = false;
+    //console.log('IFRAME Not Selected!', this.iframeSelected);
   }
 
   startTrack() {
-    var pageContainer = Utils.getAngularElementById(this._iframeId);
+    var pageContainer = Utils.getAngularElementById(this.iframeId);
     
     if (pageContainer) {
       //this.bindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
       //this.bindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
 
-      var iframe = document.getElementById(this._iframeId);
+      var iframe = document.getElementById(this.iframeId);
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
       var data = {
-        iframeId: this._iframeId,
+        iframeId: this.iframeId,
         s: this.$state,
         w: angular.element(window),
         d: angular.element(document),
@@ -288,17 +291,17 @@ export default class KMTrackIframeService {
       this.bindEventIframe(angular.element(innerDoc), 'keypress', data, this.keycharListener);
     }
 
-    this._isTracking = true;
+    this.isTracking = true;
   }
 
   stopTrack() {
-    var pageContainer = Utils.getAngularElementById(this._iframeId);
+    var pageContainer = Utils.getAngularElementById(this.iframeId);
     
     if (pageContainer) {
       //this.unbindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
       //this.unbindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
 
-      var iframe = document.getElementById(this._iframeId);
+      var iframe = document.getElementById(this.iframeId);
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
       //console.log(this.frameId, iframe, innerDoc);
 
@@ -309,18 +312,23 @@ export default class KMTrackIframeService {
       this.unbindEventIframe(angular.element(innerDoc), 'keypress', this.keycharListener);
     }
 
-    this._isTracking = false;
+    this.isTracking = false;
   }
 
   service() {
-    if (!this._isTracking) {
+    if (!this.isTracking) {
       this.startTrack();
     }
   }
 
   antiService() {
-    if (this._isTracking) {
+    if (this.isTracking) {
       this.stopTrack();
     }
   }
 }
+
+const name = 'kmTrackLogger';
+
+export default angular.module(name, [])
+.service('KMTrackIframeService', KMTrackIframeService);

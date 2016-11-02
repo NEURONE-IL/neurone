@@ -1,11 +1,12 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <a class="navbar-brand" href="/">{{"app.navbarTitle" | translate}}</a>
+    <!--
     <ul class="nav navbar-nav" ng-if="navigation.isLoggedIn">
       <li><a href="/search">{{"app.search" | translate}}</a></li>
       <li><a href="/form?id=st1">Experience poll</a></li>
     </ul>
-    <!--
+    -->
     <ul class="nav navbar-nav" ng-if="navigation.isLoggedIn">
       <li><a href="/search">{{"app.search" | translate}}</a></li>
       <li><a href="/documents">{{"app.documents" | translate}}</a></li>
@@ -15,20 +16,18 @@
           <li><a href="/visitedLinks">{{"app.visitedLinks" | translate}}</a></li>
           <li><a href="/snippets">{{"app.snippets" | translate}}</a></li>
           <li><a href="/bookmarks">{{"app.bookmarks" | translate}}</a></li>
-          <li><a href="/formsExample">{{"app.forms" | translate}}</a></li>
+          <li><a href="/form?id=st1">{{"app.forms" | translate}}</a></li>
+          <li><a href="/synthesis">{{"app.synthesis" | translate}}</a></li>
           <li><a href="/internationalization">{{"app.i18n" | translate}}</a></li>
         </ul>
       </li>
     </ul>
-    -->
     <div ng-if="navigation.isLoggedIn">
       <button type="button" class="btn btn-danger navbar-btn navbar-right horizontal-button-margin" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
-      <!--
       <button type="button" class="btn btn-warning navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage && !navigation.isBookmarked" ng-click="navigation.saveBookmark()">{{"actions.bookmarkButton" | translate}}</button>
       <button type="button" class="btn btn-warning navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage && navigation.isBookmarked" ng-click="navigation.removeBookmark()">{{"actions.unbookmarkButton" | translate}}</button>
       <button type="button" class="btn btn-info navbar-btn navbar-right horizontal-button-margin" ng-if="navigation.isOnPage" ng-click="navigation.saveSnippet()">{{"actions.snippetButton" | translate}}</button>
       <div id="navbarMessage" class="navbar-text navbar-right horizontal-button-margin">{{navigation.navbarMessage}}</div>
-      -->
     </div>
     <div class="navbar-right btn-group" role="group" ng-if="!navigation.isLoggedIn">
       <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>

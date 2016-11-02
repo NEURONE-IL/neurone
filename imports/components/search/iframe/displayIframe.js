@@ -3,12 +3,12 @@ import angularMeteor from 'angular-meteor';
 import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 
-import template from './displayPage.html';
+import template from './displayIframe.html';
 
-import { name as Logger } from '../iframe/services/kmTrackIframe';
-import { name as ActionBlocker } from '../iframe/services/actionBlockerIframe';
+import { name as Logger } from './services/kmTrackIframe';
+import { name as ActionBlocker } from './services/actionBlockerIframe';
 
-class DisplayPage {
+class DisplayIframe {
   constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
     'ngInject';
 
@@ -17,29 +17,12 @@ class DisplayPage {
     this.kmtis = KMTrackIframeService;
     this.abis = ActionBlockerIframeService;
 
-    /*
-    // dgacitua: Execute on iframe end
-    $scope.$on('$stateChangeStart', (event) => {
-      this.kmtis.antiService();
-      this.abis.antiService();
-      this.$rootScope.documentTitle = '';
-      this.$rootScope.$broadcast('setDocumentHelpers', false);
-    });
-
-    $scope.$on('$stateChangeSuccess', (event) => {
-      
-    });
-    */
     $reactive(this).attach($scope);
 
+    this.page = $stateParams.docName;
     this.documentPage = '';
     this.documentTitle = '';
-    this.redirectToIframe($stateParams.docName);
-    //this.renderPage($stateParams.docName);
-  }
-
-  redirectToIframe(param) {
-    this.$state.go('displayIframe', { docName: param });
+    this.renderPage($stateParams.docName);
   }
 
   // From https://github.com/meteor/meteor/issues/7189
@@ -51,25 +34,21 @@ class DisplayPage {
         this.$rootScope.documentTitle = result.title;
       }
       else {
-        console.log(error);
+        console.error(error);
       }
     });
-
-    //this.documentPage = '/olympic_games.html';
   }
 
   // dgacitua: Execute on iframe start
   startTrackingLoader() {
-    /*
     // TODO fix quick right click between transitions
     this.$rootScope.$broadcast('setDocumentHelpers', true);
     this.abis.service();
     this.kmtis.service();
-    */
   }
 }
 
-const name = 'displayPage';
+const name = 'displayIframe';
 
 export default angular.module(name, [
   angularMeteor,
@@ -81,7 +60,7 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: DisplayPage
+  controller: DisplayIframe
 })
 .config(config);
 
@@ -89,18 +68,29 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('displayPage', {
-      url: '/page/:docName',
-      template: '<display-page></display-page>',
+    .state('displayIframe', {
+      url: '/iframe/:docName',
+      template: '<display-iframe></display-iframe>',
       resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
+        currentUser($q) {
+          if (Meteor.userId() === null) {
+            return $q.reject('AUTH_REQUIRED');
+          }
+          else {
+            return $q.resolve();
+          }
         }
-        else {
-          return $q.resolve();
-        }
+      },
+      onEnter: () => {},
+      onExit: ($rootScope, KMTrackIframeService, ActionBlockerIframeService) => {
+        this.$rootScope = $rootScope;
+        this.kmtis = KMTrackIframeService;
+        this.abis = ActionBlockerIframeService;
+
+        this.kmtis.antiService();
+        this.abis.antiService();
+        this.$rootScope.documentTitle = '';
+        this.$rootScope.$broadcast('setDocumentHelpers', false);
       }
-    }
   });
 };

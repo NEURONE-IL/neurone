@@ -1,9 +1,11 @@
+import LoggerConfigs from '../../../logger/loggerConfigs';
+
 class ActionBlockerIframeService {
   constructor($window) {
     'ngInject';
 
     this.$window = $window;
-    this.iframeId = 'pageContainer';
+    this.iframeId = LoggerConfigs.iframeId;
     this.isTracking = false;
   }
 

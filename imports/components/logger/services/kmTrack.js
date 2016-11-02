@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import '../lib/limit.js';
+import '../../../lib/limit';
 
 import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
@@ -108,7 +108,7 @@ export default class KMTrackService {
         local_time: time
       };
 
-      Utils.logToConsole('Mouse Movement! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseCoordinate', movement_output, (err, result) => {});
     }
   }
@@ -165,7 +165,7 @@ export default class KMTrackService {
         local_time: time
       };
 
-      Utils.logToConsole('Mouse Click! X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseClick', click_output, (err, result) => {});
     }
   }
@@ -204,7 +204,7 @@ export default class KMTrackService {
         local_time: time
       };
 
-      Utils.logToConsole('Scroll Movement! scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', movement_output, (err, result) => {});
     }
   }
@@ -222,8 +222,8 @@ export default class KMTrackService {
     //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Keydown!   ' + 
-        ' timestamp:' + t + 
+      Utils.logToConsole('Keydown!',
+        'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
@@ -264,8 +264,8 @@ export default class KMTrackService {
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Keypress!   ' + 
-        ' timestamp:' + t + 
+      Utils.logToConsole('Keypress!', 
+        'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +

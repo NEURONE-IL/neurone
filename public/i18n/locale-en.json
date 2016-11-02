@@ -66,6 +66,9 @@
     "submitButton": "Submit",
     "submitted": "Your answer has been submitted!",
     "snippets": "Your Snippets",
-    "bookmarks": "Your Bookmarks"
+    "bookmarks": "Your Bookmarks",
+    "closeButton": "Close",
+    "snippetModalTitle": "Your Snippet",
+    "bookmarkModalTitle": "Your Bookmark"
   }
 }

@@ -1,16 +1,26 @@
-angular.module('snippetModal')
-.controller('snippetModal', function ($uibModalInstance, items) {
-  var $ctrl = this;
-  $ctrl.items = items;
-  $ctrl.selected = {
-    item: $ctrl.items[0]
-  };
+import template from './snippetModal.html';
 
-  $ctrl.ok = function () {
-    $uibModalInstance.close($ctrl.selected.item);
-  };
+const name = 'snippetModal';
 
-  $ctrl.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+class SnippetModal {
+  constructor() {
+    'ngInject';
+
+    this.snippet = this.resolve.item;
+  }
+
+  closeModal() {
+    this.close();
+  }
+}
+
+export default angular.module(name, [])
+.component(name, {
+  template,
+  controllerAs: name,
+  controller: SnippetModal,
+  bindings: {
+    resolve: '<',
+    close: '&'
+  }
 });

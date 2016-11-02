@@ -1,20 +1,32 @@
+import template from './bookmarkModal.html';
+
 const name = 'bookmarkModal';
 
 class BookmarkModal {
-  constructor($scope, close) {
+  constructor(KMTrackIframeService, ActionBlockerIframeService) {
     'ngInject';
+
+    this.kmtis = KMTrackIframeService;
+    this.abs = ActionBlockerIframeService;
+
+    this.bookmark = this.resolve.item;
+    this.test = 'SimoneBiles';
+
+    console.log('Bookmark', this.bookmark);
   }
 
-  dismissModal(result) {
-    close(result, 200); // close, but give 200ms for bootstrap to animate
+  closeModal() {
+    this.close();
   }
 }
 
 export default angular.module(name, [])
-.controller(name, BookmarkModal);
-/*
 .component(name, {
+  template,
   controllerAs: name,
-  controller: BookmarkModal
+  controller: BookmarkModal,
+  bindings: {
+    resolve: '<',
+    close: '&'
+  }
 });
-*/

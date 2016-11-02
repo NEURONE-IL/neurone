@@ -8,6 +8,7 @@ import { name as Logger } from '../logger/logger';
 
 import { name as SearchResults } from './actions/searchResults';
 import { name as DisplayPage } from './actions/displayPage';
+import { name as DisplayIframe } from './iframe/displayIframe';
 
 class Search {
   constructor($scope, $reactive, $state, QueryTrackService) {
@@ -36,7 +37,8 @@ export default angular.module(name, [
   uiRouter,
   Logger,
   SearchResults,
-  DisplayPage
+  DisplayPage,
+  DisplayIframe
 ])
 .component(name, {
   template,

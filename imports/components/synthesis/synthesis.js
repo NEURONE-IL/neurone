@@ -9,10 +9,9 @@ import '../../lib/ngWig/plugins/forecolor.ngWig';
 import '../../lib/ngWig/plugins/clear-styles.ngWig';
 
 import template from './synthesis.html';
-import templateSnippet from './templates/snippetModal.html';
 
-//import { name as SnippetModal } from './templates/snippetModal';
-//import { name as BookmarkModal } from './templates/bookmarkModal';
+import { name as SnippetModal } from './templates/snippetModal';
+import { name as BookmarkModal } from './templates/bookmarkModal';
 
 class Synthesis {
   constructor($scope, $reactive, $state, $stateParams, $uibModal) {
@@ -66,23 +65,34 @@ class Synthesis {
     }
   }
 
-  showSnippetModal(snippetId) {
+  showSnippetModal(snippet) {
     var modalInstance = this.$uibModal.open({
-      //animation: $ctrl.animationsEnabled,
+      animation: true,
       ariaLabelledBy: 'Snippet',
       ariaDescribedBy: 'Snippet',
-      templateUrl: './templates/snippetModal.html',
-      controller: SnippetModal,
-      controllerAs: '$ctrl',
-      size: 'sm',
-      //appendTo: parentElem,
-      resolve: {}
+      component: SnippetModal,
+      size: 'md',
+      resolve: {
+        item: () => {
+          return snippet;
+        }
+      }
     });
-    //this.$uibModal.
   }
 
-  showBookmarkModal(bookmarkId) {
-
+  showBookmarkModal(bookmark) {
+    var modalInstance = this.$uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'Bookmark',
+      ariaDescribedBy: 'Bookmark',
+      component: BookmarkModal,
+      size: 'lg',
+      resolve: {
+        item: () => {
+          return bookmark;
+        }
+      }
+    });
   }
 }
 
@@ -92,7 +102,9 @@ const name = 'synthesis';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
-  'ngWig'
+  'ngWig',
+  SnippetModal,
+  BookmarkModal
 ])
 .component(name, {
   template,
