@@ -42,7 +42,7 @@ export default class InvertedIndex {
     var serializedIndex = { index: JSON.stringify(searchIndex) },
            currentIndex = Indexes.findOne({}, {sort: {DateTime: -1, limit: 1}});
 
-    if (currentIndex) {
+    if (currentIndex._id) {
       var currentId = currentIndex._id;
       Indexes.update({ _id: currentId }, serializedIndex);
     }

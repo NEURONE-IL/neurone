@@ -9,88 +9,117 @@ import { name as Logger } from './services/kmTrackIframe';
 import { name as ActionBlocker } from './services/actionBlockerIframe';
 
 class DisplayIframe {
-  constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
-    'ngInject';
+	constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
+		'ngInject';
 
-    this.$state = $state;
-    this.$rootScope = $rootScope;
-    this.kmtis = KMTrackIframeService;
-    this.abis = ActionBlockerIframeService;
+		this.$state = $state;
+		this.$rootScope = $rootScope;
+		this.kmtis = KMTrackIframeService;
+		this.abis = ActionBlockerIframeService;
 
-    $reactive(this).attach($scope);
+		// dgacitua: Execute on iframe end
+		$scope.$on('$stateChangeStart', (event) => {
+			this.stopTracking();
+		});
 
-    this.page = $stateParams.docName;
-    this.documentPage = '';
-    this.documentTitle = '';
-    this.renderPage($stateParams.docName);
-  }
+		$reactive(this).attach($scope);
 
-  // From https://github.com/meteor/meteor/issues/7189
-  renderPage(docName) {
-    this.call('getDocument', docName, (error, result) => {
-      if (!error) {
-        this.documentPage = result.routeUrl;
-        this.documentTitle = result.title;
-        this.$rootScope.documentTitle = result.title;
-      }
-      else {
-        console.error(error);
-      }
-    });
-  }
+		this.page = $stateParams.docName || this.$rootScope.docName;
+		this.routeUrl = '';
+		this.documentTitle = '';
+		this.renderPage(this.page);
+	}
 
-  // dgacitua: Execute on iframe start
-  startTrackingLoader() {
-    // TODO fix quick right click between transitions
-    this.$rootScope.$broadcast('setDocumentHelpers', true);
-    this.abis.service();
-    this.kmtis.service();
-  }
+	// From https://github.com/meteor/meteor/issues/7189
+	renderPage(docName) {
+		this.call('getDocument', docName, (error, result) => {
+			if (!error) {
+				this.routeUrl = result.routeUrl;
+				this.documentTitle = result.title;
+				this.$rootScope.documentTitle = result.title;
+			}
+			else {
+				console.error(error);
+			}
+		});
+	}
+
+	// dgacitua: Execute on iframe start
+	startTracking() {
+		// TODO fix quick right click between transitions
+		this.abis.service();
+		this.kmtis.service();
+	}
+
+	stopTracking() {
+		this.$rootScope.documentTitle = '';
+		this.kmtis.antiService();
+		this.abis.antiService();
+	}
 }
 
 const name = 'displayIframe';
 
 export default angular.module(name, [
-  angularMeteor,
-  angularSanitize,
-  uiRouter,
-  Logger,
-  ActionBlocker
+	angularMeteor,
+	angularSanitize,
+	uiRouter,
+	Logger,
+	ActionBlocker
 ])
 .component(name, {
-  template,
-  controllerAs: name,
-  controller: DisplayIframe
+	template,
+	controllerAs: name,
+	controller: DisplayIframe
 })
+.directive('pageFrame', customIframe)
+.directive('ngOnload', ngOnload)
 .config(config);
 
 function config($stateProvider) {
-  'ngInject';
+	'ngInject';
 
-  $stateProvider
-    .state('displayIframe', {
-      url: '/iframe/:docName',
-      template: '<display-iframe></display-iframe>',
-      resolve: {
-        currentUser($q) {
-          if (Meteor.userId() === null) {
-            return $q.reject('AUTH_REQUIRED');
-          }
-          else {
-            return $q.resolve();
-          }
-        }
-      },
-      onEnter: () => {},
-      onExit: ($rootScope, KMTrackIframeService, ActionBlockerIframeService) => {
-        this.$rootScope = $rootScope;
-        this.kmtis = KMTrackIframeService;
-        this.abis = ActionBlockerIframeService;
+	$stateProvider
+		.state('displayIframe', {
+			url: '/iframe/:docName',
+			template: '<display-iframe></display-iframe>',
+			resolve: {
+				currentUser($q) {
+					if (Meteor.userId() === null) {
+						return $q.reject('AUTH_REQUIRED');
+					}
+					else {
+						return $q.resolve();
+					}
+				}
+			}
+	});
+}
 
-        this.kmtis.antiService();
-        this.abis.antiService();
-        this.$rootScope.documentTitle = '';
-        this.$rootScope.$broadcast('setDocumentHelpers', false);
-      }
-  });
-};
+// dgacitua: http://stackoverflow.com/a/27576128
+function customIframe() {
+	return {
+		restrict: 'E',
+		scope: {
+			src: '&',
+			callback: '=loading'
+		},
+		template: '<iframe id="pageContainer" ng-src="{{src()}}"></iframe>',
+		link: (scope, element, attrs) => {
+      element.on('load', () => scope.callback());
+    }
+	};
+}
+
+// dgacitua: https://gist.github.com/mikaturunen/f0b45def06bc83ccea9e
+function ngOnload() {
+  return {
+    restrict: "A",
+    scope: {
+      callback: "&ngOnload"
+    },
+    link: (scope, element, attrs) => {
+      element.on("load", () => scope.callback());
+    }
+  };
+}

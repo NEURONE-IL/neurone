@@ -271,7 +271,7 @@ export default class KMTrackIframeService {
       //this.bindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
       //this.bindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
 
-      var iframe = document.getElementById(this.iframeId);
+      var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
       var data = {
@@ -282,7 +282,7 @@ export default class KMTrackIframeService {
         e: angular.element(document)[0].documentElement,
         g: angular.element(document)[0].getElementsByTagName('body')[0]
       };
-      //console.log(this.frameId, iframe, innerDoc, data);
+      Utils.logToConsole('Start Tracking!', this.iframeId, iframe, innerDoc, data);
 
       this.bindThrottledEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
       this.bindThrottledEventIframe(angular.element(innerDoc), 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
@@ -301,9 +301,9 @@ export default class KMTrackIframeService {
       //this.unbindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
       //this.unbindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
 
-      var iframe = document.getElementById(this.iframeId);
+      var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-      //console.log(this.frameId, iframe, innerDoc);
+      Utils.logToConsole('Stop Tracking!', this.iframeId, iframe, innerDoc);
 
       this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
       this.unbindEventIframe(angular.element(innerDoc), 'scroll', this.mouseMoveListener);

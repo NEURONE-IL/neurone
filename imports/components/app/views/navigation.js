@@ -37,11 +37,11 @@ class Navigation {
         if (!err) {
           this.isOnPage = data;
           this.isBookmarked = result;
-          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
           this.$scope.$apply();
+          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
         }
         else {
-          console.log(err);
+          console.error(err);
         }
       });
     });

@@ -48,7 +48,6 @@ export default angular.module(name, [
   controllerAs: name,
   controller: App
 })
-.directive('ngOnload', ngOnloadDirective)
 .config(config)
 .run(run)
 .run(setTrackers);
@@ -115,18 +114,4 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
 
   // http://stackoverflow.com/a/16204326
   // http://stackoverflow.com/a/27984921
-};
-
-// From https://gist.github.com/mikaturunen/f0b45def06bc83ccea9e
-function ngOnloadDirective() {
-  return {
-    restrict: "A",
-      scope: {
-        callback: "&ngOnload"
-      },
-      link: function(scope, element, attrs) {
-        // hooking up the onload event
-        element.on("load", () => scope.callback());
-      }
-  };
 };

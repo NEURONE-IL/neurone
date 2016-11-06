@@ -11,7 +11,7 @@
   <hr>
   <div id="searchResults">
     <div ng-repeat="doc in searchResults.documents track by doc._id">
-      <a class="search-result-title" ui-sref="displayIframe({ docName: doc.docName })">{{doc.title}}</a>
+      <a class="search-result-title" ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a>
       <div class="search-result-url">{{doc.url}}</div>
       <div class="search-result-snippet">{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</div>
       <br>

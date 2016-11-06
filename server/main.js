@@ -6,21 +6,7 @@ import { FormQuestionnaires } from '../imports/api/formQuestionnaires/index';
 
 Meteor.startup(function () {
   console.log('Welcome to NEURONE Server Platform!');
-
-  // dgacitua: Load HTML documents, parse them and index them
-  if (ServerConfigs.reloadDocCollectionOnDeploy) {
-    if (Indexer.getDocumentCount() === 0) {
-      console.log('Generating Document Collection...');
-      Indexer.generateDocumentCollection();
-    }
-    else {
-      console.log('Updating Document Collection...');
-      Indexer.updateDocumentCollection();
-    }    
-  }
-  else {
-    Indexer.loadInvertedIndex();
-  }
+  const assetPath = Indexer.getAssetPath();
 
   // dgacitua: Preloading of Form questions
   console.log('Loading Form Questions...');
@@ -54,8 +40,23 @@ Meteor.startup(function () {
     console.log('Questionnaires Already Loaded!');
   }
 
-  console.log('NEURONE Server Platform is ready!');
 
-  //Meteor.call('parseDocument', '/public/sawao_kato.html');
-  //Meteor.call('testIndexer');
+  // dgacitua: Load HTML documents, parse them and index them
+  if (ServerConfigs.reloadDocCollectionOnDeploy) {
+    if (Indexer.getDocumentCount() === 0) {
+      //console.log('Generating Document Collection...');
+      Indexer.generateDocumentCollection(assetPath);
+    }
+    else {
+      //console.log('Updating Document Collection...');
+      Indexer.updateDocumentCollection(assetPath);
+    }
+  }
+  else {
+    Indexer.loadInvertedIndex();
+  }
+
+  StaticServer.add('/', assetPath);
+
+  console.log('NEURONE Server Platform is ready!');
 });

@@ -3,19 +3,28 @@ import template from './bookmarkModal.html';
 const name = 'bookmarkModal';
 
 class BookmarkModal {
-  constructor(KMTrackIframeService, ActionBlockerIframeService) {
+  constructor($state, $rootScope, KMTrackIframeService, ActionBlockerIframeService) {
     'ngInject';
 
+    this.$rootScope = $rootScope;
     this.kmtis = KMTrackIframeService;
     this.abs = ActionBlockerIframeService;
 
     this.bookmark = this.resolve.item;
-    this.test = 'SimoneBiles';
+    this.docName = this.url2docName(this.bookmark.url);
 
-    console.log('Bookmark', this.bookmark);
+    //$state.transitionTo($state.current, {docName: this.docName}, { notify: false });
+    this.$rootScope.docName = this.docName;
+    console.log('docName', this.docName);
+  }
+
+  url2docName(url) {
+    return url.substr(url.lastIndexOf('/') + 1);
   }
 
   closeModal() {
+    delete this.$rootScope.docName;
+    this.iframe.$state.go('/home');
     this.close();
   }
 }
@@ -28,5 +37,8 @@ export default angular.module(name, [])
   bindings: {
     resolve: '<',
     close: '&'
+  },
+  require: {
+    iframe: '?^^displayIframe'
   }
 });

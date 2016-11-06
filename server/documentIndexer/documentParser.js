@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import md5File from 'md5-file';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 import uppercamelcase from 'uppercamelcase';
@@ -7,121 +8,130 @@ import uppercamelcase from 'uppercamelcase';
 import Utils from '../lib/utils';
 
 export default class DocumentParser {
-  constructor() {}
+  static getHtmlAsText(documentPath) {
+    try {
+      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
+         htmlFile = fs.readFileSync(relPath);
 
-  static getHtmlAsText(documentPath, callback) {
-    var relPath = documentPath;   //Meteor.absolutePath + documentPath;
+      var options = {
+        wordwrap: false,
+        ignoreHref: true,
+        ignoreImage: true
+      };
 
-    var options = {
-      wordwrap: false,
-      ignoreHref: true,
-      ignoreImage: true
-    };
-
-    htmlToText.fromFile(relPath, options, Meteor.bindEnvironment((err, text) => {
-      if (!err) {
-        //console.log(relPath, text);
-        callback(null, text);
-      }
-      else {
-        console.error(err);
-        callback(err);
-      }      
-    }));
+      return htmlToText.fromString(htmlFile, options);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   static getHtmlTitle(documentPath, callback) {
-    var relPath = documentPath;   //Meteor.absolutePath + documentPath;
+    try {
+      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
+         htmlFile = fs.readFileSync(relPath),
+       htmlString = htmlFile.toString(),
+                $ = cheerio.load(htmlString),
+            title = $('head > title').text() || $('title').text() || $('h1').first().text() || 'Untitled Document';
 
-    fs.readFile(relPath, Meteor.bindEnvironment((err, data) => {
-      if (!err) {
-        var htmlString = data.toString(),
-                 cheer = cheerio.load(htmlString),
-                 title = cheer('head > title').text() || cheer('title').text() || cheer('h1').first().text() || 'Untitled Document';
-
-        //console.log(relPath, title);
-        callback(null, title);
-      }
-      else {
-        console.error(err);
-        callback(err);
-      }
-    }));
+      //console.log(relPath, title);
+      return title;
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   static getHtmlDocname(documentPath) {
-    var relPath = documentPath,   //Meteor.absolutePath + documentPath,
-        fileExt = path.extname(relPath),
-       fileName = path.basename(relPath, fileExt),
-          route = uppercamelcase(fileName);
+    try {
+      var relPath = documentPath,   //Meteor.absolutePath + documentPath,
+          fileExt = path.extname(relPath),
+         fileName = path.basename(relPath, fileExt),
+            route = uppercamelcase(fileName);
 
-    //console.log(relPath, route);
-    return route;
+      //console.log(relPath, route);
+      return route;
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   static getHtmlRoute(documentPath) {
-    var relPath = documentPath,   //Meteor.absolutePath + documentPath,
-       fileName = path.basename(relPath);
+    try {
+      var relPath = documentPath,   //Meteor.absolutePath + documentPath,
+         fileName = path.basename(relPath);
 
-    //console.log(relPath, fileName);
-    return fileName;
+      //console.log(relPath, fileName);
+      return fileName;
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
-  static removeLinks(documentPath) {
-    var relPath = documentPath,   //Meteor.absolutePath + documentPath;
-        fileDir = path.dirname(relPath),
-        fileExt = path.extname(relPath),
-       fileName = path.basename(relPath, fileExt),
-    newFilename = fileName + fileExt;
+  static cleanDocument(documentPath) {
+    try {
+      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
+          fileDir = path.dirname(relPath),
+          fileExt = path.extname(relPath),
+         fileName = path.basename(relPath, fileExt),
+      newFilename = fileName + fileExt;
 
-    var htmlFile = fs.readFileSync(relPath),
-      htmlString = htmlFile.toString(),
-               $ = cheerio.load(htmlString);
+      var htmlFile = fs.readFileSync(relPath),
+        htmlString = htmlFile.toString(),
+                 $ = cheerio.load(htmlString);
 
-    // dgacitua: Remove all anchor tags with links
-    $('a[href]').each((i, elem) => {
-      var content = $(elem.childNodes);
-      $(elem).replaceWith(content);
-    });
+      // dgacitua: Remove all anchor tags with links
+      $('a[href]').each((i, elem) => {
+        var content = $(elem.childNodes);
+        $(elem).replaceWith(content);
+      });
 
-    // dgacitua: Remove input forms
-    $('input').each((i, elem) => {
-      $(elem).remove();
-    });    
+      // dgacitua: Remove javascript
+      $('script').each((i, elem) => {
+        $(elem).remove();
+      });
 
-    htmlString = $.html();
+      // dgacitua: Remove input elements
+      $('input').each((i, elem) => {
+        $(elem).remove();
+      });
 
-    fs.writeFileSync(path.join(fileDir, newFilename), htmlString);
-    //console.log('Document Cleaned!', newFilename);
+      htmlString = $.html();
+
+      fs.writeFileSync(path.join(fileDir, newFilename), htmlString);
+      //console.log('Document Cleaned!', newFilename);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  static getMD5(documentPath) {
+    try {
+      return md5File.sync(documentPath);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   static parseDocument(documentPath) {
-    var getTitle = Meteor.wrapAsync(this.getHtmlTitle),
-         getBody = Meteor.wrapAsync(this.getHtmlAsText);
-
     var obj = {
-      title: '',
+      title: this.getHtmlTitle(documentPath),
       body: '',
-      indexedBody: '',
+      indexedBody: this.getHtmlAsText(documentPath),
       date: Utils.getDate(),
       topics: [],
       docName: this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
       url: '',
-      id: 0
+      id: 0,
+      md5Hash: this.getMD5(documentPath)
     }
-
-    obj.title = getTitle(documentPath);
-    obj.indexedBody = getBody(documentPath);
 
     //console.log('Document Parsed!', obj.route);
     return obj;
   }
 }
-
-Meteor.methods({
-  parseDocument: (doc) => {
-    DocumentParser.removeLinks(Meteor.absolutePath + '/public/sawao_kato.html');
-    //return DocumentParser.parseDocument(doc);
-  }, 
-})

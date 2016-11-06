@@ -9,18 +9,17 @@ import DocumentParser from './documentParser';
 import { Documents } from '../../imports/api/documents/index';
 
 export default class Indexer {
-  static generateDocumentCollection() {
-    console.log('Generating Document Collection...');
-    const publicFolder = Meteor.absolutePath + '/public/';
+  static generateDocumentCollection(assetPath) {
+    console.log('Generating Document Collection!');
     
-    glob(publicFolder + '*.html', Meteor.bindEnvironment((err, files) => {
+    glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
         var total = files.length;
 
         files.forEach((file, idx) => {
           console.log('Indexing documents...', (idx+1) + ' of ' + total);
 
-          DocumentParser.removeLinks(file);
+          DocumentParser.cleanDocument(file);
 
           var docObj = DocumentParser.parseDocument(file);
           docObj.id = incrementCounter('counters', 'documents');
@@ -30,20 +29,22 @@ export default class Indexer {
 
         InvertedIndex.generate();
         InvertedIndex.save();
+
+        return true;
       }
       else {
         console.error(err);
+        return false;
       }
     }));
   }
 
-  static updateDocumentCollection() {
-    console.log('Updating Document Collection...');
+  static updateDocumentCollection(assetPath) {
+    console.log('Updating Document Collection!');
 
-    var publicFolder = Meteor.absolutePath + '/public/',
-          syncedList = [];
+    var syncedList = [];
     
-    glob(publicFolder + '*.html', Meteor.bindEnvironment((err, files) => {
+    glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
         var total = files.length;
 
@@ -52,13 +53,27 @@ export default class Indexer {
           var docRoute = DocumentParser.getHtmlRoute(file),
                docData = Documents.findOne({ route: docRoute });
 
-          if (docData==={} || !docData) {
-            DocumentParser.removeLinks(file);
+          if (!docData) {
+            // dgacitua: Generate record for HTML files not in database
+            DocumentParser.cleanDocument(file);
 
             var docObj = DocumentParser.parseDocument(file);
             docObj.id = incrementCounter('counters', 'documents');
 
-            Documents.insert(docObj);  
+            Documents.insert(docObj);
+          }
+          else {
+            // dgacitua: Check if file has been modified (through MD5 Hash) and update if needed
+            var currHash = DocumentParser.getMD5(file);
+
+            if (docData.md5Hash !== currHash) {
+              DocumentParser.cleanDocument(file);
+
+              var docObj = DocumentParser.parseDocument(file);
+              docObj.id = docData.id
+
+              Documents.update({ _id: docData._id}, docObj);
+            }
           }
 
           syncedList.push(docData.route);
@@ -69,9 +84,12 @@ export default class Indexer {
 
         InvertedIndex.generate();
         InvertedIndex.save();
+
+        return true;
       }
       else {
         console.error(err);
+        return false;
       }
     }));
   }
@@ -82,5 +100,19 @@ export default class Indexer {
 
   static getDocumentCount() {
     return Documents.find().count();
+  }
+
+  static getAssetPath() {
+    if (process.env.NEURONE_ASSET_PATH) {
+      return process.env.NEURONE_ASSET_PATH;
+    }
+    else {
+      if (Meteor.isDevelopment) {
+        return path.join(Meteor.absolutePath, '/public/');
+      }
+      else {
+        return path.join(Meteor.rootPath, '../web.browser/app/');
+      }
+    }
   }
 }

@@ -1,3 +1,3 @@
 export default ServerConfigs = {
-  reloadDocCollectionOnDeploy: false
+  reloadDocCollectionOnDeploy: true
 }

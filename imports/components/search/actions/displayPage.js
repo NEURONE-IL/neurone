@@ -5,67 +5,31 @@ import uiRouter from 'angular-ui-router';
 
 import template from './displayPage.html';
 
-import { name as Logger } from '../iframe/services/kmTrackIframe';
-import { name as ActionBlocker } from '../iframe/services/actionBlockerIframe';
-
 class DisplayPage {
-  constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
+  constructor($scope, $rootScope, $reactive, $state, $stateParams) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
-    this.kmtis = KMTrackIframeService;
-    this.abis = ActionBlockerIframeService;
-
-    /*
-    // dgacitua: Execute on iframe end
+    
     $scope.$on('$stateChangeStart', (event) => {
-      this.kmtis.antiService();
-      this.abis.antiService();
-      this.$rootScope.documentTitle = '';
-      this.$rootScope.$broadcast('setDocumentHelpers', false);
+      this.stopTracking();
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      
+      this.startTracking();
     });
-    */
+
     $reactive(this).attach($scope);
-
-    this.documentPage = '';
-    this.documentTitle = '';
-    this.redirectToIframe($stateParams.docName);
-    //this.renderPage($stateParams.docName);
-  }
-
-  redirectToIframe(param) {
-    this.$state.go('displayIframe', { docName: param });
-  }
-
-  // From https://github.com/meteor/meteor/issues/7189
-  renderPage(docName) {
-    this.call('getDocument', docName, (error, result) => {
-      if (!error) {
-        this.documentPage = result.routeUrl;
-        this.documentTitle = result.title;
-        this.$rootScope.documentTitle = result.title;
-      }
-      else {
-        console.log(error);
-      }
-    });
-
-    //this.documentPage = '/olympic_games.html';
   }
 
   // dgacitua: Execute on iframe start
-  startTrackingLoader() {
-    /*
-    // TODO fix quick right click between transitions
+  startTracking() {
     this.$rootScope.$broadcast('setDocumentHelpers', true);
-    this.abis.service();
-    this.kmtis.service();
-    */
+  }
+
+  stopTracking() {
+    this.$rootScope.$broadcast('setDocumentHelpers', false);
   }
 }
 
@@ -74,9 +38,9 @@ const name = 'displayPage';
 export default angular.module(name, [
   angularMeteor,
   angularSanitize,
-  uiRouter,
-  Logger,
-  ActionBlocker
+  uiRouter
+  //Logger,
+  //ActionBlocker
 ])
 .component(name, {
   template,

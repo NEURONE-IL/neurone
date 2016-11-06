@@ -84,6 +84,14 @@ a.search-result-title:visited {
   color: #FF0000;
 }
 
+.modal-xl .modal-dialog {
+  width: 95vw;
+}
+
+.modal-xl .modal-body {
+  height: 75vh;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

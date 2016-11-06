@@ -30,9 +30,6 @@ class Synthesis {
     
     this.getSnippets();
     this.getBookmarks();
-
-    //console.log('Snippets', this.snippets);
-    //console.log('Bookmarks', this.bookmarks);
   }
 
   submit() {
@@ -46,7 +43,7 @@ class Synthesis {
           this.snippets = res;
         }
         else {
-          console.log(err);
+          console.error(err);
         }
       });
     }
@@ -59,7 +56,7 @@ class Synthesis {
           this.bookmarks = res;
         }
         else {
-          console.log(err);
+          console.error(err);
         }
       });
     }
@@ -87,6 +84,7 @@ class Synthesis {
       ariaDescribedBy: 'Bookmark',
       component: BookmarkModal,
       size: 'lg',
+      windowClass: 'modal-xl',
       resolve: {
         item: () => {
           return bookmark;
