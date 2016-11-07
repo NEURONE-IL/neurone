@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings private/settingsDev.json",
-    "test:watch": "meteor test --driver-package sanjo:jasmine"
+    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
+    "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs"
   },
   "dependencies": {
     "angular": "^1.5.8",
