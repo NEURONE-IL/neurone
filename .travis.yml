@@ -7,8 +7,7 @@ before_install:
   - "curl -L http://git.io/3l-rRA | /bin/sh"
 
 env:
-  - CXX=g++-4.8
-  - LAIKA_OPTIONS="-t 5000"
+  - CXX=g++-4.8 LAIKA_OPTIONS="-t 5000"
 
 addons:
   apt:
