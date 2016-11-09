@@ -1,10 +1,12 @@
-.deploy/remoteDeployMUP.sh
+.neuroneAssets/
+.neuroneBuild/
 node_modules/
-remoteDeployPassenger.sh
+
+.deploy/remoteDeployMUP.sh
+productionDeploy.sh
+
 neuroneapp.tar.gz
 
 public/*
 !public/removeAnchor.sh
 !public/i18n/
-
-neuroneAssets/*
