@@ -15,7 +15,7 @@ class BookmarkModal {
 
     //$state.transitionTo($state.current, {docName: this.docName}, { notify: false });
     this.$rootScope.docName = this.docName;
-    console.log('docName', this.docName);
+    //console.log('docName', this.$rootScope.docName);
   }
 
   url2docName(url) {
@@ -24,7 +24,7 @@ class BookmarkModal {
 
   closeModal() {
     delete this.$rootScope.docName;
-    this.iframe.$state.go('/home');
+    //this.iframe.$state.go('/home');
     this.close();
   }
 }
@@ -37,8 +37,5 @@ export default angular.module(name, [])
   bindings: {
     resolve: '<',
     close: '&'
-  },
-  require: {
-    iframe: '?^^displayIframe'
   }
 });

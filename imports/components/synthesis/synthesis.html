@@ -8,7 +8,6 @@
         <br>
         <button type="submit" class="btn btn-primary">{{"synthesis.submitButton" | translate}}</button>
         <!--<span ng-if="synthesis.answer">{{"synthesis.submitted" | translate}}</span>-->
-        <button class="button" ng-click="synthesis.showSnippetModal()">modal</button>
       </form>
       <br>
     </div>
@@ -17,10 +16,12 @@
         <div id="snippetList" class="panel panel-info synthesis-element">
           <div class="panel-heading">{{"synthesis.snippets" | translate}}</div>
           <div class="panel-body synthesis-element-body">
-            <div ng-repeat="snip in synthesis.snippets track by $index">
-              <b><a href="javascript:void(0);" ng-click="synthesis.showSnippetModal(snip)">{{snip.title}}</a></b> {{snip.local_time | date: "yyyy-MM-dd HH:mm:ss"}}
-              <br>
-            </div>
+            <uib-accordion close-others="oneAtATime">
+              <div uib-accordion-group class="panel-default" ng-repeat="snip in synthesis.snippets track by $index" heading="{{snip.title}}">
+                <p>{{snip.local_time | date: "yyyy-MM-dd HH:mm:ss"}}</p>
+                <p>{{snip.snipped_text}}</p>
+              </div>
+            </uib-accordion>  
           </div>
         </div>
       </div>

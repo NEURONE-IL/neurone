@@ -1,4 +1,4 @@
-import { lunr } from 'meteor/lbee:lunr';
+import lunr from 'lunr';
 
 import ServerUtils from '../lib/utils';
 

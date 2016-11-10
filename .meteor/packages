@@ -20,7 +20,6 @@ pbastowski:angular-babel
 pbastowski:require
 twbs:bootstrap
 fortawesome:fontawesome
-lbee:lunr
 ostrio:files
 urigo:static-templates
 velocity:html-reporter

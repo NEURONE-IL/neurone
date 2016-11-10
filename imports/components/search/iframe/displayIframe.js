@@ -18,9 +18,12 @@ class DisplayIframe {
 		this.abis = ActionBlockerIframeService;
 
 		// dgacitua: Execute on iframe end
-		$scope.$on('$stateChangeStart', (event) => {
+		//$scope.$on('$stateChangeStart', (event) => {
+		//	this.stopTracking();
+		//});
+		this.$onDestroy = () => {
 			this.stopTracking();
-		});
+		};
 
 		$reactive(this).attach($scope);
 

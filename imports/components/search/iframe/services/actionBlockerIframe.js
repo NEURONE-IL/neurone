@@ -39,7 +39,7 @@ class ActionBlockerIframeService {
 
   service() {
     if (!this.isTracking) {
-      var iframe = document.getElementById(this.iframeId);
+      var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
       var data = {};
 
@@ -53,7 +53,7 @@ class ActionBlockerIframeService {
 
   antiService() {
     if (this.isTracking) {
-      var iframe = document.getElementById(this.iframeId);
+      var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
       this.unbindEvent(angular.element(innerDoc), 'contextmenu', this.blockRightClick);
