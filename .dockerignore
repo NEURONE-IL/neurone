@@ -3,6 +3,7 @@
 node_modules/
 neuroneBuild/
 
+neuroneimage.tar
 neuroneapp.tar.gz
 
 .deploy/remoteDeployMUP.sh

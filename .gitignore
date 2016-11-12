@@ -5,6 +5,7 @@ node_modules/
 .deploy/remoteDeployMUP.sh
 productionDeploy.sh
 
+neuroneimage.tar
 neuroneapp.tar.gz
 
 public/*
