@@ -21,7 +21,7 @@ COPY neurone.conf /etc/nginx/sites-enabled/neurone.conf
 COPY meteor-env.conf /etc/nginx/main.d/meteor-env.conf
 
 # Install NPM packages
-RUN (cd /home/app/neurone/programs/server && npm install)
+RUN (cd /home/app/neurone/programs/server && npm install --quiet)
 
 # Remove default nginx host to make the app listen on all domain names
 RUN rm /etc/nginx/sites-enabled/default

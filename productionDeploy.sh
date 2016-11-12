@@ -29,8 +29,11 @@ sshpass -e scp neuroneimage.tar $USER@$HOST:$WORKDIR
 echo ">> Removing local offline image..."
 rm neuroneimage.tar
 
+echo ">> Removing old Docker app containers"
+sshpass -e ssh $USER@$HOST docker stop $NEURONE_APP_NAME $NEURONE_DB_NAME && docker rm $NEURONE_APP_NAME $NEURONE_DB_NAME
+
 echo ">> Loading offline image in remote host..."
-sshpass -e ssh $USER@$HOST docker load < neurone-app.tar
+sshpass -e ssh $USER@$HOST docker load < neuroneimage.tar
 sshpass -e ssh $USER@$HOST rm $WORKDIR/neuroneimage.tar
 
 echo ">> Deploy MongoDB database in remote host..."
