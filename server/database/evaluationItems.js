@@ -4,7 +4,7 @@ import { FormAnswers } from '../../imports/api/formAnswers/index';
 import { FormQuestions } from '../../imports/api/formQuestions/index';
 import { FormQuestionnaires } from '../../imports/api/formQuestionnaires/index';
 import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
-import { SyhtiesisAnswers } from '../../imports/api/synthesisAnswers/index';
+import { SynthesisAnswers } from '../../imports/api/synthesisAnswers/index';
 
 Meteor.methods({
   getForm: function(formId) {
