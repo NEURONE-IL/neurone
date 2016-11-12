@@ -56,7 +56,6 @@ Meteor.startup(function () {
     Indexer.loadInvertedIndex();
   }
 
-  StaticServer.add('/', assetPath);
-
   console.log('NEURONE Server Platform is ready!');
+  StaticServer.add('/', assetPath);
 });

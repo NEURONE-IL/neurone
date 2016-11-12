@@ -7,4 +7,3 @@ neuroneimage.tar
 neuroneapp.tar.gz
 
 .deploy/remoteDeployMUP.sh
-productionDeploy.sh

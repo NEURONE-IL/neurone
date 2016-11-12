@@ -1,3 +1,3 @@
 export default ServerConfigs = {
-  reloadDocCollectionOnDeploy: false//true
+  reloadDocCollectionOnDeploy: (Meteor.isProduction ? true : false)
 }
