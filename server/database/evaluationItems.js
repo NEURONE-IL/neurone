@@ -47,7 +47,7 @@ Meteor.methods({
     var time = ServerUtils.getTimestamp();
     jsonObject.server_time = time;
 
-    SynthesisAnswer.insert(jsonObject);
+    SynthesisAnswers.insert(jsonObject);
     //console.log('Form Answer Stored!', page, time);
     return true;
   }

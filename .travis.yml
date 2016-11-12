@@ -8,6 +8,9 @@ node_js:
 services:
   - docker
 
+env:
+  - CXX=g++-4.8
+
 addons:
   apt:
     sources:
@@ -19,11 +22,8 @@ addons:
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
 
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    sh dockerBuild.sh;
-    sh productionDeploy.sh;
-    fi
-
-env:
-  - CXX=g++-4.8
+deploy:
+  provider: script
+  script: fullDeploy.sh
+  on:
+    branch: master
