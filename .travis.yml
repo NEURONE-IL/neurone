@@ -5,11 +5,8 @@ language: node_js
 node_js:
   - "4"
 
-before_install:
-  - "curl https://install.meteor.com | /bin/sh"
-
-env:
-  - CXX=g++-4.8
+services:
+  - docker
 
 addons:
   apt:
@@ -17,3 +14,15 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+
+before_install:
+  - "curl https://install.meteor.com | /bin/sh"
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    sh dockerBuild.sh;
+    sh productionDeploy.sh;
+    fi
+
+env:
+  - CXX=g++-4.8
