@@ -35,5 +35,20 @@ Meteor.methods({
     FormAnswers.insert(jsonObject);
     //console.log('Form Answer Stored!', page, time);
     return true;
+  },
+  getSynthQuestion: function(synthId) {
+    check(synthId, Match.OneOf(Number, String));
+
+    return SynthesisQuestions.findOne({ questionId: synthId });
+  },
+  storeSynthesisAnswer: function(jsonObject) {
+    check(jsonObject, Object);
+
+    var time = ServerUtils.getTimestamp();
+    jsonObject.server_time = time;
+
+    SynthesisAnswer.insert(jsonObject);
+    //console.log('Form Answer Stored!', page, time);
+    return true;
   }
 });
