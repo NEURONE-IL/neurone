@@ -21,7 +21,6 @@ before_install:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    export SSHPASS=$PASS;
     sh dockerBuild.sh;
     sh productionDeploy.sh;
     fi

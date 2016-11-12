@@ -17,6 +17,7 @@ NEURONE_APP_PORT=80
 NEURONE_DB_NAME="neurone-db"
 NEURONE_DB_PORT=27017
 
+export SSHPASS=$PASS
 
 echo ">> Creating offline image..."
 docker save dgacitua/neurone > neuroneimage.tar
