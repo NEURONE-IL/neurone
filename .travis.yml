@@ -23,6 +23,7 @@ before_install:
   - "curl https://install.meteor.com | /bin/sh"
 
 deploy:
+  skip_cleanup: true
   provider: script
   script: fullDeploy.sh
   on:
