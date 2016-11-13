@@ -1,4 +1,4 @@
-import ServerUtils from '../lib/utils';
+import Utils from '../lib/utils';
 
 import UserAgent from 'useragent';
 
@@ -13,7 +13,7 @@ Meteor.methods({
   storeKeystroke: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     Keystrokes.insert(jsonObject);
@@ -22,7 +22,7 @@ Meteor.methods({
   storeMouseClick: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     MouseClicks.insert(jsonObject);
@@ -31,7 +31,7 @@ Meteor.methods({
   storeMouseCoordinate: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     MouseCoordinates.insert(jsonObject);
@@ -40,7 +40,7 @@ Meteor.methods({
   storeScrollMove: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     ScrollMoves.insert(jsonObject);
@@ -49,7 +49,7 @@ Meteor.methods({
   storeVisitedLink: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     VisitedLinks.insert(jsonObject);
@@ -58,7 +58,7 @@ Meteor.methods({
   storeSessionLog: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp(),
+    var time = Utils.getTimestamp(),
       ipAddr = this.connection.clientAddress,
          rua = this.connection.httpHeaders['user-agent'],     // raw user agent
          oua = rua ? UserAgent.parse(rua) : '',               // object user agent

@@ -1,6 +1,6 @@
 import lunr from 'lunr';
 
-import ServerUtils from '../lib/utils';
+import Utils from '../lib/utils';
 
 import { Documents } from '../../imports/api/documents/index';
 import { Indexes } from '../../imports/api/indexes/index';

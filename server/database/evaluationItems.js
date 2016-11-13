@@ -1,4 +1,4 @@
-import ServerUtils from '../lib/utils';
+import Utils from '../lib/utils';
 
 import { FormAnswers } from '../../imports/api/formAnswers/index';
 import { FormQuestions } from '../../imports/api/formQuestions/index';
@@ -29,7 +29,7 @@ Meteor.methods({
   storeFormAnswer: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     FormAnswers.insert(jsonObject);
@@ -38,9 +38,10 @@ Meteor.methods({
   },
   getSynthQuestion: function(synthId) {
     check(synthId, Match.OneOf(Number, String));
-    var mock = { questionId: 'syn1', question: 'Is this a question?' };
+    
+    //var mock = { synthesisId: 'syn1', question: 'Is this a question?' };
 
-    return mock;//SynthesisQuestions.findOne({ questionId: synthId });
+    return SynthesisQuestions.findOne({ synthesisId: synthId });
   },
   getSynthesisAnswer: function(synthId) {
     check(synthId, Match.OneOf(Number, String));
@@ -63,12 +64,12 @@ Meteor.methods({
   storeSynthesisAnswer: function(jsonObject) {
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     var currentAnswer = SynthesisAnswers.findOne({ owner: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
 
-    if (ServerUtils.isEmptyObject(currentAnswer)) {
+    if (Utils.isEmptyObject(currentAnswer)) {
       SynthesisAnswers.insert(jsonObject);
     }
     else {
