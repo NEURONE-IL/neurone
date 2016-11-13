@@ -63,7 +63,7 @@ export default class KMTrackIframeService {
         type: 'mouse_movement',
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        src_url: src,
+        url: src,
         x_win: winX,
         y_win: winY,
         w_win: winW,
@@ -72,7 +72,7 @@ export default class KMTrackIframeService {
         y_doc: docY,
         w_doc: docW,
         h_doc: docH,
-        local_time: time
+        localTimestamp: time
       };
 
       Meteor.call('storeMouseCoordinate', movement_output, function(err, result) {});
@@ -111,7 +111,7 @@ export default class KMTrackIframeService {
         type: 'mouse_click',
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        src_url: src,
+        url: src,
         x_win: winX,
         y_win: winY,
         w_win: winW,
@@ -120,7 +120,7 @@ export default class KMTrackIframeService {
         y_doc: docY,
         w_doc: docW,
         h_doc: docH,
-        local_time: time
+        localTimestamp: time
       };
 
       Meteor.call('storeMouseClick', click_output, function(err, result) {});
@@ -155,14 +155,14 @@ export default class KMTrackIframeService {
         type: 'scroll',
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        src_url: src,
+        url: src,
         x_scr: scrollX,
         y_scr: scrollY,
         w_win: winW,
         h_win: winH,
         w_doc: docW,
         h_doc: docH,
-        local_time: time
+        localTimestamp: time
       };
 
       Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
@@ -201,8 +201,8 @@ export default class KMTrackIframeService {
         which: w,
         charCode: chc,
         chr: chr,
-        local_time: t,
-        src_url: src,
+        localTimestamp: t,
+        url: src,
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address
       };
@@ -242,8 +242,8 @@ export default class KMTrackIframeService {
         which: w,
         charCode: chc,
         chr: chr,
-        local_time: t,
-        src_url: src,
+        localTimestamp: t,
+        url: src,
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address
       };

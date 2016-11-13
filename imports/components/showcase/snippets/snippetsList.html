@@ -2,8 +2,8 @@
   <h1>{{"showcase.snippetsList" | translate}}</h1>
     <ul>
     <li ng-repeat="snip in snippetsList.snippets">
-      <b>{{snip.title}}</b> [{{snip.local_time | date: "yyyy-MM-dd HH:mm:ss.sss"}}] {{snip.url}}
-      <p>{{snip.snipped_text}}</p>
+      <b>{{snip.title}}</b> [{{snip.localTimestamp | date: "yyyy-MM-dd HH:mm:ss.sss"}}] {{snip.url}}
+      <p>{{snip.snippedText}}</p>
     </li>
   </ul>
 </div>

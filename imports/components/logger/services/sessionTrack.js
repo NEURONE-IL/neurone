@@ -11,12 +11,12 @@ export default class SessionTrackService {
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         state: currentState,
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       Meteor.call('storeSessionLog', sessionLog, (err, res) => {
         if (!err) {
-          Utils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.owner, sessionLog.username, sessionLog.local_time);
+          Utils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.owner, sessionLog.username, sessionLog.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

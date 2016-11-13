@@ -58,12 +58,12 @@ class FormCtrl {
         username: Meteor.user().emails[0].address,
         formId: this.form.formId,
         answers: this.answerArray,
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       }
 
       Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
         if (!err) {
-          console.log('Answer registered!', formAnswer.owner, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.local_time);
+          console.log('Answer registered!', formAnswer.owner, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.localTimestamp);
           this.submitted = true;
         }
         else {

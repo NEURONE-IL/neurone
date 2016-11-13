@@ -22,12 +22,12 @@ export default class QueryTrackService {
         query: queryText,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       Meteor.call('storeQuery', queryObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.local_time);
+          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

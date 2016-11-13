@@ -18,8 +18,8 @@
           <div class="panel-body synthesis-element-body">
             <uib-accordion close-others="oneAtATime">
               <div uib-accordion-group class="panel-default" ng-repeat="snip in synthesis.snippets track by $index" heading="{{snip.title}}">
-                <p>{{snip.local_time | date: "yyyy-MM-dd HH:mm:ss"}}</p>
-                <p>{{snip.snipped_text}}</p>
+                <p>{{snip.localTimestamp | date: "yyyy-MM-dd HH:mm:ss"}}</p>
+                <p>{{snip.snippedText}}</p>
               </div>
             </uib-accordion>  
           </div>
@@ -30,7 +30,7 @@
           <div class="panel-heading">{{"synthesis.bookmarks" | translate}}</div>
           <div class="panel-body synthesis-element-body">
             <div ng-repeat="bm in synthesis.bookmarks track by $index">
-              <b><a href="javascript:void(0);" ng-click="synthesis.showBookmarkModal(bm)">{{bm.title}}</a></b> {{bm.local_time | date: "yyyy-MM-dd HH:mm:ss"}}
+              <b><a href="javascript:void(0);" ng-click="synthesis.showBookmarkModal(bm)">{{bm.title}}</a></b> {{bm.localTimestamp | date: "yyyy-MM-dd HH:mm:ss"}}
               <br>
             </div>
           </div>

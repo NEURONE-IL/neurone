@@ -40,13 +40,13 @@ export default class BookmarkTrackService {
         username: Meteor.user().emails[0].address,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       Meteor.call('storeBookmark', bookmarkObject, (err, result) => {
         if (!err) {
           var msg = this.$translate.instant('alerts.bookmarkSaved');
-          Utils.logToConsole('Bookmark Saved!', bookmarkObject.title, bookmarkObject.url, bookmarkObject.local_time);
+          Utils.logToConsole('Bookmark Saved!', bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
           callback(null, msg);
         }
         else {

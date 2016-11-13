@@ -23,12 +23,12 @@ export default class LinkTrackService {
         state: linkState,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       Meteor.call('storeVisitedLink', linkObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.title, linkObject.url, linkObject.local_time);
+          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.title, linkObject.url, linkObject.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

@@ -2,7 +2,7 @@
   <h1>{{"showcase.bookmarksList" | translate}}</h1>
   <ul>
     <li ng-repeat="link in bookmarksList.links">
-      <b>{{link.title}}</b> [{{link.local_time | date: "yyyy-MM-dd HH:mm:ss.sss"}}] <a href="{{link.url}}">{{link.url}}</a>
+      <b>{{link.title}}</b> [{{link.localTimestamp | date: "yyyy-MM-dd HH:mm:ss.sss"}}] <a href="{{link.url}}">{{link.url}}</a>
     </li>
   </ul>
 </div>

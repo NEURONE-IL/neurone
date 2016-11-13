@@ -30,7 +30,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     FormAnswers.insert(jsonObject);
     //console.log('Form Answer Stored!', page, time);
@@ -54,7 +54,7 @@ Meteor.methods({
       question: 'Is this a question?',
       answer: '<b>No</b>',
       completeAnswer: false,
-      local_time: 1479061296951
+      localTimestamp: 1479061296951
     };
     */
 
@@ -64,7 +64,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     var currentAnswer = SynthesisAnswers.findOne({ owner: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
 
@@ -72,7 +72,7 @@ Meteor.methods({
       SynthesisAnswers.insert(jsonObject);
     }
     else {
-      SynthesisAnswers.update(currentAnswer, {$set: {answer: jsonObject.answer, local_time: jsonObject.local_time, server_time: jsonObject.server_time, completeAnswer: jsonObject.completeAnswer}});
+      SynthesisAnswers.update(currentAnswer, {$set: {answer: jsonObject.answer, localTimestamp: jsonObject.localTimestamp, serverTimestamp: jsonObject.serverTimestamp, completeAnswer: jsonObject.completeAnswer}});
     }
 
     //console.log('Synthesis Answer Stored!', questionId, time);

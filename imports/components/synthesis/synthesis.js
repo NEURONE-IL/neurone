@@ -16,14 +16,13 @@ import { name as SnippetModal } from './templates/snippetModal';
 import { name as BookmarkModal } from './templates/bookmarkModal';
 
 class Synthesis {
-  constructor($scope, $reactive, $state, $stateParams, $timeout, $interval, $translate, $uibModal) {
+  constructor($scope, $reactive, $state, $stateParams, $interval, $translate, $uibModal) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
     this.$interval = $interval;
     this.$uibModal = $uibModal;
-    this.$timeout = $timeout;
     this.$translate = $translate;
     this.$stateParams = $stateParams;
 
@@ -68,12 +67,12 @@ class Synthesis {
         question: this.question,
         answer: this.answer,
         completeAnswer: true,
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       this.call('storeSynthesisAnswer', answer, (err, res) => {
         if (!err) {
-          console.log('Answer submitted!', answer.owner, answer.local_time);
+          console.log('Answer submitted!', answer.owner, answer.localTimestamp);
           this.synthesisMessage = this.$translate.instant('synthesis.submitted');
           Utils.notificationFadeout(this.messageId);
         }
@@ -100,12 +99,12 @@ class Synthesis {
           question: this.question,
           answer: this.answer,
           completeAnswer: false,
-          local_time: Utils.getTimestamp()
+          localTimestamp: Utils.getTimestamp()
         };
 
         this.call('storeSynthesisAnswer', answer, (err, res) => {
           if (!err) {
-            console.log('Answer autosaved!', answer.owner, answer.local_time);
+            console.log('Answer autosaved!', answer.owner, answer.localTimestamp);
             this.synthesisMessage = this.$translate.instant('synthesis.saved');
             Utils.notificationFadeout(this.messageId);
           }

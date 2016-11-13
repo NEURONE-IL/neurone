@@ -14,7 +14,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     Keystrokes.insert(jsonObject);
     //console.log('Keystroke Stored!', time);
@@ -23,7 +23,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     MouseClicks.insert(jsonObject);
     //console.log('Mouse Click Stored!', time);
@@ -32,7 +32,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     MouseCoordinates.insert(jsonObject);
     //console.log('Mouse Coordinate Stored!', time);
@@ -41,7 +41,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     ScrollMoves.insert(jsonObject);
     //console.log('Scroll Move Stored!', time);
@@ -50,7 +50,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     VisitedLinks.insert(jsonObject);
     //console.log('Visited Link Stored!', time);
@@ -67,7 +67,7 @@ Meteor.methods({
       device = oua ? oua.device.toString() : 'undefined',
        state = jsonObject.state;
 
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
     jsonObject.clientAddress = ipAddr;
     jsonObject.clientBrowser = browser;
     jsonObject.clientOperatingSystem = os;

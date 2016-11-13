@@ -23,16 +23,16 @@ export default class SnippetTrackService {
       var snippetObject = {
         owner: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        snipped_text: snippet,
+        snippedText: snippet,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
-        local_time: Utils.getTimestamp()
+        localTimestamp: Utils.getTimestamp()
       };
 
       Meteor.call('storeSnippet', snippetObject, (err, result) => {
         if (!err) {
           var msg = this.$translate.instant('alerts.snippetSaved');
-          Utils.logToConsole('Snippet Saved!', snippetObject.url, snippetObject.snipped_text, snippetObject.local_time);
+          Utils.logToConsole('Snippet Saved!', snippetObject.url, snippetObject.snippedText, snippetObject.localTimestamp);
           callback(null, msg);
         }
         else {

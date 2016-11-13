@@ -19,7 +19,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     Snippets.insert(jsonObject);
     //console.log('Snippet Stored!', time);
@@ -31,7 +31,7 @@ Meteor.methods({
     var time = ServerUtils.getTimestamp(),
        query = jsonObject.query;
 
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     Queries.insert(jsonObject);
     //console.log('Query Stored!', query, time);
@@ -41,7 +41,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
-    jsonObject.server_time = time;
+    jsonObject.serverTimestamp = time;
 
     Bookmarks.insert(jsonObject);
     //console.log('Bookmark Stored!', time);
