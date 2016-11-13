@@ -24,7 +24,7 @@ ostrio:files
 urigo:static-templates
 velocity:html-reporter
 velocity:console-reporter
-accounts-password@1.3.1
+accounts-password@1.3.2
 dotansimha:accounts-ui-angular
 check@1.2.4
 http@1.2.10

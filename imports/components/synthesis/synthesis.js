@@ -23,13 +23,23 @@ class Synthesis {
 
     $reactive(this).attach($scope);
 
-    this.question = 'Some question';    // TODO Load from database ($stateParams.id)
+    this.question = '';
     this.answer = '';
     this.snippets = [];
     this.bookmarks = [];
     
     this.getSnippets();
     this.getBookmarks();
+
+    Meteor.call('getSynthQuestion', Utils.parseStringAsInteger($stateParams.id), (err, result) => {
+      if (!err) {
+        this.question = result || 'Placeholder';
+        this.$scope.$apply();
+      }
+      else {
+        console.error('Unknown Error', err);
+      }
+    });
   }
 
   submit() {

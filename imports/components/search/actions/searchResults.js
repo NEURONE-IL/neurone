@@ -10,6 +10,7 @@ class SearchResults {
   constructor($scope, $reactive, $state, $stateParams, QueryTrackService) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$state = $state;
     this.qts = QueryTrackService;
 
@@ -30,11 +31,20 @@ class SearchResults {
     this.call('searchDocuments', qt, function(error, result) {
       if (!error) {
         this.documents = result;
+
+        // dgacitua: Pagination
+        this.totalResults = this.documents.length;
+        this.currentPage = 1;
+        this.resultsPerPage = 10;
+        this.paginationMaxSize = 5;
+
+        // dgacitua: Apply changes
         this.resultsReady = true;
+        this.$scope.$apply();
       }
       else {
         this.resultsReady = true;
-        console.log(error);
+        console.error('Error while getting documents', error);
       }
     });
   }

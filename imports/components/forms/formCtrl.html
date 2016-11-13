@@ -14,7 +14,8 @@
         </div>
         <div>
           <button type="submit" class="btn btn-primary">{{"form.submitButton" | translate}}</button>
-          <span ng-if="formCtrl.answers">{{"form.submitted" | translate}}</span>
+          <span ng-if="formCtrl.submitted">{{"form.submitted" | translate}}</span>
+          <span ng-if="formCtrl.submittedError">{{"form.submittedError" | translate}}</span>
         </div>
       </form>
       <br>

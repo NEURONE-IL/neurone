@@ -18,6 +18,8 @@ class FormCtrl {
 
     this.form = {};
     this.answers = '';
+    this.submitted = false;
+    this.submittedError = false;
 
     Meteor.call('getForm', Utils.parseStringAsInteger($stateParams.id), (err, result) => {
       if (!err) {
@@ -25,7 +27,7 @@ class FormCtrl {
         this.$scope.$apply();
       }
       else {
-        console.log('Unknown Error', err);
+        console.error('Unknown Error', err);
       }
     });
   }
@@ -62,9 +64,11 @@ class FormCtrl {
       Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
         if (!err) {
           console.log('Answer registered!', formAnswer.owner, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.local_time);
+          this.submitted = true;
         }
         else {
-          console.log('Unknown Error', err);
+          console.error('Error while saving form answers', err);
+          this.submittedError = true;
         }
       });
     }

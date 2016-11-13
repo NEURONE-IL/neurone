@@ -59,12 +59,15 @@
     "instructions": "Now you must answer some questions!",
     "requiredAnswer": "Required answer",
     "submitButton": "Submit",
-    "submitted": "Your answers have been submitted!"
+    "submitted": "Your answers have been submitted!",
+    "submittedError": "An error has occurred!"
   },
   "synthesis": {
     "title": "Synthesis",
     "submitButton": "Submit",
+    "saved": "Your answer is being saved...",
     "submitted": "Your answer has been submitted!",
+    "submittedError": "An error has occurred!",
     "snippets": "Your Snippets",
     "bookmarks": "Your Bookmarks",
     "closeButton": "Close",

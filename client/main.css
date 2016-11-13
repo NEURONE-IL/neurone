@@ -92,6 +92,11 @@ a.search-result-title:visited {
   height: 75vh;
 }
 
+.pagination-wrapper {
+  display: block;
+  margin: 0 auto;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component
