@@ -34,12 +34,31 @@ Meteor.methods({
 
     FormAnswers.insert(jsonObject);
     //console.log('Form Answer Stored!', page, time);
-    return true;
+    return jsonObject;
   },
   getSynthQuestion: function(synthId) {
     check(synthId, Match.OneOf(Number, String));
+    var mock = { questionId: 'syn1', question: 'Is this a question?' };
 
-    return SynthesisQuestions.findOne({ questionId: synthId });
+    return mock;//SynthesisQuestions.findOne({ questionId: synthId });
+  },
+  getSynthesisAnswer: function(synthId) {
+    check(synthId, Match.OneOf(Number, String));
+    
+    /*
+    var mock = {
+      owner: 'rpcvcnxGJDLqLrsut',
+      username: 'asdf@asdf.com',
+      startTime: 1479061295951,
+      questionId: 'syn1',
+      question: 'Is this a question?',
+      answer: '<b>No</b>',
+      completeAnswer: false,
+      local_time: 1479061296951
+    };
+    */
+
+    return SynthesisAnswers.findOne({ owner: this.userId, questionId: synthId, completeAnswer: false });
   },
   storeSynthesisAnswer: function(jsonObject) {
     check(jsonObject, Object);
@@ -47,8 +66,16 @@ Meteor.methods({
     var time = ServerUtils.getTimestamp();
     jsonObject.server_time = time;
 
-    SynthesisAnswers.insert(jsonObject);
-    //console.log('Form Answer Stored!', page, time);
-    return true;
+    var currentAnswer = SynthesisAnswers.findOne({ owner: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
+
+    if (ServerUtils.isEmptyObject(currentAnswer)) {
+      SynthesisAnswers.insert(jsonObject);
+    }
+    else {
+      SynthesisAnswers.update(currentAnswer, {$set: {answer: jsonObject.answer, local_time: jsonObject.local_time, server_time: jsonObject.server_time, completeAnswer: jsonObject.completeAnswer}});
+    }
+
+    //console.log('Synthesis Answer Stored!', questionId, time);
+    return jsonObject;
   }
 });

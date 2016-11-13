@@ -7,7 +7,7 @@
         <ng-wig ng-model="synthesis.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
         <br>
         <button type="submit" class="btn btn-primary">{{"synthesis.submitButton" | translate}}</button>
-        <!--<span ng-if="synthesis.answer">{{"synthesis.submitted" | translate}}</span>-->
+        <span id="synthesisMessage">{{synthesis.synthesisMessage}}</span>
       </form>
       <br>
     </div>

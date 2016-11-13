@@ -1,4 +1,4 @@
-# NEURONE: oNlinE inqUiry expeRimentatiON systEm
+# NEURONE: oNlinE inqUiry expeRimentatiON systEm [![Build Status](https://travis-ci.com/dgacitua/neurone.svg?token=bybFYGq2vZ5sYMfosTqM&branch=master)](https://travis-ci.com/dgacitua/neurone)
 
 Created by Daniel Gacitúa
 
@@ -12,7 +12,7 @@ Created by Daniel Gacitúa
 
 ### Production
 
-**NOTE:** A Linux Virtual Private Server (VPS) or a local machine with SSH access is needed to run this project in production mode.
+**NOTE:** A Linux Virtual Private Server (VPS) or a Linux local machine with SSH access is needed to run this project in production mode.
 
 #### Quick deploy (through Meteor Up)
 
@@ -43,3 +43,15 @@ Created by Daniel Gacitúa
         export PASSENGER_SERVER_USERNAME='root'
 
 5. For running an automatic deploy to your Passenger server, enter to NEURONE's root directory in your terminal and run `./passenger/init.sh`
+
+### Deploy with Docker
+
+#### Build image locally
+
+1. Install Docker in your development machine and add your current user to `docker` group
+2. Open a terminal and run `./dockerBuild.sh`
+3. You will get a local image to deploy
+
+#### Run image locally
+
+TODO

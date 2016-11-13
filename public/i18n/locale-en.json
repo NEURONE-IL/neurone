@@ -67,7 +67,7 @@
     "submitButton": "Submit",
     "saved": "Your answer is being saved...",
     "submitted": "Your answer has been submitted!",
-    "submittedError": "An error has occurred!",
+    "error": "An error has occurred!",
     "snippets": "Your Snippets",
     "bookmarks": "Your Bookmarks",
     "closeButton": "Close",

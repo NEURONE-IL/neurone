@@ -19,4 +19,27 @@ export default class Utils {
       return str;
     }
   }
+
+  // dgacitua: Convert seconds to milliseconds
+  static sec2millis(seconds) {
+    return seconds*1000;
+  }
+
+  // dgacitua: Convert minutes to milliseconds
+  static min2millis(minutes) {
+    return minutes*60*1000;
+  }
+
+  // dgacitua: Set a fade out message for notifications
+  static notificationFadeout(messageDivId) {
+    // You will need to use this method with 'this.$scope.$apply()' for AngularJS Controllers
+    var navbarMessageElement = angular.element(document.getElementById(messageDivId));
+    navbarMessageElement.stop(true, true);
+    navbarMessageElement.fadeIn(0);
+    navbarMessageElement.fadeOut(5000);
+  }
+
+  static isEmptyObject(object) {
+    return angular.equals(object, {});
+  }
 }
