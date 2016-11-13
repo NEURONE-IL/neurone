@@ -10,7 +10,7 @@ set -e
 # You must set the following environment variables
 # HOST     Server hostname or IP address (eg: 123.45.67.89 or neurone.mydomain.org)
 # USER     Username part of Docker group on host machine (eg: neurone)
-# PASS     Password of the chosen username (eg: MySecretPass)
+# SSHPASS  Password of the chosen username (eg: MySecretPass)
 # WORKDIR  Home directory of chosen username (eg: /home/neurone)
 # NEURONE_DB_USER     Database administrator name, will be created if not exists (eg: neuroneAdmin)
 # NEURONE_DB_PASS     Database administrator password (eg: neuronePassword)
@@ -23,7 +23,6 @@ NEURONE_APP_NAME="neurone-app"
 NEURONE_APP_PORT=80
 NEURONE_DB_NAME="neurone-db"
 NEURONE_DB_PORT=27017
-export SSHPASS=$PASS
 
 
 ### BUILD START ###
