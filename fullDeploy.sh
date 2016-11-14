@@ -66,17 +66,19 @@ ssh $USER@$HOST docker run -d \
                 -v $NEURONE_DB_PATH:/data/db \
                 --name $NEURONE_DB_NAME  \
                 --restart=unless-stopped \
-                mongo --auth
+                mongo
 
-echo ">> Setting authentication to database in remote host... [10/12]"
-ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
-                \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
-                roles: [{ role: \\\"userAdminAnyDatabase\\\", db: \\\"admin\\\" }]})\" || true"
+echo ">> Setting up authentication and databases in remote host... [10/12]"
+#ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
+#                \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
+#                roles: [{ role: \\\"userAdminAnyDatabase\\\", db: \\\"admin\\\" }]})\" || true"
+
+#ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval $NEURONE_MONGO_DATABASE || true"
 
 echo ">> Deploy offline NEURONE image in remote host... [11/12]"
 ssh $USER@$HOST docker run -d \
                 -e ROOT_URL="http://$HOST" \
-                -e MONGO_URL="mongodb://$NEURONE_DB_USER:$NEURONE_DB_PASS@$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
+                -e MONGO_URL="mongodb://$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
                 -p $NEURONE_APP_PORT:80 \
                 -v $NEURONE_ASSET_PATH:/assets \
                 --link $NEURONE_DB_NAME:mongo \
