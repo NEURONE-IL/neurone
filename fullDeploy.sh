@@ -44,7 +44,7 @@ rm -rf .neuroneBuild/
 
 ### DEPLOY START ###
 echo ">> Creating offline image... [4/12]"
-docker save dgacitua/neurone > neuroneimage.tar
+docker save -o neuroneimage.tar dgacitua/neurone 
 
 echo ">> Copying files to remote host... [5/12]"
 scp dockerDeploy.sh $USER@$HOST:$WORKDIR
@@ -57,7 +57,7 @@ echo ">> Removing old Docker app containers...  [7/12]"
 ssh $USER@$HOST docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 echo ">> Loading offline image in remote host... [8/12]"
-ssh $USER@$HOST docker load < $WORKDIR/neuroneimage.tar
+ssh $USER@$HOST docker load -i $WORKDIR/neuroneimage.tar
 ssh $USER@$HOST rm $WORKDIR/neuroneimage.tar
 
 echo ">> Deploy MongoDB database in remote host... [9/12]"
