@@ -47,21 +47,21 @@ echo ">> Creating offline image... [4/12]"
 docker save dgacitua/neurone > neuroneimage.tar
 
 echo ">> Copying files to remote host... [5/12]"
-sshpass -e scp dockerDeploy.sh $USER@$HOST:$WORKDIR
-sshpass -e scp neuroneimage.tar $USER@$HOST:$WORKDIR
+scp dockerDeploy.sh $USER@$HOST:$WORKDIR
+scp neuroneimage.tar $USER@$HOST:$WORKDIR
 
 echo ">> Removing local offline image... [6/12]"
 rm neuroneimage.tar
 
 echo ">> Removing old Docker app containers...  [7/12]"
-sshpass -e ssh $USER@$HOST docker stop $NEURONE_APP_NAME $NEURONE_DB_NAME && docker rm $NEURONE_APP_NAME $NEURONE_DB_NAME
+ssh $USER@$HOST docker stop $NEURONE_APP_NAME $NEURONE_DB_NAME && docker rm $NEURONE_APP_NAME $NEURONE_DB_NAME
 
 echo ">> Loading offline image in remote host... [8/12]"
-sshpass -e ssh $USER@$HOST docker load < neuroneimage.tar
-sshpass -e ssh $USER@$HOST rm $WORKDIR/neuroneimage.tar
+ssh $USER@$HOST docker load < neuroneimage.tar
+ssh $USER@$HOST rm $WORKDIR/neuroneimage.tar
 
 echo ">> Deploy MongoDB database in remote host... [9/12]"
-sshpass -e ssh $USER@$HOST docker run -d \
+ssh $USER@$HOST docker run -d \
                 -p $NEURONE_DB_PORT:27017 \
                 -v $NEURONE_DB_PATH:/data/db \
                 --name $NEURONE_DB_NAME  \
@@ -69,12 +69,12 @@ sshpass -e ssh $USER@$HOST docker run -d \
                 mongo --auth
 
 echo ">> Setting authentication to database in remote host... [10/12]"
-sshpass -e ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
+ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
                 \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
                 roles: [{ role: \\\"userAdminAnyDatabase\\\", db: \\\"admin\\\" }]})\""
 
 echo ">> Deploy offline NEURONE image in remote host... [11/12]"
-sshpass -e ssh $USER@$HOST docker run -d \
+ssh $USER@$HOST docker run -d \
                 -e ROOT_URL="http://$HOST" \
                 -e MONGO_URL="mongodb://$NEURONE_DB_USER:$NEURONE_DB_PASS@$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
                 -p $NEURONE_APP_PORT:80 \
