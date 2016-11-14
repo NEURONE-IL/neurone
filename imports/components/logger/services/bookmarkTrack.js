@@ -63,7 +63,7 @@ export default class BookmarkTrackService {
       var userId = Meteor.userId(),
              url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
-      Meteor.call('removeBookmark', userId, url, (err, result) => {
+      Meteor.call('removeBookmark', url, (err, result) => {
         if (!err) {
           var msg = this.$translate.instant('alerts.bookmarkRemoved');
           Utils.logToConsole('Bookmark Removed!');

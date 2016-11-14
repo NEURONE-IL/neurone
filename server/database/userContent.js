@@ -5,15 +5,11 @@ import { Queries } from '../../imports/api/queries/index';
 import { Bookmarks } from '../../imports/api/bookmarks/index';
 
 Meteor.methods({
-  getSnippets: function(userId) {
-    check(userId, String);
-
-    return Snippets.find({ owner: userId }).fetch();
+  getSnippets: function() {
+    return Snippets.find({ owner: this.userId }).fetch();
   },
-  getBookmarks: function(userId) {
-    check(userId, String);
-
-    return Bookmarks.find({ owner: userId }).fetch();
+  getBookmarks: function() {
+    return Bookmarks.find({ owner: this.userId }).fetch();
   },
   storeSnippet: function(jsonObject) {
     check(jsonObject, Object);
@@ -47,14 +43,13 @@ Meteor.methods({
     //console.log('Bookmark Stored!', time);
     return true;
   },
-  removeBookmark: function(userId, currentUrl) {
-    check(userId, String);
+  removeBookmark: function(currentUrl) {
     check(currentUrl, String);
 
-    Bookmarks.remove({ owner: userId, url: currentUrl });
+    Bookmarks.remove({ owner: this.userId, url: currentUrl });
     return true;
   },
-  getBookmarks: function(currentUrl) {
+  getBookmark: function(currentUrl) {
     check(currentUrl, String);
 
     return Bookmarks.find({ url: currentUrl }).fetch();

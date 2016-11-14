@@ -134,7 +134,7 @@ class Synthesis {
 
   getSnippets() {
     if (!!Meteor.userId()) {
-      this.call('getSnippets', Meteor.userId(), (err, res) => {
+      this.call('getSnippets', (err, res) => {
         if (!err) {
           this.snippets = res;
         }
@@ -147,7 +147,7 @@ class Synthesis {
 
   getBookmarks() {
     if (!!Meteor.userId()) {
-      this.call('getBookmarks', Meteor.userId(), (err, res) => {
+      this.call('getBookmarks', (err, res) => {
         if (!err) {
           this.bookmarks = res;
         }
