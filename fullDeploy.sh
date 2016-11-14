@@ -57,7 +57,7 @@ echo ">> Removing old Docker app containers...  [7/12]"
 ssh $USER@$HOST docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 echo ">> Loading offline image in remote host... [8/12]"
-ssh $USER@$HOST docker load < neuroneimage.tar
+ssh $USER@$HOST docker load < $WORKDIR/neuroneimage.tar
 ssh $USER@$HOST rm $WORKDIR/neuroneimage.tar
 
 echo ">> Deploy MongoDB database in remote host... [9/12]"
