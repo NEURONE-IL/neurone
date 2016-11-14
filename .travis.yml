@@ -21,14 +21,14 @@ addons:
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
 
-#after_success:
-#  - if [ $TRAVIS_BRANCH == 'master' ] ; then
-#    /bin/sh fullDeploy.sh;
-#    fi
+after_success:
+  - if [ $TRAVIS_BRANCH == 'master' ] ; then
+    /bin/sh fullDeploy.sh;
+    fi
 
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: fullDeploy.sh
-  on:
-    branch: master
+#deploy:
+#  skip_cleanup: true
+#  provider: script
+#  script: fullDeploy.sh
+#  on:
+#    branch: master
