@@ -26,10 +26,10 @@ NEURONE_DB_PORT=27017
 
 
 ### BUILD START ###
-echo ">> Bundle Meteor Project... [1/12]"
+echo ">> Bundle Meteor project... [1/12]"
 meteor build --architecture=os.linux.x86_64 ./.neuroneBuild --directory
 
-echo ">> Copying files for  Project... [2/12]"
+echo ">> Copying files for project... [2/12]"
 cp Dockerfile ./.neuroneBuild/bundle
 cp .dockerignore ./.neuroneBuild/bundle
 cp .deploy/docker/meteor-env.conf ./.neuroneBuild/bundle
