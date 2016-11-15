@@ -13,6 +13,8 @@ RUN mkdir -p /home/app/neurone
 
 # Create NEURONE assets folder
 RUN mkdir -p /assets
+RUN chown -R app:app /assets
+RUN chmod -R +rw /assets
 ENV NEURONE_ASSET_PATH /assets
 
 # Copy bundle contents to directory
