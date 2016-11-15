@@ -25,9 +25,9 @@ export default class InvertedIndex {
   }
 
   static load() {
-    var currentIndex = Indexes.findOne({}, {sort: {DateTime: -1, limit: 1}});
+    var currentIndex = Indexes.findOne({ type: 'LunrIndex', version: 1 }, { sort: { DateTime: -1 }});
 
-    if (currentIndex) {
+    if (!Utils.isEmptyObject(currentIndex)) {
       console.log('Loading Inverted Index...');
       searchIndex = lunr.Index.load(JSON.parse(currentIndex.index));
     }
@@ -39,16 +39,9 @@ export default class InvertedIndex {
   static save() {
     console.log('Saving Inverted Index...');
 
-    var serializedIndex = { index: JSON.stringify(searchIndex) },
-           currentIndex = Indexes.findOne({}, {sort: {DateTime: -1, limit: 1}});
+    var serializedIndex = { type: 'LunrIndex', version: 1, index: JSON.stringify(searchIndex) };
 
-    if (currentIndex._id) {
-      var currentId = currentIndex._id;
-      Indexes.update({ _id: currentId }, serializedIndex);
-    }
-    else {
-      Indexes.insert(serializedIndex);
-    }    
+    Indexes.upsert({ type: 'LunrIndex', version: 1 }, serializedIndex);
   }
 
   static searchDocuments(query) {
