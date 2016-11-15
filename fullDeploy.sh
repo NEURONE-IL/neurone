@@ -53,8 +53,9 @@ scp neuroneimage.tar $USER@$HOST:$WORKDIR
 echo ">> Removing local offline image... [6/12]"
 rm neuroneimage.tar
 
-echo ">> Removing old Docker app containers...  [7/12]"
-ssh $USER@$HOST docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+echo ">> Removing old Docker app containers... [7/12]"
+ssh $USER@$HOST docker stop $(docker ps -a -q)
+ssh $USER@$HOST docker rm $(docker ps -a -q)
 
 echo ">> Loading offline image in remote host... [8/12]"
 ssh $USER@$HOST docker load -i $WORKDIR/neuroneimage.tar
