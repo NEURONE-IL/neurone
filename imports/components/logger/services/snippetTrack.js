@@ -21,7 +21,7 @@ export default class SnippetTrackService {
     
     if (Meteor.user() && !Utils.isEmpty(snippet)) {
       var snippetObject = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         snippedText: snippet,
         title: (pageTitle ? pageTitle : document.title),

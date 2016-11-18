@@ -4,12 +4,12 @@ export const Snippets = new Mongo.Collection('snippets');
 
 Snippets.allow({
   insert(userId, snip) {
-    return userId && snip.owner === userId;
+    return userId && snip.userId === userId;
   },
   update(userId, snip, fields, modifier) {
-    return userId && snip.owner === userId;
+    return userId && snip.userId === userId;
   },
   remove(userId, snip) {
-    return userId && snip.owner === userId;
+    return userId && snip.userId === userId;
   }
 });

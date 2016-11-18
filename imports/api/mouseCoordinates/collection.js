@@ -4,12 +4,12 @@ export const MouseCoordinates = new Mongo.Collection('mousecoordinates');
 
 MouseCoordinates.allow({
   insert(userId, mc) {
-    return userId && mc.owner === userId;
+    return userId && mc.userId === userId;
   },
   update(userId, mc, fields, modifier) {
-    return userId && mc.owner === userId;
+    return userId && mc.userId === userId;
   },
   remove(userId, mc) {
-    return userId && mc.owner === userId;
+    return userId && mc.userId === userId;
   }
 });

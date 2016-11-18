@@ -17,7 +17,7 @@ export default class QueryTrackService {
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       var queryObject = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         query: queryText,
         title: (pageTitle ? pageTitle : document.title),
@@ -27,7 +27,7 @@ export default class QueryTrackService {
 
       Meteor.call('storeQuery', queryObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.localTimestamp);
+          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.userId, queryObject.username, queryObject.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

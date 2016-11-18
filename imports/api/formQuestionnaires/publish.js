@@ -5,7 +5,7 @@ if (Meteor.isServer) {
   Meteor.publish('formQuestionnaires', function() {
     /*
     const selector = { $and: [
-      { owner: this.userId }, { owner: { $exists: true } }
+      { userId: this.userId }, { userId: { $exists: true } }
     ]};
     */
     

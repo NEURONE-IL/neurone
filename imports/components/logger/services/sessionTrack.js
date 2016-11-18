@@ -8,7 +8,7 @@ export default class SessionTrackService {
   saveSessionLog(currentState) {
     if (!!Meteor.userId()) {
       var sessionLog = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         state: currentState,
         localTimestamp: Utils.getTimestamp()
@@ -16,7 +16,7 @@ export default class SessionTrackService {
 
       Meteor.call('storeSessionLog', sessionLog, (err, res) => {
         if (!err) {
-          Utils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.owner, sessionLog.username, sessionLog.localTimestamp);
+          Utils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.userId, sessionLog.username, sessionLog.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

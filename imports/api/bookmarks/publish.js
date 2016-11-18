@@ -4,7 +4,7 @@ import { Bookmarks } from './collection';
 if (Meteor.isServer) {
   Meteor.publish('bookmarks', function() {
     const selector = { $and: [
-      { owner: this.userId }, { owner: { $exists: true } }
+      { userId: this.userId }, { userId: { $exists: true } }
     ]};
     
     return Bookmarks.find(selector);

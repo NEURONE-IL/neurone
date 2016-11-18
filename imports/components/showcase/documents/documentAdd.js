@@ -13,7 +13,7 @@ class DocumentAdd {
   submit() {
     var date = new Date();
     this.doc.date = date.toJSON();
-    this.doc.owner = Meteor.user()._id;
+    this.doc.userId = Meteor.userId();
     Documents.insert(this.doc);
     this.reset();
   }

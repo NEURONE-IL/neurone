@@ -36,7 +36,7 @@ export default class BookmarkTrackService {
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       var bookmarkObject = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),

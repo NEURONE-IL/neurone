@@ -22,10 +22,11 @@ import LoggerConfigs from '../loggerConfigs';
  */
 
 export default class KMTrackService {
-  constructor($window, $state) {
+  constructor($window, $document, $state) {
     'ngInject';
 
     this.$window = $window;
+    this.$document = $document;
     this.$state = $state;
 
     this.iframeSelected = false;
@@ -92,10 +93,10 @@ export default class KMTrackService {
           winW = w,
           winH = h;
 
-      var movement_output = {
-        type: 'mouse_movement',
-        owner: Meteor.userId(),
+      var movementOutput = {
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
+        type: 'mouseMovement',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -109,7 +110,7 @@ export default class KMTrackService {
       };
 
       Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseCoordinate', movement_output, (err, result) => {});
+      Meteor.call('storeMouseCoordinate', movementOutput, function(err, result) {});
     }
   }
 
@@ -149,10 +150,10 @@ export default class KMTrackService {
           winW = w,
           winH = h;
       
-      var click_output = {
-        type: 'mouse_click',
-        owner: Meteor.userId(),
+      var clickOutput = {
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
+        type: 'mouseClick',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -166,7 +167,7 @@ export default class KMTrackService {
       };
 
       Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseClick', click_output, (err, result) => {});
+      Meteor.call('storeMouseClick', clickOutput, function(err, result) {});
     }
   }
 
@@ -190,10 +191,10 @@ export default class KMTrackService {
           winW = w,
           winH = h;
 
-      var movement_output = {
-        type: 'scroll',
-        owner: Meteor.userId(),
+      var scrollOutput = {
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
+        type: 'scroll',
         url: src,
         x_scr: scrollX,
         y_scr: scrollY,
@@ -205,11 +206,11 @@ export default class KMTrackService {
       };
 
       Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeScrollMove', movement_output, (err, result) => {});
+      Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
     }
   }
 
-  keystrokeListener(evt) {
+  keydownListener(evt) {
     evt = evt || event;
       
     var t = Utils.getTimestamp(),
@@ -222,7 +223,19 @@ export default class KMTrackService {
     //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Keydown!',
+      var keyOutput = {
+        userId: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        type: 'keyDown',
+        keyCode: kc,
+        which: w,
+        charCode: chc,
+        chr: chr,
+        localTimestamp: t,
+        url: src
+      };
+
+      Utils.logToConsole('Key Pressed!', 
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -235,23 +248,11 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      var key_output = {
-        type: 'key_down',
-        keyCode: kc,
-        which: w,
-        charCode: chc,
-        chr: chr,
-        localTimestamp: t,
-        url: src,
-        owner: Meteor.userId(),
-        username: Meteor.user().emails[0].address
-      };
-
-      Meteor.call('storeKeystroke', key_output, (err, result) => {});
+      Meteor.call('storeKeystroke', keyOutput, function(err, result) {});
     }
   }
 
-  keycharListener(evt) {
+  keypressListener(evt) {
     evt = evt || event;
       
     var t = Utils.getTimestamp(),
@@ -264,7 +265,19 @@ export default class KMTrackService {
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      Utils.logToConsole('Keypress!', 
+      var key_output = {
+        userId: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        type: 'keyPress',
+        keyCode: kc,
+        which: w,
+        charCode: chc,
+        chr: chr,
+        localTimestamp: t,
+        url: src
+      };
+
+      Utils.logToConsole('Key Pressed!',
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -277,19 +290,7 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      var key_output = {
-        type: 'key_press',
-        keyCode: kc,
-        which: w,
-        charCode: chc,
-        chr: chr,
-        localTimestamp: t,
-        url: src,
-        owner: Meteor.userId(),
-        username: Meteor.user().emails[0].address
-      };
-
-      Meteor.call('storeKeystroke', key_output, (err, result) => {});
+      Meteor.call('storeKeystroke', key_output, function(err, result) {});
     }
   }
 
@@ -305,8 +306,8 @@ export default class KMTrackService {
     this.bindThrottledEvent('mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
     this.bindThrottledEvent('scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
     this.bindEvent('click', data, this.mouseClickListener);
-    this.bindEvent('keydown', data, this.keystrokeListener);
-    this.bindEvent('keypress', data, this.keycharListener);
+    this.bindEvent('keydown', data, this.keydownListener);
+    this.bindEvent('keypress', data, this.keypressListener);
 
     this.isTracking = true;
   }
@@ -315,8 +316,8 @@ export default class KMTrackService {
     this.unbindEvent('mousemove', this.mouseMoveListener);
     this.unbindEvent('scroll', this.scrollListener);
     this.unbindEvent('click', this.mouseClickListener);
-    this.unbindEvent('keydown', this.keystrokeListener);
-    this.unbindEvent('keypress', this.keycharListener);
+    this.unbindEvent('keydown', this.keydownListener);
+    this.unbindEvent('keypress', this.keypressListener);
 
     this.isTracking = false;
   }

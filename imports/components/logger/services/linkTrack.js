@@ -18,7 +18,7 @@ export default class LinkTrackService {
 
       // http://stackoverflow.com/a/25615010
       var linkObject = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         state: linkState,
         title: (pageTitle ? pageTitle : document.title),
@@ -28,7 +28,7 @@ export default class LinkTrackService {
 
       Meteor.call('storeVisitedLink', linkObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.title, linkObject.url, linkObject.localTimestamp);
+          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.userId, linkObject.username, linkObject.title, linkObject.url, linkObject.localTimestamp);
         }
         else {
           Utils.logToConsole('Unknown Error');

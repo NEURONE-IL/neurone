@@ -16,9 +16,9 @@ if (Meteor.isServer) {
       }, {
         // when logged in user is the owner
         $and: [{
-          owner: this.userId
+          userId: this.userId
         }, {
-          owner: {
+          userId: {
             $exists: true
           }
         }]

@@ -4,12 +4,12 @@ export const Documents = new Mongo.Collection('documents');
 
 Documents.allow({
   insert(userId, doc) {
-    return userId && doc.owner === userId;
+    return userId && doc.userId === userId;
   },
   update(userId, doc, fields, modifier) {
-    return userId && doc.owner === userId;
+    return userId && doc.userId === userId;
   },
   remove(userId, doc) {
-    return userId && doc.owner === userId;
+    return userId && doc.userId === userId;
   }
 });

@@ -60,7 +60,7 @@ class Synthesis {
   submit() {
     if (!!Meteor.userId()) {
       var answer = {
-        owner: Meteor.userId(),
+        userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
         startTime: this.startTime,
         questionId: this.$stateParams.id,
@@ -72,7 +72,7 @@ class Synthesis {
 
       this.call('storeSynthesisAnswer', answer, (err, res) => {
         if (!err) {
-          console.log('Answer submitted!', answer.owner, answer.localTimestamp);
+          console.log('Answer submitted!', answer.userId, answer.localTimestamp);
           this.synthesisMessage = this.$translate.instant('synthesis.submitted');
           Utils.notificationFadeout(this.messageId);
         }
@@ -92,7 +92,7 @@ class Synthesis {
     this.autosave = this.$interval(() => {
       if (!!Meteor.userId()) {
         var answer = {
-          owner: Meteor.userId(),
+          userId: Meteor.userId(),
           username: Meteor.user().emails[0].address,
           startTime: this.startTime,
           questionId: this.$stateParams.id,
@@ -104,7 +104,7 @@ class Synthesis {
 
         this.call('storeSynthesisAnswer', answer, (err, res) => {
           if (!err) {
-            console.log('Answer autosaved!', answer.owner, answer.localTimestamp);
+            console.log('Answer autosaved!', answer.userId, answer.localTimestamp);
             this.synthesisMessage = this.$translate.instant('synthesis.saved');
             Utils.notificationFadeout(this.messageId);
           }
