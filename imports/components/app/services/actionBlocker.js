@@ -63,6 +63,3 @@ const name = 'actionBlocker';
 
 export default angular.module(name, [])
 .service('ActionBlockerService', ActionBlockerService);
-
-
-  
