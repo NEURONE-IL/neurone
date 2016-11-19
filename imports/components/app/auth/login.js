@@ -2,12 +2,11 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
-import { Meteor } from 'meteor/meteor';
+import Utils from '../../globalUtils';
 
 import template from './login.html';
 
 import { name as Register } from './register';
-
 import { name as Logger } from '../../logger/logger';
 
 class Login {
@@ -37,6 +36,7 @@ class Login {
           //console.log(Meteor.user(), Meteor.user().emails[0].address);
           this.sts.saveLogin();
           this.fs.startFlow();
+          UserStatus.startMonitor({ threshold: Utils.sec2millis(30), interval: Utils.sec2millis(1), idleOnBlur: true });
           this.$state.go('search');
         }
       })

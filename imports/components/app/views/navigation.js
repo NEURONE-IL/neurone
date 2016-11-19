@@ -125,6 +125,7 @@ class Navigation {
     this.ses.saveLogout();
     Accounts.logout((err, res) => {
       if (!err) {
+        UserStatus.stopMonitor();
         this.$state.go('home');
       }
       else {
