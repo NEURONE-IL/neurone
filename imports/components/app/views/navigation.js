@@ -8,6 +8,7 @@ import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
 import { name as Logger } from '../../logger/logger';
+import Utils from '../../globalUtils';
 
 const name = 'navigation';
 
@@ -33,10 +34,10 @@ class Navigation {
     });
 
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
-      this.bms.isBookmarked((err, result) => {
+      this.bms.isBookmarked((err, res) => {
         if (!err) {
           this.isOnPage = data;
-          this.isBookmarked = result;
+          this.isBookmarked = res;
           this.$scope.$apply();
           //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
         }
@@ -66,10 +67,11 @@ class Navigation {
     this.sts.saveSnippet((err, res) => {
       this.$scope.$apply(() => {
         this.navbarMessage = res ? res : err;
-        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        this.navbarMessageElement.stop(true, true);
-        this.navbarMessageElement.fadeIn(0);
-        this.navbarMessageElement.fadeOut(5000); 
+        Utils.notificationFadeout(this.navbarMessageId);
+        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        //this.navbarMessageElement.stop(true, true);
+        //this.navbarMessageElement.fadeIn(0);
+        //this.navbarMessageElement.fadeOut(5000); 
       });
     });
   }
@@ -78,10 +80,11 @@ class Navigation {
     this.bms.saveBookmark((err, res) => {
       this.$scope.$apply(() => {
         this.navbarMessage = res ? res : err;
-        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        this.navbarMessageElement.stop(true, true);
-        this.navbarMessageElement.fadeIn(0);
-        this.navbarMessageElement.fadeOut(5000);
+        Utils.notificationFadeout(this.navbarMessageId);
+        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        //this.navbarMessageElement.stop(true, true);
+        //this.navbarMessageElement.fadeIn(0);
+        //this.navbarMessageElement.fadeOut(5000); 
 
         if (!err) {
           this.bms.isBookmarked((err2, res2) => {
@@ -99,10 +102,11 @@ class Navigation {
     this.bms.removeBookmark((err, res) => {
       this.$scope.$apply(() => {
         this.navbarMessage = res ? res : err;
-        this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        this.navbarMessageElement.stop(true, true);
-        this.navbarMessageElement.fadeIn(0);
-        this.navbarMessageElement.fadeOut(5000);
+        Utils.notificationFadeout(this.navbarMessageId);
+        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
+        //this.navbarMessageElement.stop(true, true);
+        //this.navbarMessageElement.fadeIn(0);
+        //this.navbarMessageElement.fadeOut(5000); 
 
         if (!err) {
           this.bms.isBookmarked((err2, res2) => {
@@ -117,10 +121,15 @@ class Navigation {
   }
 
   logout() {
-    var p1 = this.ses.saveLogout();
-    var p2 = Accounts.logout();
-
-    this.$q.all([p1, p2]).then(this.$state.go('home'));
+    this.ses.saveLogout();
+    Accounts.logout((err, res) => {
+      if (!err) {
+        this.$state.go('home');
+      }
+      else {
+        console.error('Error while logging out!', err);
+      }
+    });
   }
 }
 

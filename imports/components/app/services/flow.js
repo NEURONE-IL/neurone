@@ -14,13 +14,24 @@ class FlowService {
 
   startFlow() {
     if (!!Meteor.userId()) {
+      var localTime = Utils.getTimestamp();
+
       var currentTimer = {
         userId: Meteor.userId(),
         username: Meteor.user().emails[0].address,
-        startTimestamp: Utils.getTimestamp(),
-        currentTimestamp: Utils.getTimestamp(),
-        lastSyncTimestamp: Utils.getTimestamp()
+        startTimestamp: localTime,
+        currentTimestamp: localTime,
+        lastSyncLocalTimestamp: localTime
       };
+
+      Meteor.call('syncFlowTimer', currentTimer, (err, res) => {
+        if (!err) {
+          console.log('Flow timer started!', res);
+        }
+        else {
+          console.error('Error while starting Flow timer!', err);
+        }
+      });
     }
   }
 

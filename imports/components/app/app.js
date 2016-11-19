@@ -19,6 +19,7 @@ import { name as Synthesis } from '../synthesis/synthesis';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as ActionBlocker } from './services/actionBlocker';
+import { name as Flow } from './services/flow';
 import { name as Logger } from '../logger/logger';
 import LoggerConfigs from '../logger/loggerConfigs';
 
@@ -34,6 +35,7 @@ export default angular.module(name, [
   angularTranslate,
   angularTranslateLoader,
   Logger,
+  Flow,
   ActionBlocker,
   Home,
   Auth,
@@ -111,7 +113,4 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
       abs.antiService();
     }
   });
-
-  // http://stackoverflow.com/a/16204326
-  // http://stackoverflow.com/a/27984921
 };
