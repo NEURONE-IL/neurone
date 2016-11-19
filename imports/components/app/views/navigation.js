@@ -13,13 +13,13 @@ import Utils from '../../globalUtils';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $q, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService) {
     'ngInject';
 
-    this.$q = $q;
     this.$state = $state;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.fs = FlowService;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
@@ -121,6 +121,7 @@ class Navigation {
   }
 
   logout() {
+    this.fs.stopFlow();
     this.ses.saveLogout();
     Accounts.logout((err, res) => {
       if (!err) {

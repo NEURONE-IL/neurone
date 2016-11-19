@@ -30,9 +30,9 @@ check@1.2.4
 http@1.2.10
 session@1.1.7
 ostrio:meteor-root
-socialize:user-presence
 osv:mongo-counter
 jalik:ufs
 jalik:ufs-local
 williamledoux:static-server
 dispatch:mocha-phantomjs
+mizzao:user-status

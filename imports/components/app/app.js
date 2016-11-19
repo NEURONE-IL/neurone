@@ -86,7 +86,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
   lts = LinkTrackService;
   kmts = KMTrackService;
   abs = ActionBlockerService;
-
+  
   // http://stackoverflow.com/a/20786262
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {

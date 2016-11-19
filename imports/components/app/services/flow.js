@@ -1,14 +1,35 @@
 import Utils from '../../globalUtils';
 
 class FlowService {
-  constructor($window) {
+  constructor($rootScope, $interval) {
     'ngInject';
 
-    this.$window = $window;
+    this.$rootScope = $rootScope;
+    this.$interval = $interval;
   }
 
-  syncFlow() {
-    
+  syncTimer(syncType) {
+    if (!!Meteor.userId()) {
+      var localTime = Utils.getTimestamp();
+
+      var currentTimer = {
+        userId: Meteor.userId(),
+        username: Meteor.user().emails[0].address,
+        type: syncType,
+        startTimestamp: this.$rootScope.startTimestamp || localTime,
+        currentTimestamp: localTime,
+        lastSyncLocalTimestamp: localTime
+      };
+
+      Meteor.call('syncFlowTimer', currentTimer, (err, res) => {
+        if (!err) {
+          console.log('Flow timer synchronized!', res);
+        }
+        else {
+          console.error('Error while synchronizing Flow timer!', err);
+        }
+      });
+    }
   }
 
 
@@ -16,27 +37,24 @@ class FlowService {
     if (!!Meteor.userId()) {
       var localTime = Utils.getTimestamp();
 
-      var currentTimer = {
-        userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
-        startTimestamp: localTime,
-        currentTimestamp: localTime,
-        lastSyncLocalTimestamp: localTime
-      };
+      this.$rootScope.startTimestamp = localTime;
+      this.syncTimer('start');
 
-      Meteor.call('syncFlowTimer', currentTimer, (err, res) => {
-        if (!err) {
-          console.log('Flow timer started!', res);
-        }
-        else {
-          console.error('Error while starting Flow timer!', err);
-        }
-      });
+      this.$rootScope.flowTimer = this.$interval(() => {
+        this.syncTimer('sync');
+      }, Utils.sec2millis(15));
     }
   }
 
   stopFlow() {
+    if (!!Meteor.userId()) {
+      var localTime = Utils.getTimestamp();
 
+      this.$interval.cancel(this.$rootScope.flowTimer);
+
+      this.syncTimer('stop');
+      this.$rootScope.startTimestamp = 0;
+    }
   }
 }
 

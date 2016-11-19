@@ -11,11 +11,12 @@ import { name as Register } from './register';
 import { name as Logger } from '../../logger/logger';
 
 class Login {
-  constructor($scope, $reactive, $state, SessionTrackService) {
+  constructor($scope, $reactive, $state, SessionTrackService, FlowService) {
     'ngInject';
 
     this.$state = $state;
     this.sts = SessionTrackService;
+    this.fs = FlowService;
 
     $reactive(this).attach($scope);
 
@@ -35,6 +36,7 @@ class Login {
         } else {
           //console.log(Meteor.user(), Meteor.user().emails[0].address);
           this.sts.saveLogin();
+          this.fs.startFlow();
           this.$state.go('search');
         }
       })
