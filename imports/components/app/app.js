@@ -18,6 +18,7 @@ import { name as Forms } from '../forms/formCtrl';
 import { name as Synthesis } from '../synthesis/synthesis';
 import { name as Showcase } from '../showcase/showcase';
 
+import { name as AuthService } from './services/auth';
 import { name as ActionBlocker } from './services/actionBlocker';
 import { name as Flow } from './services/flow';
 import { name as Logger } from '../logger/logger';
@@ -34,6 +35,7 @@ export default angular.module(name, [
   uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
+  AuthService,
   Logger,
   Flow,
   ActionBlocker,

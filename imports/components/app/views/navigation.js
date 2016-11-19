@@ -13,7 +13,7 @@ import Utils from '../../globalUtils';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService) {
+  constructor($scope, $rootScope, $reactive, $state, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService) {
     'ngInject';
 
     this.$state = $state;
@@ -23,6 +23,7 @@ class Navigation {
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
+    this.auth = AuthService;
 
     $reactive(this).attach($scope);
 
@@ -121,6 +122,12 @@ class Navigation {
   }
 
   logout() {
+    this.auth.logout((err, res) => {
+      if (!err) {
+        this.$state.go('search');
+      }
+    });
+    /*
     this.fs.stopFlow();
     this.ses.saveLogout();
     Accounts.logout((err, res) => {
@@ -132,6 +139,7 @@ class Navigation {
         console.error('Error while logging out!', err);
       }
     });
+    */
   }
 }
 

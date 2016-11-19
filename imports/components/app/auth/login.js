@@ -7,15 +7,14 @@ import Utils from '../../globalUtils';
 import template from './login.html';
 
 import { name as Register } from './register';
-import { name as Logger } from '../../logger/logger';
 
 class Login {
-  constructor($scope, $reactive, $state, SessionTrackService, FlowService) {
+  constructor($scope, $reactive, $state, AuthService) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$state = $state;
-    this.sts = SessionTrackService;
-    this.fs = FlowService;
+    this.auth = AuthService;
 
     $reactive(this).attach($scope);
 
@@ -28,6 +27,16 @@ class Login {
   }
 
   login() {
+    this.auth.login(this.credentials.email, this.credentials.password, (err, res) => {
+      if (!err) {
+        this.error = res;
+        this.$state.go('search');
+      }
+      else {
+        this.error = err;
+      }
+    });
+    /*
     Meteor.loginWithPassword(this.credentials.email, this.credentials.password,
       this.$bindToContext((err) => {
         if (err) {
@@ -41,6 +50,7 @@ class Login {
         }
       })
     );
+    */
   }
 }
 
@@ -49,8 +59,7 @@ const name = 'login';
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter,
-  Logger
+  uiRouter
 ])
 .component(name, {
   template,

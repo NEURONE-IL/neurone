@@ -7,10 +7,11 @@ import { Accounts } from 'meteor/accounts-base';
 import template from './register.html';
 
 class Register {
-  constructor($scope, $reactive, $state) {
+  constructor($scope, $reactive, $state, AuthService) {
     'ngInject';
 
     this.$state = $state;
+    this.auth = AuthService;
 
     $reactive(this).attach($scope);
 
@@ -24,8 +25,18 @@ class Register {
   }
 
   register() {
-    //this.credentials.username = this.credentials.email;
+    this.auth.register(this.credentials, (err, res) => {
+      if (!err) {
+        this.error = res;
+        this.$state.go('search');
+      }
+      else {
+        this.error = err;
+      } 
+    });
 
+    /*
+    //this.credentials.username = this.credentials.email;
     Accounts.createUser(this.credentials,
       this.$bindToContext((err) => {
         if (err) {
@@ -35,6 +46,7 @@ class Register {
         }
       })
     );
+    */
   }
 }
 

@@ -14,10 +14,11 @@ import { name as Password } from './password';
 const name = 'auth';
 
 class Auth {
-  constructor($scope, $reactive, $state) {
+  constructor($scope, $reactive, $state, $translate, AuthService) {
     'ngInject';
 
     this.$state = $state;
+    this.auth = AuthService;
 
     $reactive(this).attach($scope);
 
@@ -32,8 +33,15 @@ class Auth {
   }
 
   logout() {
+    this.auth.logout((err, res) => {
+      if (!err) {
+        this.$state.go('search');
+      }
+    });
+    /*
     Accounts.logout();
     this.$state.go('home');
+    */
   }
 }
 

@@ -7,10 +7,11 @@ import { Accounts } from 'meteor/accounts-base';
 import template from './password.html';
 
 class Register {
-  constructor($scope, $reactive, $state) {
+  constructor($scope, $reactive, $state, AuthService) {
     'ngInject';
 
     this.$state = $state;
+    this.auth = AuthService;
 
     $reactive(this).attach($scope);
 
@@ -22,6 +23,17 @@ class Register {
   }
 
   reset() {
+    this.auth.resetPassword(this.credentials, (err, res) => {
+      if (!err) {
+        this.error = res;
+        this.$state.go('search');
+      }
+      else {
+        this.error = err;
+      } 
+    });
+
+    /*
     Accounts.forgotPassword(this.credentials, this.$bindToContext((err) => {
       if (err) {
         this.error = err;
@@ -29,6 +41,7 @@ class Register {
         this.$state.go('search');
       }
     }));
+    */
   }
 }
 
