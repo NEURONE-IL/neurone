@@ -16,6 +16,11 @@ export default class ServerUtils {
     return date.toString();
   }
 
+  static timestamp2date(timestamp) {
+    var date = new Date(timestamp);
+    return date;
+  }
+
   static isEmptyObject(obj) {
     // Speed up calls to hasOwnProperty
     var hasOwnProperty = Object.prototype.hasOwnProperty;

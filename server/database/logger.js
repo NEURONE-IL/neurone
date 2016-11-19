@@ -59,6 +59,7 @@ Meteor.methods({
     check(jsonObject, Object);
 
     var time = Utils.getTimestamp(),
+    realTime = Utils.timestamp2date(time),
       ipAddr = this.connection.clientAddress,
          rua = this.connection.httpHeaders['user-agent'],     // raw user agent
          oua = rua ? UserAgent.parse(rua) : '',               // object user agent
@@ -68,6 +69,7 @@ Meteor.methods({
        state = jsonObject.state;
 
     jsonObject.serverTimestamp = time;
+    jsonObject.createdTime = realTime;
     jsonObject.clientAddress = ipAddr;
     jsonObject.clientBrowser = browser;
     jsonObject.clientOperatingSystem = os;
