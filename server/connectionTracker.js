@@ -3,18 +3,22 @@ import Utils from './lib/utils';
 import { FlowLogs } from '../imports/api/flowLogs/index';
 import { FlowSessions } from '../imports/api/flowSessions/index';
 
-UserStatus.events.on("connectionLogin", function(fields) {
-  console.log('User Login!', fields.userId, fields.connectionId, fields.ipAddr, fields.userAgent, fields.loginTime);
-});
+UserPresenceMonitor.onSetUserStatus((user, status, statusConnection) => {
+  var userId = user._id,
+    username = user.emails[0].address,
+   timestamp = Utils.getTimestamp(),
+        time = new Date(timestamp);
 
-UserStatus.events.on("connectionIdle", function(fields) {
-  console.log('Idle user!', fields.userId, fields.connectionId, fields.lastActivity);
-});
-
-UserStatus.events.on("connectionActive", function(fields) {
-  console.log('Active user!', fields.userId, fields.connectionId, fields.lastActivity);
-});
-
-UserStatus.events.on("connectionLogout", function(fields) {
-  console.log('User Logout!', fields.userId, fields.connectionId, fields.lastActivity, fields.logoutTime);
+  if (status === 'online') {
+    console.log('User Online!', userId, username, status, time);
+  }
+  else if (status === 'offline') {
+    console.log('User Offline!', userId, username, status, time);
+  }
+  else if (status === 'away') {
+    console.log('User Away!', userId, username, status, time);
+  }
+  else {
+    console.log('User status change!', userId, username, status, time);
+  }
 });

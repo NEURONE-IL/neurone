@@ -1,15 +1,24 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
+import Utils from '../../globalUtils';
+
 import template from './flow.html';
 
 class Flow {
   constructor($scope, $reactive) {
     'ngInject';
     
+    TimeSync.resync();
+
     $reactive(this).attach($scope);
 
-    this.serverTime = TimeSync.serverTime();
+    this.helpers({
+      startTime: () => new Date(Utils.getTimestamp()).toLocaleString(),
+      serverTime: () => new Date(TimeSync.serverTime()).toLocaleString(),
+      serverOffset: () => TimeSync.serverOffset(),
+      serverRTT: () => TimeSync.roundTripTime()
+    });
   }
 }
 

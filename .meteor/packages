@@ -35,5 +35,7 @@ jalik:ufs
 jalik:ufs-local
 williamledoux:static-server
 dispatch:mocha-phantomjs
-mizzao:user-status
 mizzao:timesync
+konecty:user-presence
+konecty:multiple-instances-status
+random

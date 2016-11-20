@@ -22,6 +22,8 @@ export default class InvertedIndex {
     allDocs.forEach((doc) => {
       searchIndex.add(doc);
     });
+
+    this.save();
   }
 
   static load() {

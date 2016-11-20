@@ -1,4 +1,9 @@
 <div class="container">
   <h1>Flow Test</h1>
-  <p>{{flow.serverTime}}</p>
+  <p>
+    <b>Starting Local Time:</b> {{flow.startTime}}<br>
+    <b>Current Server Time:</b> {{flow.serverTime}}<br>
+    <b>Server Offset:</b> {{flow.serverOffset}} ms<br>
+    <b>Round Trip Time:</b> {{flow.serverRTT}} ms<br>
+  </p>
 </div>

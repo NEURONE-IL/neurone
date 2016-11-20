@@ -8,4 +8,12 @@ angular.module('neurone', [
   App
 ]);
 
-Meteor.startup(function() {});
+Meteor.startup(() => {
+  // dgacitua: Sync server time
+  TimeSync.isSynced();
+
+  // dgacitua: User presence tracker
+  UserPresence.awayTime = 30000;
+  UserPresence.awayOnWindowBlur = true;
+  UserPresence.start();
+});

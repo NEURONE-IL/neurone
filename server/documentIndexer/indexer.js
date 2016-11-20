@@ -96,6 +96,7 @@ export default class Indexer {
 
   static loadInvertedIndex() {
     InvertedIndex.load();
+    return true;
   }
 
   static getDocumentCount() {

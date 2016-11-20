@@ -2,9 +2,10 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 class AuthService {
-  constructor(FlowService, SessionTrackService) {
+  constructor($translate, FlowService, SessionTrackService) {
     'ngInject';
 
+    this.$translate = $translate;
     this.fs = FlowService;
     this.sts = SessionTrackService;
 
@@ -22,7 +23,7 @@ class AuthService {
         //console.log(Meteor.user(), Meteor.user().emails[0].address);
         this.sts.saveLogin();
         this.fs.startFlow();
-        UserStatus.startMonitor({ threshold: this.threshold, interval: this.interval, idleOnBlur: this.idleOnBlur });
+        //UserStatus.startMonitor({ threshold: this.threshold, interval: this.interval, idleOnBlur: this.idleOnBlur });
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);
