@@ -36,3 +36,4 @@ jalik:ufs-local
 williamledoux:static-server
 dispatch:mocha-phantomjs
 mizzao:user-status
+mizzao:timesync

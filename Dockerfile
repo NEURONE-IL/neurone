@@ -17,7 +17,7 @@ RUN chown -R app:app /assets
 RUN chmod -R +rw /assets
 ENV NEURONE_ASSET_PATH /assets
 
-# Set Meteor environment variables
+# Set internal Meteor environment variables
 ENV HTTP_FORWARDED_COUNT 1
 
 # Copy bundle contents to directory

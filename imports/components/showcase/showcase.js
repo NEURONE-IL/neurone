@@ -10,6 +10,7 @@ import { name as VisitedLinksList } from './visitedLinks/visitedLinksList';
 import { name as BookmarksList } from './bookmarks/bookmarksList';
 import { name as Internationalization } from './i18n/i18n';
 import { name as FormsExample } from './forms/formsExample';
+import { name as Flow } from './flow/flow';
 
 class Showcase {}
 
@@ -24,7 +25,8 @@ export default angular.module(name, [
   VisitedLinksList,
   BookmarksList,
   Internationalization,
-  FormsExample
+  FormsExample,
+  Flow
 ])
 .component(name, {
   template,

@@ -32,6 +32,10 @@ class FlowService {
     }
   }
 
+  timer() {
+    TimeSync.serverTime(null, 1000);
+  }
+
 
   startFlow() {
     if (!!Meteor.userId()) {
