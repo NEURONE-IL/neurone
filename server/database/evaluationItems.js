@@ -48,7 +48,7 @@ Meteor.methods({
     
     /*
     var mock = {
-      owner: 'rpcvcnxGJDLqLrsut',
+      userId: 'rpcvcnxGJDLqLrsut',
       username: 'asdf@asdf.com',
       startTime: 1479061295951,
       questionId: 'syn1',
@@ -59,7 +59,7 @@ Meteor.methods({
     };
     */
 
-    return SynthesisAnswers.findOne({ owner: this.userId, questionId: synthId, completeAnswer: false });
+    return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
   },
   storeSynthesisAnswer: function(jsonObject) {
     check(jsonObject, Object);
@@ -67,7 +67,7 @@ Meteor.methods({
     var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
-    var currentAnswer = SynthesisAnswers.findOne({ owner: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
+    var currentAnswer = SynthesisAnswers.findOne({ userId: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
 
     if (Utils.isEmptyObject(currentAnswer)) {
       SynthesisAnswers.insert(jsonObject);

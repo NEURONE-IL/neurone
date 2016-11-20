@@ -6,10 +6,10 @@ import { Bookmarks } from '../../imports/api/bookmarks/index';
 
 Meteor.methods({
   getSnippets: function() {
-    return Snippets.find({ owner: this.userId }).fetch();
+    return Snippets.find({ userId: this.userId }).fetch();
   },
   getBookmarks: function() {
-    return Bookmarks.find({ owner: this.userId }).fetch();
+    return Bookmarks.find({ userId: this.userId }).fetch();
   },
   storeSnippet: function(jsonObject) {
     check(jsonObject, Object);
@@ -46,7 +46,7 @@ Meteor.methods({
   removeBookmark: function(currentUrl) {
     check(currentUrl, String);
 
-    Bookmarks.remove({ owner: this.userId, url: currentUrl });
+    Bookmarks.remove({ timer: this.userId, url: currentUrl });
     return true;
   },
   getBookmark: function(currentUrl) {
