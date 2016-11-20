@@ -2,6 +2,7 @@
   "app": {
     "pageTitle": "NEURONE",
     "navbarTitle": "NEURONE",
+    "toggleNav": "Toggle navigation",
     "search": "Search",
     "documents": "Documents",
     "showcase": "Showcase",
@@ -10,7 +11,8 @@
     "bookmarks": "Bookmarks",
     "i18n": "Internationalization",
     "forms": "Forms",
-    "synthesis": "Synthesis"
+    "synthesis": "Synthesis",
+    "flow": "Flow"
   },
   "auth": {
     "registerButton": "Register",
