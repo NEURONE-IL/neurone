@@ -10,15 +10,15 @@ UserPresenceMonitor.onSetUserStatus((user, status, statusConnection) => {
         time = new Date(timestamp);
 
   if (status === 'online') {
-    console.log('User Online!', userId, username, status, time);
+    //console.log('User Online!', userId, username, status, time);
   }
   else if (status === 'offline') {
-    console.log('User Offline!', userId, username, status, time);
+    //console.log('User Offline!', userId, username, status, time);
   }
   else if (status === 'away') {
-    console.log('User Away!', userId, username, status, time);
+    //console.log('User Away!', userId, username, status, time);
   }
   else {
-    console.log('User status change!', userId, username, status, time);
+    //console.log('User status change!', userId, username, status, time);
   }
 });

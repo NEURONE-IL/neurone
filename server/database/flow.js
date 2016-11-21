@@ -9,7 +9,12 @@ Meteor.methods({
       userId: String,
       username: String,
       type: String,
+      flow: Object,
       startTimestamp: Number,
+      stopTimestamp: Number,
+      accumulatedTime: Number,
+      totalTime: Number,
+      stageCounter: Number,
       currentTimestamp: Number,
       lastSyncLocalTimestamp: Number
     };
