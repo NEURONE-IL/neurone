@@ -12,11 +12,11 @@
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.isOnPage && navigation.isBookmarked" ng-click="navigation.removeBookmark()">{{"actions.unbookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
       </div>
-      <div class="nav pull-left btn-group" role="group" ng-if="!navigation.isLoggedIn">
+      <div class="nav pull-left btn-group horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
         <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
         <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>
       </div>
-      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle" ng-if="navigation.isLoggedIn">
         <span class="sr-only">{{"app.toggleNav" | translate}}</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -24,8 +24,8 @@
       </button>
     </div>
 
-    <div class="collapse navbar-collapse" id="navbar-menu">
-      <ul class="nav navbar-nav" ng-if="navigation.isLoggedIn">
+    <div class="collapse navbar-collapse" id="navbar-menu" ng-if="navigation.isLoggedIn">
+      <ul class="nav navbar-nav">
         <li><a href="/search">{{"app.search" | translate}}</a></li>
         <li><a href="/form?id=st1">{{"app.forms" | translate}}</a></li>
         <li><a href="/synthesis?id=syn3">{{"app.synthesis" | translate}}</a></li>

@@ -5,11 +5,10 @@
     <h1>{{"search.searchEngineTitle" | translate}}</h1>
     <br>
     <form class="row center-block" ng-submit="search.doSearch()">
-      <div class="col-md-6 col-md-offset-2 search-box">
+      <div class="col-md-6 col-md-offset-2 col-sm-9 search-box">
         <input class="form-control input-lg" placeholder="Enter Text to Search" id="searchText" type="text" ng-model="search.searchText">
       </div>
-      <div class="col-md-1"><button type="submit" class="btn btn-lg btn-success search-box" id="btn-search"><i class="fa fa-search"></i> {{"search.searchButton" | translate}}</button></div>
-      <div class="col-md-3"></div>
+      <div class="col-md-2 col-sm-3"><button type="submit" class="btn btn-lg btn-success search-box" id="btn-search"><i class="fa fa-search"></i> {{"search.searchButton" | translate}}</button></div>
     </form>
     </div>
   </div>
