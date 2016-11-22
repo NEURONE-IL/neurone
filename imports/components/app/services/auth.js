@@ -22,7 +22,7 @@ class AuthService {
       } else {
         //console.log(Meteor.user(), Meteor.user().emails[0].address);
         this.sts.saveLogin();
-        this.fs.startFlow();
+        //this.fs.startFlow();
         //UserStatus.startMonitor({ threshold: this.threshold, interval: this.interval, idleOnBlur: this.idleOnBlur });
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
@@ -32,7 +32,7 @@ class AuthService {
   }
 
   logout(callback) {
-    this.fs.stopFlow();
+    //this.fs.stopFlow();
     this.sts.saveLogout();
     //UserStatus.stopMonitor();
     
