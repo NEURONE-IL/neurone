@@ -92,8 +92,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
   // http://stackoverflow.com/a/20786262
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
-      var state = 'BEGIN';
-      lts.saveVisitedLink(state);
+      lts.saveEnterPage();
       kmts.service();
       abs.service();
     }
@@ -105,8 +104,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
 
   $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
-      var state = 'END';
-      lts.saveVisitedLink(state);
+      lts.saveExitPage();
       kmts.service();
       abs.service();
     }

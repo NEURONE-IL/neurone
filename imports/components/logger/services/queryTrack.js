@@ -30,7 +30,7 @@ export default class QueryTrackService {
           Utils.logToConsole('Query Saved!', queryObject.query, queryObject.userId, queryObject.username, queryObject.localTimestamp);
         }
         else {
-          Utils.logToConsole('Unknown Error');
+          Utils.logToConsole('Error!', err);
         }
       });
     }

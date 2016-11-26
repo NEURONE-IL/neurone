@@ -37,7 +37,7 @@ export default class SnippetTrackService {
         }
         else {
           var msg = this.$translate.instant('alerts.error');
-          Utils.logToConsole('Unknown Error');
+          Utils.logToConsole('Error!', err);
           callback(msg);
         }
       });

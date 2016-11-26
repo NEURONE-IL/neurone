@@ -26,10 +26,10 @@ export default class SessionTrackService {
   }
 
   saveLogin() {
-    this.saveSessionLog('LOGIN');
+    this.saveSessionLog('Login');
   }
 
   saveLogout() {
-    this.saveSessionLog('LOGOUT');
+    this.saveSessionLog('Logout');
   }
 }

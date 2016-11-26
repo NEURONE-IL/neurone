@@ -31,9 +31,17 @@ export default class LinkTrackService {
           Utils.logToConsole('Page Saved!', linkObject.state, linkObject.userId, linkObject.username, linkObject.title, linkObject.url, linkObject.localTimestamp);
         }
         else {
-          Utils.logToConsole('Unknown Error');
+          Utils.logToConsole('Error!', err);
         }
       });
     }
+  }
+
+  saveEnterPage() {
+    this.saveVisitedLink('PageEnter');
+  }
+
+  saveExitPage() {
+    this.saveVisitedLink('PageExit');
   }
 }
