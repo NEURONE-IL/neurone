@@ -11,38 +11,6 @@ Meteor.methods({
   getBookmarks: function() {
     return Bookmarks.find({ userId: this.userId }).fetch();
   },
-  storeSnippet: function(jsonObject) {
-    check(jsonObject, Object);
-
-    var time = ServerUtils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    Snippets.insert(jsonObject);
-    //console.log('Snippet Stored!', time);
-    return true;
-  },
-  storeQuery: function(jsonObject) {
-    check(jsonObject, Object);
-
-    var time = ServerUtils.getTimestamp(),
-       query = jsonObject.query;
-
-    jsonObject.serverTimestamp = time;
-
-    Queries.insert(jsonObject);
-    //console.log('Query Stored!', query, time);
-    return true;
-  },
-  storeBookmark: function(jsonObject) {
-    check(jsonObject, Object);
-
-    var time = ServerUtils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    Bookmarks.insert(jsonObject);
-    //console.log('Bookmark Stored!', time);
-    return true;
-  },
   removeBookmark: function(currentUrl) {
     check(currentUrl, String);
 

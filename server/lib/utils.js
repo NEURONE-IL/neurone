@@ -16,9 +16,17 @@ export default class ServerUtils {
     return date.toString();
   }
 
-  static timestamp2date(timestamp) {
+  static timestamp2datetime(timestamp) {
     var date = new Date(timestamp);
     return date;
+  }
+
+  static timestamp2date(timestamp) {
+    return moment(timestamp).format("YYYY-MM-DD");
+  }
+
+  static timestamp2time(timestamp) {
+    return moment(timestamp).format("HH:mm:ss.SSS");
   }
 
   static isEmptyObject(obj) {

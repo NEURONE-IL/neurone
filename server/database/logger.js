@@ -45,38 +45,5 @@ Meteor.methods({
 
     ScrollMoves.insert(jsonObject);
     //console.log('Scroll Move Stored!', time);
-  },
-  storeVisitedLink: function(jsonObject) {
-    check(jsonObject, Object);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    VisitedLinks.insert(jsonObject);
-    //console.log('Visited Link Stored!', time);
-  },
-  storeSessionLog: function(jsonObject) {
-    check(jsonObject, Object);
-
-    var time = Utils.getTimestamp(),
-    realTime = Utils.timestamp2date(time),
-      ipAddr = this.connection.clientAddress,
-         rua = this.connection.httpHeaders['user-agent'],     // raw user agent
-         oua = rua ? UserAgent.parse(rua) : '',               // object user agent
-     browser = oua ? oua.toAgent() : 'undefined',
-          os = oua ? oua.os.toString() : 'undefined',
-      device = oua ? oua.device.toString() : 'undefined',
-       state = jsonObject.state;
-
-    jsonObject.serverTimestamp = time;
-    jsonObject.createdTime = realTime;
-    jsonObject.clientAddress = ipAddr;
-    jsonObject.clientBrowser = browser;
-    jsonObject.clientOperatingSystem = os;
-    jsonObject.clientDevice = device;
-    jsonObject.userAgent = rua;
-
-    SessionLogs.insert(jsonObject);
-    //console.log('Session Log Stored!', state, ipAddr, browser, os, device, time);
   }
 });
