@@ -72,8 +72,12 @@ ssh $USER@$HOST docker run -d \
 
 echo ">> Setting up authentication and databases in remote host... [10/12]"
 ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
-                \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
+                \"db.createUser({ user: \\\"admin\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
                 roles: [{ role: \\\"root\\\", db: \\\"admin\\\" }]})\" || true"
+
+ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
+                \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
+                roles: [{ role: \\\"readwrite\\\", db: \\\"$NEURONE_MONGO_DATABASE\\\" }]})\" || true"
 
 echo ">> Deploy offline NEURONE image in remote host... [11/12]"
 ssh $USER@$HOST docker run -d \

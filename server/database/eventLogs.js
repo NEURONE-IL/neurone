@@ -83,6 +83,7 @@ Meteor.methods({
     }
   },
   storeBookmark: function(jsonObject) {
+    // TODO: Bring to EventLogs
     check(jsonObject, Object);
 
     var time = ServerUtils.getTimestamp();
