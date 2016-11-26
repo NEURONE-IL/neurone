@@ -75,7 +75,7 @@ ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo admin --eval \\
                 \"db.createUser({ user: \\\"admin\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
                 roles: [{ role: \\\"root\\\", db: \\\"admin\\\" }]})\" || true"
 
-ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo $NEURONE_MONGO_DATABASE --eval \\
+ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo $NEURONE_MONGO_DATABASE -u \"admin\" -p \"$NEURONE_DB_PASS\" --authenticationDatabase \"admin\" --eval \\
                 \"db.createUser({ user: \\\"$NEURONE_DB_USER\\\", pwd: \\\"$NEURONE_DB_PASS\\\", \\
                 roles: [{ role: \\\"dbAdmin\\\", db: \\\"$NEURONE_MONGO_DATABASE\\\" }]})\" || true"
 
