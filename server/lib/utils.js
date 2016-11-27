@@ -60,16 +60,14 @@ export default class ServerUtils {
   }
 
   static getAssetPath() {
-    if (process.env.NEURONE_ASSET_PATH) {
-      if (Meteor.isProduction || Meteor.isDevelopment) {
-        return process.env.NEURONE_ASSET_PATH;
-      }
-      else {
-        return path.join(Meteor.rootPath);
-      }
+    if (Meteor.isTest || Meteor.isAppTest) {
+      return path.join(Meteor.rootPath);
     }
     else {
-      if (Meteor.isProduction) {
+      if (process.env.NEURONE_ASSET_PATH) {
+        return process.env.NEURONE_ASSET_PATH;
+      }
+      else if (Meteor.isProduction) {
         return path.join(Meteor.rootPath, '../web.browser/app/');
       }
       else if (Meteor.isDevelopment) {
