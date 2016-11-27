@@ -12,6 +12,7 @@ import { EventLogs } from '../../imports/api/eventLogs/index';
 const snippetPattern = { userId: String, username: String, snippedText: String, title: String, url: String, localTimestamp: Number };
 const queryPattern = { userId: String, username: String, query: String, title: String, url: String, localTimestamp: Number };
 const linkPattern = { userId: String, username: String, state: String, title: String, url: String, localTimestamp: Number };
+const sessionPattern = { userId: String, username: String, state: String, localTimestamp: Number };
 
 Meteor.methods({
   storeSnippet: function(jsonObject) {
@@ -31,8 +32,8 @@ Meteor.methods({
       serverDate: Utils.timestamp2date(time),
       serverTime: Utils.timestamp2time(time),
       serverTimestamp: time,
-      ipAddr: this.connection.clientAddress,
-      userAgent: this.connection.httpHeaders['user-agent'],
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
       extras: ''
     };
 
@@ -66,8 +67,8 @@ Meteor.methods({
       serverDate: Utils.timestamp2date(time),
       serverTime: Utils.timestamp2time(time),
       serverTimestamp: time,
-      ipAddr: this.connection.clientAddress,
-      userAgent: this.connection.httpHeaders['user-agent'],
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
       extras: ''
     };
 
@@ -110,8 +111,8 @@ Meteor.methods({
       serverDate: moment(time).format("YYYY-MM-DD"),
       serverTime: moment(time).format("HH:mm:ss.SSS"),
       serverTimestamp: time,
-      ipAddr: this.connection.clientAddress,
-      userAgent: this.connection.httpHeaders['user-agent'],
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
       extras: ''
     };
 
@@ -127,19 +128,12 @@ Meteor.methods({
     }
   },
   storeSessionLog: function(jsonObject) {
-    var sessionPattern = {
-      userId: String,
-      username: String,
-      state: String,
-      localTimestamp: Number
-    };
-
     check(jsonObject, sessionPattern);
 
     var time = Utils.getTimestamp(),
     realTime = Utils.timestamp2datetime(time),
-      ipAddr = this.connection.clientAddress,
-         rua = this.connection.httpHeaders['user-agent'],     // raw user agent
+      ipAddr = this.connection ? this.connection.clientAddress : '',
+         rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
          oua = rua ? UserAgent.parse(rua) : '',               // object user agent
      browser = oua ? oua.toAgent() : 'undefined',
           os = oua ? oua.os.toString() : 'undefined',
@@ -165,8 +159,8 @@ Meteor.methods({
       serverDate: Utils.timestamp2date(time),
       serverTime: Utils.timestamp2time(time),
       serverTimestamp: time,
-      ipAddr: this.connection.clientAddress,
-      userAgent: this.connection.httpHeaders['user-agent'],
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
       extras: ''
     };
 
@@ -198,8 +192,8 @@ var action = {
   serverDate: moment(time).format("YYYY-MM-DD"),
   serverTime: moment(time).format("HH:mm:ss.SSS"),
   serverTimestamp: time,
-  ipAddr: this.connection.clientAddress,
-  userAgent: this.connection.httpHeaders['user-agent'],
+  ipAddr: this.connection.clientAddress || '',
+  userAgent: this.connection.httpHeaders['user-agent'] || '',
   extras: ''
 };
 */
