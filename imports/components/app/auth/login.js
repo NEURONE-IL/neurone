@@ -19,7 +19,7 @@ class Login {
     $reactive(this).attach($scope);
 
     this.credentials = {
-      email: '',
+      username: '',
       password: ''
     };
 
@@ -27,7 +27,7 @@ class Login {
   }
 
   login() {
-    this.auth.login(this.credentials.email, this.credentials.password, (err, res) => {
+    this.auth.login(this.credentials.username, this.credentials.password, (err, res) => {
       if (!err) {
         this.error = res;
         this.$state.go('search');
@@ -42,7 +42,7 @@ class Login {
         if (err) {
           this.error = err;
         } else {
-          //console.log(Meteor.user(), Meteor.user().emails[0].address);
+          //console.log(Meteor.user(), Meteor.user().username || Meteor.user().emails[0].address);
           this.sts.saveLogin();
           this.fs.startFlow();
           UserStatus.startMonitor({ threshold: Utils.sec2millis(30), interval: Utils.sec2millis(1), idleOnBlur: true });

@@ -61,7 +61,7 @@ class Synthesis {
     if (!!Meteor.userId()) {
       var answer = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         startTime: this.startTime,
         questionId: this.$stateParams.id,
         question: this.question,
@@ -93,7 +93,7 @@ class Synthesis {
       if (!!Meteor.userId()) {
         var answer = {
           userId: Meteor.userId(),
-          username: Meteor.user().emails[0].address,
+          username: Meteor.user().username || Meteor.user().emails[0].address,
           startTime: this.startTime,
           questionId: this.$stateParams.id,
           question: this.question,

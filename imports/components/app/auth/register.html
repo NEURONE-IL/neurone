@@ -8,86 +8,91 @@
         </div>
     </div> 
     <div class="main-login main-center">
-      <form class="form-horizontal">
-        
-        <!--
-        <div class="form-group">
-          <label for="name" class="cols-sm-2 control-label login">Your Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#student">{{"auth.studentRole" | translate}}</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#experimenter">{{"auth.experimenterRole" | translate}}</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="student" class="tab-pane fade in active">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" required autofocus/>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        -->
 
-        <div class="form-group">
-          <label for="email" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="email" id="email" placeholder="{{'auth.emailPlaceholder' | translate}}" ng-model="register.credentials.email" required autofocus/>
+            <div class="form-group">
+              <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                  <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" required/>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!--
-        <div class="form-group">
-          <label for="username" class="cols-sm-2 control-label login">Username</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+            <div class="text-center">{{register.error.message}}</div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-lg btn-block login-button" ng-click="register.register('student')">{{"auth.registerButton" | translate}}</button>
             </div>
-          </div>
-        </div>
-        -->
-
-        <div class="form-group">
-          <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-              <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" required/>
+            <div class="login-register">
+              <a href="/login">{{"auth.loginButton" | translate}}</a>
             </div>
-          </div>
+          </form>
         </div>
 
-        <!--
-        <div class="form-group">
-          <label for="confirm" class="cols-sm-2 control-label login">Confirm Password</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-              <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+        <div id="experimenter" class="tab-pane fade">
+          <form class="form-horizontal">
+              <div class="form-group">
+                <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
+                <div class="cols-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" required autofocus/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
+                <div class="cols-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="email" id="email" placeholder="{{'auth.emailPlaceholder' | translate}}" ng-model="register.credentials.email" required/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>
+                <div class="cols-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" required/>
+                  </div>
+                </div>
+              </div>
+
+            <div class="text-center">{{register.error.message}}</div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-lg btn-block login-button" ng-click="register.register('experimenter')">{{"auth.registerButton" | translate}}</button>
             </div>
-          </div>
+            <div class="login-register">
+              <a href="/login">{{"auth.loginButton" | translate}}</a>
+            </div>
+          </form>
         </div>
-        -->
-
-        <div class="text-center">{{register.error.message}}</div>
-
-        <div class="form-group">
-          <button type="submit" class="btn btn-success btn-lg btn-block login-button" ng-click="register.register()">{{"auth.registerButton" | translate}}</button>
-        </div>
-        <div class="login-register">
-          <a href="/login">{{"auth.loginButton" | translate}}</a>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
-
-<!--
-<div class="wrapper">
-  <form class="form-signin"> 
-    <h2 class="form-signin-heading">Register a new account</h2>
-    <input type="text" class="form-control" name="email" ng-model="register.credentials.email" placeholder="Email Address" required autofocus />
-    <input type="password" class="form-control" name="password" ng-model="register.credentials.password" placeholder="Password" required />
-    <button class="btn btn-lg btn-success btn-block" type="submit" ng-click="register.register()">Register</button>
-    <p>{{register.error.message}}</p>
-  </form>
-  <a role="button" class="btn btn-info" href="/login">Login</button>
-</div>
--->

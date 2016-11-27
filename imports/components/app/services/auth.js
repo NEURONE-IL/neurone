@@ -14,13 +14,13 @@ class AuthService {
     this.idleOnBlur = Configs.idleOnBlur;
   }
 
-  login(email, password, callback) {
-    Meteor.loginWithPassword(email, password, (err) => {
+  login(user, password, callback) {
+    Meteor.loginWithPassword(user, password, (err) => {
       if (err) {
         console.error('Login Error!', err);
         callback(err);
       } else {
-        //console.log(Meteor.user(), Meteor.user().emails[0].address);
+        //console.log(Meteor.user(), Meteor.user().username || Meteor.user().emails[0].address);
         this.sts.saveLogin();
         //this.fs.startFlow();
         //UserStatus.startMonitor({ threshold: this.threshold, interval: this.interval, idleOnBlur: this.idleOnBlur });

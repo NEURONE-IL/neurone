@@ -16,15 +16,18 @@ class Register {
     $reactive(this).attach($scope);
 
     this.credentials = {
-      //username: '',
+      username: '',
       email: '',
-      password: ''
+      password: '',
+      profile: {}
     };
 
     this.error = '';
   }
 
-  register() {
+  register(userRole) {
+    this.credentials.profile.role = userRole ? userRole : 'undefined';
+    
     this.auth.register(this.credentials, (err, res) => {
       if (!err) {
         this.error = res;
@@ -34,19 +37,6 @@ class Register {
         this.error = err;
       } 
     });
-
-    /*
-    //this.credentials.username = this.credentials.email;
-    Accounts.createUser(this.credentials,
-      this.$bindToContext((err) => {
-        if (err) {
-          this.error = err;
-        } else {
-          this.$state.go('search');
-        }
-      })
-    );
-    */
   }
 }
 

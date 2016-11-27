@@ -29,7 +29,7 @@ class FlowService {
 
       var currentTimer = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: syncType,
         flow: this.getFlowTemplate(),
         startTimestamp: this.$rootScope.startTime || 0,

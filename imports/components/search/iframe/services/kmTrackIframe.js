@@ -61,7 +61,7 @@ constructor($window, $document, $state) {
     if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       var movementOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'mouseMovement',
         url: src,
         x_win: winX,
@@ -108,7 +108,7 @@ constructor($window, $document, $state) {
     if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
       var clickOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'mouseClick',
         url: src,
         x_win: winX,
@@ -153,7 +153,7 @@ constructor($window, $document, $state) {
 
       var scrollOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'scroll',
         url: src,
         x_scr: scrollX,
@@ -184,7 +184,7 @@ constructor($window, $document, $state) {
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       var keyOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'keyDown',
         keyCode: kc,
         which: w,
@@ -225,7 +225,7 @@ constructor($window, $document, $state) {
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
       var key_output = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'keyPress',
         keyCode: kc,
         which: w,

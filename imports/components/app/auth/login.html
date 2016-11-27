@@ -8,20 +8,19 @@
     </div> 
     <div class="main-login main-center">
       <form class="form-horizontal">
-        <!--
         <div class="form-group">
-          <label for="username" class="cols-sm-2 control-label login">Username</label>
+          <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+              <input type="text" class="form-control" name="username" id="username" ng-model="login.credentials.username" placeholder="{{'auth.usernamePlaceholder' | translate}}" required/>
             </div>
           </div>
         </div>
-        -->
 
+        <!--
         <div class="form-group">
-          <label for="username" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
+          <label for="email" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -29,6 +28,7 @@
             </div>
           </div>
         </div>
+        -->
 
         <div class="form-group">
           <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>

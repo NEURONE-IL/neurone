@@ -18,7 +18,7 @@ export default class QueryTrackService {
 
       var queryObject = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         query: queryText,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),

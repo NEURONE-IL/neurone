@@ -15,6 +15,6 @@ export default class MeteorUser {
 
   static getUsername() {
     // TODO: Assign username
-    return Meteor.user().emails[0].address;
+    return Meteor.user().username || Meteor.user().emails[0].address;
   }
 }

@@ -37,7 +37,7 @@ export default class BookmarkTrackService {
 
       var bookmarkObject = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
         localTimestamp: Utils.getTimestamp()

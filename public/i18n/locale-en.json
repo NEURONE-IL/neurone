@@ -21,9 +21,14 @@
     "registerMessage": "Register in NEURONE",
     "loginMessage": "Login to NEURONE",
     "email": "Email",
+    "username": "Username",
     "password": "Password",
+    "required": "Required field",
     "emailPlaceholder": "Enter your email",
-    "passwordPlaceholder": "Enter your password"
+    "usernamePlaceholder": "Enter your username",
+    "passwordPlaceholder": "Enter your password",
+    "studentRole": "Student",
+    "experimenterRole": "Teacher"
   },
   "home": {
     "welcome": "Welcome to NEURONE!",

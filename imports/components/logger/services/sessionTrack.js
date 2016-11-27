@@ -9,7 +9,7 @@ export default class SessionTrackService {
     if (!!Meteor.userId()) {
       var sessionLog = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         state: currentState,
         localTimestamp: Utils.getTimestamp()
       };

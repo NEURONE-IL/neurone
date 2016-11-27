@@ -51,7 +51,7 @@ class FormsExample {
     if (Meteor.user()) {
       var formAnswer = {
         userId: Meteor.userId(),
-        username: Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address,
         formId: this.form.formId,
         answers: this.answerArray,
         localTimestamp: Utils.getTimestamp()
