@@ -24,14 +24,18 @@ before_install:
 before_script:
   - ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts
 
-after_success:
-  - if [ $TRAVIS_BRANCH == 'master' ]; then
-    /bin/sh fullDeploy.sh;
-    fi
+script:
+  - meteor npm run test
+  - meteor npm run apptest
 
-#deploy:
-#  skip_cleanup: true
-#  provider: script
-#  script: ./fullDeploy.sh
-#  on:
-#    branch: master
+#after_success:
+#  - if [ $TRAVIS_BRANCH == 'master' ]; then
+#    /bin/sh fullDeploy.sh;
+#    fi
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: /bin/sh fullDeploy.sh
+  on:
+    branch: master
