@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 export default class ServerUtils {
   constructor() {}
 
@@ -61,11 +64,14 @@ export default class ServerUtils {
       return process.env.NEURONE_ASSET_PATH;
     }
     else {
-      if (Meteor.isDevelopment) {
-        return path.join(Meteor.absolutePath, '/public/');
+      if (Meteor.isProduction) {
+        return path.join(Meteor.rootPath, '../web.browser/app/');
+      }
+      else if (Meteor.isTest || Meteor.isAppTest) {
+        return path.join(Meteor.rootPath);
       }
       else {
-        return path.join(Meteor.rootPath, '../web.browser/app/');
+        return path.join(Meteor.absolutePath, '/public/');
       }
     }
   }

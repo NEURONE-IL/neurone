@@ -17,12 +17,12 @@ Meteor.methods({
   storeSnippet: function(jsonObject) {
     check(jsonObject, snippetPattern);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     var action = {
-      userId: this.userId,
-      username: Meteor.user().emails[0].address, // TODO: Change to username
+      userId: jsonObject.userId,
+      username: jsonObject.username,
       action: 'Snippet',
       actionId: '',
       clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
@@ -50,14 +50,14 @@ Meteor.methods({
   storeQuery: function(jsonObject) {
     check(jsonObject, queryPattern);
 
-    var time = ServerUtils.getTimestamp(),
+    var time = Utils.getTimestamp(),
        query = jsonObject.query;
 
     jsonObject.serverTimestamp = time;
 
     var action = {
-      userId: this.userId,
-      username: Meteor.user().emails[0].address, // TODO: Change to username
+      userId: jsonObject.userId,
+      username: jsonObject.username,
       action: 'Query',
       actionId: '',
       clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
@@ -86,7 +86,7 @@ Meteor.methods({
     // TODO: Bring to EventLogs
     check(jsonObject, Object);
 
-    var time = ServerUtils.getTimestamp();
+    var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
     Bookmarks.insert(jsonObject);
@@ -100,8 +100,8 @@ Meteor.methods({
     jsonObject.serverTimestamp = time;
 
     var action = {
-      userId: this.userId,
-      username: this.userId, // TODO: Change to username
+      userId: jsonObject.userId,
+      username: jsonObject.username,
       action: jsonObject.state,
       actionId: '',
       clientDate: moment(jsonObject.localTimestamp).format("YYYY-MM-DD"),
@@ -155,8 +155,8 @@ Meteor.methods({
     jsonObject.userAgent = rua;
 
     var action = {
-      userId: this.userId,
-      username: Meteor.user().emails[0].address, // TODO: Change to username
+      userId: jsonObject.userId,
+      username: jsonObject.username,
       action: jsonObject.state,
       actionId: '',
       clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
@@ -180,6 +180,9 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.error('DatabaseError', 'Could not save in Database!');
     }
+  },
+  ping: function() {
+    return { status: 'success' };
   }
 });
 
