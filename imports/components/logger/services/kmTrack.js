@@ -96,7 +96,8 @@ export default class KMTrackService {
       var movementOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'mouseMovement',
+        type: 'MouseMovement',
+        source: 'Window',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -110,7 +111,7 @@ export default class KMTrackService {
       };
 
       Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseCoordinate', movementOutput, function(err, result) {});
+      Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
     }
   }
 
@@ -153,7 +154,8 @@ export default class KMTrackService {
       var clickOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'mouseClick',
+        type: 'MouseClick',
+        source: 'Window',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -167,7 +169,7 @@ export default class KMTrackService {
       };
 
       Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseClick', clickOutput, function(err, result) {});
+      Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
     }
   }
 
@@ -194,7 +196,8 @@ export default class KMTrackService {
       var scrollOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'scroll',
+        type: 'Scroll',
+        source: 'Window',
         url: src,
         x_scr: scrollX,
         y_scr: scrollY,
@@ -226,7 +229,8 @@ export default class KMTrackService {
       var keyOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'keyDown',
+        type: 'KeyDown',
+        source: 'Window',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -248,7 +252,7 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, function(err, result) {});
+      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
     }
   }
 
@@ -268,7 +272,8 @@ export default class KMTrackService {
       var key_output = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'keyPress',
+        type: 'KeyPress',
+        source: 'Window',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -290,7 +295,7 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', key_output, (err, result) => {});
     }
   }
 

@@ -18,17 +18,17 @@ constructor($window, $document, $state) {
 
   bindEventIframe(elem, evt, data, fn) {
     elem.on(evt, data, fn);
-    Utils.logToConsole('IFRAME BIND!', elem, evt);
+    //Utils.logToConsole('IFRAME BIND!', elem, evt);
   }
 
   bindThrottledEventIframe(elem, evt, data, fn, delay) {
     elem.on(evt, data, fn.throttle(delay));
-    Utils.logToConsole('IFRAME BIND THROTTLED!', elem, evt, delay);
+    //Utils.logToConsole('IFRAME BIND THROTTLED!', elem, evt, delay);
   }
 
   unbindEventIframe(elem, evt, fn) {
     elem.off(evt, fn);
-    Utils.logToConsole('IFRAME UNBIND!', elem, evt);
+    //Utils.logToConsole('IFRAME UNBIND!', elem, evt);
   }
 
   mouseMoveListener(evt) {
@@ -39,20 +39,20 @@ constructor($window, $document, $state) {
         g = evt.data.g,
        pw = angular.element(parent.window),
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
-       ol = ifm.position().left,
-       ot = ifm.position().top,
+      // ol = ifm.position().left,
+      // ot = ifm.position().top,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false}),
      time = Utils.getTimestamp();
 
-    var docX = evt.pageX + ol,
-        docY = evt.pageY + ot,
-        winX = evt.clientX + ol,
-        winY = evt.clientY + ot,
-        docW = ifm.contents().width() + ol,
-        docH = ifm.contents().height() + ot,
+    var docX = evt.pageX,
+        docY = evt.pageY,
+        winX = evt.clientX,
+        winY = evt.clientY,
+        docW = ifm.contents().width(),
+        docH = ifm.contents().height(),
         winW = w,
         winH = h;
 
@@ -62,7 +62,8 @@ constructor($window, $document, $state) {
       var movementOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'mouseMovement',
+        type: 'MouseMovement',
+        source: 'Iframe',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -75,8 +76,8 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseCoordinate', movementOutput, function(err, result) {});
+      Utils.logToConsole('Mouse Movement!', source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
     }
   }
 
@@ -88,20 +89,20 @@ constructor($window, $document, $state) {
         g = evt.data.g,
        pw = angular.element(parent.window),
       ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
-       ol = ifm.position().left,
-       ot = ifm.position().top,
+      // ol = ifm.position().left,
+      // ot = ifm.position().top,
         w = window.innerWidth  || e.clientWidth  || g.clientWidth,
         h = window.innerHeight || e.clientHeight || g.clientHeight,
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false}),
      time = Utils.getTimestamp();
 
-    var docX = evt.pageX + ol,
-        docY = evt.pageY + ot,
-        winX = evt.clientX + ol,
-        winY = evt.clientY + ot,
-        docW = ifm.contents().width() + ol,
-        docH = ifm.contents().height() + ot,
+    var docX = evt.pageX,
+        docY = evt.pageY,
+        winX = evt.clientX,
+        winY = evt.clientY,
+        docW = ifm.contents().width(),
+        docH = ifm.contents().height(),
         winW = w,
         winH = h;
 
@@ -109,7 +110,8 @@ constructor($window, $document, $state) {
       var clickOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'mouseClick',
+        type: 'MouseClick',
+        source: 'Iframe',
         url: src,
         x_win: winX,
         y_win: winY,
@@ -122,8 +124,8 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseClick', clickOutput, function(err, result) {});
+      Utils.logToConsole('Mouse Click!', source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
     }
   }
 
@@ -136,8 +138,8 @@ constructor($window, $document, $state) {
           g = evt.data.g,
          pw = angular.element(parent.window),
         ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
-         ol = ifm.position().left,
-         ot = ifm.position().top,
+        // ol = ifm.position().left,
+        // ot = ifm.position().top,
           w = window.innerWidth  || e.clientWidth  || g.clientWidth,
           h = window.innerHeight || e.clientHeight || g.clientHeight,
           s = evt.data.s,
@@ -146,15 +148,16 @@ constructor($window, $document, $state) {
       
       var scrollX = ifm.contents().scrollLeft(),
           scrollY = ifm.contents().scrollTop(),
-          docW = ifm.contents().width() + ol,
-          docH = ifm.contents().height() + ot,
+          docW = ifm.contents().width(),
+          docH = ifm.contents().height(),
           winW = w,
           winH = h;
 
       var scrollOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'scroll',
+        type: 'Scroll',
+        source: 'Iframe',
         url: src,
         x_scr: scrollX,
         y_scr: scrollY,
@@ -165,7 +168,7 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Scroll Movement!', source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
     }
   }
@@ -185,7 +188,8 @@ constructor($window, $document, $state) {
       var keyOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'keyDown',
+        type: 'KeyDown',
+        source: 'Iframe',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -194,7 +198,7 @@ constructor($window, $document, $state) {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', 
+      Utils.logToConsole('Key Pressed!', source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -226,7 +230,8 @@ constructor($window, $document, $state) {
       var key_output = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        type: 'keyPress',
+        type: 'KeyPress',
+        source: 'Iframe',
         keyCode: kc,
         which: w,
         charCode: chc,
@@ -235,7 +240,7 @@ constructor($window, $document, $state) {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!',
+      Utils.logToConsole('Key Pressed!', source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -267,7 +272,8 @@ constructor($window, $document, $state) {
         e: angular.element(document)[0].documentElement,
         g: angular.element(document)[0].getElementsByTagName('body')[0]
       };
-      Utils.logToConsole('Start Tracking!', this.iframeId, iframe, innerDoc, data);
+
+      Utils.logToConsole('Start Tracking Iframe!');
 
       this.bindThrottledEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
       this.bindThrottledEventIframe(angular.element(innerDoc), 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
@@ -285,7 +291,7 @@ constructor($window, $document, $state) {
     if (pageContainer) {
       var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentWindow || iframe.contentDocument;    //iframe.contentDocument || iframe.contentWindow.document;
-      Utils.logToConsole('Stop Tracking!', this.iframeId, iframe, innerDoc);
+      Utils.logToConsole('Stop Tracking Iframe!');
 
       this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
       this.unbindEventIframe(angular.element(innerDoc), 'scroll', this.mouseMoveListener);
