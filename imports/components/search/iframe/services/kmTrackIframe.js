@@ -76,7 +76,7 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Movement!', source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
     }
   }
@@ -124,7 +124,7 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Click!', source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
     }
   }
@@ -168,7 +168,7 @@ constructor($window, $document, $state) {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Scroll Movement!', source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
     }
   }
@@ -198,7 +198,7 @@ constructor($window, $document, $state) {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', source,
+      Utils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -211,7 +211,7 @@ constructor($window, $document, $state) {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, function(err, result) {});
+      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
     }
   }
 
@@ -227,7 +227,7 @@ constructor($window, $document, $state) {
       src = s.href(s.current.name, s.params, {absolute: false});
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var key_output = {
+      var keyOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'KeyPress',
@@ -240,7 +240,7 @@ constructor($window, $document, $state) {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', source,
+      Utils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -253,7 +253,7 @@ constructor($window, $document, $state) {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', key_output, function(err, result) {});
+      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
     }
   }
 
@@ -273,7 +273,7 @@ constructor($window, $document, $state) {
         g: angular.element(document)[0].getElementsByTagName('body')[0]
       };
 
-      Utils.logToConsole('Start Tracking Iframe!');
+      Utils.logToConsole('Start Tracking Iframe!', innerDoc);
 
       this.bindThrottledEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
       this.bindThrottledEventIframe(angular.element(innerDoc), 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);

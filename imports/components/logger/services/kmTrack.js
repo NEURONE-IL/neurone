@@ -110,7 +110,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Movement!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
     }
   }
@@ -168,7 +168,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Click!', 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
     }
   }
@@ -208,7 +208,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Scroll Movement!', 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      Utils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
     }
   }
@@ -239,7 +239,7 @@ export default class KMTrackService {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', 
+      Utils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -269,7 +269,7 @@ export default class KMTrackService {
      //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
 
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var key_output = {
+      var keyOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         type: 'KeyPress',
@@ -282,7 +282,7 @@ export default class KMTrackService {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!',
+      Utils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -295,7 +295,7 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', key_output, (err, result) => {});
+      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
     }
   }
 
