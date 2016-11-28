@@ -252,27 +252,12 @@ constructor($window, $document, $state) {
     }
   }
 
-  onPageContainerListener() {
-    // From http://stackoverflow.com/q/9314666
-    this.iframeSelected = true;
-    //console.log('IFRAME Selected!', this.iframeSelected);
-  }
-
-  offPageContainerListener() {
-    // From http://stackoverflow.com/q/9314666
-    this.iframeSelected = false;
-    //console.log('IFRAME Not Selected!', this.iframeSelected);
-  }
-
   startTrack() {
     var pageContainer = Utils.getAngularElementById(this.iframeId);
     
     if (pageContainer) {
-      //this.bindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
-      //this.bindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
-
       var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
-      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var innerDoc = iframe.contentWindow || iframe.contentDocument;    //iframe.contentDocument || iframe.contentWindow.document;
 
       var data = {
         iframeId: this.iframeId,
@@ -298,11 +283,8 @@ constructor($window, $document, $state) {
     var pageContainer = Utils.getAngularElementById(this.iframeId);
     
     if (pageContainer) {
-      //this.unbindEventIframe(pageContainer, 'mouseover', this.onPageContainerListener);
-      //this.unbindEventIframe(pageContainer, 'mouseout', this.offPageContainerListener);
-
       var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
-      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var innerDoc = iframe.contentWindow || iframe.contentDocument;    //iframe.contentDocument || iframe.contentWindow.document;
       Utils.logToConsole('Stop Tracking!', this.iframeId, iframe, innerDoc);
 
       this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
