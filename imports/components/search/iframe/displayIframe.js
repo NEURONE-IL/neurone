@@ -9,21 +9,27 @@ import { name as Logger } from './services/kmTrackIframe';
 import { name as ActionBlocker } from './services/actionBlockerIframe';
 
 class DisplayIframe {
-	constructor($scope, $rootScope, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
+	constructor($scope, $rootScope, $timeout, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
 		'ngInject';
 
 		this.$state = $state;
 		this.$rootScope = $rootScope;
+		this.$timeout = $timeout;
 		this.kmtis = KMTrackIframeService;
 		this.abis = ActionBlockerIframeService;
 
 		// dgacitua: Execute on iframe end
-		//$scope.$on('$stateChangeStart', (event) => {
-		//	this.stopTracking();
-		//});
 		this.$onDestroy = () => {
-			this.stopTracking();
+			this.$rootScope.documentTitle = '';
+			this.kmtis.antiService();
+			this.abis.antiService();
 		};
+
+		// dgacitua: Execute on iframe start
+		angular.element(document.getElementById('pageContainer')).on('load', () => {
+			this.abis.service();
+			this.kmtis.service();
+		});
 
 		$reactive(this).attach($scope);
 
@@ -47,7 +53,7 @@ class DisplayIframe {
 		});
 	}
 
-	// dgacitua: Execute on iframe start
+	/*
 	startTracking() {
 		// TODO fix quick right click between transitions
 		this.abis.service();
@@ -59,6 +65,7 @@ class DisplayIframe {
 		this.kmtis.antiService();
 		this.abis.antiService();
 	}
+	*/
 }
 
 const name = 'displayIframe';

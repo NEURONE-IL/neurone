@@ -44,19 +44,19 @@ export default class KMTrackService {
     }
   }
 
-  bindEvent(evt, data, fn) {
-    angular.element(this.$window).on(evt, data, fn);
-    Utils.logToConsole('BIND!', evt);
+  bindEvent(elem, evt, data, fn) {
+    elem.on(evt, data, fn);
+    Utils.logToConsole('BIND!', 'Window', elem, evt);
   }
 
-  bindThrottledEvent(evt, data, fn, delay) {
-    angular.element(this.$window).on(evt, data, fn.throttle(delay));
-    Utils.logToConsole('BIND THROTTLED!', evt, delay);
+  bindThrottledEvent(elem, evt, data, fn, delay) {
+    elem.on(evt, data, fn.throttle(delay));
+    Utils.logToConsole('BIND THROTTLED!', 'Window', elem, evt, delay);
   }
 
-  unbindEvent(evt, fn) {
-    angular.element(this.$window).off(evt, fn);
-    Utils.logToConsole('UNBIND!', evt);
+  unbindEvent(elem, evt, fn) {
+    elem.off(evt, fn);
+    Utils.logToConsole('UNBIND!', 'Window', elem, evt);
   }
 
   mouseMoveListener(evt) {
@@ -300,6 +300,8 @@ export default class KMTrackService {
   }
 
   startTrack() {
+    var targetDoc = angular.element(this.$window);
+
     var data = {
       w: angular.element(window),
       d: angular.element(document),
@@ -308,21 +310,23 @@ export default class KMTrackService {
       s: this.$state
     };
 
-    this.bindThrottledEvent('mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
-    this.bindThrottledEvent('scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
-    this.bindEvent('click', data, this.mouseClickListener);
-    this.bindEvent('keydown', data, this.keydownListener);
-    this.bindEvent('keypress', data, this.keypressListener);
+    this.bindThrottledEvent(targetDoc, 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
+    this.bindThrottledEvent(targetDoc, 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
+    this.bindEvent(targetDoc, 'click', data, this.mouseClickListener);
+    this.bindEvent(targetDoc, 'keydown', data, this.keydownListener);
+    this.bindEvent(targetDoc, 'keypress', data, this.keypressListener);
 
     this.isTracking = true;
   }
 
   stopTrack() {
-    this.unbindEvent('mousemove', this.mouseMoveListener);
-    this.unbindEvent('scroll', this.scrollListener);
-    this.unbindEvent('click', this.mouseClickListener);
-    this.unbindEvent('keydown', this.keydownListener);
-    this.unbindEvent('keypress', this.keypressListener);
+    var targetDoc = angular.element(this.$window);
+    
+    this.unbindEvent(targetDoc, 'mousemove', this.mouseMoveListener);
+    this.unbindEvent(targetDoc, 'scroll', this.scrollListener);
+    this.unbindEvent(targetDoc, 'click', this.mouseClickListener);
+    this.unbindEvent(targetDoc, 'keydown', this.keydownListener);
+    this.unbindEvent(targetDoc, 'keypress', this.keypressListener);
 
     this.isTracking = false;
   }

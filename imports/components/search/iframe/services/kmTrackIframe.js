@@ -18,47 +18,47 @@ constructor($window, $document, $state) {
 
   bindEventIframe(elem, evt, data, fn) {
     elem.on(evt, data, fn);
-    //Utils.logToConsole('IFRAME BIND!', elem, evt);
+    Utils.logToConsole('BIND!', 'Iframe', elem, evt);
   }
 
   bindThrottledEventIframe(elem, evt, data, fn, delay) {
     elem.on(evt, data, fn.throttle(delay));
-    //Utils.logToConsole('IFRAME BIND THROTTLED!', elem, evt, delay);
+    Utils.logToConsole('BIND THROTTLED!', 'Iframe', elem, evt, delay);
   }
 
   unbindEventIframe(elem, evt, fn) {
     elem.off(evt, fn);
-    //Utils.logToConsole('IFRAME UNBIND!', elem, evt);
+    Utils.logToConsole('UNBIND!', 'Iframe', elem, evt);
   }
 
   mouseMoveListener(evt) {
-    // From http://stackoverflow.com/a/11744120/1319998
-    var w = evt.data.w,
-        d = evt.data.d,
-        e = evt.data.e,
-        g = evt.data.g,
-       pw = angular.element(parent.window),
-      ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
-      // ol = ifm.position().left,
-      // ot = ifm.position().top,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-        s = evt.data.s,
-      src = s.href(s.current.name, s.params, {absolute: false}),
-     time = Utils.getTimestamp();
-
-    var docX = evt.pageX,
-        docY = evt.pageY,
-        winX = evt.clientX,
-        winY = evt.clientY,
-        docW = ifm.contents().width(),
-        docH = ifm.contents().height(),
-        winW = w,
-        winH = h;
-
-    //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
-
     if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
+      // From http://stackoverflow.com/a/11744120/1319998
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+         pw = angular.element(parent.window),
+        ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
+        // ol = ifm.position().left,
+        // ot = ifm.position().top,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
+       time = Utils.getTimestamp();
+
+      var docX = evt.pageX,
+          docY = evt.pageY,
+          winX = evt.clientX,
+          winY = evt.clientY,
+          docW = ifm.contents().width(),
+          docH = ifm.contents().height(),
+          winW = w,
+          winH = h;
+
+      //console.log(winX, winY, winW, winH, docX, docY, docW, docH);
+
       var movementOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
@@ -82,31 +82,31 @@ constructor($window, $document, $state) {
   }
 
   mouseClickListener(evt) {
-    // From http://stackoverflow.com/a/11744120/1319998
-    var w = evt.data.w,
-        d = evt.data.d,
-        e = evt.data.e,
-        g = evt.data.g,
-       pw = angular.element(parent.window),
-      ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
-      // ol = ifm.position().left,
-      // ot = ifm.position().top,
-        w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-        h = window.innerHeight || e.clientHeight || g.clientHeight,
-        s = evt.data.s,
-      src = s.href(s.current.name, s.params, {absolute: false}),
-     time = Utils.getTimestamp();
+    if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
+      // From http://stackoverflow.com/a/11744120/1319998
+      var w = evt.data.w,
+          d = evt.data.d,
+          e = evt.data.e,
+          g = evt.data.g,
+         pw = angular.element(parent.window),
+        ifm = angular.element(parent.document.getElementById(evt.data.iframeId)),
+        // ol = ifm.position().left,
+        // ot = ifm.position().top,
+          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
+          h = window.innerHeight || e.clientHeight || g.clientHeight,
+          s = evt.data.s,
+        src = s.href(s.current.name, s.params, {absolute: false}),
+       time = Utils.getTimestamp();
 
-    var docX = evt.pageX,
-        docY = evt.pageY,
-        winX = evt.clientX,
-        winY = evt.clientY,
-        docW = ifm.contents().width(),
-        docH = ifm.contents().height(),
-        winW = w,
-        winH = h;
+      var docX = evt.pageX,
+          docY = evt.pageY,
+          winX = evt.clientX,
+          winY = evt.clientY,
+          docW = ifm.contents().width(),
+          docH = ifm.contents().height(),
+          winW = w,
+          winH = h;
 
-    if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
       var clickOutput = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
@@ -263,6 +263,7 @@ constructor($window, $document, $state) {
     if (pageContainer) {
       var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentWindow || iframe.contentDocument;    //iframe.contentDocument || iframe.contentWindow.document;
+      var targetDoc = angular.element(innerDoc);
 
       var data = {
         iframeId: this.iframeId,
@@ -273,13 +274,13 @@ constructor($window, $document, $state) {
         g: angular.element(document)[0].getElementsByTagName('body')[0]
       };
 
-      Utils.logToConsole('Start Tracking Iframe!', innerDoc);
+      //Utils.logToConsole('Start Tracking Iframe!', targetDoc);
 
-      this.bindThrottledEventIframe(angular.element(innerDoc), 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
-      this.bindThrottledEventIframe(angular.element(innerDoc), 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
-      this.bindEventIframe(angular.element(innerDoc), 'click', data, this.mouseClickListener);
-      this.bindEventIframe(angular.element(innerDoc), 'keydown', data, this.keydownListener);
-      this.bindEventIframe(angular.element(innerDoc), 'keypress', data, this.keypressListener);
+      this.bindThrottledEventIframe(targetDoc, 'mousemove', data, this.mouseMoveListener, LoggerConfigs.eventThrottle);
+      this.bindThrottledEventIframe(targetDoc, 'scroll', data, this.scrollListener, LoggerConfigs.eventThrottle);
+      this.bindEventIframe(targetDoc, 'click', data, this.mouseClickListener);
+      this.bindEventIframe(targetDoc, 'keydown', data, this.keydownListener);
+      this.bindEventIframe(targetDoc, 'keypress', data, this.keypressListener);
     }
 
     this.isTracking = true;
@@ -291,13 +292,15 @@ constructor($window, $document, $state) {
     if (pageContainer) {
       var iframe = document.getElementById(this.iframeId) || document.getElementsByTagName('iframe')[0];
       var innerDoc = iframe.contentWindow || iframe.contentDocument;    //iframe.contentDocument || iframe.contentWindow.document;
-      Utils.logToConsole('Stop Tracking Iframe!');
+      var targetDoc = angular.element(innerDoc);
 
-      this.unbindEventIframe(angular.element(innerDoc), 'mousemove', this.mouseMoveListener);
-      this.unbindEventIframe(angular.element(innerDoc), 'scroll', this.mouseMoveListener);
-      this.unbindEventIframe(angular.element(innerDoc), 'click', this.mouseClickListener);
-      this.unbindEventIframe(angular.element(innerDoc), 'keydown', this.keydownListener);
-      this.unbindEventIframe(angular.element(innerDoc), 'keypress', this.keypressListener);
+      //Utils.logToConsole('Stop Tracking Iframe!');
+
+      this.unbindEventIframe(targetDoc, 'mousemove', this.mouseMoveListener);
+      this.unbindEventIframe(targetDoc, 'scroll', this.mouseMoveListener);
+      this.unbindEventIframe(targetDoc, 'click', this.mouseClickListener);
+      this.unbindEventIframe(targetDoc, 'keydown', this.keydownListener);
+      this.unbindEventIframe(targetDoc, 'keypress', this.keypressListener);
     }
 
     this.isTracking = false;
