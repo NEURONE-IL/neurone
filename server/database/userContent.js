@@ -14,19 +14,19 @@ Meteor.methods({
   removeBookmark: function(currentUrl) {
     check(currentUrl, String);
 
-    Bookmarks.remove({ timer: this.userId, url: currentUrl });
+    Bookmarks.remove({ userId: this.userId, url: currentUrl });
     return true;
   },
   getBookmark: function(currentUrl) {
     check(currentUrl, String);
 
-    return Bookmarks.find({ url: currentUrl }).fetch();
+    return Bookmarks.find({ userId: this.userId, url: currentUrl }).fetch();
   },
   isBookmark: function(currentUrl) {
     check(currentUrl, String);
 
-    var bkms = Bookmarks.find({ url: currentUrl }).fetch();
-    var result = bkms.length > 0
+    var bkms = Bookmarks.find({ userId: this.userId, url: currentUrl }).fetch();
+    var result = bkms.length > 0;
 
     //console.log('Is bookmark?', currentUrl, result);
     return result;

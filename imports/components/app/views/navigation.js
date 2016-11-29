@@ -30,12 +30,16 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
+    this.isSnippetEnabled = false;
+    this.isBookmarkEnabled = false;
+    this.isPageBookmarked = false;
+
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';
 
     this.navbarVariables = {
       bookmarkedPages: 0,
-    }
+    };
 
     this.$scope.$on('$stateChangeSuccess', (event) => {
       this.navbarMessage = '';
@@ -44,10 +48,11 @@ class Navigation {
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
       this.bms.isBookmarked((err, res) => {
         if (!err) {
-          this.isOnPage = data;
-          this.isBookmarked = res;
+          this.isSnippetEnabled = data;
+          this.isBookmarkEnabled = data;
+          this.isPageBookmarked = res;
           this.$scope.$apply();
-          //console.log('Bookmark Check!', this.isOnPage, this.isBookmarked);
+          console.log('Bookmark Check!', this.isSnippetEnabled, this.isBookmarkEnabled, this.isPageBookmarked);
         }
         else {
           console.error(err);
@@ -62,11 +67,14 @@ class Navigation {
       currentUser: () => {
         return Meteor.user();
       },
-      enablePageHelpers: () => {
-        return this.isOnPage;
+      enableSnippet: () => {
+        return this.getReactively('isSnippetEnabled');
       },
       enableBookmark: () => {
-        return this.isBookmarked;
+        return this.getReactively('isBookmarkEnabled');
+      },
+      bookmarkStatus: () => {
+        return this.getReactively('isPageBookmarked');
       }
     });
   }
@@ -97,7 +105,7 @@ class Navigation {
         if (!err) {
           this.bms.isBookmarked((err2, res2) => {
             if (!err2) {
-              this.isBookmarked = res2;
+              this.isPageBookmarked = res2;
               this.$scope.$apply();
             }
           });
@@ -119,7 +127,7 @@ class Navigation {
         if (!err) {
           this.bms.isBookmarked((err2, res2) => {
             if (!err2) {
-              this.isBookmarked = res2;
+              this.isPageBookmarked = res2;
               this.$scope.$apply();
             }
           });

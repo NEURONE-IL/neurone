@@ -7,14 +7,14 @@
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn">
         <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.navbarMessage}}</div>
-        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.isOnPage" ng-click="navigation.saveSnippet()">{{"actions.snippetButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.isOnPage && !navigation.isBookmarked" ng-click="navigation.saveBookmark()">{{"actions.bookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.isOnPage && navigation.isBookmarked" ng-click="navigation.removeBookmark()">{{"actions.unbookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()">{{"auth.logoutButton" | translate}}</button>
+        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippet" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"actions.snippetButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && !navigation.bookmarkStatus" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"actions.bookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && navigation.bookmarkStatus" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"actions.unbookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
       <div class="nav pull-left btn-group horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
-        <button type="button" class="btn btn-success navbar-btn" ui-sref="register">{{"auth.registerButton" | translate}}</button>
-        <button type="button" class="btn btn-primary navbar-btn" ui-sref="login">{{"auth.loginButton" | translate}}</button>
+        <button type="button" class="btn btn-success navbar-btn" ui-sref="register"><i class="fa fa-user-plus" aria-hidden="true"></i> {{"auth.registerButton" | translate}}</button>
+        <button type="button" class="btn btn-primary navbar-btn" ui-sref="login"><i class="fa fa-sign-in" aria-hidden="true"></i> {{"auth.loginButton" | translate}}</button>
       </div>
       <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle" ng-if="navigation.isLoggedIn">
         <span class="sr-only">{{"app.toggleNav" | translate}}</span>
@@ -26,11 +26,11 @@
 
     <div class="collapse navbar-collapse" id="navbar-menu" ng-if="navigation.isLoggedIn">
       <ul class="nav navbar-nav">
-        <li><a href="#" ng-click="navigation.openModal()">{{"nav.tutorialButton" | translate}}</a></li>
-        <li><a href="#">{{"nav.tipsButton" | translate}}</a></li>
-        <li><a href="#">{{"nav.taskButton" | translate}}</a></li>
+        <li><a href="#" ng-click="navigation.openModal()"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"nav.taskButton" | translate}}</a></li>
+        <li><a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
+        <li><a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"nav.selectedPages" | translate: navigation.navbarVariables }}<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.navbarVariables }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="javascript:void(0)">List of Bookmarks</a></li>
             <li><a href="#">Page 1</a></li>
@@ -40,7 +40,7 @@
         </li>
 
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"app.showcase" | translate}} <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-eye" aria-hidden="true"></i> {{"app.showcase" | translate}} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/stage0">Stage 0</a></li>
             <li><a href="/stage1">Stage 1</a></li>
