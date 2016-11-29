@@ -12,11 +12,14 @@ class DisplayIframe {
 	constructor($scope, $rootScope, $timeout, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
 		'ngInject';
 
+		this.$scope = $scope;
 		this.$state = $state;
 		this.$rootScope = $rootScope;
 		this.$timeout = $timeout;
 		this.kmtis = KMTrackIframeService;
 		this.abis = ActionBlockerIframeService;
+
+		$reactive(this).attach($scope);
 
 		// dgacitua: Execute on iframe end
 		this.$onDestroy = () => {
@@ -25,13 +28,17 @@ class DisplayIframe {
 			this.abis.antiService();
 		};
 
+		this.iframeDoc = document.getElementById('pageContainer');
+
 		// dgacitua: Execute on iframe start
-		angular.element(document.getElementById('pageContainer')).on('load', () => {
+		// http://stackoverflow.com/a/17045721
+		angular.element(this.iframeDoc).on('load', () => {
+			console.log('Loading iframe trackers...', this.iframeDoc);
 			this.abis.service();
 			this.kmtis.service();
 		});
 
-		$reactive(this).attach($scope);
+		//console.log(this.iframeDoc);
 
 		this.page = $stateParams.docName || this.$rootScope.docName;
 		this.routeUrl = '';
