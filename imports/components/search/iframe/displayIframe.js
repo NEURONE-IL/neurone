@@ -30,32 +30,27 @@ class DisplayIframe {
 
 		this.iframeDoc = document.getElementById('pageContainer');
 
-		// dgacitua: Execute on iframe start
-		// http://stackoverflow.com/a/17045721
-		angular.element(this.iframeDoc).on('load', () => {
-			console.log('Loading iframe trackers...', this.iframeDoc);
-			this.abis.service();
-			this.kmtis.service();
-		});
-
-		//console.log(this.iframeDoc);
-
 		this.page = $stateParams.docName || this.$rootScope.docName;
 		this.routeUrl = '';
 		this.documentTitle = '';
-		this.renderPage(this.page);
-	}
 
-	// From https://github.com/meteor/meteor/issues/7189
-	renderPage(docName) {
-		this.call('getDocument', docName, (error, result) => {
-			if (!error) {
-				this.routeUrl = result.routeUrl;
-				this.documentTitle = result.title;
-				this.$rootScope.documentTitle = result.title;
+		// From https://github.com/meteor/meteor/issues/7189
+		this.call('getDocument', this.page, (err, res) => {
+			if (!err) {
+				this.routeUrl = res.routeUrl;
+				this.documentTitle = res.title;
+				this.$rootScope.documentTitle = res.title;
+
+				// dgacitua: Execute on iframe start
+				// http://stackoverflow.com/a/17045721
+				angular.element(this.iframeDoc).on('load', () => {
+					console.log('Loading iframe trackers...', this.iframeDoc);
+					this.abis.service();
+					this.kmtis.service();
+				});
 			}
 			else {
-				console.error(error);
+				console.error(err);
 			}
 		});
 	}
