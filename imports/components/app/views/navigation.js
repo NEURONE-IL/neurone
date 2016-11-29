@@ -7,13 +7,15 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
+import { name as ModalService } from '../../modules/modal';
+
 import { name as Logger } from '../../logger/logger';
 import Utils from '../../globalUtils';
 
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService) {
+  constructor($scope, $rootScope, $reactive, $state, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -24,11 +26,16 @@ class Navigation {
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
     this.auth = AuthService;
+    this.modal = ModalService;
 
     $reactive(this).attach($scope);
 
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';
+
+    this.navbarVariables = {
+      bookmarkedPages: 0,
+    }
 
     this.$scope.$on('$stateChangeSuccess', (event) => {
       this.navbarMessage = '';
@@ -141,6 +148,10 @@ class Navigation {
     });
     */
   }
+
+  openModal() {
+    this.modal.openModal();
+  }
 }
 
 // create a module
@@ -149,7 +160,8 @@ export default angular.module(name, [
   Logger,
   Login,
   Register,
-  Password
+  Password,
+  ModalService
 ])
 .component(name, {
   template,

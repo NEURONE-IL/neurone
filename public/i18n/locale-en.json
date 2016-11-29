@@ -14,6 +14,12 @@
     "synthesis": "Synthesis",
     "flow": "Flow"
   },
+  "nav": {
+    "tutorialButton": "Tutorial",
+    "tipsButton": "Tips",
+    "taskButton": "Task",
+    "selectedPages": "You have selected {{bookmarkedPages}} page(s)"
+  },
   "auth": {
     "registerButton": "Register",
     "loginButton": "Login",
@@ -33,11 +39,7 @@
   "home": {
     "welcome": "Welcome to NEURONE!",
     "acronym": "oNlinE inqUiry expeRimentatiON systEm",
-    "p1": "Please register and login with your email to test this demo.",
-    "p2": "This demo features: HTML Document Preview, Document Search, Forms and Interaction Tracking.",
-    "p3": "The current document loaded set is a very small selection of Olympics and Paralympics articles from Wikipedia.",
-    "p4": "Please note that all your mouse and keyboard interactions as well as your session data and visited pages will be recorded once you log in to NEURONE.",
-    "p5": "All the data collected on this demo (at this state) will be used exclusively as statistics for improving the platform, and they will not be part of the final study."
+    "instructions1": "Please register and login with your username to begin!"
   },
   "actions": {
     "snippetButton": "Save Snippet",
@@ -80,5 +82,13 @@
     "closeButton": "Close",
     "snippetModalTitle": "Your Snippet",
     "bookmarkModalTitle": "Your Bookmark"
+  },
+  "modal": {
+    "closeButton": "Close",
+    "nextStageButton": "Next stage",
+    "goBackButton": "Go Back",
+    "acceptButton": "Accept",
+    "cancelButton": "Cancel",
+    "nextButton": "Next"
   }
 }
