@@ -33,12 +33,14 @@ class Navigation {
     this.isSnippetEnabled = false;
     this.isBookmarkEnabled = false;
     this.isPageBookmarked = false;
+    this.isShowcaseEnabled = true;
 
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';
 
-    this.navbarVariables = {
+    this.counters = {
       bookmarkedPages: 0,
+      snippetLength: 0
     };
 
     this.$scope.$on('$stateChangeSuccess', (event) => {
@@ -52,7 +54,7 @@ class Navigation {
           this.isBookmarkEnabled = data;
           this.isPageBookmarked = res;
           this.$scope.$apply();
-          console.log('Bookmark Check!', this.isSnippetEnabled, this.isBookmarkEnabled, this.isPageBookmarked);
+          //console.log('Bookmark Check!', this.isSnippetEnabled, this.isBookmarkEnabled, this.isPageBookmarked);
         }
         else {
           console.error(err);
@@ -66,6 +68,15 @@ class Navigation {
       },
       currentUser: () => {
         return Meteor.user();
+      },
+      reactiveMessage: () => {
+        return this.getReactively('navbarMessage');
+      },
+      reactiveCounters: () => {
+        return this.getReactively('counters');
+      },
+      enableShowcase: () => {
+        return this.getReactively('isShowcaseEnabled');
       },
       enableSnippet: () => {
         return this.getReactively('isSnippetEnabled');
@@ -81,58 +92,43 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      this.$scope.$apply(() => {
-        this.navbarMessage = res ? res : err;
-        Utils.notificationFadeout(this.navbarMessageId);
-        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        //this.navbarMessageElement.stop(true, true);
-        //this.navbarMessageElement.fadeIn(0);
-        //this.navbarMessageElement.fadeOut(5000); 
-      });
+      this.navbarMessage = res ? res : err;
+      Utils.notificationFadeout(this.navbarMessageId);
+      this.$scope.$apply();
     });
   }
 
   saveBookmark() {
     this.bms.saveBookmark((err, res) => {
-      this.$scope.$apply(() => {
-        this.navbarMessage = res ? res : err;
-        Utils.notificationFadeout(this.navbarMessageId);
-        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        //this.navbarMessageElement.stop(true, true);
-        //this.navbarMessageElement.fadeIn(0);
-        //this.navbarMessageElement.fadeOut(5000); 
-
-        if (!err) {
-          this.bms.isBookmarked((err2, res2) => {
-            if (!err2) {
-              this.isPageBookmarked = res2;
-              this.$scope.$apply();
-            }
-          });
-        }
-      });
+      this.navbarMessage = res ? res : err;
+      Utils.notificationFadeout(this.navbarMessageId);
+      this.$scope.$apply();
+      
+      if (!err) {
+        this.bms.isBookmarked((err2, res2) => {
+          if (!err2) {
+            this.isPageBookmarked = res2;
+            this.$scope.$apply();
+          }
+        });
+      }
     });
   }
 
   removeBookmark() {
     this.bms.removeBookmark((err, res) => {
-      this.$scope.$apply(() => {
-        this.navbarMessage = res ? res : err;
-        Utils.notificationFadeout(this.navbarMessageId);
-        //this.navbarMessageElement = angular.element(document.getElementById(this.navbarMessageId));
-        //this.navbarMessageElement.stop(true, true);
-        //this.navbarMessageElement.fadeIn(0);
-        //this.navbarMessageElement.fadeOut(5000); 
+      this.navbarMessage = res ? res : err;
+      Utils.notificationFadeout(this.navbarMessageId);
+      this.$scope.$apply();
 
-        if (!err) {
-          this.bms.isBookmarked((err2, res2) => {
-            if (!err2) {
-              this.isPageBookmarked = res2;
-              this.$scope.$apply();
-            }
-          });
-        }
-      });
+      if (!err) {
+        this.bms.isBookmarked((err2, res2) => {
+          if (!err2) {
+            this.isPageBookmarked = res2;
+            this.$scope.$apply();
+          }
+        });
+      }
     });
   }
 
@@ -142,23 +138,20 @@ class Navigation {
         this.$state.go('home');
       }
     });
-    /*
-    this.fs.stopFlow();
-    this.ses.saveLogout();
-    Accounts.logout((err, res) => {
-      if (!err) {
-        UserStatus.stopMonitor();
-        this.$state.go('home');
-      }
-      else {
-        console.error('Error while logging out!', err);
-      }
-    });
-    */
   }
 
   openModal() {
-    this.modal.openModal();
+    // dgacitua: Modal template location is relative to NEURONE's Asset Path
+    var modalObject = {
+      title: 'My Email',
+      templateAsset: 'modals/taskAssignment_en.html',
+      fields: {
+        to: (!!Meteor.userId() && Meteor.user().username ? Meteor.user().username : 'you'),
+        subject: 'I need your help!'
+      }
+    };
+
+    this.modal.openModal(modalObject);
   }
 }
 

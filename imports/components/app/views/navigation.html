@@ -29,8 +29,8 @@
         <li><a href="#" ng-click="navigation.openModal()"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"nav.taskButton" | translate}}</a></li>
         <li><a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
         <li><a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.navbarVariables }} <span class="caret"></span></a>
+        <li class="dropdown" ng-if="navigation.enableBookmark">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.reactiveCounters }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="javascript:void(0)">List of Bookmarks</a></li>
             <li><a href="#">Page 1</a></li>
@@ -38,8 +38,7 @@
             <li><a href="#">Page 3</a></li>
           </ul>
         </li>
-
-        <li class="dropdown">
+        <li class="dropdown" ng-if="navigation.enableShowcase">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-eye" aria-hidden="true"></i> {{"app.showcase" | translate}} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/stage0">Stage 0</a></li>

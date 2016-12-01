@@ -18,7 +18,8 @@
     "tutorialButton": "Tutorial",
     "tipsButton": "Tips",
     "taskButton": "Task",
-    "selectedPages": "You have selected {{bookmarkedPages}} page(s)"
+    "selectedPages": "You have selected {{bookmarkedPages}} page(s)",
+    "snippetCount": "You have selected {{snippetLength}} word(s)"
   },
   "auth": {
     "registerButton": "Register",

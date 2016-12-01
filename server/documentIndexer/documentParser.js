@@ -120,13 +120,11 @@ export default class DocumentParser {
   static parseDocument(documentPath) {
     var obj = {
       title: this.getHtmlTitle(documentPath),
-      body: '',
       indexedBody: this.getHtmlAsText(documentPath),
       date: Utils.getDate(),
       topics: [],
       docName: this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
-      url: '',
       id: 0,
       md5Hash: this.getMD5(documentPath)
     }

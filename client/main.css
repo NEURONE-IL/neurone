@@ -103,6 +103,10 @@ img.logo-home {
   display: block;
 }
 
+.scrollable {
+  overflow: auto;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

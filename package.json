@@ -16,6 +16,7 @@
     "angular-translate": "^2.12.1",
     "angular-translate-loader-static-files": "^2.12.1",
     "angular-translate-storage-local": "^2.12.1",
+    "angular-truncate-2": "^0.4.2",
     "angular-ui-bootstrap": "^2.2.0",
     "angular-ui-router": "^0.3.1",
     "babel-runtime": "^6.18.0",

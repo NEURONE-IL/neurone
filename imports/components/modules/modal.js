@@ -1,15 +1,17 @@
 import template from './modal.html';
 
 class ModalCtrl {
-  constructor($uibModalInstance) {
+  constructor($uibModalInstance, customTitle, customTemplate, customFields) {
     'ngInject';
 
     var $ctrl = this;
 
-    $ctrl.items = [1, 2, 3];
+    $ctrl.title = customTitle;
+    $ctrl.template = customTemplate;
+    $ctrl.fields = customFields;
 
     $ctrl.selected = {
-      item: $ctrl.items[0]
+      item: {}
     };
 
     $ctrl.ok = function () {
@@ -34,19 +36,26 @@ class ModalService {
     this.$uibModal = $uibModal;
   }
 
-  openModal() {
-    console.log('Opening modal!');
+  openModal(modalObject) {
+    var contentTitle = modalObject.title ? modalObject.title : '';
+    var contentTemplate = modalObject.templateAsset ? modalObject.templateAsset : '';
+    var contentFields = modalObject.fields ? modalObject.fields : {};
 
     this.modal = this.$uibModal.open({
       template,
       animation: true,
       size: 'lg',
-      windowClass: 'modal-xl',
       controller: ModalCtrl,
       controllerAs: '$ctrl',
       resolve: {
-        item: () => {
-          return '';
+        customTitle: () => {
+          return contentTitle;
+        },
+        customTemplate: () => {
+          return contentTemplate;
+        },
+        customFields: () => {
+          return contentFields;
         }
       }
     });

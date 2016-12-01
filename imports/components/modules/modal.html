@@ -1,6 +1,7 @@
 <div class="modal-header">
   <button class="btn btn-xs btn-danger pull-right" type="button" ng-click="$ctrl.close()">{{"modal.closeButton" | translate}}</button>
+  <h3 class="modal-title" id="modal-title">{{$ctrl.title}}</h3>
 </div>
 <div class="modal-body" id="modal-body">
-  <p>modal example</p>
+  <div ng-include="$ctrl.template" class="scrollable"></div>
 </div>

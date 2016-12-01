@@ -11,7 +11,34 @@ import { Documents } from '../../imports/api/documents/index';
 export default class Indexer {
   static generateDocumentCollection(assetPath) {
     console.log('Generating Document Collection!');
-    
+
+    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
+    var total = documentList.length;
+
+    documentList.forEach((doc, idx) => {
+      console.log('Indexing documents...', (idx+1) + ' of ' + total);
+
+      var docRoute = path.join(assetPath, 'web', doc.route);
+
+      DocumentParser.cleanDocument(docRoute);
+
+      var docObj = {};
+      var parsedObj = DocumentParser.parseDocument(docRoute);
+      var jsonObj = documentList.find(o => o.route === doc.route);
+
+      // dgacitua: http://stackoverflow.com/a/171256
+      for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+      for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
+
+      docObj.id = incrementCounter('counters', 'documents');
+      docObj.route = "web/" + docObj.route;
+
+      Documents.upsert({ route: doc.route }, docObj);
+    });
+
+    InvertedIndex.generate();
+
+    /*
     glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
         var total = files.length;
@@ -21,7 +48,14 @@ export default class Indexer {
 
           DocumentParser.cleanDocument(file);
 
-          var docObj = DocumentParser.parseDocument(file);
+          var docObj = {};
+          var parsedObj = DocumentParser.parseDocument(file);
+          var jsonObj = documentList.find(o => o.url === path.basename(file));
+
+          // dgacitua: http://stackoverflow.com/a/171256
+          for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+          for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; } 
+
           docObj.id = incrementCounter('counters', 'documents');
 
           Documents.insert(docObj);
@@ -37,12 +71,21 @@ export default class Indexer {
         return false;
       }
     }));
+    */
   }
 
   static updateDocumentCollection(assetPath) {
     console.log('Updating Document Collection!');
 
+    // TODO: Fix to use JSON documentList
+
     var syncedList = [];
+    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
+    var total = documentList.length;
+
+    /*
+    var syncedList = [];
+    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
     
     glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
@@ -57,7 +100,14 @@ export default class Indexer {
             // dgacitua: Generate record for HTML files not in database
             DocumentParser.cleanDocument(file);
 
-            var docObj = DocumentParser.parseDocument(file);
+            var docObj = {};
+            var parsedObj = DocumentParser.parseDocument(file);
+            var jsonObj = documentList.find(o => o.url === path.basename(file));
+
+            // dgacitua: http://stackoverflow.com/a/171256
+            for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+            for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; }
+            
             docObj.id = incrementCounter('counters', 'documents');
 
             Documents.insert(docObj);
@@ -69,7 +119,14 @@ export default class Indexer {
             if (docData.md5Hash !== currHash) {
               DocumentParser.cleanDocument(file);
 
-              var docObj = DocumentParser.parseDocument(file);
+              var docObj = {};
+              var parsedObj = DocumentParser.parseDocument(file);
+              var jsonObj = documentList.find(o => o.url === path.basename(file));
+
+              // dgacitua: http://stackoverflow.com/a/171256
+              for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+              for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; }
+
               docObj.id = docData.id
 
               Documents.update({ _id: docData._id}, docObj);
@@ -83,7 +140,7 @@ export default class Indexer {
         Documents.remove({ route: { $nin: syncedList }});
 
         InvertedIndex.generate();
-        InvertedIndex.save();
+        //InvertedIndex.save();
 
         return true;
       }
@@ -92,6 +149,7 @@ export default class Indexer {
         return false;
       }
     }));
+    */
   }
 
   static loadInvertedIndex() {
