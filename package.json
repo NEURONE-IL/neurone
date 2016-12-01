@@ -1,6 +1,8 @@
 {
   "name": "neurone",
   "description": "oNlinE inqUiry expeRimentatiON systEm",
+  "version": "0.0.1",
+  "author": "Daniel Gacitua <daniel.gacitua@usach.cl>",
   "private": true,
   "scripts": {
     "start": "meteor --settings private/settingsDev.json",

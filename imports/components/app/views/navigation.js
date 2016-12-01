@@ -33,7 +33,7 @@ class Navigation {
     this.isSnippetEnabled = false;
     this.isBookmarkEnabled = false;
     this.isPageBookmarked = false;
-    this.isShowcaseEnabled = true;
+    this.isShowcaseEnabled = false;
 
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';

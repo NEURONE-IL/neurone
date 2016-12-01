@@ -59,8 +59,12 @@ export default class ServerUtils {
     return true;
   }
 
+  static isTesting() {
+    return Meteor.isTest || Meteor.isAppTest;
+  }
+
   static getAssetPath() {
-    if (Meteor.isTest || Meteor.isAppTest) {
+    if (this.isTesting()) {
       return path.join(Meteor.rootPath);
     }
     else {

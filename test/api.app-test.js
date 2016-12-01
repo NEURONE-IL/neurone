@@ -15,7 +15,7 @@ describe('NEURONE API', function() {
   if (Meteor.isClient) {
     // dgacitua: Testing case
     describe('ping()', function() {
-      it('should return ping', function(done) {
+      it('should return succesful ping', function(done) {
         Meteor.call('ping', (err, res) => {
           if (!err) {
             chai.assert.isObject(res, 'a response is delivered');

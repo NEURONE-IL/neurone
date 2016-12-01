@@ -8,7 +8,7 @@ Meteor.startup(() => {
   const assetPath = Utils.getAssetPath();
   StaticServer.add('/', assetPath);
 
-  if (Meteor.isProduction || Meteor.isDevelopment) {
+  if (!Utils.isTesting()) {
     // dgacitua: Start user presence monitor
     InstanceStatus.events.on('registerInstance', (id, record) => {
       console.log('Registered new NEURONE instance!', 'PID: ' + id.pid);
