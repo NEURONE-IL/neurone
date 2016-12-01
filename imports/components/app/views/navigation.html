@@ -26,9 +26,9 @@
 
     <div class="collapse navbar-collapse" id="navbar-menu" ng-if="navigation.isLoggedIn">
       <ul class="nav navbar-nav">
-        <li><a href="#" ng-click="navigation.openModal()"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"nav.taskButton" | translate}}</a></li>
-        <li><a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
-        <li><a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
+        <li><a href="#" ng-click="navigation.taskModal()"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"nav.taskButton" | translate}}</a></li>
+        <li><a href="#" ng-click="navigation.tipsModal()"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
+        <li><a href="#" ng-click="navigation.tutorialModal()"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
         <li class="dropdown" ng-if="navigation.enableBookmark">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.reactiveCounters }} <span class="caret"></span></a>
           <ul class="dropdown-menu">

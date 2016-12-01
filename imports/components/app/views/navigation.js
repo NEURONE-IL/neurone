@@ -140,15 +140,37 @@ class Navigation {
     });
   }
 
-  openModal() {
+  taskModal() {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
       title: 'My Email',
       templateAsset: 'modals/taskAssignment_en.html',
       fields: {
-        to: (!!Meteor.userId() && Meteor.user().username ? Meteor.user().username : 'you'),
+        to: (!!Meteor.userId() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
         subject: 'I need your help!'
       }
+    };
+
+    this.modal.openModal(modalObject);
+  }
+
+  tipsModal() {
+    // dgacitua: Modal template location is relative to NEURONE's Asset Path
+    var modalObject = {
+      title: 'Tips',
+      templateAsset: 'modals/tips_stage1_en.html',
+      fields: {}
+    };
+
+    this.modal.openModal(modalObject);
+  }
+
+  tutorialModal() {
+    // dgacitua: Modal template location is relative to NEURONE's Asset Path
+    var modalObject = {
+      title: 'Tutorial',
+      templateAsset: 'modals/tutorial_stage1_en.html',
+      fields: {}
     };
 
     this.modal.openModal(modalObject);
