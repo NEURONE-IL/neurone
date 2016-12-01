@@ -107,6 +107,16 @@ img.logo-home {
   overflow: auto;
 }
 
+mark.highlightSearch {
+  background: lightgray;
+  color: black;
+}
+
+mark.highlightSnippet {
+  background: orange;
+  color: black;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

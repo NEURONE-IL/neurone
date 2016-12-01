@@ -18,6 +18,7 @@
     "tutorialButton": "Tutorial",
     "tipsButton": "Tips",
     "taskButton": "Task",
+    "bookmarkList": "Bookmark List",
     "selectedPages": "You have selected {{bookmarkedPages}} page(s)",
     "snippetCount": "You have selected {{snippetLength}} word(s)"
   },

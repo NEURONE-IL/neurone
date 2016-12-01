@@ -9,11 +9,11 @@
     </form>
   </div>
   <hr>
-  <div id="searchResults">
+  <div id="searchResults" class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
     <div ng-repeat="doc in searchResults.documents.slice(((searchResults.currentPage-1)*searchResults.resultsPerPage), ((searchResults.currentPage)*searchResults.resultsPerPage)) track by doc._id">
       <a class="search-result-title" ui-sref="displayPage({ docName: doc.docName })">{{doc.title}}</a>
       <div class="search-result-url">{{doc.url}}</div>
-      <div class="search-result-snippet">{{doc.body | limitTo: 256}}{{doc.body.length > 256 ? '...' : ''}}</div>
+      <div class="search-result-snippet highlight">{{doc.body | words: 50}}</div>
       <br>
     </div>
     <div ng-if="searchResults.resultsReady">

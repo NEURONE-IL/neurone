@@ -50,8 +50,8 @@ class Navigation {
     this.$rootScope.$on('setDocumentHelpers', (event, data) => {
       this.bms.isBookmarked((err, res) => {
         if (!err) {
-          this.isSnippetEnabled = data;
-          this.isBookmarkEnabled = data;
+          this.isSnippetEnabled = data.snippets;
+          this.isBookmarkEnabled = data.bookmarks;
           this.isPageBookmarked = res;
           this.$scope.$apply();
           //console.log('Bookmark Check!', this.isSnippetEnabled, this.isBookmarkEnabled, this.isPageBookmarked);

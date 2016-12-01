@@ -1,17 +1,21 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
+import angularTruncate from 'angular-truncate-2';
+
+import 'mark.js';
 
 import template from './searchResults.html';
 
 import { name as Logger } from '../../logger/logger';
 
 class SearchResults {
-  constructor($scope, $reactive, $state, $stateParams, QueryTrackService) {
+  constructor($scope, $reactive, $state, $document, $stateParams, QueryTrackService) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
+    this.$document = $document;
     this.qts = QueryTrackService;
 
     $reactive(this).attach($scope);
@@ -40,12 +44,15 @@ class SearchResults {
 
         // dgacitua: Apply changes
         this.resultsReady = true;
-        console.log('Search Results', this.documents);
+        //console.log('Search Results', this.documents);
+        this.$scope.$apply();
+
+        this.highlightSearch(qt);
         this.$scope.$apply();
       }
       else {
         this.resultsReady = true;
-        console.error('Error while getting documents', error);
+        //console.error('Error while getting documents', error);
         this.$scope.$apply();
       }
     });
@@ -56,6 +63,17 @@ class SearchResults {
     this.qts.saveQuery(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
+
+  highlightSearch(queryText) {
+    var qt = queryText ? queryText : '';
+    check(qt, String);
+
+    var searchables = this.$document.find('.highlight').toArray();
+    var markInstance = new Mark(searchables);
+    markInstance.mark(qt, {
+      className: 'highlightSearch'
+    });
+  }
 };
 
 const name = 'searchResults';
@@ -63,6 +81,7 @@ const name = 'searchResults';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
+  'truncate',
   Logger
 ])
 .component(name, {

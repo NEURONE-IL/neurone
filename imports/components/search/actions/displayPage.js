@@ -25,11 +25,21 @@ class DisplayPage {
 
   // dgacitua: Execute on iframe start
   startTracking() {
-    this.$rootScope.$broadcast('setDocumentHelpers', true);
+    var data = {
+      snippets: false,
+      bookmarks: true
+    };
+
+    this.$rootScope.$broadcast('setDocumentHelpers', data);
   }
 
   stopTracking() {
-    this.$rootScope.$broadcast('setDocumentHelpers', false);
+    var data = {
+      snippets: false,
+      bookmarks: true
+    };
+    
+    this.$rootScope.$broadcast('setDocumentHelpers', data);
   }
 }
 
