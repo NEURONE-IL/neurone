@@ -72,11 +72,45 @@ export default class InvertedIndex {
 
     return doc;
   }
+
+  static iFuCoSort(documentArray, insertions) {
+    check(documentArray, Array);
+
+    var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch());
+    var insertNum = relevantDocs.length >= insertions ? insertions : relevantDocs.length;
+
+    for (i=0; i<insertNum; i++) {
+      documentArray.splice(1, 0, relevantDocs[i]);
+    }
+
+    return documentArray;
+  }
+
+  // dgacitua: Implemented Fisher-Yates Shuffle algorithm
+  static shuffleArray(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
 }
 
 Meteor.methods({
   searchDocuments: (query) => {
-    return InvertedIndex.searchDocuments(query);
+    var results = InvertedIndex.searchDocuments(query);
+    return InvertedIndex.iFuCoSort(results, 2);
   },
   getDocument: (documentName) => {
     return InvertedIndex.getDocument(documentName);

@@ -33,7 +33,7 @@ export default class Indexer {
       docObj.id = incrementCounter('counters', 'documents');
       docObj.route = "web/" + docObj.route;
 
-      Documents.upsert({ route: doc.route }, docObj);
+      Documents.upsert({ route: docObj.route }, docObj);
     });
 
     InvertedIndex.generate();
