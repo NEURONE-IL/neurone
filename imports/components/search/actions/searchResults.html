@@ -18,7 +18,7 @@
     </div>
     <div ng-if="searchResults.resultsReady">
       <h3 ng-if="searchResults.documents.length <= 0" class="text-center">{{"search.noResults" | translate}}</h3>
-      <div class="pagination-wrapper">
+      <div class="pagination-wrapper" ng-if="searchResults.documents.length > 0">
         <ul uib-pagination total-items="searchResults.totalResults" ng-model="searchResults.currentPage" items-per-page="searchResults.resultsPerPage"></ul>
       </div>
     </div>

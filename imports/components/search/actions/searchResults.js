@@ -40,11 +40,13 @@ class SearchResults {
 
         // dgacitua: Apply changes
         this.resultsReady = true;
+        console.log('Search Results', this.documents);
         this.$scope.$apply();
       }
       else {
         this.resultsReady = true;
         console.error('Error while getting documents', error);
+        this.$scope.$apply();
       }
     });
   }

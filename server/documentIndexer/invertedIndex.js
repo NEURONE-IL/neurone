@@ -1,4 +1,5 @@
 import lunr from 'lunr';
+import 'array.prototype.move';
 
 import Utils from '../lib/utils';
 
@@ -14,9 +15,8 @@ export default class InvertedIndex {
     var allDocs = Documents.find({});
     
     searchIndex = lunr(function() {
-      this.field('title', { boost: 3 })
+      this.field('title', { boost: 2 })
       this.field('indexedBody')
-      this.field('topics', { boost: 2 })
     });
 
     allDocs.forEach((doc) => {
@@ -73,17 +73,27 @@ export default class InvertedIndex {
     return doc;
   }
 
-  static iFuCoSort(documentArray, insertions) {
+  static iFuCoSort(documentArray, insertions, offset) {
     check(documentArray, Array);
 
-    var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch());
-    var insertNum = relevantDocs.length >= insertions ? insertions : relevantDocs.length;
+    var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch()),
+           insertNum = relevantDocs.length < insertions ? relevantDocs.length : insertions,
+           offsetNum = (documentArray.length < offset ? documentArray.length : offset) - 1;
 
     for (i=0; i<insertNum; i++) {
-      documentArray.splice(1, 0, relevantDocs[i]);
+      //documentArray.splice(offsetNum, 0, relevantDocs[i]);
+
+      var index = documentArray.indexOf(relevantDocs[i]);
+
+      if (index != -1) {
+        documentArray.move(index, offsetNum);
+      }
+      else {
+        documentArray.splice(offsetNum, 0, relevantDocs[i]);
+      }
     }
 
-    return documentArray;
+    return this.removeArrayDuplicates(a => a._id, documentArray);
   }
 
   // dgacitua: Implemented Fisher-Yates Shuffle algorithm
@@ -105,12 +115,28 @@ export default class InvertedIndex {
 
     return array;
   }
+
+  // dgacitua: http://stackoverflow.com/a/32238794
+  static removeArrayDuplicates(keyFn, array) {
+    var mySet = new Set();
+    return array.filter(function(x) {
+      var key = keyFn(x), isNew = !mySet.has(key);
+      if (isNew) mySet.add(key);
+      return isNew;
+    });
+  }
 }
 
 Meteor.methods({
   searchDocuments: (query) => {
     var results = InvertedIndex.searchDocuments(query);
-    return InvertedIndex.iFuCoSort(results, 2);
+
+    if (results.length >= 1) {
+      return InvertedIndex.iFuCoSort(results, 2, 2);
+    }
+    else {
+      return results;
+    }
   },
   getDocument: (documentName) => {
     return InvertedIndex.getDocument(documentName);
