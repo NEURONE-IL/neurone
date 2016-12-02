@@ -108,7 +108,8 @@ img.logo-home {
 }
 
 mark.highlightSearch {
-  background: lightgray;
+  font-weight: bold;
+  background: none;
   color: black;
 }
 

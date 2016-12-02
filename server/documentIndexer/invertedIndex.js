@@ -106,8 +106,10 @@ export default class InvertedIndex {
     }
 
     for (var j=0; j<documentArray.length; j++) {
-      documentArray.move(j, offsetPos-1);
-      return documentArray;
+      if (documentArray[j].relevant === true) {
+        documentArray.move(j, offsetPos-1);
+        return documentArray;  
+      }
     }
 
     return documentArray;
@@ -169,7 +171,7 @@ Meteor.methods({
     var results = InvertedIndex.searchDocuments(query);
 
     if (results.length >= 1) {
-      return InvertedIndex.iFuCoSort(results, 3, 1);
+      return InvertedIndex.iFuCoSort(results, 3, 2);
     }
     else {
       return results;
