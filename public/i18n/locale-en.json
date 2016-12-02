@@ -51,7 +51,8 @@
   "search": {
     "searchEngineTitle": "My Search Engine",
     "searchButton": "Search",
-    "noResults": "Your search query matched no results"
+    "noResults": "Your search query matched no results",
+    "loading": "Loading results..."
   },
   "showcase": {
     "documentList": "Document List",
