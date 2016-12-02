@@ -90,9 +90,30 @@ export default class InvertedIndex {
     return snippet;
   }
 
+  // dgacitua: Custom sorting algorithm for iFuCo Project
+  // PARAMS:  documentArray  Array with resulting documents from Lunr
+  //          insertions     Algorithm will check from first to <insertions> position for relevant documents
+  //          offset         Algorithm will insert a relevant document at this position (1 is first position)
   static iFuCoSort(documentArray, insertions, offset) {
     check(documentArray, Array);
 
+    // iFuCoSort v2
+    var insertNum = documentArray.length < insertions ? documentArray.length : insertions,
+        offsetPos = documentArray.length < offset ? documentArray.length : offset;
+
+    for (var i=0; i<insertNum; i++) {
+      if (documentArray[i].relevant === true) return documentArray;
+    }
+
+    for (var j=0; j<documentArray.length; j++) {
+      documentArray.move(j, offsetPos-1);
+      return documentArray;
+    }
+
+    return documentArray;
+
+    // iFuCoSort v1
+    /*
     var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch()),
            insertNum = relevantDocs.length < insertions ? relevantDocs.length : insertions,
            offsetNum = (documentArray.length < offset ? documentArray.length : offset) - 1;
@@ -109,6 +130,7 @@ export default class InvertedIndex {
     }
 
     return this.removeArrayDuplicates(a => a._id, documentArray);
+    */
   }
 
   // dgacitua: Implemented Fisher-Yates Shuffle algorithm
@@ -147,7 +169,7 @@ Meteor.methods({
     var results = InvertedIndex.searchDocuments(query);
 
     if (results.length >= 1) {
-      return InvertedIndex.iFuCoSort(results, 2, 2);
+      return InvertedIndex.iFuCoSort(results, 3, 1);
     }
     else {
       return results;
