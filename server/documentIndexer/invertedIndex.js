@@ -1,4 +1,5 @@
 import lunr from 'lunr';
+import sum from 'sum';
 import 'array.prototype.move';
 
 import Utils from '../lib/utils';
@@ -58,6 +59,8 @@ export default class InvertedIndex {
       var docId = obj.ref,
          docObj = Documents.findOne({id: docId});
 
+      docObj.body = this.snippetGenerator(docObj.indexedBody, query);
+
       respDocs.push(docObj);
     });
 
@@ -73,6 +76,20 @@ export default class InvertedIndex {
     return doc;
   }
 
+  static snippetGenerator(text, keywords) {
+    var opts = {
+      corpus: text,
+      nSentences: 3,
+      nWords: 15,
+      emphasise: keywords.split(' ')
+    };
+
+    var abstract = sum(opts),
+         snippet = abstract.summary;
+
+    return snippet;
+  }
+
   static iFuCoSort(documentArray, insertions, offset) {
     check(documentArray, Array);
 
@@ -81,8 +98,6 @@ export default class InvertedIndex {
            offsetNum = (documentArray.length < offset ? documentArray.length : offset) - 1;
 
     for (i=0; i<insertNum; i++) {
-      //documentArray.splice(offsetNum, 0, relevantDocs[i]);
-
       var index = documentArray.indexOf(relevantDocs[i]);
 
       if (index != -1) {

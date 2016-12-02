@@ -15,6 +15,7 @@ export default class DocumentParser {
 
       var options = {
         wordwrap: false,
+        uppercaseHeadings: false,
         ignoreHref: true,
         ignoreImage: true
       };
