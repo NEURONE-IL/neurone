@@ -118,7 +118,8 @@ export default class DocumentParser {
         /*
         if ($(elem).attr('type') === 'text/javascript' || $(elem).attr('type') === 'application/javascript') {
           $(elem).remove();
-        }*/
+        }
+        */
       });
 
       // dgacitua: Disable input elements
@@ -142,17 +143,15 @@ export default class DocumentParser {
   }
 
   static parseDocument(documentPath) {
-    var identifier = this.getMD5(documentPath);
-
     var obj = {
       title: this.getHtmlTitle(documentPath),
       indexedBody: this.getHtmlAsText(documentPath),
       date: Utils.getDate(),
       topics: [],
-      docName: identifier,    //this.getHtmlDocname(documentPath),
+      docName: this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
       id: 0,
-      md5Hash: identifier
+      md5Hash: this.getMD5(documentPath)
     }
 
     //console.log('Document Parsed!', obj.route);

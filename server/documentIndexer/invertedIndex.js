@@ -73,7 +73,7 @@ export default class InvertedIndex {
   static getDocument(documentName) {
     check(documentName, String);
 
-    var doc = Documents.findOne({ docName: documentName });
+    var doc = Documents.findOne({ _id: documentName });
     doc.routeUrl = '/' + doc.route;
 
     return doc;
