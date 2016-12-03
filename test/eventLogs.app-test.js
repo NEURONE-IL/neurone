@@ -37,11 +37,49 @@ describe('NEURONE API', function() {
     });
 
     // dgacitua: Test snippets
+    describe('storeBookmark()', function() {
+      it('should store a Bookmark', function(done) {
+        var snippetObject = {
+          userId: 'MQZMozeQfgDtxEgQr',
+          username: 'test',
+          action: 'Bookmark',
+          title: 'NEURONE',
+          url: '/home',
+          localTimestamp: 1480200315688
+        }
+
+        Meteor.call('storeBookmark', snippetObject, (err, res) => {
+          if (!err) {
+            chai.assert.isObject(res, 'a response is delivered');
+            chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
+
+            var bookmark = Bookmarks.findOne({}, {sort: {serverTimestamp: -1}});
+            chai.assert.isObject(bookmark, 'a Bookmark is saved');
+            chai.assert.property(bookmark, '_id', 'stored Bookmark has a valid id');
+            chai.assert.propertyVal(bookmark, 'action', snippetObject.action, 'stored Bookmark has the correct text');
+
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
+            chai.assert.isObject(event, 'an Event is saved');
+            chai.assert.property(event, '_id', 'stored Event has a valid id');
+            chai.assert.propertyVal(event, 'action', 'Bookmark', 'stored Event has a valid event action');
+            chai.assert.propertyVal(event, 'actionId', bookmark._id, 'stored Event has the correct Snippet id');
+
+            done();
+          }
+          else {
+            done(err);
+          }
+        });
+      });
+    });
+
+    // dgacitua: Test snippets
     describe('storeSnippet()', function() {
       it('should store a Snippet', function(done) {
         var snippetObject = {
           userId: 'MQZMozeQfgDtxEgQr',
           username: 'test',
+          action: 'Snippet',
           snippedText: 'My snipped text',
           title: 'NEURONE',
           url: '/home',
@@ -53,12 +91,12 @@ describe('NEURONE API', function() {
             chai.assert.isObject(res, 'a response is delivered');
             chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
 
-            var snippet = Snippets.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var snippet = Snippets.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(snippet, 'a Snippet is saved');
             chai.assert.property(snippet, '_id', 'stored Snippet has a valid id');
             chai.assert.propertyVal(snippet, 'snippedText', snippetObject.snippedText, 'stored Snippet has the correct text');
 
-            var event = EventLogs.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(event, 'an Event is saved');
             chai.assert.property(event, '_id', 'stored Event has a valid id');
             chai.assert.propertyVal(event, 'action', 'Snippet', 'stored Event has a valid event action');
@@ -90,12 +128,12 @@ describe('NEURONE API', function() {
             chai.assert.isObject(res, 'a response is delivered');
             chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
 
-            var query = Queries.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var query = Queries.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(query, 'a Query is saved');
             chai.assert.property(query, '_id', 'stored Query has a valid id');
             chai.assert.propertyVal(query, 'query', queryObject.query, 'stored Query has the correct text');
 
-            var event = EventLogs.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(event, 'an Event is saved');
             chai.assert.property(event, '_id', 'stored Event has a valid id');
             chai.assert.propertyVal(event, 'action', 'Query', 'stored Event has a valid event action');
@@ -125,12 +163,12 @@ describe('NEURONE API', function() {
             chai.assert.isObject(res, 'a response is delivered');
             chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
 
-            var session = SessionLogs.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var session = SessionLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(session, 'a Session is saved');
             chai.assert.property(session, '_id', 'stored Session has a valid id');
             chai.assert.propertyVal(session, 'state', sessionObject.state, 'stored Session has the correct text');
 
-            var event = EventLogs.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(event, 'an Event is saved');
             chai.assert.property(event, '_id', 'stored Event has a valid id');
             chai.assert.propertyVal(event, 'action', sessionObject.state, 'stored Event has a valid event action');
@@ -162,12 +200,12 @@ describe('NEURONE API', function() {
             chai.assert.isObject(res, 'a response is delivered');
             chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
 
-            var link = VisitedLinks.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var link = VisitedLinks.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(link, 'a Link is saved');
             chai.assert.property(link, '_id', 'stored Link has a valid id');
             chai.assert.propertyVal(link, 'url', linkObject.url, 'stored Link has the correct text');
 
-            var event = EventLogs.findOne({}, {sort: {DateTime: -1, limit: 1}});
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(event, 'an Event is saved');
             chai.assert.property(event, '_id', 'stored Event has a valid id');
             chai.assert.propertyVal(event, 'action', linkObject.state, 'stored Event has a valid event action');
