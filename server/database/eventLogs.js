@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import UserAgent from 'useragent';
 
 import Utils from '../lib/utils';
@@ -9,45 +10,13 @@ import { VisitedLinks } from '../../imports/api/visitedLinks/index';
 import { SessionLogs } from '../../imports/api/sessionLogs/index';
 import { EventLogs } from '../../imports/api/eventLogs/index';
 
-const snippetPattern = { userId: String, username: String, snippedText: String, title: String, url: String, localTimestamp: Number };
 const queryPattern = { userId: String, username: String, query: String, title: String, url: String, localTimestamp: Number };
+const bookmarkPattern = { userId: String, username: String, action: String, title: String, url: String, localTimestamp: Number };
+const snippetPattern = { userId: String, username: String, action: String, snippedText: String, title: String, url: String, localTimestamp: Number };
 const linkPattern = { userId: String, username: String, state: String, title: String, url: String, localTimestamp: Number };
 const sessionPattern = { userId: String, username: String, state: String, localTimestamp: Number };
 
 Meteor.methods({
-  storeSnippet: function(jsonObject) {
-    check(jsonObject, snippetPattern);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: 'Snippet',
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
-    try {
-      var snippetId = Snippets.insert(jsonObject);
-      action.actionId = snippetId;
-      EventLogs.insert(action);
-
-      return { status: 'success' };
-    }
-    catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!');
-    }
-  },
   storeQuery: function(jsonObject) {
     check(jsonObject, queryPattern);
 
@@ -80,19 +49,74 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!');
+      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeBookmark: function(jsonObject) {
-    // TODO: Bring to EventLogs
-    check(jsonObject, Object);
+   check(jsonObject, bookmarkPattern);
 
     var time = Utils.getTimestamp();
     jsonObject.serverTimestamp = time;
 
-    Bookmarks.insert(jsonObject);
-    //console.log('Bookmark Stored!', time);
-    return true;
+    var action = {
+      userId: jsonObject.userId,
+      username: jsonObject.username,
+      action: jsonObject.action,
+      actionId: '',
+      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+      clientTimestamp: jsonObject.localTimestamp,
+      serverDate: Utils.timestamp2date(time),
+      serverTime: Utils.timestamp2time(time),
+      serverTimestamp: time,
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+      extras: ''
+    };
+
+    try {
+      var bookmarkId = Bookmarks.insert(jsonObject);
+      action.actionId = bookmarkId;
+      EventLogs.insert(action);
+
+      return { status: 'success' };
+    }
+    catch (err) {
+      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+    }
+  },
+  storeSnippet: function(jsonObject) {
+    check(jsonObject, snippetPattern);
+
+    var time = Utils.getTimestamp();
+    jsonObject.serverTimestamp = time;
+
+    var action = {
+      userId: jsonObject.userId,
+      username: jsonObject.username,
+      action: 'Snippet',
+      actionId: '',
+      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+      clientTimestamp: jsonObject.localTimestamp,
+      serverDate: Utils.timestamp2date(time),
+      serverTime: Utils.timestamp2time(time),
+      serverTimestamp: time,
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+      extras: ''
+    };
+
+    try {
+      var snippetId = Snippets.insert(jsonObject);
+      action.actionId = snippetId;
+      EventLogs.insert(action);
+
+      return { status: 'success' };
+    }
+    catch (err) {
+      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+    }
   },
   storeVisitedLink: function(jsonObject) {
     check(jsonObject, linkPattern);
@@ -124,7 +148,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!');
+      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeSessionLog: function(jsonObject) {
@@ -172,11 +196,11 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!');
+      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   ping: function() {
-    return { status: 'success' };
+    return { status: 'success', serverTimestamp: Utils.getTimestamp() };
   }
 });
 

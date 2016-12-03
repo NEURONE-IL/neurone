@@ -12,10 +12,6 @@ export default class BookmarkTrackService {
     this.$translate = $translate;
   }
 
-  isOnDocumentPage() {
-    return !!document.getElementById(LoggerConfigs.iframeId);
-  }
-
   isBookmarked(callback) {
     var url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
@@ -30,14 +26,15 @@ export default class BookmarkTrackService {
     });
   }
 
-  saveBookmark(callback) {
-    if (Meteor.user()) {
+  makeBookmark(type, callback) {
+    if (!!Meteor.userId() && (type === 'Bookmark' || type === 'Unbookmark')) {
       var pageTitle = this.$rootScope.documentTitle,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       var bookmarkObject = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
+        action: type,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
         localTimestamp: Utils.getTimestamp()
@@ -51,30 +48,38 @@ export default class BookmarkTrackService {
         }
         else {
           var msg = this.$translate.instant('alerts.error');
-          console.log('Error saving bookmark!');
+          console.error('Error saving bookmark!');
           callback(msg);
         }
       });
+    }
+    else {
+      var msg = this.$translate.instant('alerts.error');
+      console.error('Error while saving bookmark!');
+      callback(msg);
     }
   }
 
-  removeBookmark(callback) {
-    if (Meteor.user()) {
-      var userId = Meteor.userId(),
-             url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
+  
+  saveBookmark(callback) {
+    this.makeBookmark('Bookmark', (err, res) => {
+      if (!err) {
+        callback(null, res);
+      }
+      else {
+        callback(err);
+      }
+    });
+  }
 
-      Meteor.call('removeBookmark', url, (err, result) => {
-        if (!err) {
-          var msg = this.$translate.instant('alerts.bookmarkRemoved');
-          Utils.logToConsole('Bookmark Removed!');
-          callback(null, msg);
-        }
-        else {
-          var msg = this.$translate.instant('alerts.error');
-          console.log('Error removing bookmark!');
-          callback(msg);
-        }
-      });
-    }
+  removeBookmark(callback) {
+    this.makeBookmark('Unbookmark', (err, res) => {
+      if (!err) {
+        callback(null, res);
+      }
+      else {
+        callback(err);
+      }
+    });
   }
 }

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import Utils from '../lib/utils';
 
 import { FormAnswers } from '../../imports/api/formAnswers/index';

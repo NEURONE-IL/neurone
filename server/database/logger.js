@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import Utils from '../lib/utils';
 
 import UserAgent from 'useragent';
