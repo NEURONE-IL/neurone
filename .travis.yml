@@ -29,13 +29,7 @@ script:
   - meteor npm run test
   - meteor npm run apptest
 
-#after_success:
-#  - if [ $TRAVIS_BRANCH == 'master' ]; then
-#    /bin/sh fullDeploy.sh;
-#    fi
-
 deploy:
-  skip_cleanup: true
   provider: script
   script: /bin/sh fullDeploy.sh
   on:
