@@ -114,6 +114,7 @@ mark.highlightSearch {
 }
 
 mark.highlightSnippet {
+  font-weight: bold;
   background: orange;
   color: black;
 }

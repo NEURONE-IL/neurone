@@ -18,6 +18,7 @@ export default class InvertedIndex {
     searchIndex = lunr(function() {
       this.field('title', { boost: 2 })
       this.field('indexedBody')
+      this.ref('_id')
     });
 
     allDocs.forEach((doc) => {
@@ -55,9 +56,11 @@ export default class InvertedIndex {
 
     search = searchIndex.search(query);
     
+    console.log(search);
+
     search.forEach((obj) => {
       var docId = obj.ref,
-         docObj = Documents.findOne({id: docId});
+         docObj = Documents.findOne({_id: docId});
 
       docObj.body = this.snippetGenerator(docObj.indexedBody, query);
 
@@ -84,8 +87,14 @@ export default class InvertedIndex {
       emphasise: keywords.split(' ')
     };
 
-    var abstract = sum(opts),
-         snippet = abstract.summary;
+    var snippet = '';
+
+    try {
+      snippet = sum(opts).summary;
+    }
+    catch(err) {
+      console.error('Error while generating search snippet!', err);
+    }
 
     return snippet;
   }

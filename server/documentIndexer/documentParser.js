@@ -24,6 +24,7 @@ export default class DocumentParser {
     }
     catch (e) {
       console.error(e);
+      return '';
     }
   }
 
@@ -40,6 +41,7 @@ export default class DocumentParser {
     }
     catch (e) {
       console.error(e);
+      return '';
     }
   }
 
@@ -55,6 +57,7 @@ export default class DocumentParser {
     }
     catch (e) {
       console.error(e);
+      return '';
     }
   }
 
@@ -68,6 +71,17 @@ export default class DocumentParser {
     }
     catch (e) {
       console.error(e);
+      return '';
+    }
+  }
+
+  static getMD5(documentPath) {
+    try {
+      return md5File.sync(documentPath);
+    }
+    catch (e) {
+      console.error(e);
+      return '';
     }
   }
 
@@ -84,18 +98,36 @@ export default class DocumentParser {
                  $ = cheerio.load(htmlString);
 
       // dgacitua: Remove all anchor tags with links
+      /*
       $('a[href]').each((i, elem) => {
         var content = $(elem.childNodes);
         $(elem).replaceWith(content);
       });
+      */
+
+      // dgacitua: Remove href attribute from all tags
+      $('a').each((i, elem) => {
+        $(elem).removeAttr('href');
+        $(elem).removeAttr('onclick');
+      });
 
       // dgacitua: Remove javascript
       $('script').each((i, elem) => {
-        $(elem).remove();
+        $(elem).removeAttr('src');
+
+        /*
+        if ($(elem).attr('type') === 'text/javascript' || $(elem).attr('type') === 'application/javascript') {
+          $(elem).remove();
+        }*/
       });
 
-      // dgacitua: Remove input elements
+      // dgacitua: Disable input elements
       $('input').each((i, elem) => {
+        $(elem).attr('disabled', 'true');
+      });
+
+      // dgacitua: Remove iframe elements
+      $('iframe').each((i, elem) => {
         $(elem).remove();
       });
 
@@ -109,25 +141,18 @@ export default class DocumentParser {
     }
   }
 
-  static getMD5(documentPath) {
-    try {
-      return md5File.sync(documentPath);
-    }
-    catch (e) {
-      console.error(e);
-    }
-  }
-
   static parseDocument(documentPath) {
+    var identifier = this.getMD5(documentPath);
+
     var obj = {
       title: this.getHtmlTitle(documentPath),
       indexedBody: this.getHtmlAsText(documentPath),
       date: Utils.getDate(),
       topics: [],
-      docName: this.getHtmlDocname(documentPath),
+      docName: identifier,    //this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
       id: 0,
-      md5Hash: this.getMD5(documentPath)
+      md5Hash: identifier
     }
 
     //console.log('Document Parsed!', obj.route);

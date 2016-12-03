@@ -30,8 +30,7 @@ export default class Indexer {
       for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
       for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
 
-      docObj.id = incrementCounter('counters', 'documents');
-      docObj.route = "web/" + docObj.route;
+      docObj.route = path.join('web', docObj.route);
 
       Documents.upsert({ route: docObj.route }, docObj);
     });

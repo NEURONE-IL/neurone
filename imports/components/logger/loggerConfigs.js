@@ -1,5 +1,5 @@
 export default LoggerConfigs = {
-  consoleLogging: true,
+  consoleLogging: (Meteor.isDevelopment ? true : false),
   keyboardLogging: true,
   mouseCoordsLogging: true,
   mouseClicksLogging: true,
