@@ -20,6 +20,7 @@ addons:
 
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
+  - meteor npm install --save bcrypt
 
 before_script:
   - ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts
