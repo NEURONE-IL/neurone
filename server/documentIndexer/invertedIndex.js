@@ -70,13 +70,19 @@ export default class InvertedIndex {
     return respDocs;
   }
 
-  static getDocument(documentName) {
+  static getDocument(documentName, callback) {
     check(documentName, String);
 
     var doc = Documents.findOne({ _id: documentName });
-    doc.routeUrl = '/' + doc.route;
 
-    return doc;
+    if (doc && doc._id && doc.route) {
+      doc.routeUrl = '/' + doc.route;
+      callback(null, doc);
+    }
+    else {
+      var err = 'Document not found!';
+      callback(err);
+    }
   }
 
   static snippetGenerator(text, keywords) {
@@ -92,7 +98,7 @@ export default class InvertedIndex {
     try {
       snippet = sum(opts).summary;
     }
-    catch(err) {
+    catch (err) {
       console.error('Error while generating search snippet!', err);
     }
 
@@ -176,17 +182,30 @@ export default class InvertedIndex {
 }
 
 Meteor.methods({
-  searchDocuments: (query) => {
-    var results = InvertedIndex.searchDocuments(query);
+  searchDocuments: function(query) {
+    try {
+      var results = InvertedIndex.searchDocuments(query);
 
-    if (results.length >= 1) {
-      return InvertedIndex.iFuCoSort(results, 3, 2);
+      if (results.length >= 1) {
+        return InvertedIndex.iFuCoSort(results, 3, 2);
+      }
+      else {
+        return results;
+      }  
     }
-    else {
-      return results;
+    catch (err) {
+      throw new Meteor.Error('DocumentRetrievalError', 'Cannot get documents from query', err);
     }
   },
-  getDocument: (documentName) => {
-    return InvertedIndex.getDocument(documentName);
+  getDocument: function(documentName) {
+    try {
+      var asyncCall = Meteor.wrapAsync(InvertedIndex.getDocument),
+                doc = asyncCall(documentName);
+
+      return doc;
+    }
+    catch (err) {
+      throw new Meteor.Error('DocumentRetrievalError', 'Cannot get document for display', err);
+    }
   }
 });

@@ -6,6 +6,8 @@ import { Accounts } from 'meteor/accounts-base';
 
 import template from './register.html';
 
+import Settings from '../../../sharedSettings';
+
 class Register {
   constructor($scope, $reactive, $state, AuthService) {
     'ngInject';
@@ -27,6 +29,9 @@ class Register {
 
   register(userRole) {
     this.credentials.profile.role = userRole ? userRole : 'undefined';
+    this.credentials.profile.maxBookmarks = Settings.maxBookmarks || 3;
+    this.credentials.profile.snippetsPerPage = Settings.snippetsPerPage || 3;
+    this.credentials.profile.snippetLength = Settings.snippetLength || 15;
     
     this.auth.register(this.credentials, (err, res) => {
       if (!err) {

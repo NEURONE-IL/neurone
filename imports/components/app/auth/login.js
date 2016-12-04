@@ -9,11 +9,12 @@ import template from './login.html';
 import { name as Register } from './register';
 
 class Login {
-  constructor($scope, $reactive, $state, AuthService) {
+  constructor($scope, $rootScope, $reactive, $state, AuthService) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
+    this.$rootScope = $rootScope;
     this.auth = AuthService;
 
     $reactive(this).attach($scope);

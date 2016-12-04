@@ -37,6 +37,7 @@ class DisplayIframe {
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', this.page, (err, res) => {
 			if (!err) {
+				console.log(res);
 				this.routeUrl = res.routeUrl;
 				this.documentTitle = res.title;
 				this.$rootScope.documentTitle = res.title;
@@ -50,24 +51,11 @@ class DisplayIframe {
 				});
 			}
 			else {
-				console.error(err);
+				console.error('Error while loading document', err);
+				this.$state.go('search');		// TODO Change for current stage main page
 			}
 		});
 	}
-
-	/*
-	startTracking() {
-		// TODO fix quick right click between transitions
-		this.abis.service();
-		this.kmtis.service();
-	}
-
-	stopTracking() {
-		this.$rootScope.documentTitle = '';
-		this.kmtis.antiService();
-		this.abis.antiService();
-	}
-	*/
 }
 
 const name = 'displayIframe';

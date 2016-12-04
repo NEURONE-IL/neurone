@@ -6,9 +6,9 @@
 
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn">
-        <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.navbarMessage}}</div>
+        <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.statusMessage}}</div>
         <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippet" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"actions.snippetButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && !navigation.bookmarkStatus" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"actions.bookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && !navigation.bookmarkStatus && navigation.counters.bookmarkedPages <= navigation.userProfile.maxBookmarks" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"actions.bookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && navigation.bookmarkStatus" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"actions.unbookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
@@ -30,9 +30,9 @@
         <li><a href="#" ng-click="navigation.tipsModal()"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
         <li><a href="#" ng-click="navigation.tutorialModal()"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
         <li class="dropdown" ng-if="navigation.enableBookmark">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.reactiveCounters }} <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.counters }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="javascript:void(0)">{{"nav.bookmarkList" | translate: navigation.reactiveCounters }}</a></li>
+            <li><a href="javascript:void(0)">{{"nav.bookmarkList" | translate}}</a></li>
             <li><a href="#">Page 1</a></li>
             <li><a href="#">Page 2</a></li>
             <li><a href="#">Page 3</a></li>

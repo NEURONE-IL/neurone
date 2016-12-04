@@ -49,7 +49,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeBookmark: function(jsonObject) {
@@ -82,7 +82,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeSnippet: function(jsonObject) {
@@ -115,7 +115,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeVisitedLink: function(jsonObject) {
@@ -148,7 +148,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   storeSessionLog: function(jsonObject) {
@@ -196,7 +196,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not save in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save in Database!', err);
     }
   },
   ping: function() {

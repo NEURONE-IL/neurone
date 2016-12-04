@@ -10,21 +10,21 @@ Meteor.methods({
   getSnippets: function(limit) {
     try {
       var selector = { sort: { serverTimestamp: -1 }};
-      if (limit) selector.sort.limit = limit;
+      if (limit) selector.limit = limit;
       return Snippets.find({ userId: this.userId, action: 'Snippet' }, selector).fetch();
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not read from Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not read from Database!', err);
     }
   },
   getBookmarks: function(limit) {
     try {
       var selector = { sort: { serverTimestamp: -1 }};
-      if (limit) selector.sort.limit = limit;
+      if (limit) selector.limit = limit;
       return Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch();
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not read from Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not read from Database!', err);
     }
   },
   /*
@@ -50,7 +50,7 @@ Meteor.methods({
       else return false;
     }
     catch (err) {
-      throw new Meteor.error('DatabaseError', 'Could not read from Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not read from Database!', err);
     }
     
     // DEPRECATED

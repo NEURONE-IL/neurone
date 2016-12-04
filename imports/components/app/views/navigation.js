@@ -38,10 +38,13 @@ class Navigation {
     this.navbarMessage = '';
     this.navbarMessageId = 'navbarMessage';
 
-    this.counters = {
+    this.reactiveCounters = {
       bookmarkedPages: 0,
+      snippetsPerPage: 0,
       snippetLength: 0
     };
+
+    this.userBookmarks = [];
 
     this.$scope.$on('$stateChangeSuccess', (event) => {
       this.navbarMessage = '';
@@ -62,6 +65,23 @@ class Navigation {
       });
     });
 
+    this.$rootScope.$on('sessionRefresh', (event, data) => {
+      if (data) {
+        this.reactiveLimits = this.getUserLimits();
+
+        this.bms.getBookmarks((err, res) => {
+          if (!err) {
+            this.userBookmarks = res;
+            this.reactiveCounters.bookmarkedPages = this.userBookmarks.length;
+          }          
+        });
+      }
+      else {
+        this.reactiveLimits = {};
+        this.userBookmarks = [];
+      }
+    });
+
     this.helpers({
       isLoggedIn: () => {
         return !!Meteor.userId();
@@ -69,11 +89,14 @@ class Navigation {
       currentUser: () => {
         return Meteor.user();
       },
-      reactiveMessage: () => {
+      statusMessage: () => {
         return this.getReactively('navbarMessage');
       },
-      reactiveCounters: () => {
-        return this.getReactively('counters');
+      counters: () => {
+        return this.getReactively('reactiveCounters');
+      },
+      limits: () => {
+        return this.getReactively('reactiveLimits');
       },
       enableShowcase: () => {
         return this.getReactively('isShowcaseEnabled');
@@ -108,6 +131,7 @@ class Navigation {
         this.bms.isBookmarked((err2, res2) => {
           if (!err2) {
             this.isPageBookmarked = res2;
+            this.reactiveCounters.bookmarkedPages++;
             this.$scope.$apply();
           }
         });
@@ -125,11 +149,22 @@ class Navigation {
         this.bms.isBookmarked((err2, res2) => {
           if (!err2) {
             this.isPageBookmarked = res2;
+            this.reactiveCounters.bookmarkedPages--;
             this.$scope.$apply();
           }
         });
       }
     });
+  }
+
+  getUserLimits() {
+    var limits = {
+      bookmarkedPages: this.$rootScope.maxBookmarks || 0,
+      snippetsPerPage: this.$rootScope.snippetsPerPage || 0,
+      snippetLength: this.$rootScope.snippetLength || 0
+    };
+
+    return limits;
   }
 
   logout() {

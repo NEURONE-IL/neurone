@@ -2,9 +2,10 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 class AuthService {
-  constructor($translate, FlowService, SessionTrackService) {
+  constructor($rootScope, $translate, FlowService, SessionTrackService) {
     'ngInject';
 
+    this.$rootScope = $rootScope;
     this.$translate = $translate;
     this.fs = FlowService;
     this.sts = SessionTrackService;
@@ -19,11 +20,15 @@ class AuthService {
       if (err) {
         console.error('Login Error!', err);
         callback(err);
-      } else {
-        //console.log(Meteor.user(), Meteor.user().username || Meteor.user().emails[0].address);
+      }
+      else {
         this.sts.saveLogin();
-        //this.fs.startFlow();
-        //UserStatus.startMonitor({ threshold: this.threshold, interval: this.interval, idleOnBlur: this.idleOnBlur });
+
+        this.$rootScope.maxBookmarks = Meteor.user().profile.maxBookmarks;
+        this.$rootScope.snippetsPerPage = Meteor.user().profile.snippetsPerPage;
+        this.$rootScope.snippetLength = Meteor.user().profile.snippetLength;
+
+        this.$rootScope.$broadcast('sessionRefresh', Meteor.userId());
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);
@@ -32,9 +37,7 @@ class AuthService {
   }
 
   logout(callback) {
-    //this.fs.stopFlow();
     this.sts.saveLogout();
-    //UserStatus.stopMonitor();
     
     Accounts.logout((err) => {
       if (err) {
@@ -42,6 +45,12 @@ class AuthService {
         callback(err);
       }
       else {
+        this.$rootScope.maxBookmarks = 0;
+        this.$rootScope.snippetsPerPage = 0;
+        this.$rootScope.snippetLength = 0;
+
+        this.$rootScope.$broadcast('sessionRefresh', null);
+    
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);
       }

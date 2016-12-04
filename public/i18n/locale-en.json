@@ -62,7 +62,10 @@
   },
   "alerts": {
     "error": "Undefined Error",
+    "snippetError": "Error while processing Snippet",
+    "bookmarkError": "Error while processing Bookmark",
     "snippetSaved": "Snippet saved!",
+    "snippetRemoved": "Snippet removed!",
     "bookmarkSaved": "Bookmark saved!",
     "bookmarkRemoved": "Bookmark removed!"
   },
