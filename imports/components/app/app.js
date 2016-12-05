@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';

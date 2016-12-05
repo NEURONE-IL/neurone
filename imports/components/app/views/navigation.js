@@ -44,6 +44,9 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
+    this.$rootScope.userParams = {};
+    this.$rootScope.navElements = {};
+
     this.isSnippetEnabled = false;
     this.isBookmarkEnabled = false;
     this.isPageBookmarked = false;
@@ -79,6 +82,7 @@ class Navigation {
       });
     });
 
+    /*
     this.$rootScope.$on('sessionRefresh', (event, data) => {
       if (data) {
         this.reactiveLimits = this.getUserLimits();
@@ -88,6 +92,12 @@ class Navigation {
         this.reactiveLimits = {};
         this.userBookmarks = [];
       }
+    });
+    */
+
+    this.$rootScope.$on('updateUserParams', (event, data) => {
+      angular.merge(this.$rootScope.userParams, data);
+      this.$scope.$apply();
     });
 
     this.helpers({
@@ -108,15 +118,24 @@ class Navigation {
       },
       enableShowcase: () => {
         return this.getReactively('isShowcaseEnabled');
-      },
+      },/*
       enableSnippet: () => {
         return this.getReactively('isSnippetEnabled');
       },
       enableBookmark: () => {
-        return this.getReactively('isBookmarkEnabled');
+        return this.getReactively('enableBookmarks');
+      },
+      enableBookmarkList: () => {
+        return this.getReactively('enableBookmarkList');
       },
       bookmarkStatus: () => {
         return this.getReactively('isPageBookmarked');
+      },*/
+      userParams: () => {
+        return this.getReactively('userParams');
+      },
+      navElements: () => {
+        return this.getReactively('navElements');
       }
     });
   }
@@ -130,14 +149,19 @@ class Navigation {
   }
 
   getBookmarks() {
-    this.bms.getBookmarks((err, res) => {
-      if (!err) {
-        this.userBookmarks = res;
-        this.reactiveCounters.bookmarkedPages = this.userBookmarks.length;
-        console.log(this.userBookmarks);
-        this.$scope.$apply();
-      }
-    });
+    if (!!Meteor.userId()) {
+      this.bms.getBookmarks((err, res) => {
+        if (!err) {
+          this.$rootScope.userParams.bookmarkList = res;
+          this.$rootScope.userParams.bookmarkCount = res.length;
+          
+          var maxBM = Meteor.user().profile.maxBookmarks;
+          this.$rootScope.navElements.enableReady = this.$rootScope.userParams.bookmarkCount >= maxBM ? true : false;
+
+          this.$scope.$apply();
+        }
+      });
+    }
   }
 
   saveBookmark() {
@@ -168,8 +192,8 @@ class Navigation {
         this.bms.isBookmarked((err2, res2) => {
           if (!err2) {
             this.isPageBookmarked = res2;
-            this.$scope.$apply();
             this.getBookmarks();
+            this.$scope.$apply();           
           }
         });
       }

@@ -11,11 +11,23 @@ import { name as DisplayPage } from './actions/displayPage';
 import { name as DisplayIframe } from './iframe/displayIframe';
 
 class Search {
-  constructor($scope, $reactive, $state, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, QueryTrackService) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$state = $state;
+    this.$rootScope = $rootScope;
     this.qts = QueryTrackService;
+
+    $scope.$on('$stateChangeStart', (event) => {
+      this.$rootScope.navElements.enableBookmarkList = false;
+      this.$scope.$apply();
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.$rootScope.navElements.enableBookmarkList = true;
+      this.$scope.$apply();
+    });
 
     $reactive(this).attach($scope);
 

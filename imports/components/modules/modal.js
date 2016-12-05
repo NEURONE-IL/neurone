@@ -11,7 +11,7 @@ import { name as Forms } from '../forms/formCtrl';
 */
 
 class ModalCtrl {
-  constructor($uibModalInstance, Forms, customTitle, customTemplate, customFields, buttonType, buttonName) {
+  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName) {
     'ngInject';
 
     var $ctrl = this;

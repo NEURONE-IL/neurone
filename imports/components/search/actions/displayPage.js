@@ -9,21 +9,27 @@ class DisplayPage {
   constructor($scope, $rootScope, $reactive, $state, $stateParams) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$state = $state;
     this.$rootScope = $rootScope;
     
     $scope.$on('$stateChangeStart', (event) => {
-      this.stopTracking();
+      this.$rootScope.navElements.enableBookmarks = false;
+      this.$rootScope.navElements.enableBookmarkList = false;
+      //this.stopTracking();
+      this.$scope.$apply();
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.startTracking();
+      this.$rootScope.navElements.enableBookmarks = true;
+      this.$rootScope.navElements.enableBookmarkList = true;
+      //this.startTracking();
+      this.$scope.$apply();
     });
 
     $reactive(this).attach($scope);
   }
 
-  // dgacitua: Execute on iframe start
   startTracking() {
     var data = {
       snippets: false,

@@ -20,7 +20,7 @@
     "taskButton": "Task",
     "readyButton": "Ready!",
     "bookmarkList": "Bookmark List",
-    "selectedPages": "You have selected {{bookmarkedPages}} page(s)",
+    "selectedPages": "You have selected {{bookmarkCount}} page(s)",
     "snippetCount": "You have selected {{snippetLength}} word(s)",
     "snippetButton": "Save Snippet",
     "bookmarkButton": "Bookmark",

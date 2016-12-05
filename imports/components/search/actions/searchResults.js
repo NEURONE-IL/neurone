@@ -19,13 +19,24 @@ import { name as Logger } from '../../logger/logger';
 */
 
 class SearchResults {
-  constructor($scope, $reactive, $state, $document, $stateParams, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, $document, $stateParams, QueryTrackService) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
     this.$document = $document;
+    this.$rootScope = $rootScope;
     this.qts = QueryTrackService;
+
+    $scope.$on('$stateChangeStart', (event) => {
+      this.$rootScope.navElements.enableBookmarkList = true;
+      this.$scope.$apply();
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.$rootScope.navElements.enableBookmarkList = true;
+      this.$scope.$apply();
+    });
 
     $reactive(this).attach($scope);
 

@@ -28,7 +28,7 @@ accounts-password@1.3.3
 dotansimha:accounts-ui-angular
 check@1.2.4
 http@1.2.10
-session@1.1.7
+session
 ostrio:meteor-root
 osv:mongo-counter
 jalik:ufs

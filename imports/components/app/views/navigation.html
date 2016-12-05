@@ -7,10 +7,10 @@
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn">
         <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.statusMessage}}</div>
-        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippet" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && !navigation.bookmarkStatus && navigation.counters.bookmarkedPages <= navigation.userProfile.maxBookmarks" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark && navigation.bookmarkStatus" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-primary navbar-btn horizontal-button-margin" ng-if="navigation.isStageReady" ng-click="navigation.readyAction()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>
+        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.navElements.enableSnippets" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.navElements.enableBookmarks && !navigation.navElements.bookmarkStatus && navigation.userParams.bookmarkCount <= navigation.currentUser.profile.maxBookmarks" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.navElements.enableBookmarks && navigation.navElements.bookmarkStatus" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-primary navbar-btn horizontal-button-margin" ng-if="navigation.navElements.enableReady" ng-click="navigation.readyAction()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>
         <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
       <div class="nav pull-left btn-group horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
@@ -30,8 +30,8 @@
         <li><a href="#" ng-click="navigation.taskModal()"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"nav.taskButton" | translate}}</a></li>
         <li><a href="#" ng-click="navigation.tipsModal()"><i class="fa fa-question-circle" aria-hidden="true"></i> {{"nav.tipsButton" | translate}}</a></li>
         <li><a href="#" ng-click="navigation.tutorialModal()"><i class="fa fa-info-circle" aria-hidden="true"></i> {{"nav.tutorialButton" | translate}}</a></li>
-        <li class="dropdown" ng-if="navigation.enableBookmark">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.counters }} <span class="caret"></span></a>
+        <li class="dropdown" ng-if="navigation.navElements.enableBookmarks">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.selectedPages" | translate: navigation.userParams }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li class="dropdown-header">{{"nav.bookmarkList" | translate}}</li>
             <li ng-repeat="bookmark in navigation.userBookmarks track by bookmark._id"><a href="{{bookmark.url}}">{{bookmark.title}}</a></li>
