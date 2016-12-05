@@ -18,9 +18,14 @@
     "tutorialButton": "Tutorial",
     "tipsButton": "Tips",
     "taskButton": "Task",
+    "readyButton": "Ready!",
     "bookmarkList": "Bookmark List",
     "selectedPages": "You have selected {{bookmarkedPages}} page(s)",
-    "snippetCount": "You have selected {{snippetLength}} word(s)"
+    "snippetCount": "You have selected {{snippetLength}} word(s)",
+    "snippetButton": "Save Snippet",
+    "bookmarkButton": "Bookmark",
+    "unbookmarkButton": "Unbookmark",
+    "taskResults": "Task results"
   },
   "auth": {
     "registerButton": "Register",
@@ -42,11 +47,6 @@
     "welcome": "Welcome to NEURONE!",
     "acronym": "oNlinE inqUiry expeRimentatiON systEm",
     "instructions1": "Please register and login with your username to begin!"
-  },
-  "actions": {
-    "snippetButton": "Save Snippet",
-    "bookmarkButton": "Bookmark",
-    "unbookmarkButton": "Unbookmark"
   },
   "search": {
     "searchEngineTitle": "My Search Engine",

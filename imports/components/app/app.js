@@ -95,6 +95,7 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
       lts.saveEnterPage();
       kmts.service();
       abs.service();
+      $rootScope.$broadcast('sessionRefresh', Meteor.userId());
     }
     else {
       kmts.antiService();

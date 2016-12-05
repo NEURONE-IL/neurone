@@ -1,7 +1,17 @@
 import template from './modal.html';
 
+import { name as Forms } from '../forms/formCtrl';
+
+/*
+    dgacitua
+
+    Module Dependencies:
+        ui.bootstrap ($uibModal)
+        Forms
+*/
+
 class ModalCtrl {
-  constructor($uibModalInstance, customTitle, customTemplate, customFields) {
+  constructor($uibModalInstance, Forms, customTitle, customTemplate, customFields, buttonType, buttonName) {
     'ngInject';
 
     var $ctrl = this;
@@ -9,20 +19,28 @@ class ModalCtrl {
     $ctrl.title = customTitle;
     $ctrl.template = customTemplate;
     $ctrl.fields = customFields;
+    $ctrl.buttonType = buttonType;
+    $ctrl.buttonName = buttonName;
 
-    $ctrl.selected = {
-      item: {}
+    $ctrl.showFooter = ($ctrl.buttonType === 'okcancel' || $ctrl.buttonType === 'nextstage' || $ctrl.buttonType === 'next' || $ctrl.buttonType === 'back' || $ctrl.buttonType === 'button') ? true : false;
+
+    $ctrl.response = {};
+
+    $ctrl.ok = function() {
+      $ctrl.response.message = 'ok';
+      $uibModalInstance.close($ctrl.response);
     };
 
-    $ctrl.ok = function () {
-      $uibModalInstance.close($ctrl.selected.item);
-    };
-
-    $ctrl.cancel = function () {
+    $ctrl.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
 
-    $ctrl.close = function () {
+    $ctrl.button = function(msg) {
+      $ctrl.response.message = msg;
+      $uibModalInstance.close($ctrl.response);
+    };
+
+    $ctrl.close = function() {
       $uibModalInstance.close();
     };
   }
@@ -40,6 +58,8 @@ class ModalService {
     var contentTitle = modalObject.title ? modalObject.title : '';
     var contentTemplate = modalObject.templateAsset ? modalObject.templateAsset : '';
     var contentFields = modalObject.fields ? modalObject.fields : {};
+    var buttonType = modalObject.buttonType ? modalObject.buttonType : '';
+    var buttonName = modalObject.buttonName ? modalObject.buttonName : '';
 
     this.modal = this.$uibModal.open({
       template,
@@ -56,12 +76,20 @@ class ModalService {
         },
         customFields: () => {
           return contentFields;
+        },
+        buttonType: () => {
+          return buttonType;
+        },
+        buttonName: () => {
+          return buttonName;
         }
       }
     });
   }
 }
 
-export default angular.module(name, [])
+export default angular.module(name, [
+  Forms
+])
 .controller('ModalCtrl', ModalCtrl)
 .service('ModalService', ModalService);

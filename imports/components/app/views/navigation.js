@@ -12,15 +12,29 @@ import { name as ModalService } from '../../modules/modal';
 import { name as Logger } from '../../logger/logger';
 import Utils from '../../globalUtils';
 
+/*
+    dgacitua
+
+    Module Dependencies:
+        angularTranslate
+        ModalService
+        Logger
+        Login
+        Register
+        Password
+        clientUtils
+*/
+
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $reactive, $state, $translate, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$translate = $translate;
     this.fs = FlowService;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
@@ -68,13 +82,7 @@ class Navigation {
     this.$rootScope.$on('sessionRefresh', (event, data) => {
       if (data) {
         this.reactiveLimits = this.getUserLimits();
-
-        this.bms.getBookmarks((err, res) => {
-          if (!err) {
-            this.userBookmarks = res;
-            this.reactiveCounters.bookmarkedPages = this.userBookmarks.length;
-          }          
-        });
+        this.getBookmarks();
       }
       else {
         this.reactiveLimits = {};
@@ -121,6 +129,17 @@ class Navigation {
     });
   }
 
+  getBookmarks() {
+    this.bms.getBookmarks((err, res) => {
+      if (!err) {
+        this.userBookmarks = res;
+        this.reactiveCounters.bookmarkedPages = this.userBookmarks.length;
+        console.log(this.userBookmarks);
+        this.$scope.$apply();
+      }
+    });
+  }
+
   saveBookmark() {
     this.bms.saveBookmark((err, res) => {
       this.navbarMessage = res ? res : err;
@@ -131,8 +150,8 @@ class Navigation {
         this.bms.isBookmarked((err2, res2) => {
           if (!err2) {
             this.isPageBookmarked = res2;
-            this.reactiveCounters.bookmarkedPages++;
             this.$scope.$apply();
+            this.getBookmarks();
           }
         });
       }
@@ -149,8 +168,8 @@ class Navigation {
         this.bms.isBookmarked((err2, res2) => {
           if (!err2) {
             this.isPageBookmarked = res2;
-            this.reactiveCounters.bookmarkedPages--;
             this.$scope.$apply();
+            this.getBookmarks();
           }
         });
       }
@@ -205,6 +224,17 @@ class Navigation {
     var modalObject = {
       title: 'Tutorial',
       templateAsset: 'modals/tutorial_stage1_en.html',
+      fields: {}
+    };
+
+    this.modal.openModal(modalObject);
+  }
+
+  readyModal() {
+    // dgacitua: Modal template location is relative to NEURONE's Asset Path
+    var modalObject = {
+      title: this.$translate.instant('nav.taskResults'),
+      templateAsset: 'modals/ready_stage1_en.html',
       fields: {}
     };
 

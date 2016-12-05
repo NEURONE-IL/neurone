@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import ServerUtils from '../lib/utils';
+import Utils from '../lib/utils';
 
 import { Snippets } from '../../imports/api/snippets/index';
 import { Queries } from '../../imports/api/queries/index';
@@ -20,8 +20,14 @@ Meteor.methods({
   getBookmarks: function(limit) {
     try {
       var selector = { sort: { serverTimestamp: -1 }};
-      if (limit) selector.limit = limit;
-      return Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch();
+
+      // dgacitua: https://coderwall.com/p/o9np9q/get-unique-values-from-a-collection-in-meteor
+      // var docs = Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch();
+      
+      // dgacitua: Imported from https://github.com/monbro/meteor-mongodb-mapreduce-aggregation/
+      var bms = _.uniq(Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch(), (x) => { return x.url });
+      if (limit) return bms.slice(-(limit));
+      else return bms;
     }
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmarks from Database!', err);

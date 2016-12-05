@@ -9,6 +9,15 @@ import template from './searchResults.html';
 
 import { name as Logger } from '../../logger/logger';
 
+/*
+    dgacitua
+
+    Module Dependencies:
+        mark.js
+        angular-truncate-2
+        Logger
+*/
+
 class SearchResults {
   constructor($scope, $reactive, $state, $document, $stateParams, QueryTrackService) {
     'ngInject';
