@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import angularMeteorAuth from 'angular-meteor-auth';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
@@ -32,6 +32,7 @@ const name = 'app';
 // create a module
 export default angular.module(name, [
   angularMeteor,
+  angularMeteorAuth,
   uiRouter,
   uiBootstrap,
   angularTranslate,
@@ -96,7 +97,6 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
       lts.saveEnterPage();
       kmts.service();
       abs.service();
-      $rootScope.$broadcast('sessionRefresh', Meteor.userId());
     }
     else {
       kmts.antiService();

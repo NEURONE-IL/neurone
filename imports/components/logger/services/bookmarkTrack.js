@@ -36,7 +36,9 @@ export default class BookmarkTrackService {
 
   getBookmarks(callback) {
     if (!!Meteor.userId()) {
-      Meteor.call('getBookmarks', Meteor.user().profile.maxBookmarks, (err, res) => {
+      var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
+
+      Meteor.call('getBookmarks', limit, (err, res) => {
         if(!err) {
           callback(null, res);
         }

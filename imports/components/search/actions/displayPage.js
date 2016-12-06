@@ -9,27 +9,23 @@ class DisplayPage {
   constructor($scope, $rootScope, $reactive, $state, $stateParams) {
     'ngInject';
 
-    this.$scope = $scope;
     this.$state = $state;
     this.$rootScope = $rootScope;
     
     $scope.$on('$stateChangeStart', (event) => {
-      this.$rootScope.navElements.enableBookmarks = false;
-      this.$rootScope.navElements.enableBookmarkList = false;
-      //this.stopTracking();
-      this.$scope.$apply();
+      this.$rootScope.$broadcast('updateBookmarkList', false);
+      this.$rootScope.$broadcast('updateBookmarkButton', false);
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.$rootScope.navElements.enableBookmarks = true;
-      this.$rootScope.navElements.enableBookmarkList = true;
-      //this.startTracking();
-      this.$scope.$apply();
+      this.$rootScope.$broadcast('updateBookmarkList', true);
+      this.$rootScope.$broadcast('updateBookmarkButton', true);
     });
 
     $reactive(this).attach($scope);
   }
 
+  // dgacitua: Execute on iframe start
   startTracking() {
     var data = {
       snippets: false,
@@ -80,6 +76,9 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
+      },
+      user: ($auth) => {
+        return $auth.requireUser();
       }
     }
   });

@@ -1,7 +1,5 @@
 import template from './modal.html';
 
-import { name as Forms } from '../forms/formCtrl';
-
 /*
     dgacitua
 
@@ -88,8 +86,6 @@ class ModalService {
   }
 }
 
-export default angular.module(name, [
-  Forms
-])
+export default angular.module(name, [])
 .controller('ModalCtrl', ModalCtrl)
 .service('ModalService', ModalService);

@@ -29,13 +29,11 @@ class SearchResults {
     this.qts = QueryTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.$rootScope.navElements.enableBookmarkList = true;
-      this.$scope.$apply();
+      this.$rootScope.$broadcast('updateBookmarkList', false);
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.$rootScope.navElements.enableBookmarkList = true;
-      this.$scope.$apply();
+      this.$rootScope.$broadcast('updateBookmarkList', true);
     });
 
     $reactive(this).attach($scope);

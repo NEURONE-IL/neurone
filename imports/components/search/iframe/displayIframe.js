@@ -37,7 +37,7 @@ class DisplayIframe {
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', this.page, (err, res) => {
 			if (!err) {
-				console.log(res);
+				//console.log(res);
 				this.routeUrl = res.routeUrl;
 				this.documentTitle = res.title;
 				this.$rootScope.documentTitle = res.title;

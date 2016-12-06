@@ -26,9 +26,10 @@ import Utils from '../../globalUtils';
 */
 
 const name = 'navigation';
+const UserBookmarks = new Mongo.Collection('UserBookmarks');
 
 class Navigation {
-  constructor($scope, $rootScope, $reactive, $state, $translate, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $auth, $reactive, $state, $translate, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -44,60 +45,36 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
-    this.$rootScope.userParams = {};
-    this.$rootScope.navElements = {};
+    this.subscribe('userBookmarks');
 
-    this.isSnippetEnabled = false;
-    this.isBookmarkEnabled = false;
-    this.isPageBookmarked = false;
-    this.isShowcaseEnabled = false;
-
-    this.navbarMessage = '';
-    this.navbarMessageId = 'navbarMessage';
-
-    this.reactiveCounters = {
-      bookmarkedPages: 0,
-      snippetsPerPage: 0,
-      snippetLength: 0
+    this._navbarMessage = '';
+    this._counters = {
+      bookmarks: UserBookmarks.find().count()
     };
 
-    this.userBookmarks = [];
+    this.$rootScope._enableBookmark = new ReactiveVar(false);
+    this.$rootScope._enableUnbookmark = new ReactiveVar(false);
+    
+    // dgacitua: Set bookmark list
+    this.$rootScope.$on('updateBookmarkList', (event, data) => {
+      this.enableBookmarkList = data;
 
-    this.$scope.$on('$stateChangeSuccess', (event) => {
-      this.navbarMessage = '';
+      if (data === true) {
+        var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
+        this._counters.bookmarks = UserBookmarks.find().count();
+        this._enableReady = (this._counters.bookmarks >= limit) ? true : false;
+      }
     });
 
-    this.$rootScope.$on('setDocumentHelpers', (event, data) => {
-      this.bms.isBookmarked((err, res) => {
-        if (!err) {
-          this.isSnippetEnabled = data.snippets;
-          this.isBookmarkEnabled = data.bookmarks;
-          this.isPageBookmarked = res;
-          this.$scope.$apply();
-          //console.log('Bookmark Check!', this.isSnippetEnabled, this.isBookmarkEnabled, this.isPageBookmarked);
-        }
-        else {
-          console.error(err);
-        }
-      });
-    });
-
-    /*
-    this.$rootScope.$on('sessionRefresh', (event, data) => {
-      if (data) {
-        this.reactiveLimits = this.getUserLimits();
-        this.getBookmarks();
+    // dgacitua: Set bookmark/unbookmark button
+    this.$rootScope.$on('updateBookmarkButton', (event, data) => {
+      if (data === true) {
+        this.checkBookmarkStatus();
       }
       else {
-        this.reactiveLimits = {};
-        this.userBookmarks = [];
+        this.$rootScope._enableBookmark.set(false);
+        this.$rootScope._enableUnbookmark.set(false);
       }
-    });
-    */
-
-    this.$rootScope.$on('updateUserParams', (event, data) => {
-      angular.merge(this.$rootScope.userParams, data);
-      this.$scope.$apply();
     });
 
     this.helpers({
@@ -107,39 +84,31 @@ class Navigation {
       currentUser: () => {
         return Meteor.user();
       },
-      statusMessage: () => {
-        return this.getReactively('navbarMessage');
-      },
       counters: () => {
-        return this.getReactively('reactiveCounters');
+        return this.getReactively('_counters');
       },
-      limits: () => {
-        return this.getReactively('reactiveLimits');
+      statusMessage: () => {
+        return this.getReactively('_navbarMessage');
       },
-      enableShowcase: () => {
-        return this.getReactively('isShowcaseEnabled');
-      },/*
-      enableSnippet: () => {
-        return this.getReactively('isSnippetEnabled');
+      bookmarkList: () => {
+        return UserBookmarks.find();//this.$rootScope._bml.list();//this.getReactively('_bookmarkList');//this.getReactively('_bookmarkList');
       },
       enableBookmark: () => {
-        return this.getReactively('enableBookmarks');
+        return this.$rootScope._enableBookmark.get();//this.getReactively('_enableBookmark');
+      },
+      enableUnbookmark: () => {
+        return this.$rootScope._enableUnbookmark.get();//this.getReactively('_enableUnbookmark');
       },
       enableBookmarkList: () => {
-        return this.getReactively('enableBookmarkList');
+        return this.getReactively('_enableBookmarkList');
       },
-      bookmarkStatus: () => {
-        return this.getReactively('isPageBookmarked');
-      },*/
-      userParams: () => {
-        return this.getReactively('userParams');
-      },
-      navElements: () => {
-        return this.getReactively('navElements');
+      enableReady: () => {
+        return this.getReactively('_enableReady');
       }
     });
   }
 
+  /*
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
       this.navbarMessage = res ? res : err;
@@ -147,67 +116,71 @@ class Navigation {
       this.$scope.$apply();
     });
   }
+  */
 
-  getBookmarks() {
+  checkBookmarkStatus() {
     if (!!Meteor.userId()) {
-      this.bms.getBookmarks((err, res) => {
-        if (!err) {
-          this.$rootScope.userParams.bookmarkList = res;
-          this.$rootScope.userParams.bookmarkCount = res.length;
-          
-          var maxBM = Meteor.user().profile.maxBookmarks;
-          this.$rootScope.navElements.enableReady = this.$rootScope.userParams.bookmarkCount >= maxBM ? true : false;
-
-          this.$scope.$apply();
+      var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
+      this._counters.bookmarks = UserBookmarks.find().count();//res.length;
+      this._enableReady = (this._counters.bookmarks >= limit) ? true : false;
+      this.bms.isBookmarked((err2, res2) => {
+        if (!err2) {
+          console.log('checkBookmarkStatus', res2, this._counters.bookmarks, limit);
+          if (this._counters.bookmarks > limit) {
+            this.$rootScope._enableBookmark.set(false);
+            this.$rootScope._enableUnbookmark.set(false);
+          }
+          else if (this._counters.bookmarks == limit) {
+            if (res2 === true) {
+              this.$rootScope._enableBookmark.set(false);
+              this.$rootScope._enableUnbookmark.set(true);
+            }
+            else {
+              this.$rootScope._enableBookmark.set(false);
+              this.$rootScope._enableUnbookmark.set(false);
+            }
+          }
+          else {
+            if (res2 === true) {
+              this.$rootScope._enableBookmark.set(false);
+              this.$rootScope._enableUnbookmark.set(true);
+            }
+            else {
+              this.$rootScope._enableBookmark.set(true);
+              this.$rootScope._enableUnbookmark.set(false);
+            }
+          }
         }
       });
     }
   }
 
   saveBookmark() {
-    this.bms.saveBookmark((err, res) => {
-      this.navbarMessage = res ? res : err;
-      Utils.notificationFadeout(this.navbarMessageId);
-      this.$scope.$apply();
-      
-      if (!err) {
-        this.bms.isBookmarked((err2, res2) => {
-          if (!err2) {
-            this.isPageBookmarked = res2;
-            this.$scope.$apply();
-            this.getBookmarks();
-          }
-        });
-      }
-    });
+    if (!!Meteor.userId()) {
+      this.bms.saveBookmark((err, res) => {
+        this.navbarMessage = res ? res : err;
+        Utils.notificationFadeout(this.navbarMessageId);
+        this.$scope.$apply();
+        
+        if (!err) {
+          this.checkBookmarkStatus();
+        }
+      });
+    }
   }
 
   removeBookmark() {
-    this.bms.removeBookmark((err, res) => {
-      this.navbarMessage = res ? res : err;
-      Utils.notificationFadeout(this.navbarMessageId);
-      this.$scope.$apply();
+    if (!!Meteor.userId()) {
+      this.bms.removeBookmark((err, res) => {
+        this.navbarMessage = res ? res : err;
+        Utils.notificationFadeout(this.navbarMessageId);
+        this.$scope.$apply();
 
-      if (!err) {
-        this.bms.isBookmarked((err2, res2) => {
-          if (!err2) {
-            this.isPageBookmarked = res2;
-            this.getBookmarks();
-            this.$scope.$apply();           
-          }
-        });
-      }
-    });
-  }
-
-  getUserLimits() {
-    var limits = {
-      bookmarkedPages: this.$rootScope.maxBookmarks || 0,
-      snippetsPerPage: this.$rootScope.snippetsPerPage || 0,
-      snippetLength: this.$rootScope.snippetLength || 0
-    };
-
-    return limits;
+        if (!err) {
+          this.checkBookmarkStatus();
+        }
+      });
+    }
   }
 
   logout() {
@@ -224,7 +197,7 @@ class Navigation {
       title: 'My Email',
       templateAsset: 'modals/taskAssignment_en.html',
       fields: {
-        to: (!!Meteor.userId() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
+        to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
         subject: 'I need your help!'
       }
     };
@@ -254,7 +227,7 @@ class Navigation {
     this.modal.openModal(modalObject);
   }
 
-  readyModal() {
+  readyAction() {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
       title: this.$translate.instant('nav.taskResults'),

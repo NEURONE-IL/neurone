@@ -24,11 +24,13 @@ class AuthService {
       else {
         this.sts.saveLogin();
 
+        /*
         this.$rootScope.maxBookmarks = Meteor.user().profile.maxBookmarks;
         this.$rootScope.snippetsPerPage = Meteor.user().profile.snippetsPerPage;
         this.$rootScope.snippetLength = Meteor.user().profile.snippetLength;
 
         this.$rootScope.$broadcast('sessionRefresh', Meteor.userId());
+        */
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);
@@ -45,11 +47,13 @@ class AuthService {
         callback(err);
       }
       else {
+        /*
         this.$rootScope.maxBookmarks = 0;
         this.$rootScope.snippetsPerPage = 0;
         this.$rootScope.snippetLength = 0;
 
         this.$rootScope.$broadcast('sessionRefresh', null);
+        */
     
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);

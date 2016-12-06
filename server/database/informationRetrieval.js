@@ -33,6 +33,24 @@ Meteor.methods({
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmarks from Database!', err);
     }
   },
+  gb2: function() {
+    if (this.userId) {
+      var user = Meteor.users.findOne(this.userId),
+         limit = user.profile.maxBookmarks,
+           bms = Bookmarks.rawCollection().aggregate([
+                  { $match: { userId: this.userId, action: 'Bookmark' }},
+                  { $sort: { serverTimestamp: -1 }},
+                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}}},
+                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action'}},
+                  { $limit: limit }
+                ]);
+
+      return bms;
+    }
+    else {
+      return [];
+    }
+  },
   /*
   removeBookmark: function(currentUrl) {
     check(currentUrl, String);
@@ -58,16 +76,35 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmark Status from Database!', err);
     }
-    
-    // DEPRECATED
-    /*
-    check(currentUrl, String);
+  }
+});
 
-    var bkms = Bookmarks.find({ userId: this.userId, url: currentUrl }).fetch();
-    var result = bkms.length > 0;
+Meteor.publish({
+  currentUser: function() {
+    if (this.userId) {
+      return Meteor.users.find(this.userId, {fields: {'username': 1, 'emails': 1, 'profile': 1}});
+    }
+    else {
+      this.ready();
+    }
+  },
+  userBookmarks: function() {
+    if (this.userId) {
+      var user = Meteor.users.findOne(this.userId),
+         limit = user.profile.maxBookmarks,
+          pipe = [
+                  { $match: { userId: this.userId }},
+                  { $sort: { serverTimestamp: -1 }},
+                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}}},
+                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action'}},
+                  { $match: { action: 'Bookmark' }},
+                  { $limit: limit }
+                ];
 
-    //console.log('Is bookmark?', currentUrl, result);
-    return result;
-    */
+      ReactiveAggregate(this, Bookmarks, pipe, { clientCollection: 'UserBookmarks' });
+    }
+    else {
+      this.ready();
+    }
   }
 });
