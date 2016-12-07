@@ -290,19 +290,21 @@ class Navigation {
     var maximumStars = 3,
        userBookmarks = UserBookmarks.find().fetch(),
             goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-               stars = goodDocs;    // TODO: Make score formula
+               stars = goodDocs,    // TODO Make score formula
+         timeWarning = false;        // TODO Enable time warning
 
     console.log(userBookmarks);
 
     var modalObject = {
       title: this.$translate.instant('nav.taskResults'),
       templateAsset: 'modals/ready_stage1_en.html',
-      buttonType: 'nextstage',
+      buttonType: (timeWarning === true ? 'nextstage' : 'back'),
       fields: {
         stars: stars,
         maxStars: maximumStars,
         goodPages: goodDocs,
-        timeWarning: true
+        timeWarning: timeWarning,
+        bookmarks: userBookmarks
       }
     };
 

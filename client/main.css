@@ -146,7 +146,7 @@ h1.title {
   font-weight: 400; 
 }
 
-hr{
+hr.title {
   width: 10%;
   color: #fff;
 }
@@ -192,4 +192,12 @@ input::-webkit-input-placeholder {
 .login-register{
   font-size: 11px;
   text-align: center;
+}
+
+.rating-on {
+  color: gold;
+}
+
+.rating-off {
+  color: gray;
 }
