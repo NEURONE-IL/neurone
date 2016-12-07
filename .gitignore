@@ -7,8 +7,3 @@ node_modules/
 
 neuroneimage.tar
 neuroneapp.tar.gz
-
-public/*
-!public/favicon.ico
-!public/removeAnchor.sh
-!public/i18n/
