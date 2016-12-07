@@ -1,3 +1,5 @@
+import { name as Question } from '../forms/modules/question';
+
 import template from './modal.html';
 
 /*
@@ -26,11 +28,14 @@ class ModalCtrl {
 
     $ctrl.ok = function() {
       $ctrl.response.message = 'ok';
+      if ($ctrl.fields.questions) $ctrl.response.answers = $ctrl.parseAnswers($ctrl.fields.questions);
+
       $uibModalInstance.close($ctrl.response);
     };
 
     $ctrl.cancel = function() {
-      $uibModalInstance.dismiss('cancel');
+      $ctrl.response.message = 'cancel';
+      $uibModalInstance.dismiss($ctrl.response);
     };
 
     $ctrl.button = function(msg) {
@@ -39,7 +44,29 @@ class ModalCtrl {
     };
 
     $ctrl.close = function() {
-      $uibModalInstance.close();
+      $ctrl.response.message = 'close';
+      $uibModalInstance.dismiss($ctrl.response);
+    };
+
+    $ctrl.parseAnswers = function(questions) {
+      var answerArray = [];
+
+      questions.forEach((question) => {
+        var response = {
+          type: question.type,
+          questionId: question.questionId,
+          title: question.title,
+          answer: question.answer || ''
+        };
+
+        if (question.otherAnswer) {
+          response.otherAnswer = question.otherAnswer;
+        }
+
+        answerArray.push(response);
+      });
+
+      return answerArray;
     };
   }
 }
@@ -52,7 +79,7 @@ class ModalService {
     this.$uibModal = $uibModal;
   }
 
-  openModal(modalObject) {
+  openModal(modalObject, callback) {
     var contentTitle = modalObject.title ? modalObject.title : '';
     var contentTemplate = modalObject.templateAsset ? modalObject.templateAsset : '';
     var contentFields = modalObject.fields ? modalObject.fields : {};
@@ -83,9 +110,18 @@ class ModalService {
         }
       }
     });
+
+    this.modal.result.then((closeResponse) => {
+      callback(null, closeResponse);
+    },
+    () => {
+      callback(null, { message: 'dismiss' });
+    });
   }
 }
 
-export default angular.module(name, [])
+export default angular.module(name, [
+  Question
+])
 .controller('ModalCtrl', ModalCtrl)
 .service('ModalService', ModalService);

@@ -1,0 +1,10 @@
+<div class="form-group">
+  <div>
+    {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
+  </div>
+  <div>
+    <div ng-init="$ctrl.data.answer = 1">
+      <div uib-rating ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" max="$ctrl.data.maxStars" read-only="$ctrl.data.isReadonly" state-on="'fa fa-star fa-3x'" state-off="'fa fa-star-o fa-3x'" enable-reset="false" aria-labelledby="rating"></div>
+    </div>
+  </div>
+</div>

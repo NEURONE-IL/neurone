@@ -6,6 +6,7 @@ import ListQuestion from '../templates/list';
 import ScaleQuestion from '../templates/scale';
 import DateQuestion from '../templates/date';
 import TimeQuestion from '../templates/time';
+import RatingQuestion from '../templates/rating';
 
 //import ScaleCtrl from './controllers/scaleCtrl';
 
@@ -42,6 +43,7 @@ function questionDirective($compile) {
   var scaleQuestionTemplate = ScaleQuestion.template;
   var dateQuestionTemplate = DateQuestion.template;
   var timeQuestionTemplate = TimeQuestion.template;
+  var ratingQuestionTemplate = RatingQuestion.template;
 
   var getTemplate = (questionType) => {
     var template = '';
@@ -70,6 +72,9 @@ function questionDirective($compile) {
         break;
       case 'time':
         template = timeQuestionTemplate;
+        break;
+      case 'rating':
+        template = ratingQuestionTemplate;
         break;
     }
 
@@ -105,4 +110,5 @@ export default angular.module(name, [])
 .component('scaleQuestion', ScaleQuestion)
 .component('dateQuestion', DateQuestion)
 .component('timeQuestion', TimeQuestion)
+.component('ratingQuestion', RatingQuestion)
 .directive('question', questionDirective);
