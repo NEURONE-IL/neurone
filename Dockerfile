@@ -15,9 +15,9 @@ RUN mkdir -p /home/app/neurone
 RUN mkdir -p /assets
 RUN chown -R app:app /assets
 RUN chmod -R +rw /assets
-ENV NEURONE_ASSET_PATH /assets
 
 # Set internal Meteor environment variables
+ENV NEURONE_ASSET_PATH /assets
 ENV HTTP_FORWARDED_COUNT 1
 
 # Copy bundle contents to directory

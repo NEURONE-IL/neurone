@@ -29,7 +29,7 @@ const name = 'navigation';
 const UserBookmarks = new Mongo.Collection('UserBookmarks');
 
 class Navigation {
-  constructor($scope, $rootScope, $auth, $reactive, $state, $translate, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $auth, $reactive, $state, $translate, $filter, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -170,18 +170,8 @@ class Navigation {
   saveBookmark() {
     if (!!Meteor.userId()) {
       this.bookmarkAction((err, res) => {
-        if (!err && res === true) {
-          var formAnswer = {
-            userId: Meteor.userId(),
-            username: Meteor.user().username || Meteor.user().emails[0].address,
-            formId: '',
-            answers: res.answers,
-            localTimestamp: Utils.getTimestamp()
-          };
-
-          this.call('storeFormAnswer', formAnswer);
-
-          this.bms.saveBookmark((err, res) => {
+        if (!err) {
+          this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
             this.$rootScope._navbarMessage.set(res ? res : err);
             Utils.notificationFadeout(this.navbarMessageId);
             this.$scope.$apply();
@@ -288,8 +278,7 @@ class Navigation {
 
     this.modal.openModal(modalObject, (err, res) => {
       if (!err) {
-        console.log(res);
-        if (res.message === 'ok' && res.answers) callback(null, true);
+        if (res.message === 'ok' && res.answers) callback(null, res);
         else callback(null, false);
       }
     });
@@ -297,10 +286,17 @@ class Navigation {
 
   readyAction() {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
+    var maximumStars = 3;
+
     var modalObject = {
       title: this.$translate.instant('nav.taskResults'),
       templateAsset: 'modals/ready_stage1_en.html',
-      fields: {}
+      fields: {
+        stars: 0,
+        maxStars: maximumStars,
+        goodPages: $filter('filter')($scope.students, { isSelected: true }).length,
+        timeWarning: true
+      }
     };
 
     this.modal.openModal(modalObject);

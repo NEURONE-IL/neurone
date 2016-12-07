@@ -87,7 +87,9 @@
     "bookmarks": "Your Bookmarks",
     "closeButton": "Close",
     "snippetModalTitle": "Your Snippet",
-    "bookmarkModalTitle": "Your Bookmark"
+    "bookmarkModalTitle": "Your Bookmark",
+    "allPages": "All",
+    "page": "Page {{pageNum}}"
   },
   "modal": {
     "closeButton": "Close",
@@ -95,6 +97,13 @@
     "goBackButton": "Go Back",
     "acceptButton": "Accept",
     "cancelButton": "Cancel",
-    "nextButton": "Next"
+    "nextButton": "Next",
+    "goodDocument": "Good page",
+    "badDocument": "Bad page",
+    "documentsFound": "You found {{goodPages}} good page(s)!",
+    "currentScore": "You score is {{stars}} star(s)",
+    "nextStageInstructions": "Now you can go to the next stage",
+    "goBackInstructions": "Go back and keep seaching!",
+    "timeWarning": "You ran out of time!"
   }
 }

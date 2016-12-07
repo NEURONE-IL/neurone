@@ -56,22 +56,27 @@ export default class BookmarkTrackService {
     }
   }
 
-  makeBookmark(type, callback) {
-    if (!!Meteor.userId() && (type === 'Bookmark' || type === 'Unbookmark')) {
+  makeBookmark(params, callback) {
+    if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
       var pageTitle = this.$rootScope.documentTitle,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       var bookmarkObject = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        action: type,
+        action: params.type,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
+        rating: (params.rating ? params.rating : 0),
+        reason: (params.reason ? params.reason : ''),
         localTimestamp: Utils.getTimestamp()
       };
 
-      var navbarMsg = (type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
-         consoleMsg = (type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
+      var navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
+         consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
+
+
+      console.log('Bookmark', bookmarkObject);
 
       Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
         if (!err) {
@@ -93,8 +98,14 @@ export default class BookmarkTrackService {
     }
   }
   
-  saveBookmark(callback) {
-    this.makeBookmark('Bookmark', (err, res) => {
+  saveBookmark(rating, reason, callback) {
+    var params = {
+      type: 'Bookmark',
+      rating: rating,
+      reason: reason
+    }
+
+    this.makeBookmark(params, (err, res) => {
       if (!err) {
         callback(null, res);
       }
@@ -105,7 +116,11 @@ export default class BookmarkTrackService {
   }
 
   removeBookmark(callback) {
-    this.makeBookmark('Unbookmark', (err, res) => {
+    var params = {
+      type: 'Unbookmark'
+    }
+    
+    this.makeBookmark(params, (err, res) => {
       if (!err) {
         callback(null, res);
       }
