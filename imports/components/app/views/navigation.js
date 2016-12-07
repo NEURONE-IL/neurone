@@ -36,6 +36,7 @@ class Navigation {
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$translate = $translate;
+    this.$filter = $filter;
     this.fs = FlowService;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
@@ -218,7 +219,7 @@ class Navigation {
       }
     };
 
-    this.modal.openModal(modalObject);
+    this.modal.openModal(modalObject, (err, res) => {});
   }
 
   tipsModal() {
@@ -229,7 +230,7 @@ class Navigation {
       fields: {}
     };
 
-    this.modal.openModal(modalObject);
+    this.modal.openModal(modalObject, (err, res) => {});
   }
 
   tutorialModal() {
@@ -240,7 +241,7 @@ class Navigation {
       fields: {}
     };
 
-    this.modal.openModal(modalObject);
+    this.modal.openModal(modalObject, (err, res) => {});
   }
 
   bookmarkAction(callback) {
@@ -286,20 +287,26 @@ class Navigation {
 
   readyAction() {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var maximumStars = 3;
+    var maximumStars = 3,
+       userBookmarks = UserBookmarks.find().fetch(),
+            goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+               stars = goodDocs;    // TODO: Make score formula
+
+    console.log(userBookmarks);
 
     var modalObject = {
       title: this.$translate.instant('nav.taskResults'),
       templateAsset: 'modals/ready_stage1_en.html',
+      buttonType: 'nextstage',
       fields: {
-        stars: 0,
+        stars: stars,
         maxStars: maximumStars,
-        goodPages: $filter('filter')($scope.students, { isSelected: true }).length,
+        goodPages: goodDocs,
         timeWarning: true
       }
     };
 
-    this.modal.openModal(modalObject);
+    this.modal.openModal(modalObject, (err, res) => {});
   }
 }
 

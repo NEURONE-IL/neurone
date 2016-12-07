@@ -59,6 +59,7 @@ export default class BookmarkTrackService {
   makeBookmark(params, callback) {
     if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
       var pageTitle = this.$rootScope.documentTitle,
+           relevant = this.$rootScope.documentRelevant,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       var bookmarkObject = {
@@ -67,6 +68,7 @@ export default class BookmarkTrackService {
         action: params.type,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
+        relevant: (relevant ? relevant : false),
         rating: (params.rating ? params.rating : 0),
         reason: (params.reason ? params.reason : ''),
         localTimestamp: Utils.getTimestamp()
@@ -76,7 +78,7 @@ export default class BookmarkTrackService {
          consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
 
 
-      console.log('Bookmark', bookmarkObject);
+      //console.log('Bookmark', bookmarkObject);
 
       Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
         if (!err) {

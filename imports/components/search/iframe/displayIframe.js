@@ -24,6 +24,7 @@ class DisplayIframe {
 		// dgacitua: Execute on iframe end
 		this.$onDestroy = () => {
 			this.$rootScope.documentTitle = '';
+			this.$rootScope.documentRelevant = false;
 			this.kmtis.antiService();
 			this.abis.antiService();
 		};
@@ -41,6 +42,7 @@ class DisplayIframe {
 				this.routeUrl = res.routeUrl;
 				this.documentTitle = res.title;
 				this.$rootScope.documentTitle = res.title;
+				this.$rootScope.documentRelevant = res.relevant;
 
 				// dgacitua: Execute on iframe start
 				// http://stackoverflow.com/a/17045721

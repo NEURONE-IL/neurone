@@ -35,7 +35,7 @@ class ModalCtrl {
 
     $ctrl.cancel = function() {
       $ctrl.response.message = 'cancel';
-      $uibModalInstance.dismiss($ctrl.response);
+      $uibModalInstance.dismiss($ctrl.response.message);
     };
 
     $ctrl.button = function(msg) {
@@ -45,7 +45,7 @@ class ModalCtrl {
 
     $ctrl.close = function() {
       $ctrl.response.message = 'close';
-      $uibModalInstance.dismiss($ctrl.response);
+      $uibModalInstance.dismiss($ctrl.response.message);
     };
 
     $ctrl.parseAnswers = function(questions) {
@@ -85,6 +85,7 @@ class ModalService {
     var contentFields = modalObject.fields ? modalObject.fields : {};
     var buttonType = modalObject.buttonType ? modalObject.buttonType : '';
     var buttonName = modalObject.buttonName ? modalObject.buttonName : '';
+    var modalSize = modalObject.size ? modalObject.size : 'lg';
 
     this.modal = this.$uibModal.open({
       template,
@@ -114,7 +115,7 @@ class ModalService {
     this.modal.result.then((closeResponse) => {
       callback(null, closeResponse);
     },
-    () => {
+    (dismissResponse) => {
       callback(null, { message: 'dismiss' });
     });
   }

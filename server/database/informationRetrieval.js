@@ -95,8 +95,8 @@ Meteor.publish({
           pipe = [
                   { $match: { userId: this.userId }},
                   { $sort: { serverTimestamp: -1 }},
-                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}}},
-                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action'}},
+                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}}},
+                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant'}},
                   { $match: { action: 'Bookmark' }},
                   { $limit: limit }
                 ];
