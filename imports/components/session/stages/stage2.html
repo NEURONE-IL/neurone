@@ -1,8 +1,23 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-8">
+      <div ui-view="pageview"></div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 interaction-bar">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <div ui-view="snippetbar"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="stage2/pageview.html">
+  <div ui-view>
+    <h1>Hello World!</h1>
+  </div>
+</script>
+
+<script type="text/ng-template" id="stage2/snippetbar.html">
+  <div ui-view>
+    <div class="interaction-bar">
       <uib-tabset active="active">
         <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="{{page.title}}">
           <div class="interaction-bar">{{page.content}}</div>
@@ -37,4 +52,4 @@
       </uib-tabset>
     </div>
   </div>
-</div>
+</script>

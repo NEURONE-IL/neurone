@@ -22,7 +22,7 @@ before_install:
   - "curl https://install.meteor.com | /bin/sh"
 
 before_script:
-  - ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts
+  - ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts >/dev/null 2>/dev/null
 
 script:
   - meteor npm run test
