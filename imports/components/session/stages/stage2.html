@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-8">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 interaction-bar">
+      <uib-tabset active="active">
+        <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="{{page.title}}">
+          <div class="interaction-bar">{{page.content}}</div>
+          <hr>
+          <div>
+            <div uib-alert class="snippet-box">
+              <div class="snippet-element">
+                <div class="snippet-text">Some snippet</div>
+                <div class="snippet-delete">
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
+                </div>
+              </div>
+            </div>
+            <div uib-alert class="snippet-box">
+              <div class="snippet-element">
+                <div class="snippet-text">Some snippet</div>
+                <div class="snippet-delete">
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
+                </div>
+              </div>
+            </div>
+            <div uib-alert class="snippet-box">
+              <div class="snippet-element">
+                <div class="snippet-text">Some snippet</div>
+                <div class="snippet-delete">
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </uib-tab>
+      </uib-tabset>
+    </div>
+  </div>
+</div>

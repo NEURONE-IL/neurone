@@ -107,6 +107,35 @@ img.logo-home {
   overflow: auto;
 }
 
+.interaction-bar {
+  padding: 5px 5px 5px 5px;
+}
+
+.snippet-box {
+  background-color: lightblue;
+}
+
+.snippet-element {
+  display: flex;
+  justify-content: space-between;
+}
+
+.snippet-text {
+  line-height: 20px;
+}
+
+.snippet-delete {
+  line-height: 20px;
+}
+
+.rating-on {
+  color: gold;
+}
+
+.rating-off {
+  color: gray;
+}
+
 mark.highlightSearch {
   font-weight: bold;
   background: none;
@@ -192,12 +221,4 @@ input::-webkit-input-placeholder {
 .login-register{
   font-size: 11px;
   text-align: center;
-}
-
-.rating-on {
-  color: gold;
-}
-
-.rating-off {
-  color: gray;
 }

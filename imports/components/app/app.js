@@ -17,6 +17,7 @@ import { name as Navigation } from './views/navigation';
 import { name as Search } from '../search/search';
 import { name as Forms } from '../forms/formCtrl';
 import { name as Synthesis } from '../synthesis/synthesis';
+import { name as Stages } from '../session/stages';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as AuthService } from './services/auth';
@@ -47,7 +48,8 @@ export default angular.module(name, [
   Showcase,
   Search,
   Synthesis,
-  Forms
+  Forms,
+  Stages
 ])
 .component(name, {
   template,
