@@ -99,6 +99,9 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
       lts.saveEnterPage();
       kmts.service();
       abs.service();
+
+      var currentStageHome = 'search';      // TODO: check for current Stage home
+      $rootScope._stageHome.set('/' + currentStageHome);
     }
     else {
       kmts.antiService();

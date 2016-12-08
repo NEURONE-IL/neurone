@@ -42,5 +42,5 @@ random@1.0.10
 momentjs:moment
 xolvio:cleaner
 underscore
-manuel:reactivearray
 jcbernack:reactive-aggregate
+mrt:reactive-extra
