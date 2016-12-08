@@ -50,10 +50,10 @@ class Navigation {
 
     this.navbarMessageId = 'navbarMessage';
     this.$rootScope._navbarMessage = new ReactiveVar('');
+    Utils.notificationFadeout(this.navbarMessageId);
 
-    this._counters = {
-      bookmarks: UserBookmarks.find().count()
-    };
+    this.$rootScope._counters = new ReactiveObject({});
+    this.$rootScope._counters.defineProperty('bookmarks', UserBookmarks.find().count());
 
     this.$rootScope._enableBookmarkList = new ReactiveVar(false);
     this.$rootScope._enableBookmark = new ReactiveVar(false);
@@ -67,9 +67,9 @@ class Navigation {
       
       if (data === true) {
         var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
-        this._counters.bookmarks = UserBookmarks.find().count();
+        this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
         this.$rootScope._stageHome.set('/search');
-        this.$rootScope._enableReady.set((this._counters.bookmarks >= limit) ? true : false);  
+        this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);  
       }
       else {
         this.$rootScope._stageHome.set('/home');
@@ -95,7 +95,7 @@ class Navigation {
         return Meteor.user();
       },
       counters: () => {
-        return this.getReactively('_counters');
+        return this.$rootScope._counters;//this.getReactively('_counters');
       },
       statusMessage: () => {
         return this.$rootScope._navbarMessage.get();
@@ -134,16 +134,16 @@ class Navigation {
   checkBookmarkStatus() {
     if (!!Meteor.userId()) {
       var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
-      this._counters.bookmarks = UserBookmarks.find().count();
-      this.$rootScope._enableReady.set((this._counters.bookmarks >= limit) ? true : false);
+      this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
+      this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
       this.bms.isBookmarked((err2, res2) => {
         if (!err2) {
-          //console.log('checkBookmarkStatus', res2, this._counters.bookmarks, limit);
-          if (this._counters.bookmarks > limit) {
+          //console.log('checkBookmarkStatus', res2, this.$rootScope._counters.bookmarks, limit);
+          if (this.$rootScope._counters.bookmarks > limit) {
             this.$rootScope._enableBookmark.set(false);
             this.$rootScope._enableUnbookmark.set(false);
           }
-          else if (this._counters.bookmarks == limit) {
+          else if (this.$rootScope._counters.bookmarks == limit) {
             if (res2 === true) {
               this.$rootScope._enableBookmark.set(false);
               this.$rootScope._enableUnbookmark.set(true);

@@ -31,7 +31,10 @@ class Login {
     this.auth.login(this.credentials.username, this.credentials.password, (err, res) => {
       if (!err) {
         this.error = res;
-        this.$state.go('search');
+
+        var currentStageHome = 'search';      // TODO: check for current Stage home
+        this.$rootScope._stageHome.set('/' + currentStageHome);
+        this.$state.go(currentStageHome);
       }
       else {
         this.error = err;
