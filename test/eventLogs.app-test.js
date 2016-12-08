@@ -39,16 +39,19 @@ describe('NEURONE API', function() {
     // dgacitua: Test snippets
     describe('storeBookmark()', function() {
       it('should store a Bookmark', function(done) {
-        var snippetObject = {
+        var bookmarkObject = {
           userId: 'MQZMozeQfgDtxEgQr',
           username: 'test',
           action: 'Bookmark',
           title: 'NEURONE',
           url: '/home',
+          rating: 5,
+          reason: 'It\'s good',
+          relevant: false,
           localTimestamp: 1480200315688
         }
 
-        Meteor.call('storeBookmark', snippetObject, (err, res) => {
+        Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
           if (!err) {
             chai.assert.isObject(res, 'a response is delivered');
             chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
@@ -56,7 +59,7 @@ describe('NEURONE API', function() {
             var bookmark = Bookmarks.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(bookmark, 'a Bookmark is saved');
             chai.assert.property(bookmark, '_id', 'stored Bookmark has a valid id');
-            chai.assert.propertyVal(bookmark, 'action', snippetObject.action, 'stored Bookmark has the correct text');
+            chai.assert.propertyVal(bookmark, 'action', bookmarkObject.action, 'stored Bookmark has the correct text');
 
             var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
             chai.assert.isObject(event, 'an Event is saved');
