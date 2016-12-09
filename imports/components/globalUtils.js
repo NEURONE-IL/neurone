@@ -42,4 +42,9 @@ export default class Utils {
   static isEmptyObject(object) {
     return angular.equals(object, {});
   }
+
+  // dgacitua: http://stackoverflow.com/a/12975295
+  static countWords(string) {
+    return string.match(/\S+/g).length;
+  }
 }

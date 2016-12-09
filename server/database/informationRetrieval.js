@@ -33,24 +33,6 @@ Meteor.methods({
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmarks from Database!', err);
     }
   },
-  gb2: function() {
-    if (this.userId) {
-      var user = Meteor.users.findOne(this.userId),
-         limit = user.profile.maxBookmarks,
-           bms = Bookmarks.rawCollection().aggregate([
-                  { $match: { userId: this.userId, action: 'Bookmark' }},
-                  { $sort: { serverTimestamp: -1 }},
-                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}}},
-                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action'}},
-                  { $limit: limit }
-                ]);
-
-      return bms;
-    }
-    else {
-      return [];
-    }
-  },
   /*
   removeBookmark: function(currentUrl) {
     check(currentUrl, String);

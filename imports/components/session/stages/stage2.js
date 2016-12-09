@@ -1,27 +1,48 @@
+import { UserBookmarks } from '../../userCollections';
+
 import template from './stage2.html';
 
+const name = 'stage2';
+
 class Stage2 {
-  constructor() {
+  constructor($scope, $rootScope, $reactive) {
     'ngInject';
 
-    this.pages = [
-      {
-        title: 'asdf',
-        content: '1'
-      },
-      {
-        title: 'qwerty',
-        content: '2'
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
+
+    $reactive(this).attach($scope);
+
+    this.pageList = [];
+
+    this.subscribe('userBookmarks', () => {}, {
+      onReady: () => {
+        this.meteorReady = true;
+
+        console.log(UserBookmarks, UserBookmarks.find(), UserBookmarks.find().fetch());
+        this.pages = UserBookmarks.find().fetch();
+
+        this.url = this.pages[0] ? this.pages[0].url : '/error';
+        this.docName = this.url2docName(this.url);
+        this.$rootScope.docName = this.docName;
       }
-    ]
+    });
+
+    this.helpers({
+      pageList: () => {
+        return UserBookmarks.find();
+      }
+    });
+  }
+
+  url2docName(url) {
+    return url.substr(url.lastIndexOf('/') + 1);
   }
 
   deleteSnippet(index) {
     console.log('Delete Snippet', index);
   }
 }
-
-const name = 'stage2';
 
 // create a module
 export default angular.module(name, [
@@ -71,18 +92,5 @@ function config($stateProvider) {
           template: '<snippetbar></snippetbar>'
         }
       }
-    })
-    /*
-    .state('stage2.pageview', {
-      url: '/pageview',
-      templateUrl: 'stage2/pageview.html',
-      controller: Stage2
-    })
-    .state('stage2.snippetbar', {
-      url: '/snippetbar',
-      templateUrl: 'stage2/snippetbar.html',
-      controller: Stage2
-    })
-    */
-    ;
+    });
 };

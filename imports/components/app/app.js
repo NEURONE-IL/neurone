@@ -24,11 +24,14 @@ import { name as AuthService } from './services/auth';
 import { name as ActionBlocker } from './services/actionBlocker';
 import { name as Flow } from './services/flow';
 import { name as Logger } from '../logger/logger';
+import { name as ErrorPage } from '../modules/error';
 import LoggerConfigs from '../logger/loggerConfigs';
 
 class App {}
 
 const name = 'app';
+
+//const UserBookmarks = new Mongo.Collection('UserBookmarks');
 
 // create a module
 export default angular.module(name, [
@@ -49,7 +52,8 @@ export default angular.module(name, [
   Search,
   Synthesis,
   Forms,
-  Stages
+  Stages,
+  ErrorPage
 ])
 .component(name, {
   template,

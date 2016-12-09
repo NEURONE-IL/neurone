@@ -53,8 +53,8 @@ class DisplayIframe {
 				});
 			}
 			else {
-				console.error('Error while loading document', err);
-				this.$state.go('search');		// TODO Change for current stage main page
+				console.error('Error while loading document', this.page, err);
+				this.$state.go('error');		// TODO Change for current stage main page
 			}
 		});
 	}

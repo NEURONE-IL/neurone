@@ -7,6 +7,8 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
+import { UserBookmarks } from '../../userCollections';
+
 import { name as ModalService } from '../../modules/modal';
 
 import { name as Logger } from '../../logger/logger';
@@ -26,7 +28,6 @@ import Utils from '../../globalUtils';
 */
 
 const name = 'navigation';
-const UserBookmarks = new Mongo.Collection('UserBookmarks');
 
 class Navigation {
   constructor($scope, $rootScope, $auth, $reactive, $state, $translate, $filter, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {

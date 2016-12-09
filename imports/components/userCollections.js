@@ -1,0 +1,1 @@
+export const UserBookmarks = new Mongo.Collection('UserBookmarks');
