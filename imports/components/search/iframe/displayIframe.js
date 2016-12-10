@@ -40,6 +40,8 @@ class DisplayIframe {
 		this.routeUrl = '';
 		this.documentTitle = '';
 
+		this.loadPage(this.pageUrl);
+		/*
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', this.pageUrl, (err, res) => {
 			if (!err) {
@@ -63,6 +65,7 @@ class DisplayIframe {
 				this.$state.go('error');		// TODO Change for current stage main page
 			}
 		});
+		*/
 	}
 
 	loadPage(pageUrl) {
@@ -72,6 +75,7 @@ class DisplayIframe {
 				//console.log(res);
 				this.routeUrl = res.routeUrl;
 				this.documentTitle = res.title;
+				this.$rootScope.docId = res._id;
 				this.$rootScope.documentTitle = res.title;
 				this.$rootScope.documentRelevant = res.relevant;
 

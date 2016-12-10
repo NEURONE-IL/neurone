@@ -83,13 +83,12 @@ Meteor.publish({
          limit = user.profile.snippetsPerPage,
           pipe = [
                   { $match: { userId: this.userId }},
-                  { $sort: { serverTimestamp: -1 }},
+                  { $sort: { docId: 1, serverTimestamp: -1 }},
                   { $match: { action: 'Snippet' }},
                   { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', docId: '$docId', snippedText: '$snippedText', title: '$title', action: '$action' }}}},
                   { $project: { snippets: { $slice: ['$doc', limit] }}},
                   { $unwind: { path: '$snippets' }},
-                  { $project: { _id: '$snippets.originalId', docId: '$_id', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action' }},
-                  { $sort: { serverTimestamp: 1 }}
+                  { $project: { _id: '$snippets.originalId', docId: '$_id', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action' }}
                 ];
 
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });

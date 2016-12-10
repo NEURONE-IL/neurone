@@ -45,6 +45,7 @@ describe('NEURONE API', function() {
           action: 'Bookmark',
           title: 'NEURONE',
           url: '/home',
+          docId: 'L9R4iubjCgkQDywSh',
           rating: 5,
           reason: 'It\'s good',
           relevant: false,
@@ -86,6 +87,7 @@ describe('NEURONE API', function() {
           snippedText: 'My snipped text',
           title: 'NEURONE',
           url: '/home',
+          docId: 'L9R4iubjCgkQDywSh',
           localTimestamp: 1480200315688
         }
 
