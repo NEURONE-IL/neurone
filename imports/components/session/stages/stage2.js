@@ -7,12 +7,14 @@ import template from './stage2.html';
 const name = 'stage2';
 
 class Stage2 {
-  constructor($scope, $rootScope, $state, $reactive) {
+  constructor($scope, $rootScope, $state, $reactive, SnippetTrackService) {
     'ngInject';
 
     this.$state = $state;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+
+    this.sts = SnippetTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
       this.$rootScope.$broadcast('updateSnippetCounter', false);
@@ -24,24 +26,25 @@ class Stage2 {
 
     $reactive(this).attach($scope);
 
-    this.currentDocId = '';
+    this.currentDocId = new ReactiveVar('');
 
     this.subscribe('userBookmarks', () => {}, {
       onReady: () => {
-        this.meteorReady = true;
-
-        //console.log(UserBookmarks, UserBookmarks.find(), UserBookmarks.find().fetch());
         this.pages = UserBookmarks.find().fetch();
 
         this.url = this.pages[0] ? this.pages[0].url : '/error';
-        this.docName = this.url2docName(this.url);
-        this.$rootScope.docName = this.docName;
+        this.$rootScope.docName = this.url2docName(this.url);
+        this.$rootScope.docId = this.pages[0] ? this.pages[0].docId : '';
+        this.currentDocId.set(this.$rootScope.docId);
+
+        this.meteorReady = true;
       }
     });
 
     this.subscribe('userSnippets', () => {}, {
       onReady: () => {
-        console.log('SnippetLoad', UserSnippets.find().fetch());
+        //console.log('SnippetLoad', UserSnippets.find().fetch());
+        //console.log('SnippetFilter', this.$rootScope.docId, UserSnippets.find({ docId: this.$rootScope.docId }).fetch());
       }
     });
 
@@ -50,7 +53,10 @@ class Stage2 {
       pageList: () => {
         return UserBookmarks.find();
       },
-      snippetList: () => {
+      snippetListPerPage: () => {
+        return UserSnippets.find({ docId: this.currentDocId.get() });
+      },
+      snippetListGlobal: () => {
         return UserSnippets.find();
       }
     });
@@ -61,15 +67,22 @@ class Stage2 {
   }
 
   deleteSnippet(index) {
-    console.log('Delete Snippet', index);
+    this.sts.removeSnippet(index, (err, res) => {
+      if (!err) {
+        console.log('Snippet deleted successfully!', index);
+      }
+      else {
+        console.log('Error while deleting snippet', err);
+      }
+    });
   }
 
   changePage(index) {
     this.url = this.pages[index] ? this.pages[index].url : '/error';
-    this.docName = this.url2docName(this.url);
-    this.$rootScope.docName = this.docName;
+    this.$rootScope.docName = this.url2docName(this.url);
+    this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
+    this.currentDocId.set(this.$rootScope.docId);
     this.$rootScope.$broadcast('changeIframePage', this.$rootScope.docName);
-    console.log('ChangePage', index, this.docName, UserSnippets.find().fetch());
   }
 }
 
@@ -97,7 +110,7 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-// dgacitua: http://stackoverflow.com/a/37964199
+  // dgacitua: http://stackoverflow.com/a/37964199
   $stateProvider
     .state('stage2', {
       template: '<stage2></stage2>',

@@ -81,15 +81,19 @@ Meteor.publish({
       // dgacitua: http://stackoverflow.com/a/40266075
       var user = Meteor.users.findOne(this.userId),
          limit = user.profile.snippetsPerPage,
-          pipe = [
-                  { $match: { userId: this.userId }},
-                  { $sort: { docId: 1, serverTimestamp: -1 }},
-                  { $match: { action: 'Snippet' }},
-                  { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', docId: '$docId', snippedText: '$snippedText', title: '$title', action: '$action' }}}},
-                  { $project: { snippets: { $slice: ['$doc', limit] }}},
-                  { $unwind: { path: '$snippets' }},
-                  { $project: { _id: '$snippets.originalId', docId: '$_id', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action' }}
-                ];
+               pipe = [
+                        { $match: { userId: this.userId }},
+                        { $sort: { serverTimestamp: -1 }},
+                        { $group: { _id: '$snippetId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, snippedText: {$first: '$snippedText'}, url: {$first: '$url'}, docId: {$first: '$docId' }, serverTimestamp: { $first: '$serverTimestamp' }}},
+                        { $project: { _id: '$originalId', snippetId: '$_id', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }},
+                        { $sort: { serverTimestamp: -1 }},
+                        { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', snippetId: '$snippetId', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }}}},
+                        { $project: { snippets: { $slice: ['$doc', limit] }}},
+                        { $unwind: { path: '$snippets' }},
+                        { $project: { _id: '$snippets.originalId', docId: '$_id', userId: '$snippets.userId', snippetId: '$snippets.snippetId', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action', url: '$snippets.url', serverTimestamp: '$snippets.serverTimestamp' }},
+                        { $match: { action: 'Snippet' }},
+                        { $sort: { serverTimestamp: 1 }}
+                      ];
 
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }

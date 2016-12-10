@@ -7,7 +7,7 @@ import { name as Login } from '../auth/login';
 import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
-import { UserBookmarks } from '../../userCollections';
+import { UserBookmarks, UserSnippets } from '../../userCollections';
 
 import { name as ModalService } from '../../modules/modal';
 
@@ -94,7 +94,6 @@ class Navigation {
     // dgacitua: Set snippet elements
     this.$rootScope.$on('updateSnippetCounter', (event, data) => {
       this.$rootScope._enableSnippetCounter.set(data);
-
       
       if (data === true) {
         // TODO: Set ready button
@@ -135,6 +134,9 @@ class Navigation {
       },
       enableBookmarkList: () => {
         return this.$rootScope._enableBookmarkList.get();
+      },
+      enableSnippet: () => {
+        return this.$rootScope._enableSnippetCounter.get();
       },
       enableSnippetCounter: () => {
         return this.$rootScope._enableSnippetCounter.get();

@@ -84,6 +84,7 @@ describe('NEURONE API', function() {
           userId: 'MQZMozeQfgDtxEgQr',
           username: 'test',
           action: 'Snippet',
+          snippetId: 0,
           snippedText: 'My snipped text',
           title: 'NEURONE',
           url: '/home',

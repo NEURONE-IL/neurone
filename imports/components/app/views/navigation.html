@@ -7,7 +7,7 @@
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn">
         <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.statusMessage}}</div>
-        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippetCounter" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
+        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippetCounter && navigation.enableSnippet" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableUnbookmark" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-primary navbar-btn horizontal-button-margin" ng-if="navigation.enableReady" ng-click="navigation.readyAction()"><i class="fa fa-check" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>

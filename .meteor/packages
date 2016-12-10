@@ -30,7 +30,6 @@ check@1.2.4
 http@1.2.10
 session@1.1.7
 ostrio:meteor-root
-osv:mongo-counter
 jalik:ufs
 jalik:ufs-local
 williamledoux:static-server
@@ -38,6 +37,7 @@ dispatch:mocha-phantomjs
 mizzao:timesync
 konecty:user-presence
 konecty:multiple-instances-status
+konecty:mongo-counter
 random@1.0.10
 momentjs:moment
 xolvio:cleaner
