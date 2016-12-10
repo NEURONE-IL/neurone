@@ -39,6 +39,12 @@ export default class Utils {
     navbarMessageElement.fadeOut(5000);
   }
 
+  // dgacitua: Check if string is empty
+  // http://stackoverflow.com/a/3261380
+  static isEmpty(str) {
+      return (!str || 0 === str.length);
+  }
+
   static isEmptyObject(object) {
     return angular.equals(object, {});
   }

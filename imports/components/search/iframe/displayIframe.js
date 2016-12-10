@@ -23,20 +23,51 @@ class DisplayIframe {
 
 		// dgacitua: Execute on iframe end
 		this.$onDestroy = () => {
+			this.$rootScope.docId = '';
 			this.$rootScope.documentTitle = '';
 			this.$rootScope.documentRelevant = false;
 			this.kmtis.antiService();
 			this.abis.antiService();
 		};
 
+		this.$rootScope.$on('changeIframePage', (event, data) => {
+			this.loadPage(data);
+		});
+
 		this.iframeDoc = document.getElementById('pageContainer');
 
-		this.page = $stateParams.docName || this.$rootScope.docName;
+		this.pageUrl = $stateParams.docName || this.page || this.$rootScope.docName;
 		this.routeUrl = '';
 		this.documentTitle = '';
 
 		// From https://github.com/meteor/meteor/issues/7189
-		this.call('getDocument', this.page, (err, res) => {
+		this.call('getDocument', this.pageUrl, (err, res) => {
+			if (!err) {
+				//console.log(res);
+				this.routeUrl = res.routeUrl;
+				this.documentTitle = res.title;
+				this.$rootScope.docId = res._id;
+				this.$rootScope.documentTitle = res.title;
+				this.$rootScope.documentRelevant = res.relevant;
+
+				// dgacitua: Execute on iframe start
+				// http://stackoverflow.com/a/17045721
+				angular.element(this.iframeDoc).on('load', () => {
+					console.log('Loading iframe trackers...', this.iframeDoc);
+					this.abis.service();
+					this.kmtis.service();
+				});
+			}
+			else {
+				console.error('Error while loading document', this.pageUrl, err);
+				this.$state.go('error');		// TODO Change for current stage main page
+			}
+		});
+	}
+
+	loadPage(pageUrl) {
+		// From https://github.com/meteor/meteor/issues/7189
+		this.call('getDocument', pageUrl, (err, res) => {
 			if (!err) {
 				//console.log(res);
 				this.routeUrl = res.routeUrl;
@@ -53,7 +84,7 @@ class DisplayIframe {
 				});
 			}
 			else {
-				console.error('Error while loading document', this.page, err);
+				console.error('Error while loading document', pageUrl, err);
 				this.$state.go('error');		// TODO Change for current stage main page
 			}
 		});
@@ -85,6 +116,9 @@ function config($stateProvider) {
 		.state('displayIframe', {
 			url: '/iframe/:docName',
 			template: '<display-iframe></display-iframe>',
+			bindings: {
+				page: '='
+			},
 			resolve: {
 				currentUser($q) {
 					if (Meteor.userId() === null) {

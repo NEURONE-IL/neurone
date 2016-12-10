@@ -1,9 +1,9 @@
 <div class="container-fluid div-fill">
   <div class="row div-fill">
-    <div class="col-lg-8 col-md-8 col-sm-8 div-fill">
+    <div class="col-lg-9 col-md-9 col-sm-9 div-fill">
       <div ui-view="pageview" ng-if="stage2.meteorReady" class="div-fill"></div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <div ui-view="snippetbar"></div>
     </div>
   </div>
@@ -19,33 +19,17 @@
   <div ui-view>
     <div class="interaction-bar">
       <uib-tabset active="active">
-        <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="Page {{$index + 1}}">
+        <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="Page {{$index + 1}}" ng-click="stage2.changePage($index)">
           <div class="interaction-bar">
             <h4>{{page.title}}</h4>
           </div>
           <hr>
           <div>
-            <div uib-alert class="snippet-box">
+            <div uib-alert class="snippet-box" ng-repeat="snippet in stage2.snippetList track by snippet._id">
               <div class="snippet-element">
-                <div class="snippet-text">Some snippet</div>
+                <div class="snippet-text">{{snippet.snippedText | words: 25}}</div>
                 <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
-                </div>
-              </div>
-            </div>
-            <div uib-alert class="snippet-box">
-              <div class="snippet-element">
-                <div class="snippet-text">Some snippet</div>
-                <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
-                </div>
-              </div>
-            </div>
-            <div uib-alert class="snippet-box">
-              <div class="snippet-element">
-                <div class="snippet-text">Some snippet</div>
-                <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="deleteSnippet($index)"></i>
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="stage2.deleteSnippet(snippet._id)"></i>
                 </div>
               </div>
             </div>

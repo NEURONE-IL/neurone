@@ -59,6 +59,7 @@ export default class BookmarkTrackService {
   makeBookmark(params, callback) {
     if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
       var pageTitle = this.$rootScope.documentTitle,
+              docId = this.$rootScope.docId,
            relevant = this.$rootScope.documentRelevant,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
@@ -68,6 +69,7 @@ export default class BookmarkTrackService {
         action: params.type,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
+        docId: (docId ? docId : ''),
         relevant: (relevant ? relevant : false),
         rating: (params.rating ? params.rating : 0),
         reason: (params.reason ? params.reason : ''),

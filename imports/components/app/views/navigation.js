@@ -30,7 +30,7 @@ import Utils from '../../globalUtils';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $auth, $reactive, $state, $translate, $filter, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $window, $auth, $reactive, $state, $translate, $filter, AuthService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -38,6 +38,7 @@ class Navigation {
     this.$rootScope = $rootScope;
     this.$translate = $translate;
     this.$filter = $filter;
+    this.$window = $window;
     this.fs = FlowService;
     this.sts = SnippetTrackService;
     this.bms = BookmarkTrackService;
@@ -55,10 +56,12 @@ class Navigation {
 
     this.$rootScope._counters = new ReactiveObject({});
     this.$rootScope._counters.defineProperty('bookmarks', UserBookmarks.find().count());
+    this.$rootScope._counters.defineProperty('words', 0);
 
     this.$rootScope._enableBookmarkList = new ReactiveVar(false);
     this.$rootScope._enableBookmark = new ReactiveVar(false);
     this.$rootScope._enableUnbookmark = new ReactiveVar(false);
+    this.$rootScope._enableSnippetCounter = new ReactiveVar(false);
     this.$rootScope._enableReady = new ReactiveVar(false);
     this.$rootScope._stageHome = new ReactiveVar('/home');
     
@@ -88,6 +91,26 @@ class Navigation {
       }
     });
 
+    // dgacitua: Set snippet elements
+    this.$rootScope.$on('updateSnippetCounter', (event, data) => {
+      this.$rootScope._enableSnippetCounter.set(data);
+
+      
+      if (data === true) {
+        // TODO: Set ready button
+
+        //var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
+        //this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
+        this.sts.bindWordCounter();
+        this.$rootScope._stageHome.set('/stage2');
+        //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+      }
+      else {
+        this.sts.unbindWordCounter();
+        this.$rootScope._stageHome.set('/home');
+      }
+    });
+
     this.helpers({
       isLoggedIn: () => {
         return !!Meteor.userId();
@@ -113,6 +136,9 @@ class Navigation {
       enableBookmarkList: () => {
         return this.$rootScope._enableBookmarkList.get();
       },
+      enableSnippetCounter: () => {
+        return this.$rootScope._enableSnippetCounter.get();
+      },
       enableReady: () => {
         return this.$rootScope._enableReady.get();
       },
@@ -122,7 +148,6 @@ class Navigation {
     });
   }
 
-  /*
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
       this.navbarMessage = res ? res : err;
@@ -130,7 +155,6 @@ class Navigation {
       this.$scope.$apply();
     });
   }
-  */
 
   checkBookmarkStatus() {
     if (!!Meteor.userId()) {
@@ -253,7 +277,6 @@ class Navigation {
       buttonType: 'okcancel',
       fields: {
         url: '',
-        
         questions: [
           {
             questionId: 'bm1',

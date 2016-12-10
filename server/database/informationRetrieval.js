@@ -33,19 +33,6 @@ Meteor.methods({
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmarks from Database!', err);
     }
   },
-  /*
-  removeBookmark: function(currentUrl) {
-    check(currentUrl, String);
-
-    Bookmarks.remove({ userId: this.userId, url: currentUrl });
-    return true;
-  },
-  getBookmark: function(currentUrl) {
-    check(currentUrl, String);
-
-    return Bookmarks.find({ userId: this.userId, url: currentUrl }).fetch();
-  },
-  */
   isBookmark: function(currentUrl) {
     check(currentUrl, String);
 
@@ -77,13 +64,35 @@ Meteor.publish({
           pipe = [
                   { $match: { userId: this.userId }},
                   { $sort: { serverTimestamp: -1 }},
-                  { $group: { _id: '$url', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}}},
-                  { $project: { _id: '$originalId', url: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant'}},
+                  { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}}},
+                  { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url'}},
                   { $match: { action: 'Bookmark' }},
                   { $limit: limit }
                 ];
 
       ReactiveAggregate(this, Bookmarks, pipe, { clientCollection: 'UserBookmarks' });
+    }
+    else {
+      this.ready();
+    }
+  },
+  userSnippets: function() {
+    if (this.userId) {
+      // dgacitua: http://stackoverflow.com/a/40266075
+      var user = Meteor.users.findOne(this.userId),
+         limit = user.profile.snippetsPerPage,
+          pipe = [
+                  { $match: { userId: this.userId }},
+                  { $sort: { serverTimestamp: -1 }},
+                  { $match: { action: 'Snippet' }},
+                  { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', docId: '$docId', snippedText: '$snippedText', title: '$title', action: '$action' }}}},
+                  { $project: { snippets: { $slice: ['$doc', limit] }}},
+                  { $unwind: { path: '$snippets' }},
+                  { $project: { _id: '$snippets.originalId', docId: '$_id', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action' }},
+                  { $sort: { serverTimestamp: 1 }}
+                ];
+
+      ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }
     else {
       this.ready();

@@ -4,6 +4,7 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import angularMeteorAuth from 'angular-meteor-auth';
 import uiRouter from 'angular-ui-router';
+import uiRouterExtras from 'ui-router-extras';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
@@ -38,6 +39,7 @@ export default angular.module(name, [
   angularMeteor,
   angularMeteorAuth,
   uiRouter,
+  'ct.ui.router.extras',
   uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
