@@ -39,6 +39,7 @@ class Stage2 {
     this.currentDocId = '';
     this.userData = {};
     this.pages = [];
+    this.snippetCount = 0;
 
     this.userData = this.uds.get();//UserData.findOne();
     this.pages = UserBookmarks.find().fetch();
@@ -50,7 +51,8 @@ class Stage2 {
       this.userData = this.uds.get();//UserData.findOne();
       this.pages = UserBookmarks.find().fetch();
       this.currentDocId = this.userData.session.docId;
-      //console.log('Stage2 AUTORUN!', this.userData, this.currentdocId);
+      this.snippetCount = UserSnippets.find({ docId: this.currentDocId }).count();
+      //console.log('Stage2 AUTORUN!', this.userData, this.currentDocId, this.snippetCount);
     });
 
     this.helpers({
@@ -58,7 +60,7 @@ class Stage2 {
         return UserBookmarks.find();
       },
       snippetListPerPage: () => {
-        return UserSnippets.find({ docId: this.currentDocId });
+        return UserSnippets.find({ docId: this.getReactively('currentDocId') });
       },
       snippetListGlobal: () => {
         return UserSnippets.find();
@@ -73,6 +75,7 @@ class Stage2 {
   deleteSnippet(index) {
     this.sts.removeSnippet(index, (err, res) => {
       if (!err) {
+        this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
         console.log('Snippet deleted successfully!', index);
       }
       else {
@@ -86,9 +89,12 @@ class Stage2 {
     this.$rootScope.docName = this.url2docName(this.url);
     this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
     this.currentDocId = this.$rootScope.docId;
+
     this.uds.set({ session: { docId: this.currentDocId }});
+    console.log('changePage');
 
     this.$rootScope.$broadcast('changeIframePage', this.$rootScope.docName);
+    this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
   }
 }
 

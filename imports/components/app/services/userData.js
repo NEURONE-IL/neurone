@@ -1,15 +1,11 @@
-import angularMeteorPromiser from 'angular-meteor-promiser';
+import Utils from '../../globalUtils';
 
 import { UserData } from '../../../api/userData/index';
 
 class UserDataService {
-  constructor($q, $promiser) {
+  constructor() {
     'ngInject';
 
-    this.$q = $q;
-    this.$promiser = $promiser;
-
-    //this.prm = this.$promiser.subscribe('userData');
     this.userDataObject = {};
     this._userData = null;
     this._isSubscribed = false;
@@ -18,7 +14,7 @@ class UserDataService {
       onReady: () => {
         this._isSubscribed = true;
         this._userData = UserData.findOne();
-        console.log('UserDataService INIT!', this._userData);
+        Utils.logToConsole('UserDataService INIT!', this._userData);
       },
       onStop: () => {
         this._isSubscribed = false;
@@ -29,7 +25,7 @@ class UserDataService {
     Meteor.autorun(() => {
       if (this.hdl.ready()) {
         this._userData = UserData.findOne();
-        //console.log('UserDataService AUTORUN!', this._userData);  
+        Utils.logToConsole('UserDataService AUTORUN!', this._userData);  
       }
     });
   }
@@ -43,7 +39,7 @@ class UserDataService {
   get() {
     if (this.hdl.ready()) {
       this._userData = UserData.findOne();
-      //console.log('UserDataService GET!', this._userData);
+      Utils.logToConsole('UserDataService GET!', this._userData);
       return UserData.findOne();
     }
   }
@@ -55,7 +51,7 @@ class UserDataService {
       angular.merge(dataObject, property);
       delete dataObject._id;
       UserData.update({ _id: dataId }, { $set: dataObject });
-      console.log('Update!', dataId, dataObject, property, this._userData);
+      Utils.logToConsole('Update!', dataId, dataObject, property, this._userData);
     }
   }
 }

@@ -8,7 +8,7 @@ import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
 import { UserBookmarks, UserSnippets } from '../../userCollections';
-import { UserData } from '../../../api/userData/index';
+//import { UserData } from '../../../api/userData/index';
 
 import { name as ModalService } from '../../modules/modal';
 
@@ -56,7 +56,7 @@ class Navigation {
     this.currentDocId = '';
 
     var p1 = $promiser.subscribe('userBookmarks');
-    var p2 = $promiser.subscribe('userData');
+    var p2 = $promiser.subscribe('userSnippets');
 
     this.navbarMessageId = 'navbarMessage';
     this.$rootScope._navbarMessage = new ReactiveVar('');
@@ -69,6 +69,7 @@ class Navigation {
     this.$rootScope._enableBookmarkList = new ReactiveVar(false);
     this.$rootScope._enableBookmark = new ReactiveVar(false);
     this.$rootScope._enableUnbookmark = new ReactiveVar(false);
+    this.$rootScope._enableSnippet = new ReactiveVar(false);
     this.$rootScope._enableSnippetCounter = new ReactiveVar(false);
     this.$rootScope._enableReady = new ReactiveVar(false);
     this.$rootScope._stageHome = new ReactiveVar('/home');
@@ -111,20 +112,34 @@ class Navigation {
           //var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
           //this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
           this.sts.bindWordCounter();
+
           this.$rootScope._stageHome.set('/stage2');
           //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
         }
         else {
+          this.$rootScope._enableSnippet.set(data);
           this.sts.unbindWordCounter();
           this.$rootScope._stageHome.set('/home');
         }
       });
-    
+
+      // dgacitua: Set snippet elements
+      this.$rootScope.$on('updateSnippetButton', (event, data) => {
+        if (data !== false) {
+          var snippetCount = UserSnippets.find({ docId: data }).count();
+
+          if (snippetCount < this.userData.configs.snippetsPerPage) this.$rootScope._enableSnippet.set(true);
+          else this.$rootScope._enableSnippet.set(false);
+
+          console.log('enableSnippet', snippetCount, data);
+        }
+      });
+
       this.autorun(() => {
         this.userData = this.uds.get();//UserData.findOne();
         this.userDataId = this.userData ? this.userData._id : '';
         this.currentDocId = this.userData.session.docId;
-        console.log('Navigation AUTORUN!', this.userDataId, this.userData, this.currentDocId);
+        //console.log('Navigation AUTORUN!', this.userDataId, this.userData, this.currentDocId);
       });
 
       this.helpers({
@@ -153,7 +168,7 @@ class Navigation {
           return this.$rootScope._enableBookmarkList.get();
         },
         enableSnippet: () => {
-          return this.$rootScope._enableSnippetCounter.get();
+          return this.$rootScope._enableSnippet.get();
         },
         enableSnippetCounter: () => {
           return this.$rootScope._enableSnippetCounter.get();
@@ -168,13 +183,9 @@ class Navigation {
     });
   }
 
-  updateSubscription(collection, object, properties) {
-    console.log(object && object._id);
-    collection.update({ _id: object._id }, { $set: properties });
-  }
-
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
+      this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
       this.navbarMessage = res ? res : err;
       Utils.notificationFadeout(this.navbarMessageId);
       this.$scope.$apply();
