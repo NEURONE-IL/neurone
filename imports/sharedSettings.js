@@ -1,4 +1,5 @@
 export default SharedSettings = {
+  locale: 'fi',
   maxBookmarks: 3,
   snippetsPerPage: 3,
   snippetLength: 15,

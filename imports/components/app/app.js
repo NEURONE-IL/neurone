@@ -3,8 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import angularMeteorAuth from 'angular-meteor-auth';
+import angularMeteorPromiser from 'angular-meteor-promiser';
 import uiRouter from 'angular-ui-router';
-import uiRouterExtras from 'ui-router-extras';
+//import uiRouterExtras from 'ui-router-extras';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
@@ -22,6 +23,7 @@ import { name as Stages } from '../session/stages';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as AuthService } from './services/auth';
+import { name as UserDataService } from './services/userData';
 import { name as ActionBlocker } from './services/actionBlocker';
 import { name as Flow } from './services/flow';
 import { name as Logger } from '../logger/logger';
@@ -38,12 +40,14 @@ const name = 'app';
 export default angular.module(name, [
   angularMeteor,
   angularMeteorAuth,
+  'angular-meteor-promiser',
   uiRouter,
-  'ct.ui.router.extras',
+  //'ct.ui.router.extras',
   uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
   AuthService,
+  UserDataService,
   Logger,
   Flow,
   ActionBlocker,

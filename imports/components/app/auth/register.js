@@ -21,6 +21,21 @@ class Register {
       username: '',
       email: '',
       password: '',
+      role: '',
+      configs: {
+        locale: '',
+        task: '',
+        topic: '',
+        maxBookmarks: 0,
+        snippetsPerPage: 0,
+        snippetLength: 0
+      },
+      session: {
+        docId: '',
+        stage: '',
+        bookmarkCount: 0,
+        snippetCount: 0
+      },
       profile: {}
     };
 
@@ -28,10 +43,11 @@ class Register {
   }
 
   register(userRole) {
-    this.credentials.profile.role = userRole ? userRole : 'undefined';
-    this.credentials.profile.maxBookmarks = Settings.maxBookmarks || 3;
-    this.credentials.profile.snippetsPerPage = Settings.snippetsPerPage || 3;
-    this.credentials.profile.snippetLength = Settings.snippetLength || 15;
+    this.credentials.role = userRole ? userRole : 'undefined';
+    this.credentials.configs.maxBookmarks = Settings.locale || 'en';
+    this.credentials.configs.maxBookmarks = Settings.maxBookmarks || 3;
+    this.credentials.configs.snippetsPerPage = Settings.snippetsPerPage || 3;
+    this.credentials.configs.snippetLength = Settings.snippetLength || 15;
     
     this.auth.register(this.credentials, (err, res) => {
       if (!err) {

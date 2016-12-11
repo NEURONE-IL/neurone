@@ -5,6 +5,7 @@ import Utils from '../lib/utils';
 import { Snippets } from '../../imports/api/snippets/index';
 import { Queries } from '../../imports/api/queries/index';
 import { Bookmarks } from '../../imports/api/bookmarks/index';
+import { UserData } from '../../imports/api/userData/index';
 
 Meteor.methods({
   getSnippets: function(limit) {
@@ -49,18 +50,10 @@ Meteor.methods({
 });
 
 Meteor.publish({
-  currentUser: function() {
-    if (this.userId) {
-      return Meteor.users.find(this.userId, {fields: {'username': 1, 'emails': 1, 'profile': 1}});
-    }
-    else {
-      this.ready();
-    }
-  },
   userBookmarks: function() {
     if (this.userId) {
-      var user = Meteor.users.findOne(this.userId),
-         limit = user.profile.maxBookmarks,
+      var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
+         limit = user.configs.maxBookmarks,
           pipe = [
                   { $match: { userId: this.userId }},
                   { $sort: { serverTimestamp: -1 }},
@@ -79,8 +72,8 @@ Meteor.publish({
   userSnippets: function() {
     if (this.userId) {
       // dgacitua: http://stackoverflow.com/a/40266075
-      var user = Meteor.users.findOne(this.userId),
-         limit = user.profile.snippetsPerPage,
+      var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
+         limit = user.configs.snippetsPerPage,
                pipe = [
                         { $match: { userId: this.userId }},
                         { $sort: { serverTimestamp: -1 }},
