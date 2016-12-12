@@ -146,7 +146,7 @@ class Navigation {
         this._userDataId = this.uds.get()._id || '';
         this._currentDocId = this.uds.get().session.docId || '';
         this._stageNumber = this.uds.get().session.stageNumber || 0;
-        console.log('Navigation AUTORUN!', this._currentDocId, this._stageNumber);
+        //console.log('Navigation AUTORUN!', this._currentDocId, this._stageNumber);
       });
 
       this.helpers({

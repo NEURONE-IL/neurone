@@ -10,56 +10,45 @@ class UserDataService {
     this._userData = null;
     this._isSubscribed = false;
 
-    /*
-    this.hdl = Meteor.subscribe('userData', {
-      onReady: () => {
-        this._isSubscribed = true;
-        this._userData = UserData.findOne();
-        Utils.logToConsole('UserDataService INIT!', this._userData);
-      },
-      onStop: () => {
-        this._isSubscribed = false;
-        this._userData = null;
-      }
-    });
-    */
-
     this.hdl = $promiser.subscribe('userData');
     
     Meteor.autorun(() => {
-      //if (this.hdl.ready()) {
-        this._userData = UserData.findOne();
-        Utils.logToConsole('UserDataService AUTORUN!', this._userData);  
-      //}
+      this._userData = UserData.findOne();
     });
   }
 
   check() {
-    console.log('UserDataService CHECK!', this.hdl);
     return this.hdl;
   }
 
   get() {
-    //if (this.hdl.ready()) {
-      this._userData = UserData.findOne();
-      Utils.logToConsole('UserDataService GET!', this._userData);
-      return UserData.findOne();
-    //}
+    return UserData.findOne();
+  }
+
+  getSession() {
+    return UserData.findOne().session;
+  }
+
+  getConfigs() {
+    return UserData.findOne().configs;
   }
 
   set(property) {
-    //if (this.hdl.ready()) {
-      var dataId = this._userData._id;
-      //var dataObject = angular.copy(this._userData);
-      //angular.merge(dataObject, property);
-      //delete dataObject._id;
+    var dataId = this._userData._id;
+    UserData.update({ _id: dataId }, { $set: property }, (err, res) => {
+      if (!err) {
+        Utils.logToConsole('UserDataService SET!', property);
+      }
+    });
+  }
 
-      UserData.update({ _id: dataId }, { $set: property }, (err, res) => {
-        if (!err) {
-          console.log('Update!', property);
-        }
-      });
-    //}
+  setSession(property) {
+    var dataId = this._userData._id;
+    UserData.update({ _id: dataId }, { $set: { session: property }}, (err, res) => {
+      if (!err) {
+        Utils.logToConsole('UserDataService SESSION SET!', property);
+      }
+    });
   }
 }
 

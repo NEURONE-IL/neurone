@@ -69,34 +69,56 @@ class Stage2 {
   }
 
   loadForms() {
-    this.call('getForm', 'stage2', (err, res) => {
-      if (!err) {
-        this.pages.forEach((page, idx) => {
+    this.pages.forEach((page, idx) => {
+      this.call('getForm', 'stage2', (err, res) => {
+        if (!err) {
           var pageForm = {
             index: idx,
             docId: page.docId,
-            questions: angular.copy(res.questions)
+            questions: res.questions
           };
 
           this.forms.push(pageForm);
-        });
-
-        console.log('Forms Ready!', this.forms);
-      }
-      else {
-        console.error('Error while loading Stage2 forms', err);
-      }
+        }
+        else {
+          console.error('Error while loading Stage2 forms', err);
+        }
+      });
     });
+    
+    console.log('Forms Ready!', this.forms);
   }
 
   sendForms() {
     if (!!Meteor.userId()) {
+      var answerArray = [];
+
+      this.forms.forEach((pageForm) => {
+        console.log(pageForm);
+        pageForm.questions.forEach((question) => {
+          var response = {
+            index: pageForm.index,
+            docId: pageForm.docId,
+            type: question.type,
+            questionId: question.questionId,
+            title: question.title,
+            answer: question.answer || ''
+          };
+
+          if (question.otherAnswer) {
+            response.otherAnswer = question.otherAnswer;
+          }
+
+          answerArray.push(response);
+        });
+      });
+
       var response = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         action: 'FormResponse',
         reason: 'ReadyStage2',
-        answer: this.forms,
+        answer: answerArray,
         localTimestamp: Utils.getTimestamp()
       }
 
