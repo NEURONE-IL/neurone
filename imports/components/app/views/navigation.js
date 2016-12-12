@@ -51,72 +51,28 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
-    this._userData = null;
-    this._userDataId = '';
-    this._currentDocId = '';
-    this._stageNumber = 0;
-
     var p1 = $promiser.subscribe('userBookmarks');
     var p2 = $promiser.subscribe('userSnippets');
     var p3 = this.uds.check();
 
     this.navbarMessageId = 'navbarMessage';
-    this.$rootScope._navbarMessage = new ReactiveVar('');
-    Utils.notificationFadeout(this.navbarMessageId);
 
-    this.$rootScope._counters = new ReactiveObject({});
-    this.$rootScope._counters.defineProperty('bookmarks', UserBookmarks.find().count());
-    this.$rootScope._counters.defineProperty('words', 0);
-
-    this.$rootScope._enableBookmarkList = new ReactiveVar(false);
-    this.$rootScope._enableBookmark = new ReactiveVar(false);
-    this.$rootScope._enableUnbookmark = new ReactiveVar(false);
-    this.$rootScope._enableSnippet = new ReactiveVar(false);
-    this.$rootScope._enableSnippetCounter = new ReactiveVar(false);
-    this.$rootScope._enableReady = new ReactiveVar(false);
-    this.$rootScope._stageHome = new ReactiveVar('/home');
-
+    this._counters = new ReactiveObject({});
+    
     $q.all([p1, p2, p3]).then((res) => {
-      // dgacitua: Set bookmark list
-      this.$rootScope.$on('updateBookmarkList', (event, data) => {
-        this.$rootScope._enableBookmarkList.set(data);
+      this.uds.setSession({ statusMessage: '' });
+      Utils.notificationFadeout(this.navbarMessageId);
 
-        if (data === true) {
-          var limit = this._userData && this._userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().configs.maxBookmarks;
-          this.uds.set({ 'session.bookmarkCount': UserBookmarks.find().count() });
-          this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
-
-          // TODO code flow
-          this.uds.set({ 'session.stageNumber': 1 });
-
-          this.$rootScope._stageHome.set('/search');
-          //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
-          var setReady = (this.$rootScope._counters.bookmarks >= limit) ? true : false;
-          this.uds.setSession({ readyButton: setReady });
-        }
-        else {
-          this.$rootScope._stageHome.set('/home');
-        }
-      });
-
-      // dgacitua: Set bookmark/unbookmark button
-      this.$rootScope.$on('updateBookmarkButton', (event, data) => {
-        if (data === true) {
-          this.checkBookmarkStatus();
-        }
-        else {
-          this.$rootScope._enableBookmark.set(false);
-          this.$rootScope._enableUnbookmark.set(false);
-        }
-      });
+      this._counters.defineProperty('bookmarks', UserBookmarks.find().count());
+      this._counters.defineProperty('words', 0);
 
       // dgacitua: Set snippet button
       this.$rootScope.$on('updateSnippetButton', (event, data) => {
         if (data !== false) {
           var snippetCount = UserSnippets.find({ docId: data }).count();
 
-          if (snippetCount < this._userData.configs.snippetsPerPage) this.$rootScope._enableSnippet.set(true);
-          else this.$rootScope._enableSnippet.set(false);
+          if (snippetCount < this.uds.getConfigs().snippetsPerPage) this.uds.setSession({ snippetButton: true });
+          else this.uds.setSession({ snippetButton: false });
 
           console.log('enableSnippet', snippetCount, data);
         }
@@ -129,7 +85,7 @@ class Navigation {
           // TODO
         }
         else if (stage === 1) {
-          this.checkBookmarkStatus();
+          //this.checkBookmarkStatus();
         }
         else if (stage === 2) {
           this.checkSnippetStatus();
@@ -142,15 +98,11 @@ class Navigation {
         }
       });
 
-      this.autorun(() => {
-        this._userData = this.uds.get();//UserData.findOne();
-        this._userDataId = this.uds.get()._id || '';
-        this._currentDocId = this.uds.get().session.docId || '';
-        this._stageNumber = this.uds.get().session.stageNumber || 0;
-        //console.log('Navigation AUTORUN!', this._currentDocId, this._stageNumber);
+      this.$rootScope.$on('updateNavigation', (event, data) => {
+        this.checkBookmarkStatus();
       });
 
-      this.helpers({
+     this.helpers({
         isLoggedIn: () => {
           return !!Meteor.userId();
         },
@@ -158,22 +110,22 @@ class Navigation {
           return Meteor.user();
         },
         counters: () => {
-          return this.$rootScope._counters;//this.getReactively('_counters');
+          return this._counters;//this.getReactively('_counters');
         },
         statusMessage: () => {
-          return this.$rootScope._navbarMessage.get();
+          return this.uds.getSession().statusMessage;//this.$rootScope._navbarMessage.get();
         },
         bookmarkList: () => {
           return UserBookmarks.find();//this.$rootScope._bml.list();//this.getReactively('_bookmarkList');//this.getReactively('_bookmarkList');
         },
         enableBookmark: () => {
-          return this.$rootScope._enableBookmark.get();//this.getReactively('_enableBookmark');
+          return this.uds.getSession().bookmarkButton;//this.$rootScope._enableBookmark.get();//this.getReactively('_enableBookmark');
         },
         enableUnbookmark: () => {
-          return this.$rootScope._enableUnbookmark.get();//this.getReactively('_enableUnbookmark');
+          return this.uds.getSession().unbookmarkButton;//this.$rootScope._enableUnbookmark.get();//this.getReactively('_enableUnbookmark');
         },
         enableBookmarkList: () => {
-          return this.$rootScope._enableBookmarkList.get();
+          return this.uds.getSession().bookmarkList;//this.$rootScope._enableBookmarkList.get();
         },
         enableSnippet: () => {
           return this.uds.getSession().snippetButton;//this.$rootScope._enableSnippet.get();
@@ -196,8 +148,9 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
+      //this.navbarMessage = res ? res : err;
       this.checkSnippetStatus();
-      this.navbarMessage = res ? res : err;
+      this.uds.setSession({ statusMessage: (res ? res : err) });
       Utils.notificationFadeout(this.navbarMessageId);
       this.$scope.$apply();
     });
@@ -205,39 +158,48 @@ class Navigation {
 
   checkBookmarkStatus() {
     if (!!Meteor.userId()) {
-      var limit = this._userData && this._userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
-      this.updateSubscription(UserData, this._userData, { 'session.bookmarkCount': UserBookmarks.find().count() });
-      this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
-
+      var limit = this.uds.getConfigs().maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
+      this.uds.setSession({ bookmarkCount: UserBookmarks.find().count() });
+      this._counters.bookmarks = this.uds.getSession().bookmarkCount;
       //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
-      var setReady = (this.$rootScope._counters.bookmarks >= limit) ? true : false;
+      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
       this.uds.setSession({ readyButton: setReady });
 
-      this.bms.isBookmarked((err2, res2) => {
-        if (!err2) {
-          //console.log('checkBookmarkStatus', res2, this.$rootScope._counters.bookmarks, limit);
-          if (this.$rootScope._counters.bookmarks > limit) {
-            this.$rootScope._enableBookmark.set(false);
-            this.$rootScope._enableUnbookmark.set(false);
+      this.bms.isBookmarked((err, res) => {
+        if (!err) {
+          //console.log('checkBookmarkStatus', res, this.$rootScope._counters.bookmarks, limit);
+          if (this.uds.getSession().bookmarkCount > limit) {
+            this.uds.setSession({ bookmarkButton: false });
+            this.uds.setSession({ unbookmarkButton: false });
+            //this.$rootScope._enableBookmark.set(false);
+            //this.$rootScope._enableUnbookmark.set(false);
           }
-          else if (this.$rootScope._counters.bookmarks == limit) {
-            if (res2 === true) {
-              this.$rootScope._enableBookmark.set(false);
-              this.$rootScope._enableUnbookmark.set(true);
+          else if (this.uds.getSession().bookmarkCount === limit) {
+            if (res === true) {
+              this.uds.setSession({ bookmarkButton: false });
+              this.uds.setSession({ unbookmarkButton: true });
+              //this.$rootScope._enableBookmark.set(false);
+              //this.$rootScope._enableUnbookmark.set(true);
             }
             else {
-              this.$rootScope._enableBookmark.set(false);
-              this.$rootScope._enableUnbookmark.set(false);
+              this.uds.setSession({ bookmarkButton: false });
+              this.uds.setSession({ unbookmarkButton: false });
+              //this.$rootScope._enableBookmark.set(false);
+              //this.$rootScope._enableUnbookmark.set(false);
             }
           }
           else {
-            if (res2 === true) {
-              this.$rootScope._enableBookmark.set(false);
-              this.$rootScope._enableUnbookmark.set(true);
+            if (res === true) {
+              this.uds.setSession({ bookmarkButton: false });
+              this.uds.setSession({ unbookmarkButton: true });
+              //this.$rootScope._enableBookmark.set(false);
+              //this.$rootScope._enableUnbookmark.set(true);
             }
             else {
-              this.$rootScope._enableBookmark.set(true);
-              this.$rootScope._enableUnbookmark.set(false);
+              this.uds.setSession({ bookmarkButton: true });
+              this.uds.setSession({ unbookmarkButton: false });
+              //this.$rootScope._enableBookmark.set(true);
+              //this.$rootScope._enableUnbookmark.set(false);
             }
           }
         }
@@ -264,13 +226,12 @@ class Navigation {
       this.bookmarkAction((err, res) => {
         if (!err) {
           this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
-            this.$rootScope._navbarMessage.set(res ? res : err);
+            //this.$rootScope._navbarMessage.set(res ? res : err);
+            this.uds.setSession({ statusMessage: (res ? res : err) });
             Utils.notificationFadeout(this.navbarMessageId);
             this.$scope.$apply();
             
-            if (!err) {
-              this.checkBookmarkStatus();
-            }
+            if (!err) this.checkBookmarkStatus();
           });
         }
       });
@@ -280,13 +241,12 @@ class Navigation {
   removeBookmark() {
     if (!!Meteor.userId()) {
       this.bms.removeBookmark((err, res) => {
-        this.$rootScope._navbarMessage.set(res ? res : err);
+        //this.$rootScope._navbarMessage.set(res ? res : err);
+        this.uds.setSession({ statusMessage: (res ? res : err) });
         Utils.notificationFadeout(this.navbarMessageId);
         this.$scope.$apply();
 
-        if (!err) {
-          this.checkBookmarkStatus();
-        }
+        if (!err) this.checkBookmarkStatus();
       });
     }
   }

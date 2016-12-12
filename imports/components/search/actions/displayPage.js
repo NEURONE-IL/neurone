@@ -6,42 +6,38 @@ import uiRouter from 'angular-ui-router';
 import template from './displayPage.html';
 
 class DisplayPage {
-  constructor($scope, $rootScope, $reactive, $state, $stateParams) {
+  constructor($scope, $rootScope, $reactive, $state, $stateParams, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
+
+    this.uds = UserDataService;
     
     $scope.$on('$stateChangeStart', (event) => {
-      this.$rootScope.$broadcast('updateBookmarkList', false);
-      this.$rootScope.$broadcast('updateBookmarkButton', false);
+      //this.$rootScope.$broadcast('updateBookmarkList', false);
+      this.uds.setSession({ bookmarkButton: false });
+      this.uds.setSession({ unbookmarkButton: false });
+      this.uds.setSession({ bookmarkList: false });
+      this.uds.setSession({ readyButton: false });
+      this.uds.setSession({ stageHome: '/home' });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.$rootScope.$broadcast('updateBookmarkList', true);
-      this.$rootScope.$broadcast('updateBookmarkButton', true);
+      //this.$rootScope.$broadcast('updateBookmarkList', true);
+      var limit = this.uds.getConfigs().maxBookmarks;
+      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
+
+      this.uds.setSession({ bookmarkList: true });
+      this.uds.setSession({ stageNumber: 1 });
+      this.uds.setSession({ readyButton: setReady });
+      this.uds.setSession({ stageHome: '/search' });
+
+      this.$rootScope.$broadcast('updateNavigation');
+      this.$rootScope.$broadcast('updateBookmarkButton');
     });
 
     $reactive(this).attach($scope);
-  }
-
-  // dgacitua: Execute on iframe start
-  startTracking() {
-    var data = {
-      snippets: false,
-      bookmarks: true
-    };
-
-    this.$rootScope.$broadcast('setDocumentHelpers', data);
-  }
-
-  stopTracking() {
-    var data = {
-      snippets: false,
-      bookmarks: true
-    };
-    
-    this.$rootScope.$broadcast('setDocumentHelpers', data);
   }
 }
 
@@ -79,6 +75,10 @@ function config($stateProvider) {
       },
       user: ($auth) => {
         return $auth.requireUser();
+      },
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
       }
     }
   });

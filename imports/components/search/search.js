@@ -11,19 +11,34 @@ import { name as DisplayPage } from './actions/displayPage';
 import { name as DisplayIframe } from './iframe/displayIframe';
 
 class Search {
-  constructor($scope, $rootScope, $reactive, $state, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, UserDataService, QueryTrackService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
     this.qts = QueryTrackService;
+    this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.$rootScope.$broadcast('updateBookmarkList', false);
+      //this.$rootScope.$broadcast('updateBookmarkList', false);
+      this.uds.setSession({ bookmarkButton: false });
+      this.uds.setSession({ unbookmarkButton: false });
+      this.uds.setSession({ bookmarkList: false });
+      this.uds.setSession({ readyButton: false });
+      this.uds.setSession({ stageHome: '/home' });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.$rootScope.$broadcast('updateBookmarkList', true);
+      //this.$rootScope.$broadcast('updateBookmarkList', true);
+      var limit = this.uds.getConfigs().maxBookmarks;
+      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
+
+      this.uds.setSession({ bookmarkList: true });
+      this.uds.setSession({ stageNumber: 1 });
+      this.uds.setSession({ readyButton: setReady });
+      this.uds.setSession({ stageHome: '/search' });
+
+      this.$rootScope.$broadcast('updateNavigation');
     });
 
     $reactive(this).attach($scope);
@@ -59,11 +74,10 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider
-    .state('search', {
-      url: '/search',
-      template: '<search></search>',
-      resolve: {
+  $stateProvider.state('search', {
+    url: '/search',
+    template: '<search></search>',
+    resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
@@ -71,6 +85,10 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
+      },
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
       }
     }
   });
