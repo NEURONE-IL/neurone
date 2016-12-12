@@ -30,25 +30,7 @@ class Stage2 {
     });
 
     $rootScope.$on('readyStage2', (event, data) => {
-      if (!!Meteor.userId()) {
-        var response = {
-          userId: Meteor.userId(),
-          username: Meteor.user().username || Meteor.user().emails[0].address,
-          action: 'FormResponse',
-          reason: 'ReadyStage2',
-          answer: this.forms,
-          localTimestamp: Utils.getTimestamp()
-        }
-
-        this.call('storeFormResponse', response, (err, res) => {
-          if (!err) {
-            console.log('Answers sent to server!');
-          }
-          else {
-            console.error('Error while sending answers', err);
-          }
-        });
-      }
+      this.sendForms();
     });
 
     $reactive(this).attach($scope);
@@ -56,30 +38,15 @@ class Stage2 {
     this.currentDocId = '';
     this.userData = {};
     this.pages = [];
-    this.snippetCount = 0;
-
     this.forms = [];
-
-    this.call('getForm', 'stage2', (err, res) => {
-      if (!err) {
-        this.pages.forEach((page, idx) => {
-          var pageForm = angular.copy(res);
-          pageForm.docId = page.docId;
-
-          this.forms.push(pageForm);
-        });
-      }
-      else {
-        console.error('Error while loading Stage2 forms', err);
-      }
-    });
+    this.snippetCount = 0;
 
     this.userData = this.uds.get();
     this.pages = UserBookmarks.find().fetch();
     this.changePage(0);
-
+    this.loadForms();
     this.meteorReady = true;
-    
+
     this.autorun(() => {
       this.userData = this.uds.get();
       this.pages = UserBookmarks.find().fetch();
@@ -99,6 +66,49 @@ class Stage2 {
         return UserSnippets.find();
       }
     });
+  }
+
+  loadForms() {
+    this.call('getForm', 'stage2', (err, res) => {
+      if (!err) {
+        this.pages.forEach((page, idx) => {
+          var pageForm = {
+            index: idx,
+            docId: page.docId,
+            questions: angular.copy(res.questions)
+          };
+
+          this.forms.push(pageForm);
+        });
+
+        console.log('Forms Ready!', this.forms);
+      }
+      else {
+        console.error('Error while loading Stage2 forms', err);
+      }
+    });
+  }
+
+  sendForms() {
+    if (!!Meteor.userId()) {
+      var response = {
+        userId: Meteor.userId(),
+        username: Meteor.user().username || Meteor.user().emails[0].address,
+        action: 'FormResponse',
+        reason: 'ReadyStage2',
+        answer: this.forms,
+        localTimestamp: Utils.getTimestamp()
+      }
+
+      this.call('storeFormResponse', response, (err, res) => {
+        if (!err) {
+          console.log('Answers sent to server!', response);
+        }
+        else {
+          console.error('Error while sending answers', err);
+        }
+      });
+    }
   }
 
   url2docName(url) {
@@ -124,10 +134,11 @@ class Stage2 {
     this.currentDocId = this.$rootScope.docId;
 
     this.uds.set({ 'session.docId': this.currentDocId });
-    console.log('changePage');
+    console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docName, this.$rootScope.docId);
 
-    this.$rootScope.$broadcast('changeIframePage', this.$rootScope.docName);
+    this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
     this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
+    this.meteorReady = true;
   }
 }
 
@@ -138,11 +149,7 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Stage2,
-  bindings: {
-    userBookmarksSub: '<',
-    userSnippetsSub: '<'
-  }
+  controller: Stage2
 })
 .component('pageview', {
   templateUrl: 'stage2/pageview.html',
@@ -160,36 +167,34 @@ function config($stateProvider) {
   'ngInject';
 
   // dgacitua: http://stackoverflow.com/a/37964199
-  $stateProvider
-    .state('stage2', {
-      template: '<stage2></stage2>',
-      //component: name,
-      resolve: {
-        currentUser($q) {
-          if (Meteor.userId() === null) {
-            return $q.reject('AUTH_REQUIRED');
-          }
-          else {
-            return $q.resolve();
-          }
-        },
-        userBookmarksSub($promiser) {
-          return $promiser.subscribe('userBookmarks');
-        },
-        userSnippetsSub($promiser) {
-          return $promiser.subscribe('userSnippets');
-        }
+  $stateProvider.state('stage2', {
+    url: '/stage2',
+    views: {
+      '': {
+        template: '<stage2></stage2>'
+      },
+      'pageview@stage2': {
+        template: '<pageview></pageview>'
+      },
+      'snippetbar@stage2': {
+        template: '<snippetbar></snippetbar>'
       }
-    })
-    .state('stage2.parts', {
-      url: '/stage2',
-      views: {
-        'pageview@stage2': {
-          template: '<pageview></pageview>'
-        },
-        'snippetbar@stage2': {
-          template: '<snippetbar></snippetbar>'
+    },
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
         }
+        else {
+          return $q.resolve();
+        }
+      },
+      userBookmarksSub($promiser) {
+        return $promiser.subscribe('userBookmarks');
+      },
+      userSnippetsSub($promiser) {
+        return $promiser.subscribe('userSnippets');
       }
-    });
+    }
+  });
 };

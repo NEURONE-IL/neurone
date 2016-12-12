@@ -1,7 +1,7 @@
 <div class="container-fluid container-wrapper">
   <div class="row container-wrapper">
     <div class="col-lg-9 col-md-9 col-sm-9 div-fill">
-      <div ui-view="pageview" ng-if="stage2.meteorReady" class="div-fill"></div>
+      <div ui-view="pageview" class="div-fill"></div>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 container-wrapper">
       <div ui-view="snippetbar"></div>
@@ -10,7 +10,7 @@
 </div>
 
 <script type="text/ng-template" id="stage2/pageview.html">
-  <div ui-view class="div-fill">
+  <div ui-view class="div-fill" ng-if="stage2.meteorReady">
     <display-iframe></display-iframe>
   </div>
 </script>

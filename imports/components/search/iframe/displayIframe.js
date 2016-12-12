@@ -31,6 +31,7 @@ class DisplayIframe {
 		};
 
 		this.$rootScope.$on('changeIframePage', (event, data) => {
+			console.log('changeIframePage', data);
 			this.loadPage(data);
 		});
 
@@ -69,6 +70,7 @@ class DisplayIframe {
 	}
 
 	loadPage(pageUrl) {
+		console.log('loadPage', pageUrl);
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', pageUrl, (err, res) => {
 			if (!err) {
