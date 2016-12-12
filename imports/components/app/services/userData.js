@@ -3,13 +3,14 @@ import Utils from '../../globalUtils';
 import { UserData } from '../../../api/userData/index';
 
 class UserDataService {
-  constructor() {
+  constructor($promiser) {
     'ngInject';
 
     this.userDataObject = {};
     this._userData = null;
     this._isSubscribed = false;
 
+    /*
     this.hdl = Meteor.subscribe('userData', {
       onReady: () => {
         this._isSubscribed = true;
@@ -21,38 +22,44 @@ class UserDataService {
         this._userData = null;
       }
     });
+    */
+
+    this.hdl = $promiser.subscribe('userData');
     
     Meteor.autorun(() => {
-      if (this.hdl.ready()) {
+      //if (this.hdl.ready()) {
         this._userData = UserData.findOne();
         Utils.logToConsole('UserDataService AUTORUN!', this._userData);  
-      }
+      //}
     });
   }
 
-  checkCallback(callback) {
-    if (this.hdl.ready()) callback(null, true);
-    else if (this.hdl.stop()) callback(null, false);
-    else callback(false);
+  check() {
+    console.log('UserDataService CHECK!', this.hdl);
+    return this.hdl;
   }
 
   get() {
-    if (this.hdl.ready()) {
+    //if (this.hdl.ready()) {
       this._userData = UserData.findOne();
       Utils.logToConsole('UserDataService GET!', this._userData);
       return UserData.findOne();
-    }
+    //}
   }
 
   set(property) {
-    if (this.hdl.ready()) {
+    //if (this.hdl.ready()) {
       var dataId = this._userData._id;
-      var dataObject = angular.copy(this._userData);
-      angular.merge(dataObject, property);
-      delete dataObject._id;
-      UserData.update({ _id: dataId }, { $set: dataObject });
-      Utils.logToConsole('Update!', dataId, dataObject, property, this._userData);
-    }
+      //var dataObject = angular.copy(this._userData);
+      //angular.merge(dataObject, property);
+      //delete dataObject._id;
+
+      UserData.update({ _id: dataId }, { $set: property }, (err, res) => {
+        if (!err) {
+          console.log('Update!', property);
+        }
+      });
+    //}
   }
 }
 

@@ -9,6 +9,7 @@ import { Queries } from '../imports/api/queries/index';
 import { Bookmarks } from '../imports/api/bookmarks/index';
 import { VisitedLinks } from '../imports/api/visitedLinks/index';
 import { SessionLogs } from '../imports/api/sessionLogs/index';
+import { FormAnswers } from '../imports/api/formAnswers/index';
 import { EventLogs } from '../imports/api/eventLogs/index';
 
 describe('NEURONE API', function() {
@@ -225,5 +226,43 @@ describe('NEURONE API', function() {
         });
       });
     });
+
+    // dgacitua: Test form answers
+    describe('storeFormAnswer()', function() {
+      it('should store a Form Answer', function(done) {
+        var responseObject = {
+          userId: 'MQZMozeQfgDtxEgQr',
+          username: 'test',
+          action: 'FormResponse',
+          reason: 'MyForm',
+          answer: [],
+          localTimestamp: 1480200315688
+        };
+
+        Meteor.call('storeFormResponse', responseObject, (err, res) => {
+          if (!err) {
+            chai.assert.isObject(res, 'a response is delivered');
+            chai.assert.propertyVal(res, 'status', 'success', 'response is successful');
+
+            var response = FormAnswers.findOne({}, {sort: {serverTimestamp: -1}});
+            chai.assert.isObject(response, 'a Form Response is saved');
+            chai.assert.property(response, '_id', 'stored Form Response has a valid id');
+            chai.assert.propertyVal(response, 'reason', responseObject.reason, 'stored FormResponse has the correct text');
+
+            var event = EventLogs.findOne({}, {sort: {serverTimestamp: -1}});
+            chai.assert.isObject(event, 'an Event is saved');
+            chai.assert.property(event, '_id', 'stored Event has a valid id');
+            chai.assert.propertyVal(event, 'action', responseObject.action, 'stored Event has a valid event action');
+            chai.assert.propertyVal(event, 'actionId', response._id, 'stored Event has the correct Form Response id');
+
+            done();
+          }
+          else {
+            done(err);
+          }
+        });
+      });
+    });
   }
-}); 
+});
+

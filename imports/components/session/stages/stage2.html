@@ -1,9 +1,9 @@
-<div class="container-fluid div-fill">
-  <div class="row div-fill">
+<div class="container-fluid container-wrapper">
+  <div class="row container-wrapper">
     <div class="col-lg-9 col-md-9 col-sm-9 div-fill">
       <div ui-view="pageview" ng-if="stage2.meteorReady" class="div-fill"></div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
+    <div class="col-lg-3 col-md-3 col-sm-3 container-wrapper">
       <div ui-view="snippetbar"></div>
     </div>
   </div>
@@ -22,6 +22,13 @@
         <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="Page {{$index + 1}}" ng-click="stage2.changePage($index)">
           <div class="interaction-bar">
             <h4>{{page.title}}</h4>
+            <hr>
+            <form>
+              <div ng-repeat="question in stage2.forms[$index].questions">
+                <question data="question"></question>
+                <br>
+              </div>
+            </form>
           </div>
           <hr>
           <div>

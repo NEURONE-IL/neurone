@@ -9,6 +9,7 @@ import { Bookmarks } from '../../imports/api/bookmarks/index';
 import { VisitedLinks } from '../../imports/api/visitedLinks/index';
 import { SessionLogs } from '../../imports/api/sessionLogs/index';
 import { EventLogs } from '../../imports/api/eventLogs/index';
+import { FormAnswers } from '../../imports/api/formAnswers/index';
 import { Counters } from './serverCollections';
 
 const queryPattern = { userId: String, username: String, query: String, title: String, url: String, localTimestamp: Number };
@@ -16,6 +17,7 @@ const bookmarkPattern = { userId: String, username: String, action: String, titl
 const snippetPattern = { userId: String, username: String, action: String, snippetId: Number, snippedText: String, title: String, url: String, docId: String, localTimestamp: Number };
 const linkPattern = { userId: String, username: String, state: String, title: String, url: String, localTimestamp: Number };
 const sessionPattern = { userId: String, username: String, state: String, localTimestamp: Number };
+const formResponsePattern = { userId: String, username: String, action: String, reason: String, answer: Array, localTimestamp: Number };
 
 Meteor.methods({
   storeQuery: function(jsonObject) {
@@ -199,6 +201,54 @@ Meteor.methods({
     }
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not save Session Log in Database!', err);
+    }
+  },
+  storeFormResponse: function(jsonObject) {
+    check(jsonObject, formResponsePattern);
+
+    var time = Utils.getTimestamp(),
+    realTime = Utils.timestamp2datetime(time),
+      ipAddr = this.connection ? this.connection.clientAddress : '',
+         rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
+         oua = rua ? UserAgent.parse(rua) : '',               // object user agent
+     browser = oua ? oua.toAgent() : 'undefined',
+          os = oua ? oua.os.toString() : 'undefined',
+      device = oua ? oua.device.toString() : 'undefined',
+       state = jsonObject.state;
+
+    jsonObject.serverTimestamp = time;
+    jsonObject.createdTime = realTime;
+    jsonObject.clientAddress = ipAddr;
+    jsonObject.clientBrowser = browser;
+    jsonObject.clientOperatingSystem = os;
+    jsonObject.clientDevice = device;
+    jsonObject.userAgent = rua;
+
+    var action = {
+      userId: jsonObject.userId,
+      username: jsonObject.username,
+      action: jsonObject.action,
+      actionId: '',
+      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+      clientTimestamp: jsonObject.localTimestamp,
+      serverDate: Utils.timestamp2date(time),
+      serverTime: Utils.timestamp2time(time),
+      serverTimestamp: time,
+      ipAddr: (this.connection ? this.connection.clientAddress : ''),
+      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+      extras: jsonObject.reason
+    };
+
+    try {
+      var answerId = FormAnswers.insert(jsonObject);
+      action.actionId = answerId;
+      EventLogs.insert(action);
+
+      return { status: 'success' };
+    }
+    catch (err) {
+      throw new Meteor.Error('DatabaseError', 'Could not save Form Response in Database!', err);
     }
   },
   ping: function() {

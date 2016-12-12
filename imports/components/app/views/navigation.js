@@ -8,7 +8,7 @@ import { name as Register } from '../auth/register';
 import { name as Password } from '../auth/password';
 
 import { UserBookmarks, UserSnippets } from '../../userCollections';
-//import { UserData } from '../../../api/userData/index';
+//import { UserData } from '../../../api/_userData/index';
 
 import { name as ModalService } from '../../modules/modal';
 
@@ -51,12 +51,14 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
-    this.userData = null;
-    this.userDataId = '';
-    this.currentDocId = '';
+    this._userData = null;
+    this._userDataId = '';
+    this._currentDocId = '';
+    this._stageNumber = 0;
 
     var p1 = $promiser.subscribe('userBookmarks');
     var p2 = $promiser.subscribe('userSnippets');
+    var p3 = this.uds.check();
 
     this.navbarMessageId = 'navbarMessage';
     this.$rootScope._navbarMessage = new ReactiveVar('');
@@ -74,17 +76,21 @@ class Navigation {
     this.$rootScope._enableReady = new ReactiveVar(false);
     this.$rootScope._stageHome = new ReactiveVar('/home');
 
-    $q.all([p1, p2]).then(() => {
+    $q.all([p1, p2, p3]).then((res) => {
       // dgacitua: Set bookmark list
       this.$rootScope.$on('updateBookmarkList', (event, data) => {
         this.$rootScope._enableBookmarkList.set(data);
 
         if (data === true) {
-          var limit = this.userData && this.userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().configs.maxBookmarks;
-          this.updateSubscription(UserData, this.userData, { 'session.bookmarkCount': UserBookmarks.find().count() });
+          var limit = this._userData && this._userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().configs.maxBookmarks;
+          this.uds.set({ 'session.bookmarkCount': UserBookmarks.find().count() });
           this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
+
+          // TODO code flow
+          this.uds.set({ 'session.stageNumber': 1 });
+
           this.$rootScope._stageHome.set('/search');
-          this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);  
+          this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
         }
         else {
           this.$rootScope._stageHome.set('/home');
@@ -102,19 +108,31 @@ class Navigation {
         }
       });
 
-      // dgacitua: Set snippet elements
+      // dgacitua: Set snippet button
+      this.$rootScope.$on('updateSnippetButton', (event, data) => {
+        if (data !== false) {
+          var snippetCount = UserSnippets.find({ docId: data }).count();
+
+          if (snippetCount < this._userData.configs.snippetsPerPage) this.$rootScope._enableSnippet.set(true);
+          else this.$rootScope._enableSnippet.set(false);
+
+          console.log('enableSnippet', snippetCount, data);
+        }
+      });
+
+      // dgacitua: Set snippet word counter
       this.$rootScope.$on('updateSnippetCounter', (event, data) => {
         this.$rootScope._enableSnippetCounter.set(data);
         
         if (data === true) {
-          // TODO: Set ready button
-
-          //var limit = Meteor.user() && Meteor.user().profile.maxBookmarks;
-          //this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
           this.sts.bindWordCounter();
 
+          // TODO code flow
+          console.log()
+          this.uds.set({ 'session.stageNumber': 2 });
           this.$rootScope._stageHome.set('/stage2');
-          //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+
+          this.checkSnippetStatus();          
         }
         else {
           this.$rootScope._enableSnippet.set(data);
@@ -123,23 +141,12 @@ class Navigation {
         }
       });
 
-      // dgacitua: Set snippet elements
-      this.$rootScope.$on('updateSnippetButton', (event, data) => {
-        if (data !== false) {
-          var snippetCount = UserSnippets.find({ docId: data }).count();
-
-          if (snippetCount < this.userData.configs.snippetsPerPage) this.$rootScope._enableSnippet.set(true);
-          else this.$rootScope._enableSnippet.set(false);
-
-          console.log('enableSnippet', snippetCount, data);
-        }
-      });
-
       this.autorun(() => {
-        this.userData = this.uds.get();//UserData.findOne();
-        this.userDataId = this.userData ? this.userData._id : '';
-        this.currentDocId = this.userData.session.docId;
-        //console.log('Navigation AUTORUN!', this.userDataId, this.userData, this.currentDocId);
+        this._userData = this.uds.get();//UserData.findOne();
+        this._userDataId = this.uds.get()._id || '';
+        this._currentDocId = this.uds.get().session.docId || '';
+        this._stageNumber = this.uds.get().session.stageNumber || 0;
+        console.log('Navigation AUTORUN!', this._currentDocId, this._stageNumber);
       });
 
       this.helpers({
@@ -178,6 +185,9 @@ class Navigation {
         },
         stageHome: () => {
           return this.$rootScope._stageHome.get();
+        },
+        stageNumber: () => {
+          return this.getReactively('_stageNumber');
         }
       });
     });
@@ -185,7 +195,7 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
+      this.$rootScope.$broadcast('updateSnippetButton', this._currentDocId);
       this.navbarMessage = res ? res : err;
       Utils.notificationFadeout(this.navbarMessageId);
       this.$scope.$apply();
@@ -194,8 +204,8 @@ class Navigation {
 
   checkBookmarkStatus() {
     if (!!Meteor.userId()) {
-      var limit = this.userData && this.userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
-      this.updateSubscription(UserData, this.userData, { 'session.bookmarkCount': UserBookmarks.find().count() });
+      var limit = this._userData && this._userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
+      this.updateSubscription(UserData, this._userData, { 'session.bookmarkCount': UserBookmarks.find().count() });
       this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
       this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
       this.bms.isBookmarked((err2, res2) => {
@@ -227,6 +237,15 @@ class Navigation {
           }
         }
       });
+    }
+  }
+
+  checkSnippetStatus() {
+    if (!!Meteor.userId()) {
+      var snippets = UserSnippets.find().count();
+      var snippetLimit = this._userData.configs.snippetsPerPage * this._userData.configs.maxBookmarks;
+
+      this.$rootScope._enableReady.set((snippets >= snippetLimit) ? true : false);
     }
   }
 
@@ -284,26 +303,36 @@ class Navigation {
     this.modal.openModal(modalObject, (err, res) => {});
   }
 
-  tipsModal() {
-    // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var modalObject = {
-      title: 'Tips',
-      templateAsset: 'modals/tips_stage1_en.html',
-      fields: {}
-    };
+  tipsModal(stageNumber) {
+    if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tips',
+        templateAsset: 'modals/tips_stage1_en.html',
+        fields: {}
+      };
 
-    this.modal.openModal(modalObject, (err, res) => {});
+      this.modal.openModal(modalObject, (err, res) => {});  
+    }
+    else {
+      console.log('TipsModal', stageNumber);
+    }
   }
 
   tutorialModal() {
-    // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var modalObject = {
-      title: 'Tutorial',
-      templateAsset: 'modals/tutorial_stage1_en.html',
-      fields: {}
-    };
+    if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tutorial_stage1_en.html',
+        fields: {}
+      };
 
-    this.modal.openModal(modalObject, (err, res) => {});
+      this.modal.openModal(modalObject, (err, res) => {});  
+    }
+    else {
+      console.log('TutorialModal', stageNumber);
+    }
   }
 
   bookmarkAction(callback) {
@@ -346,30 +375,46 @@ class Navigation {
     });
   }
 
-  readyAction() {
-    // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var maximumStars = 3,
-       userBookmarks = UserBookmarks.find().fetch(),
-            goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-               stars = goodDocs,    // TODO Make score formula
-         timeWarning = false;        // TODO Enable time warning
+  readyAction(stageNumber) {
+    if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var maximumStars = 3,
+         userBookmarks = UserBookmarks.find().fetch(),
+              goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+                 stars = goodDocs,    // TODO Make score formula
+           timeWarning = false;        // TODO Enable time warning
 
-    console.log(userBookmarks);
+      console.log(userBookmarks);
 
-    var modalObject = {
-      title: this.$translate.instant('nav.taskResults'),
-      templateAsset: 'modals/ready_stage1_en.html',
-      buttonType: (timeWarning === true ? 'nextstage' : 'back'),
-      fields: {
-        stars: stars,
-        maxStars: maximumStars,
-        goodPages: goodDocs,
-        timeWarning: timeWarning,
-        bookmarks: userBookmarks
-      }
-    };
+      var modalObject = {
+        title: this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_stage1_en.html',
+        buttonType: (timeWarning === true ? 'nextstage' : 'back'),
+        fields: {
+          stars: stars,
+          maxStars: maximumStars,
+          goodPages: goodDocs,
+          timeWarning: timeWarning,
+          bookmarks: userBookmarks
+        }
+      };
 
-    this.modal.openModal(modalObject, (err, res) => {});
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          this.$state.go('stage2');
+        }
+      });  
+    }
+    else if (stageNumber === 2) {
+      this.$rootScope.$broadcast('readyStage2');
+      this.$state.go('stage3');
+    }
+    else if (stageNumber === 3) {
+      // TODO
+    }
+    else {
+      console.log('ReadyModal', stageNumber);
+    }
   }
 }
 
