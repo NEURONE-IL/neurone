@@ -11,6 +11,10 @@ class UserDataService {
     this._isSubscribed = false;
 
     this.hdl = $promiser.subscribe('userData');
+
+    this.hdl.then((res) => {
+      if (!UserData.findOne() && !!Meteor.userId()) this.initUserData();
+    });
     
     Meteor.autorun(() => {
       this._userData = UserData.findOne();
@@ -56,6 +60,33 @@ class UserDataService {
         console.log('UserDataService SESSION SET!', setObj);
       }
     });
+  }
+
+  initUserData() {
+    if (!!Meteor.userId()) {
+      var data = {
+        userId: Meteor.userId(),
+        role: Meteor.user().profile.role || 'undefined',
+        configs: {
+          locale: Settings.locale || 'en',
+          task: '',
+          topic: '',
+          maxBookmarks: Settings.maxBookmarks || 3,
+          snippetsPerPage: Settings.snippetsPerPage || 3,
+          snippetLength: Settings.snippetLength || 15
+        },
+        session: {
+          docId: '',
+          bookmarkCount: 0,
+          snippetCount: 0
+        },
+        profile: {}
+      }
+
+      UserData.insert(data, (err, res) => {
+        console.log('UserDataService INIT DATA!', res); 
+      });
+    }
   }
 }
 
