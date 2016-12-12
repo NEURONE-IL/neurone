@@ -2,13 +2,14 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 class AuthService {
-  constructor($rootScope, $translate, FlowService, SessionTrackService) {
+  constructor($rootScope, $translate, FlowService, UserDataService, SessionTrackService) {
     'ngInject';
 
     this.$rootScope = $rootScope;
     this.$translate = $translate;
     this.fs = FlowService;
     this.sts = SessionTrackService;
+    this.uds = UserDataService;
 
     this.threshold = Utils.sec2millis(Configs.idleThreshold);
     this.interval = Utils.sec2millis(Configs.idleCheckInterval);
@@ -23,14 +24,7 @@ class AuthService {
       }
       else {
         this.sts.saveLogin();
-
-        /*
-        this.$rootScope.maxBookmarks = Meteor.user().profile.maxBookmarks;
-        this.$rootScope.snippetsPerPage = Meteor.user().profile.snippetsPerPage;
-        this.$rootScope.snippetLength = Meteor.user().profile.snippetLength;
-
-        this.$rootScope.$broadcast('sessionRefresh', Meteor.userId());
-        */
+        this.uds.initUserData();
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);
@@ -47,14 +41,6 @@ class AuthService {
         callback(err);
       }
       else {
-        /*
-        this.$rootScope.maxBookmarks = 0;
-        this.$rootScope.snippetsPerPage = 0;
-        this.$rootScope.snippetLength = 0;
-
-        this.$rootScope.$broadcast('sessionRefresh', null);
-        */
-    
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);
       }

@@ -4,7 +4,7 @@ import Utils from '../loggerUtils';
 import LoggerConfigs from '../loggerConfigs';
 
 export default class SnippetTrackService {
-  constructor($state, $rootScope, $window, $document, $translate) {
+  constructor($state, $rootScope, $window, $document, $translate, UserDataService) {
     'ngInject';
 
     this.$state = $state;
@@ -12,6 +12,8 @@ export default class SnippetTrackService {
     this.$window = $window;
     this.$document = $document;
     this.$translate = $translate;
+
+    this.uds = UserDataService;
   }
 
   makeSnippet(type, index, callback) {
@@ -22,8 +24,9 @@ export default class SnippetTrackService {
                 snippet = iframeWindow ? iframeWindow.getSelection().toString() : '',
               wordCount = snippet ? snippet.match(/\S+/g).length : 0;
 
-        console.log('Snippet!', snippet, wordCount);
-        this.$rootScope._counters.words = wordCount;
+        //console.log('Snippet!', snippet, wordCount);
+        //this.$rootScope._counters.words = wordCount;
+        this.uds.setSession({ wordCount : wordCount });
 
         if (!Utils.isEmpty(snippet)) {
           var pageTitle = this.$rootScope.documentTitle,

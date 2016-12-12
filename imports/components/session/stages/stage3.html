@@ -1,7 +1,15 @@
 <div class="container-fluid container-wrapper">
   <div class="row container-wrapper">
     <div class="col-lg-8 col-md-8 col-sm-8 container-wrapper">
-      <h1>Hello world!</h1>
+      <p>{{stage3.question}}</p>
+      <form ng-submit="stage3.submit()">
+        <ng-wig ng-model="stage3.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
+        <br>
+        <!--
+        <button type="submit" class="btn btn-primary">{{"stage3.submitButton" | translate}}</button>
+        -->
+        <span id="synthesisMessage">{{stage3.synthesisMessage}}</span>
+      </form>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4 container-wrapper">
       <h2>Snippetbar</h2>

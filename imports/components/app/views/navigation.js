@@ -60,7 +60,7 @@ class Navigation {
     this._counters = new ReactiveObject({});
     
     $q.all([p1, p2, p3]).then((res) => {
-      this.uds.setSession({ statusMessage: '' });
+      //this.uds.setSession({ statusMessage: '' });
       Utils.notificationFadeout(this.navbarMessageId);
 
       this._counters.defineProperty('bookmarks', UserBookmarks.find().count());
@@ -80,6 +80,7 @@ class Navigation {
 
       this.$rootScope.$on('updateNavigation', (event, data) => {
         var stage = this.uds.getSession().stageNumber;
+        Utils.notificationFadeout(this.navbarMessageId);
 
         if (stage === 0) {
           // TODO
@@ -98,11 +99,11 @@ class Navigation {
         }
       });
 
-      this.$rootScope.$on('updateNavigation', (event, data) => {
+      this.$rootScope.$on('updateBookmarkButton', (event, data) => {
         this.checkBookmarkStatus();
       });
 
-     this.helpers({
+      this.helpers({
         isLoggedIn: () => {
           return !!Meteor.userId();
         },
@@ -149,6 +150,7 @@ class Navigation {
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
       //this.navbarMessage = res ? res : err;
+      this._counters.words = this.uds.getSession().wordCount;
       this.checkSnippetStatus();
       this.uds.setSession({ statusMessage: (res ? res : err) });
       Utils.notificationFadeout(this.navbarMessageId);

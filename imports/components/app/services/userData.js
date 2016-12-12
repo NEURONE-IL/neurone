@@ -6,16 +6,10 @@ class UserDataService {
   constructor($promiser) {
     'ngInject';
 
-    this.userDataObject = {};
-    this._userData = null;
-    this._isSubscribed = false;
-
     this.hdl = $promiser.subscribe('userData');
 
-    this.hdl.then((res) => {
-      if (!UserData.findOne() && !!Meteor.userId()) this.initUserData();
-    });
-    
+    this._userData = null;
+
     Meteor.autorun(() => {
       this._userData = UserData.findOne();
     });
@@ -63,10 +57,12 @@ class UserDataService {
   }
 
   initUserData() {
-    if (!!Meteor.userId()) {
+    this._userData = UserData.findOne();
+    
+    if (Meteor.user() && !this._userData) {
       var data = {
         userId: Meteor.userId(),
-        role: Meteor.user().profile.role || 'undefined',
+        role: Meteor.user().role || Meteor.user().profile.role || 'undefined',
         configs: {
           locale: Settings.locale || 'en',
           task: '',
