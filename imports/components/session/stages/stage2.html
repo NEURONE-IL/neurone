@@ -10,7 +10,7 @@
 </div>
 
 <script type="text/ng-template" id="stage2/pageview.html">
-  <div ui-view class="div-fill" ng-if="stage2.meteorReady">
+  <div ui-view class="div-fill" ng-if="pageview.meteorReady">
     <display-iframe></display-iframe>
   </div>
 </script>
@@ -19,12 +19,12 @@
   <div ui-view>
     <div class="interaction-bar">
       <uib-tabset active="active">
-        <uib-tab index="$index + 1" ng-repeat="page in stage2.pages track by $index" heading="Page {{$index + 1}}" ng-click="stage2.changePage($index)">
+        <uib-tab index="$index + 1" ng-repeat="page in snippetbar.pages track by $index" heading="Page {{$index + 1}}" ng-click="snippetbar.changePage($index)">
           <div class="interaction-bar">
             <h4>{{page.title}}</h4>
             <hr>
             <form>
-              <div ng-repeat="question in stage2.forms[$index].questions">
+              <div ng-repeat="question in snippetbar.forms[$index].questions">
                 <question data="question"></question>
                 <br>
               </div>
@@ -32,11 +32,11 @@
           </div>
           <hr>
           <div>
-            <div uib-alert class="snippet-box" ng-repeat="snippet in stage2.snippetListPerPage track by snippet._id">
+            <div uib-alert class="snippet-box" ng-repeat="snippet in snippetbar.snippetListPerPage track by snippet._id">
               <div class="snippet-element">
                 <div class="snippet-text">{{snippet.snippedText | words: 25}}</div>
                 <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="stage2.deleteSnippet(snippet.snippetId)"></i>
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="snippetbar.deleteSnippet(snippet.snippetId)"></i>
                 </div>
               </div>
             </div>

@@ -11,6 +11,20 @@ const name = 'stage2';
 class Stage2 {
   constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
     'ngInject';
+  }
+}
+
+class Stage2pv {
+  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
+    'ngInject';
+
+    this.meteorReady = true;
+  }
+}
+
+class Stage2sb {
+  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
+    'ngInject';
 
     this.$state = $state;
     this.$scope = $scope;
@@ -85,7 +99,7 @@ class Stage2 {
         }
       });
     });
-    
+
     console.log('Forms Ready!', this.forms);
   }
 
@@ -160,7 +174,6 @@ class Stage2 {
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
     this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
-    this.meteorReady = true;
   }
 }
 
@@ -175,13 +188,13 @@ export default angular.module(name, [
 })
 .component('pageview', {
   templateUrl: 'stage2/pageview.html',
-  controllerAs: name,
-  controller: Stage2
+  controllerAs: 'pageview',
+  controller: Stage2pv
 })
 .component('snippetbar', {
   templateUrl: 'stage2/snippetbar.html',
-  controllerAs: name,
-  controller: Stage2
+  controllerAs: 'snippetbar',
+  controller: Stage2sb
 })
 .config(config);
 
@@ -210,6 +223,10 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
+      },
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
       },
       userBookmarksSub($promiser) {
         return $promiser.subscribe('userBookmarks');
