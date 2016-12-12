@@ -17,11 +17,12 @@ class Stage3 {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      
+      this.uds.setSession({ synthesis: false });
+
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      
+      this.uds.setSession({ synthesis: true });
     });
 
     $reactive(this).attach($scope);

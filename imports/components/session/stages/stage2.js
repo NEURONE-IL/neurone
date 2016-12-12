@@ -11,6 +11,32 @@ const name = 'stage2';
 class Stage2 {
   constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
     'ngInject';
+
+    this.$state = $state;
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
+
+    this.uds = UserDataService;
+    this.sts = SnippetTrackService;
+
+    $scope.$on('$stateChangeStart', (event) => {
+      //this.$rootScope.$broadcast('updateSnippetCounter', false);
+      this.uds.setSession({ snippetCounter: false });
+      this.uds.setSession({ stageHome: '/home' });
+      this.uds.setSession({ snippetButton: false });
+      this.uds.setSession({ readyButton: false });
+      this.sts.bindWordCounter();
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      //this.$rootScope.$broadcast('updateSnippetCounter', true);
+      this.uds.setSession({ snippetCounter: true });
+      this.uds.setSession({ stageHome: '/stage2' });
+      this.uds.setSession({ stageNumber: 2 });
+      this.sts.unbindWordCounter();
+
+      this.$rootScope.$broadcast('updateNavigation');
+    });
   }
 }
 
@@ -32,16 +58,6 @@ class Stage2sb {
 
     this.uds = UserDataService;
     this.sts = SnippetTrackService;
-
-    $scope.$on('$stateChangeStart', (event) => {
-      this.$rootScope.$broadcast('updateSnippetCounter', false);
-      this.uds.set({ 'session.enableSnippetCounter': false });
-    });
-
-    $scope.$on('$stateChangeSuccess', (event) => {
-      this.$rootScope.$broadcast('updateSnippetCounter', true);
-      this.uds.set({ 'session.enableSnippetCounter': true });
-    });
 
     $rootScope.$on('readyStage2', (event, data) => {
       this.sendForms();
@@ -169,11 +185,11 @@ class Stage2sb {
     this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
     this.currentDocId = this.$rootScope.docId;
 
-    this.uds.set({ 'session.docId': this.currentDocId });
+    this.uds.setSession({ docId: this.currentDocId });
     console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docName, this.$rootScope.docId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
-    this.$rootScope.$broadcast('updateSnippetButton', this.currentDocId);
+    this.$rootScope.$broadcast('updateNavigation');
   }
 }
 

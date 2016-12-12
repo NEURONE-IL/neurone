@@ -31,30 +31,12 @@ class Login {
     this.auth.login(this.credentials.username, this.credentials.password, (err, res) => {
       if (!err) {
         this.error = res;
-
-        var currentStageHome = 'search';      // TODO: check for current Stage home
-        this.$rootScope._stageHome.set('/' + currentStageHome);
-        this.$state.go(currentStageHome);
+        this.$state.go('home');
       }
       else {
         this.error = err;
       }
     });
-    /*
-    Meteor.loginWithPassword(this.credentials.email, this.credentials.password,
-      this.$bindToContext((err) => {
-        if (err) {
-          this.error = err;
-        } else {
-          //console.log(Meteor.user(), Meteor.user().username || Meteor.user().emails[0].address);
-          this.sts.saveLogin();
-          this.fs.startFlow();
-          UserStatus.startMonitor({ threshold: Utils.sec2millis(30), interval: Utils.sec2millis(1), idleOnBlur: true });
-          this.$state.go('search');
-        }
-      })
-    );
-    */
   }
 }
 

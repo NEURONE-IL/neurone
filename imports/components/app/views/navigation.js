@@ -90,7 +90,9 @@ class Navigation {
           this.uds.set({ 'session.stageNumber': 1 });
 
           this.$rootScope._stageHome.set('/search');
-          this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+          //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+          var setReady = (this.$rootScope._counters.bookmarks >= limit) ? true : false;
+          this.uds.setSession({ readyButton: setReady });
         }
         else {
           this.$rootScope._stageHome.set('/home');
@@ -120,24 +122,23 @@ class Navigation {
         }
       });
 
-      // dgacitua: Set snippet word counter
-      this.$rootScope.$on('updateSnippetCounter', (event, data) => {
-        this.$rootScope._enableSnippetCounter.set(data);
-        
-        if (data === true) {
-          this.sts.bindWordCounter();
+      this.$rootScope.$on('updateNavigation', (event, data) => {
+        var stage = this.uds.getSession().stageNumber;
 
-          // TODO code flow
-          console.log()
-          this.uds.set({ 'session.stageNumber': 2 });
-          this.$rootScope._stageHome.set('/stage2');
-
-          this.checkSnippetStatus();          
+        if (stage === 0) {
+          // TODO
+        }
+        else if (stage === 1) {
+          this.checkBookmarkStatus();
+        }
+        else if (stage === 2) {
+          this.checkSnippetStatus();
+        }
+        else if (stage === 3) {
+          // TODO
         }
         else {
-          this.$rootScope._enableSnippet.set(data);
-          this.sts.unbindWordCounter();
-          this.$rootScope._stageHome.set('/home');
+          // TODO
         }
       });
 
@@ -175,19 +176,19 @@ class Navigation {
           return this.$rootScope._enableBookmarkList.get();
         },
         enableSnippet: () => {
-          return this.$rootScope._enableSnippet.get();
+          return this.uds.getSession().snippetButton;//this.$rootScope._enableSnippet.get();
         },
         enableSnippetCounter: () => {
-          return this.$rootScope._enableSnippetCounter.get();
+          return this.uds.getSession().snippetCounter;//this.$rootScope._enableSnippetCounter.get();
         },
         enableReady: () => {
-          return this.$rootScope._enableReady.get();
+          return this.uds.getSession().readyButton;//this.$rootScope._enableReady.get();
         },
         stageHome: () => {
-          return this.$rootScope._stageHome.get();
+          return this.uds.getSession().stageHome;//this.$rootScope._stageHome.get();
         },
         stageNumber: () => {
-          return this.getReactively('_stageNumber');
+          return this.uds.getSession().stageNumber;//this.getReactively('_stageNumber');
         }
       });
     });
@@ -195,7 +196,7 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      this.$rootScope.$broadcast('updateSnippetButton', this._currentDocId);
+      this.checkSnippetStatus();
       this.navbarMessage = res ? res : err;
       Utils.notificationFadeout(this.navbarMessageId);
       this.$scope.$apply();
@@ -207,7 +208,11 @@ class Navigation {
       var limit = this._userData && this._userData.configs.maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
       this.updateSubscription(UserData, this._userData, { 'session.bookmarkCount': UserBookmarks.find().count() });
       this.$rootScope._counters.bookmarks = UserBookmarks.find().count();
-      this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+
+      //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
+      var setReady = (this.$rootScope._counters.bookmarks >= limit) ? true : false;
+      this.uds.setSession({ readyButton: setReady });
+
       this.bms.isBookmarked((err2, res2) => {
         if (!err2) {
           //console.log('checkBookmarkStatus', res2, this.$rootScope._counters.bookmarks, limit);
@@ -243,9 +248,14 @@ class Navigation {
   checkSnippetStatus() {
     if (!!Meteor.userId()) {
       var snippets = UserSnippets.find().count();
-      var snippetLimit = this._userData.configs.snippetsPerPage * this._userData.configs.maxBookmarks;
+      var snippetLimit = this.uds.getConfigs().snippetsPerPage * this.uds.getConfigs().maxBookmarks;
 
-      this.$rootScope._enableReady.set((snippets >= snippetLimit) ? true : false);
+      var setReady = (snippets >= snippetLimit) ? true : false;
+      this.uds.setSession({ readyButton: setReady });
+
+      var snippetCount = UserSnippets.find({ docId: this.uds.getSession().docId }).count();
+      var setSnippet = (snippetCount < this.uds.getConfigs().snippetsPerPage) ? true : false;
+      this.uds.setSession({ snippetButton: setSnippet });
     }
   }
 

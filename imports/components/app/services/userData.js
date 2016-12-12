@@ -43,10 +43,17 @@ class UserDataService {
   }
 
   setSession(property) {
+    // dgacitua: http://stackoverflow.com/a/2958894
     var dataId = this._userData._id;
-    UserData.update({ _id: dataId }, { $set: { session: property }}, (err, res) => {
+    var setObj = {};
+
+    for (var key in property) {
+      setObj['session.' + key] = property[key];
+    }
+    
+    UserData.update({ _id: dataId }, { $set: setObj }, (err, res) => {
       if (!err) {
-        Utils.logToConsole('UserDataService SESSION SET!', property);
+        console.log('UserDataService SESSION SET!', setObj);
       }
     });
   }
