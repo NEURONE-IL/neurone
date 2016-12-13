@@ -48,6 +48,10 @@
     "acronym": "oNlinE inqUiry expeRimentatiON systEm",
     "instructions1": "Please register and login with your username to begin!"
   },
+  "start": {
+    "beginButton": "Begin",
+    "instructions1": "Press the Start button to begin (or resume your progress)"
+  },
   "search": {
     "searchEngineTitle": "My Search Engine",
     "searchButton": "Search",
@@ -77,6 +81,9 @@
     "submitted": "Your answers have been submitted!",
     "submittedError": "An error has occurred!"
   },
+  "snippet": {
+    "page": "Page {{pageNum}}"
+  },
   "synthesis": {
     "title": "Synthesis",
     "submitButton": "Submit",
@@ -89,7 +96,8 @@
     "snippetModalTitle": "Your Snippet",
     "bookmarkModalTitle": "Your Bookmark",
     "allPages": "All",
-    "page": "Page {{pageNum}}"
+    "page": "Page {{pageNum}}",
+    "allTitle": "All Pages"
   },
   "modal": {
     "closeButton": "Close",
@@ -105,5 +113,11 @@
     "nextStageInstructions": "Now you can go to the next stage",
     "goBackInstructions": "Go back and keep seaching!",
     "timeWarning": "You ran out of time!"
+  },
+  "hints": {
+    "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
+    "taskButton": "Remember to click the Task button to see your assignment!",
+    "tutorialButton": "Remember to click the Tutorial button to get help in how to complete your assignment!",
+    "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
   }
 }

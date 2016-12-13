@@ -15,12 +15,13 @@ import template from './stage3.html';
 const name = 'stage3';
 
 class Stage3 {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $interval, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $translate, $interval, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$scope = $scope;
     this.$interval = $interval;
+    this.$translate = $translate;
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
@@ -29,6 +30,7 @@ class Stage3 {
       this.uds.setSession({ synthesis: false });
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ stageHome: '/home' });
+      this.uds.setSession({ statusMessage: '' });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
@@ -40,7 +42,15 @@ class Stage3 {
     });
 
     $reactive(this).attach($scope);
+    
+    this.synthesisMessage = '';
+    this.messageId = 'synthesisMessage';
 
+    this.question = '';
+    this.answer = '';
+    this.currentDocId = '';
+    this.snippets = [];
+    this.bookmarks = [];
     this.autosave = {};
 
     this.autosaveService();
@@ -49,6 +59,18 @@ class Stage3 {
     this.$onDestroy = () => {
       this.$interval.cancel(this.autosave);
     };
+
+    this.helpers({
+      pageList: () => {
+        return UserBookmarks.find();
+      },
+      snippetListPerPage: () => {
+        return UserSnippets.find({ docId: this.getReactively('currentDocId') });
+      },
+      snippetListGlobal: () => {
+        return UserSnippets.find();
+      }
+    });
   }
 
   autosaveService() {
@@ -58,7 +80,7 @@ class Stage3 {
           userId: Meteor.userId(),
           username: Meteor.user().username || Meteor.user().emails[0].address,
           startTime: this.startTime,
-          questionId: this.$stateParams.id,
+          //questionId: this.$stateParams.id,
           question: this.question,
           answer: this.answer,
           completeAnswer: false,
@@ -79,6 +101,51 @@ class Stage3 {
         });
       }
     }, Utils.sec2millis(30));
+  }
+
+  submit() {
+    if (!!Meteor.userId()) {
+      var answer = {
+        userId: Meteor.userId(),
+        username: Meteor.user().username || Meteor.user().emails[0].address,
+        startTime: this.startTime,
+        questionId: this.$stateParams.id,
+        question: this.question,
+        answer: this.answer,
+        completeAnswer: true,
+        localTimestamp: Utils.getTimestamp()
+      };
+
+      this.call('storeSynthesisAnswer', answer, (err, res) => {
+        if (!err) {
+          console.log('Answer submitted!', answer.userId, answer.localTimestamp);
+          this.synthesisMessage = this.$translate.instant('synthesis.submitted');
+          Utils.notificationFadeout(this.messageId);
+        }
+        else {
+          console.error('Unknown Error', err);
+          this.synthesisMessage = this.$translate.instant('synthesis.error');
+          Utils.notificationFadeout(this.messageId);
+        }
+      });
+
+      this.$interval.cancel(this.autosave);
+      // TODO Go to next state
+    }
+  }
+
+  getQuestion() {
+    if (!!Meteor.userId()) {
+      this.call('getSynthQuestion', Utils.parseStringAsInteger(this.$stateParams.id), (err, res) => {
+        if (!err) {
+          this.question = res.question;
+        }
+        else {
+          console.error('Unknown Error', err);
+          this.question = 'No question';
+        }
+      });
+    }
   }
 }
 

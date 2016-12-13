@@ -5,7 +5,6 @@ import angularMeteor from 'angular-meteor';
 import angularMeteorAuth from 'angular-meteor-auth';
 import angularMeteorPromiser from 'angular-meteor-promiser';
 import uiRouter from 'angular-ui-router';
-//import uiRouterExtras from 'ui-router-extras';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
@@ -15,11 +14,13 @@ import template from './app.html';
 import { name as Auth } from './auth/auth';
 import { name as Home } from './views/home';
 import { name as Navigation } from './views/navigation';
+import { name as Start } from './views/start';
+import { name as End } from './views/end';
+import { name as ErrorPage } from '../modules/error';
 
 import { name as Search } from '../search/search';
 import { name as Forms } from '../forms/formCtrl';
 import { name as Synthesis } from '../synthesis/synthesis';
-import { name as Stages } from '../session/stages';
 import { name as Showcase } from '../showcase/showcase';
 
 import { name as AuthService } from './services/auth';
@@ -27,39 +28,42 @@ import { name as UserDataService } from './services/userData';
 import { name as ActionBlocker } from './services/actionBlocker';
 import { name as Flow } from './services/flow';
 import { name as Logger } from '../logger/logger';
-import { name as ErrorPage } from '../modules/error';
-import LoggerConfigs from '../logger/loggerConfigs';
+
+import { name as Stages } from '../session/stages';
 
 class App {}
 
 const name = 'app';
 
-//const UserBookmarks = new Mongo.Collection('UserBookmarks');
-
-// create a module
 export default angular.module(name, [
+  // Packages and dependencies
   angularMeteor,
   angularMeteorAuth,
   'angular-meteor-promiser',
   uiRouter,
-  //'ct.ui.router.extras',
   uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
+  // Custom-made services
   AuthService,
   UserDataService,
   Logger,
-  Flow,
   ActionBlocker,
-  Home,
-  Auth,
-  Navigation,
-  Showcase,
+  Flow,
+  // Prototype components
   Search,
   Synthesis,
   Forms,
-  Stages,
-  ErrorPage
+  Showcase,
+  // App views
+  Navigation,
+  Home,
+  Auth,
+  Start,
+  End,
+  ErrorPage,
+  // iFuCo Simulation
+  Stages
 ])
 .component(name, {
   template,

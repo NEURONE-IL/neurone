@@ -31,7 +31,7 @@ class Login {
     this.auth.login(this.credentials.username, this.credentials.password, (err, res) => {
       if (!err) {
         this.error = res;
-        this.$state.go('home');
+        this.$state.go('start');
       }
       else {
         this.error = err;

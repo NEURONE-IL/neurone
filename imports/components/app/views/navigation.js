@@ -60,9 +60,6 @@ class Navigation {
     this._counters = new ReactiveObject({});
     
     $q.all([p1, p2, p3]).then((res) => {
-      //this.uds.setSession({ statusMessage: '' });
-      Utils.notificationFadeout(this.navbarMessageId);
-
       this._counters.defineProperty('bookmarks', UserBookmarks.find().count());
       this._counters.defineProperty('words', 0);
 

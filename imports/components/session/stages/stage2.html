@@ -19,7 +19,7 @@
   <div ui-view>
     <div class="interaction-bar">
       <uib-tabset active="active">
-        <uib-tab index="$index + 1" ng-repeat="page in snippetbar.pages track by $index" heading="Page {{$index + 1}}" ng-click="snippetbar.changePage($index)">
+        <uib-tab index="$index + 1" ng-repeat="page in snippetbar.pages track by $index" heading="{{'snippet.page' | translate: { pageNum: $index+1 } }}" ng-click="snippetbar.changePage($index)">
           <div class="interaction-bar">
             <h4>{{page.title}}</h4>
             <hr>

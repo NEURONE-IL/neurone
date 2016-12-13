@@ -25,6 +25,7 @@ class Stage2 {
       this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ snippetButton: false });
       this.uds.setSession({ readyButton: false });
+      this.uds.setSession({ statusMessage: '' });
       this.sts.bindWordCounter();
     });
 

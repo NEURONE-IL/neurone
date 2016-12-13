@@ -5,7 +5,7 @@
   "author": "Daniel Gacitua <daniel.gacitua@usach.cl>",
   "private": true,
   "scripts": {
-    "start": "meteor --settings private/settingsDev.json",
+    "start": "meteor",
     "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
     "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs",
     "apptest": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
@@ -22,7 +22,7 @@
     "angular-translate-storage-local": "^2.12.1",
     "angular-truncate-2": "^0.4.2",
     "angular-ui-bootstrap": "^2.2.0",
-    "angular-ui-router": "^0.3.1",
+    "angular-ui-router": "^0.3.2",
     "array.prototype.move": "0.0.3",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
@@ -37,8 +37,6 @@
     "path": "^0.12.7",
     "request": "^2.75.0",
     "sum": "^0.1.4",
-    "ui-router": "^1.0.0-alpha.3",
-    "ui-router-extras": "^0.1.3",
     "uppercamelcase": "^1.1.0",
     "useragent": "^2.1.9",
     "yamlparser": "0.0.2"

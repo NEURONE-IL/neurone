@@ -8,11 +8,36 @@
         <!--
         <button type="submit" class="btn btn-primary">{{"stage3.submitButton" | translate}}</button>
         -->
-        <span id="synthesisMessage">{{stage3.synthesisMessage}}</span>
+        <div id="synthesisMessage" class="text-center">
+          <b>{{stage3.synthesisMessage}}</b>
+        </div>
       </form>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4 container-wrapper">
-      <h2>Snippetbar</h2>
+      <div class="interaction-bar">
+      <uib-tabset active="active">
+        <uib-tab index="0" heading="{{'synthesis.allPages' | translate}}">
+          <h4>{{"synthesis.allTitle" | translate}}</h4>
+          <hr>
+        </uib-tab>
+        <uib-tab index="$index + 1" ng-repeat="page in stage3.pageList track by $index" heading="{{'synthesis.page' | translate: { pageNum: $index+1 } }}">
+          <div class="interaction-bar">
+            <h4>{{page.title}}</h4>
+            <hr>
+            <!--
+            <div uib-alert class="snippet-box" ng-repeat="snippet in stage3.snippetListPerPage track by snippet._id">
+              <div class="snippet-element">
+                <div class="snippet-text">{{snippet.snippedText | words: 25}}</div>
+                <div class="snippet-delete">
+                  <i type="button" class="fa fa-trash fa-lg" ng-click="stage3.deleteSnippet(snippet.snippetId)"></i>
+                </div>
+              </div>
+            </div>
+            -->
+          </div>
+        </uib-tab>
+      </uib-tabset>
+    </div>
     </div>
   </div>
 </div>
