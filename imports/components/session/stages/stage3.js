@@ -10,17 +10,20 @@ import Utils from '../../globalUtils';
 
 import { UserBookmarks, UserSnippets } from '../../userCollections';
 
+import { name as PageModal } from '../views/pageModal';
+
 import template from './stage3.html';
 
 const name = 'stage3';
 
 class Stage3 {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $translate, $interval, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $translate, $interval, $uibModal, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$scope = $scope;
     this.$interval = $interval;
+    this.$uibModal = $uibModal;
     this.$translate = $translate;
     this.$rootScope = $rootScope;
 
@@ -46,15 +49,21 @@ class Stage3 {
     this.synthesisMessage = '';
     this.messageId = 'synthesisMessage';
 
+    this.questionId = this.uds.getConfigs().questionStage3;
     this.question = '';
     this.answer = '';
-    this.currentDocId = '';
-    this.snippets = [];
-    this.bookmarks = [];
+    this.docId = '';
+    this.pageIndex = 0;
     this.autosave = {};
 
-    this.autosaveService();
     this.startTime = Utils.getTimestamp();
+
+    this.getQuestion();
+    this.autosaveService();
+
+    this.$rootScope.$on('readyStage3', (event, data) => {
+      this.submit();
+    });
 
     this.$onDestroy = () => {
       this.$interval.cancel(this.autosave);
@@ -65,10 +74,38 @@ class Stage3 {
         return UserBookmarks.find();
       },
       snippetListPerPage: () => {
-        return UserSnippets.find({ docId: this.getReactively('currentDocId') });
+        return UserSnippets.find({ docId: this.getReactively('docId') });
       },
       snippetListGlobal: () => {
         return UserSnippets.find();
+      }
+    });
+  }
+
+  changePage(index) {
+    var pageList = UserBookmarks.find().fetch();
+
+    this.docId = pageList[index].docId;
+    this.pageIndex = index;
+
+    console.log('changePage', this.docId, this.pageIndex);
+  }
+
+  launchPageModal(snippet) {
+    console.log('pageModal', snippet.docId, snippet.snippedText);
+
+    var modalInstance = this.$uibModal.open({
+      animation: true,
+      component: PageModal,
+      size: 'lg',
+      windowClass: 'modal-xl',
+      resolve: {
+        docId: () => {
+          return snippet.docId;
+        },
+        snippet: () => {
+          return snippet.snippedText;
+        }
       }
     });
   }
@@ -80,7 +117,7 @@ class Stage3 {
           userId: Meteor.userId(),
           username: Meteor.user().username || Meteor.user().emails[0].address,
           startTime: this.startTime,
-          //questionId: this.$stateParams.id,
+          questionId: this.questionId,
           question: this.question,
           answer: this.answer,
           completeAnswer: false,
@@ -99,17 +136,20 @@ class Stage3 {
             Utils.notificationFadeout(this.messageId);
           }
         });
+
+        if (!Utils.isEmpty(this.answer)) this.uds.setSession({ readyButton: true });
       }
     }, Utils.sec2millis(30));
   }
 
+  // TODO rewrite
   submit() {
     if (!!Meteor.userId()) {
       var answer = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         startTime: this.startTime,
-        questionId: this.$stateParams.id,
+        questionId: this.questionId,
         question: this.question,
         answer: this.answer,
         completeAnswer: true,
@@ -123,25 +163,24 @@ class Stage3 {
           Utils.notificationFadeout(this.messageId);
         }
         else {
-          console.error('Unknown Error', err);
+          console.error('Error while saving answer', err);
           this.synthesisMessage = this.$translate.instant('synthesis.error');
           Utils.notificationFadeout(this.messageId);
         }
       });
 
       this.$interval.cancel(this.autosave);
-      // TODO Go to next state
     }
   }
 
   getQuestion() {
     if (!!Meteor.userId()) {
-      this.call('getSynthQuestion', Utils.parseStringAsInteger(this.$stateParams.id), (err, res) => {
+      this.call('getSynthQuestion', Utils.parseStringAsInteger(this.questionId), (err, res) => {
         if (!err) {
           this.question = res.question;
         }
         else {
-          console.error('Unknown Error', err);
+          console.error('Error while loading question', err);
           this.question = 'No question';
         }
       });
@@ -151,13 +190,15 @@ class Stage3 {
 
 // create a module
 export default angular.module(name, [
-  'truncate'
+  'truncate',
+  PageModal
 ])
 .component(name, {
   template,
   controllerAs: name,
   controller: Stage3
 })
+.config(ngWigConfig)
 .config(config);
 
 function config($stateProvider) {
@@ -187,4 +228,10 @@ function config($stateProvider) {
       }
     }
   })
+};
+
+function ngWigConfig(ngWigToolbarProvider) {
+  'ngInject';
+
+  ngWigToolbarProvider.addStandardButton('underline', 'Underline', 'underline', 'fa-underline');
 };

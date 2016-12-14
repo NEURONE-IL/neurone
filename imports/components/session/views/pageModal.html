@@ -1,0 +1,9 @@
+<div class="modal-header">
+  <button class="btn btn-xs btn-danger pull-right" type="button" ng-click="pageModal.closeModal()">{{"synthesis.closeButton" | translate}}</button>
+  <h3 class="modal-title" id="modal-title">{{"synthesis.bookmarkModalTitle" | translate}}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+  <div ng-if="pageModal.iframeReady" class="div-fill">
+    <display-iframe></display-iframe>
+  </div>
+</div>

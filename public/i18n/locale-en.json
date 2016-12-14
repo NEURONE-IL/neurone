@@ -50,11 +50,13 @@
   },
   "start": {
     "beginButton": "Begin",
-    "instructions1": "Press the Start button to begin (or resume your progress)"
+    "instructions1": "Press the Start button to begin (or resume your progress)",
+    "idea": "Idea {{number}}"
   },
   "search": {
     "searchEngineTitle": "My Search Engine",
     "searchButton": "Search",
+    "searchPlaceholder": "Enter text to search",
     "noResults": "Your search query matched no results",
     "loading": "Loading results..."
   },
@@ -97,6 +99,8 @@
     "bookmarkModalTitle": "Your Bookmark",
     "allPages": "All",
     "page": "Page {{pageNum}}",
+    "snippet": "Snippet {{snipNum}} - Page {{pageNum}}",
+    "snippetAll": "Snippet {{snipNum}}",
     "allTitle": "All Pages"
   },
   "modal": {

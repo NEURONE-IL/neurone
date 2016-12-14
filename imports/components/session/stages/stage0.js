@@ -1,6 +1,10 @@
 import template from './stage0.html';
 
-class Stage0 {}
+class Stage0 {
+  constructor($scope, $rootScope, $reactive, $translate, UserDataService) {
+    
+  }
+}
 
 const name = 'stage0';
 
@@ -17,11 +21,10 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider
-    .state('stage0', {
-      url: '/stage0',
-      template: '<stage0></stage0>',
-      resolve: {
+  $stateProvider.state('stage0', {
+    url: '/stage0',
+    template: '<stage0></stage0>',
+    resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
@@ -29,6 +32,10 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
+      },
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
       }
     }
   });

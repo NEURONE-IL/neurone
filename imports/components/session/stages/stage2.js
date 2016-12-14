@@ -182,12 +182,12 @@ class Stage2sb {
 
   changePage(index) {
     this.url = this.pages[index] ? this.pages[index].url : '/error';
-    this.$rootScope.docName = this.url2docName(this.url);
+    this.$rootScope.docId = this.url2docName(this.url);
     this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
     this.currentDocId = this.$rootScope.docId;
 
     this.uds.setSession({ docId: this.currentDocId });
-    console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docName, this.$rootScope.docId);
+    console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docId, this.$rootScope.docId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
     this.$rootScope.$broadcast('updateNavigation');

@@ -379,7 +379,8 @@ class Navigation {
       this.$state.go('stage3');
     }
     else if (stageNumber === 3) {
-      // TODO
+      this.$rootScope.$broadcast('readyStage3');
+      this.$state.go('end');
     }
     else {
       console.log('ReadyModal', stageNumber);

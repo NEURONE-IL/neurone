@@ -1,15 +1,13 @@
 <div class="container-fluid container-wrapper">
   <div class="row container-wrapper">
     <div class="col-lg-8 col-md-8 col-sm-8 container-wrapper">
-      <p>{{stage3.question}}</p>
+      <br>
+      <p><b>{{stage3.question}}</b></p>
       <form ng-submit="stage3.submit()">
         <ng-wig ng-model="stage3.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
         <br>
-        <!--
-        <button type="submit" class="btn btn-primary">{{"stage3.submitButton" | translate}}</button>
-        -->
         <div id="synthesisMessage" class="text-center">
-          <b>{{stage3.synthesisMessage}}</b>
+          <i>{{stage3.synthesisMessage}}</i>
         </div>
       </form>
     </div>
@@ -19,22 +17,30 @@
         <uib-tab index="0" heading="{{'synthesis.allPages' | translate}}">
           <h4>{{"synthesis.allTitle" | translate}}</h4>
           <hr>
-        </uib-tab>
-        <uib-tab index="$index + 1" ng-repeat="page in stage3.pageList track by $index" heading="{{'synthesis.page' | translate: { pageNum: $index+1 } }}">
-          <div class="interaction-bar">
-            <h4>{{page.title}}</h4>
-            <hr>
-            <!--
-            <div uib-alert class="snippet-box" ng-repeat="snippet in stage3.snippetListPerPage track by snippet._id">
-              <div class="snippet-element">
-                <div class="snippet-text">{{snippet.snippedText | words: 25}}</div>
-                <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="stage3.deleteSnippet(snippet.snippetId)"></i>
-                </div>
+          <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListGlobal track by $index">
+            <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
+              <uib-accordion-heading>
+                {{"synthesis.snippetAll" | translate: {snipNum: $index+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+              </uib-accordion-heading>
+              <div role="button" ng-click="stage3.launchPageModal(snippet)">
+                {{snippet.snippedText}}
               </div>
             </div>
-            -->
-          </div>
+          </uib-accordion>
+        </uib-tab>
+        <uib-tab index="$index+1" ng-repeat="page in stage3.pageList track by $index" ng-click="stage3.changePage($index)" heading="{{'synthesis.page' | translate: { pageNum: $index+1 } }}">
+          <h4>{{page.title}}</h4>
+          <hr>
+          <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListPerPage track by $index">
+            <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
+              <uib-accordion-heading>
+                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: stage3.pageIndex+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+              </uib-accordion-heading>
+              <div role="button" ng-click="stage3.launchPageModal(snippet)">
+                {{snippet.snippedText}}
+              </div>
+            </div>
+          </uib-accordion>
         </uib-tab>
       </uib-tabset>
     </div>

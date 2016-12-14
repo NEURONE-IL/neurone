@@ -1,7 +1,6 @@
-import angular from 'angular';
-import angularMeteor from 'angular-meteor';
 import angularSanitize from 'angular-sanitize';
-import uiRouter from 'angular-ui-router';
+
+import 'mark.js';
 
 import template from './displayIframe.html';
 
@@ -15,6 +14,7 @@ class DisplayIframe {
 		this.$scope = $scope;
 		this.$state = $state;
 		this.$rootScope = $rootScope;
+		this.$stateParams = $stateParams;
 		this.$timeout = $timeout;
 		this.kmtis = KMTrackIframeService;
 		this.abis = ActionBlockerIframeService;
@@ -31,45 +31,23 @@ class DisplayIframe {
 		};
 
 		this.$rootScope.$on('changeIframePage', (event, data) => {
-			console.log('changeIframePage', data);
 			this.loadPage(data);
+		});
+
+		this.$rootScope.$on('iframeSnippet', (event, data) => {
+			this.loadPage(data.docId, data.snippet);
 		});
 
 		this.iframeDoc = document.getElementById('pageContainer');
 
-		this.pageUrl = $stateParams.docName || this.page || this.$rootScope.docName;
+		this.pageUrl = this.$stateParams.docName || this.$rootScope.docId;
 		this.routeUrl = '';
 		this.documentTitle = '';
 
 		this.loadPage(this.pageUrl);
-		/*
-		// From https://github.com/meteor/meteor/issues/7189
-		this.call('getDocument', this.pageUrl, (err, res) => {
-			if (!err) {
-				//console.log(res);
-				this.routeUrl = res.routeUrl;
-				this.documentTitle = res.title;
-				this.$rootScope.docId = res._id;
-				this.$rootScope.documentTitle = res.title;
-				this.$rootScope.documentRelevant = res.relevant;
-
-				// dgacitua: Execute on iframe start
-				// http://stackoverflow.com/a/17045721
-				angular.element(this.iframeDoc).on('load', () => {
-					console.log('Loading iframe trackers...', this.iframeDoc);
-					this.abis.service();
-					this.kmtis.service();
-				});
-			}
-			else {
-				console.error('Error while loading document', this.pageUrl, err);
-				this.$state.go('error');		// TODO Change for current stage main page
-			}
-		});
-		*/
 	}
 
-	loadPage(pageUrl) {
+	loadPage(pageUrl, snippet='') {
 		console.log('loadPage', pageUrl);
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', pageUrl, (err, res) => {
@@ -84,25 +62,39 @@ class DisplayIframe {
 				// dgacitua: Execute on iframe start
 				// http://stackoverflow.com/a/17045721
 				angular.element(this.iframeDoc).on('load', () => {
-					console.log('Loading iframe trackers...', this.iframeDoc);
+					console.log('Loading iframe trackers...');
 					this.abis.service();
 					this.kmtis.service();
+					
+					if (snippet) this.highlightSnippet(snippet);
 				});
 			}
 			else {
 				console.error('Error while loading document', pageUrl, err);
-				this.$state.go('error');		// TODO Change for current stage main page
+				//this.$state.go('error');		// TODO Change for current stage main page
 			}
 		});
 	}
+
+	highlightSnippet(snippet) {
+		console.log('hl!');
+    var snip = snippet || '';
+    
+    var searchables = this.$document.find('.highlight').toArray();
+    var markInstance = new Mark(searchables);
+
+    markInstance.mark(snip, {
+      iframes: true,
+      acrossElements: true,
+      separateWordSearch: true,
+      className: 'highlightSnippet'
+    });
+  }
 }
 
 const name = 'displayIframe';
 
 export default angular.module(name, [
-	angularMeteor,
-	angularSanitize,
-	uiRouter,
 	Logger,
 	ActionBlocker
 ])

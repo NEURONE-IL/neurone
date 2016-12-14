@@ -14,8 +14,8 @@ class BookmarkModal {
     this.docName = this.url2docName(this.bookmark.url);
 
     //$state.transitionTo($state.current, {docName: this.docName}, { notify: false });
-    this.$rootScope.docName = this.docName;
-    //console.log('docName', this.$rootScope.docName);
+    this.$rootScope.docId = this.docName;
+    //console.log('docName', this.$rootScope.docId);
   }
 
   url2docName(url) {
@@ -23,7 +23,7 @@ class BookmarkModal {
   }
 
   closeModal() {
-    delete this.$rootScope.docName;
+    delete this.$rootScope.docId;
     //this.iframe.$state.go('/home');
     this.close();
   }
