@@ -26,7 +26,7 @@ class Register {
     this.auth.resetPassword(this.credentials, (err, res) => {
       if (!err) {
         this.error = res;
-        this.$state.go('search');
+        this.$state.go('start');
       }
       else {
         this.error = err;

@@ -22,20 +22,8 @@ class Register {
       email: '',
       password: '',
       role: '',
-      configs: {
-        locale: '',
-        task: '',
-        topic: '',
-        maxBookmarks: 0,
-        snippetsPerPage: 0,
-        snippetLength: 0
-      },
-      session: {
-        docId: '',
-        stage: '',
-        bookmarkCount: 0,
-        snippetCount: 0
-      },
+      configs: {},
+      session: {},
       profile: {}
     };
 
@@ -43,7 +31,7 @@ class Register {
   }
 
   register(userRole) {
-    this.credentials.role = userRole ? userRole : 'undefined';
+    this.credentials.role = userRole || 'undefined';
     this.credentials.configs.maxBookmarks = Settings.locale || 'en';
     this.credentials.configs.maxBookmarks = Settings.maxBookmarks || 3;
     this.credentials.configs.snippetsPerPage = Settings.snippetsPerPage || 3;
@@ -52,7 +40,7 @@ class Register {
     this.auth.register(this.credentials, (err, res) => {
       if (!err) {
         this.error = res;
-        this.$state.go('search');
+        this.$state.go('start');
       }
       else {
         this.error = err;

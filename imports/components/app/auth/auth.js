@@ -35,7 +35,7 @@ class Auth {
   logout() {
     this.auth.logout((err, res) => {
       if (!err) {
-        this.$state.go('search');
+        this.$state.go('home');
       }
     });
     /*

@@ -74,7 +74,7 @@ function config($stateProvider) {
         }
       },
       user: ($auth) => {
-        return $auth.requireUser();
+        return $auth.awaitUser();
       },
       userDataSub(UserDataService) {
         const uds = UserDataService;

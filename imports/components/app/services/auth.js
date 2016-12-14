@@ -24,7 +24,6 @@ class AuthService {
       }
       else {
         this.sts.saveLogin();
-        this.uds.initUserData();
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);

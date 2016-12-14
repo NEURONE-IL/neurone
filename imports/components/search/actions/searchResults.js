@@ -44,6 +44,8 @@ class SearchResults {
       var limit = this.uds.getConfigs().maxBookmarks;
       var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
 
+      this.uds.setSession({ bookmarkButton: false });
+      this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: true });
       this.uds.setSession({ stageNumber: 1 });
       this.uds.setSession({ readyButton: setReady });
@@ -139,6 +141,9 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
+      },
+      user: ($auth) => {
+        return $auth.awaitUser();
       },
       userDataSub(UserDataService) {
         const uds = UserDataService;

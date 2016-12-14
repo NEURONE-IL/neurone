@@ -10,6 +10,16 @@ class Start {
 
     this.uds = UserDataService;
 
+    $scope.$on('$stateChangeStart', (event) => {
+      this.uds.setSession({ standbyMode: false });
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.uds.setSession({ standbyMode: true });
+
+      this.$rootScope.$broadcast('updateNavigation');
+    });
+
     $reactive(this).attach($scope);
   }
 
@@ -19,7 +29,7 @@ class Start {
       console.log(currentState);
 
       if (!this.currentState) {
-        // TODO change for Stage0 whrn implemented
+        // TODO change for Stage0 when implemented
         this.$state.go('search');
       }
       else {
@@ -46,6 +56,9 @@ function config($stateProvider) {
     url: '/start',
     template: '<start></start>',
     resolve: {
+      user: ($auth) => {
+        return $auth.awaitUser();
+      },
       userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();

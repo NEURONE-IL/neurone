@@ -241,6 +241,9 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
+      user: ($auth) => {
+        return $auth.awaitUser();
+      },
       userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();

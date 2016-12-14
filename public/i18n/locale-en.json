@@ -50,7 +50,7 @@
   },
   "start": {
     "beginButton": "Begin",
-    "instructions1": "Press the Start button to begin (or resume your progress)",
+    "instructions1": "Press the Begin button to start (or continue)",
     "idea": "Idea {{number}}"
   },
   "search": {

@@ -139,6 +139,9 @@ class Navigation {
         },
         stageNumber: () => {
           return this.uds.getSession().stageNumber;//this.getReactively('_stageNumber');
+        },
+        standbyMode: () => {
+          return this.uds.getSession().standbyMode;
         }
       });
     });
@@ -288,7 +291,7 @@ class Navigation {
     }
   }
 
-  tutorialModal() {
+  tutorialModal(stageNumber) {
     if (stageNumber === 1) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
