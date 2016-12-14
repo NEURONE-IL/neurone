@@ -51,15 +51,22 @@ class Navigation {
 
     $reactive(this).attach($scope);
 
-    var p1 = $promiser.subscribe('userBookmarks');
-    var p2 = $promiser.subscribe('userSnippets');
-    var p3 = this.uds.check();
+    this.autorun(() => {
+      var isLoggedIn = !!Meteor.userId();
+
+      if (isLoggedIn) {
+        this.sub0 = this.uds.check();
+        this.sub1 = $promiser.subscribe('userBookmarks');
+        this.sub2 = $promiser.subscribe('userSnippets');
+        console.log('autorun!');
+      }
+    });
 
     this.navbarMessageId = 'navbarMessage';
 
     this._counters = new ReactiveObject({});
     
-    $q.all([p1, p2, p3]).then((res) => {
+    $q.all([this.sub0, this.sub1, this.sub2]).then((res) => {
       this._counters.defineProperty('bookmarks', UserBookmarks.find().count());
       this._counters.defineProperty('words', 0);
 
@@ -77,7 +84,7 @@ class Navigation {
 
       this.$rootScope.$on('updateNavigation', (event, data) => {
         var stage = this.uds.getSession().stageNumber;
-        Utils.notificationFadeout(this.navbarMessageId);
+        Utils.notificationHide(this.navbarMessageId);
 
         if (stage === 0) {
           // TODO
@@ -99,6 +106,15 @@ class Navigation {
       this.$rootScope.$on('updateBookmarkButton', (event, data) => {
         this.checkBookmarkStatus();
       });
+
+      /*
+      this.$rootScope.$on('flushSubscription', (event, data) => {
+        res[0].stop();
+        res[1].stop();
+        res[2].stop();
+        console.log('flushed!');
+      });
+      */
 
       this.helpers({
         isLoggedIn: () => {
@@ -149,10 +165,10 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      //this.navbarMessage = res ? res : err;
+      //this.navbarMessage = res || err;
       this._counters.words = this.uds.getSession().wordCount;
       this.checkSnippetStatus();
-      this.uds.setSession({ statusMessage: (res ? res : err) });
+      this.uds.setSession({ statusMessage: (res || err) });
       Utils.notificationFadeout(this.navbarMessageId);
       this.$scope.$apply();
     });
@@ -228,8 +244,8 @@ class Navigation {
       this.bookmarkAction((err, res) => {
         if (!err) {
           this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
-            //this.$rootScope._navbarMessage.set(res ? res : err);
-            this.uds.setSession({ statusMessage: (res ? res : err) });
+            //this.$rootScope._navbarMessage.set(res || err);
+            this.uds.setSession({ statusMessage: (res || err) });
             Utils.notificationFadeout(this.navbarMessageId);
             this.$scope.$apply();
             
@@ -243,8 +259,8 @@ class Navigation {
   removeBookmark() {
     if (!!Meteor.userId()) {
       this.bms.removeBookmark((err, res) => {
-        //this.$rootScope._navbarMessage.set(res ? res : err);
-        this.uds.setSession({ statusMessage: (res ? res : err) });
+        //this.$rootScope._navbarMessage.set(res || err);
+        this.uds.setSession({ statusMessage: (res || err) });
         Utils.notificationFadeout(this.navbarMessageId);
         this.$scope.$apply();
 
@@ -256,6 +272,7 @@ class Navigation {
   logout() {
     this.auth.logout((err, res) => {
       if (!err) {
+        //this.$rootScope.$broadcast('flushSubscription');
         this.$state.go('home');
       }
     });

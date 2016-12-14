@@ -6,9 +6,14 @@ class UserDataService {
   constructor($promiser) {
     'ngInject';
 
-    this.hdl = $promiser.subscribe('userData');
-
+    this.hdl = $promiser.subscribe('userDataToggle', Meteor.userId());
     this._userData = null;
+
+    Meteor.autorun(() => {
+      var userId = Meteor.userId();
+      this.hdl = $promiser.subscribe('userDataToggle', userId);
+      console.log('UserDataService AUTORUN!', userId);
+    });
 
     Meteor.autorun(() => {
       this._userData = UserData.findOne();

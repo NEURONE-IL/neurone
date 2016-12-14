@@ -3,10 +3,11 @@ import template from './start.html';
 const name = 'start';
 
 class Start {
-  constructor($scope, $reactive, $state, UserDataService) {
+  constructor($scope, $rootScope, $reactive, $state, UserDataService) {
     'ngInject';
 
     this.$state = $state;
+    this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
 
@@ -28,7 +29,7 @@ class Start {
       var currentState = this.uds.getSession().stageHome;
       console.log(currentState);
 
-      if (!this.currentState) {
+      if (!currentState) {
         this.$state.go('stage0');
       }
       else {
@@ -55,7 +56,7 @@ function config($stateProvider) {
     url: '/start',
     template: '<start></start>',
     resolve: {
-      user: ($auth) => {
+      user($auth) {
         return $auth.awaitUser();
       },
       userDataSub(UserDataService) {

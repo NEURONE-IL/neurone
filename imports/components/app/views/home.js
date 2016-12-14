@@ -6,8 +6,18 @@ import template from './home.html';
 const name = 'home';
 
 class Home {
-  constructor($scope, $reactive) {
+  constructor($scope, $rootScope, $reactive, UserDataService) {
     'ngInject';
+
+    $scope.$on('$stateChangeStart', (event) => {
+      this.uds.setSession({ standbyMode: false });
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.uds.setSession({ standbyMode: true });
+
+      this.$rootScope.$broadcast('updateNavigation');
+    });
 
     $reactive(this).attach($scope);
   }
@@ -27,9 +37,14 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider
-    .state('home', {
-      url: '/home',
-      template: '<home></home>'
-    });
+  $stateProvider.state('home', {
+    url: '/home',
+    template: '<home></home>',
+    resolve: {
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
+      }
+    }
+  });
 };

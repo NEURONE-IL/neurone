@@ -2,7 +2,7 @@
   <div class="small-search text-center">   
     <form class="row center-block" ng-submit="searchResults.doSearch()">
       <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 input-group">
-        <input class="form-control" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="search.searchText">
+        <input class="form-control" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="searchResults.searchText">
         <div class="input-group-btn">
           <button type="submit" class="btn btn-success" id="btn-search">
             <i class="fa fa-search"></i> {{"search.searchButton" | translate}}
