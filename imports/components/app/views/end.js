@@ -7,6 +7,10 @@ class End {
     'ngInject';
 
     $reactive(this).attach($scope);
+
+    this.items = {
+      
+    }
   }
 }
 

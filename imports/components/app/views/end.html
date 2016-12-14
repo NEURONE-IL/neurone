@@ -4,4 +4,14 @@
     <h3>You have completed the task!</h3>
     <p>Thank you for join us!</p>
   </div>
+
+  <div uib-carousel>
+    <div uib-slide ng-repeat="slide in slides end.items track by $index" index="$index">
+      <img ng-src="{{slide.image}}" style="margin:auto;">
+      <div class="carousel-caption">
+        <h4>Slide {{slide.id}}</h4>
+        <p>{{slide.text}}</p>
+      </div>
+     </div>
+  </div>
 </div>

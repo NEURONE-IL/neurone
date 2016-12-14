@@ -44,9 +44,9 @@ class ActionBlockerIframeService {
       var data = {};
 
       this.bindEvent(angular.element(innerDoc), 'contextmenu', data, this.blockRightClick);
-      //this.bindEvent(angular.element(innerDoc), 'cut', data, this.blockCut);
-      //this.bindEvent(angular.element(innerDoc), 'copy', data, this.blockCopy);
-      //this.bindEvent(angular.element(innerDoc), 'paste', data, this.blockPaste);
+      this.bindEvent(angular.element(innerDoc), 'cut', data, this.blockCut);
+      this.bindEvent(angular.element(innerDoc), 'copy', data, this.blockCopy);
+      this.bindEvent(angular.element(innerDoc), 'paste', data, this.blockPaste);
       this.isTracking = true;
     }
   }
@@ -57,9 +57,9 @@ class ActionBlockerIframeService {
       var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
       this.unbindEvent(angular.element(innerDoc), 'contextmenu', this.blockRightClick);
-      //this.unbindEvent(angular.element(innerDoc), 'cut', this.blockCut);
-      //this.unbindEvent(angular.element(innerDoc), 'copy', this.blockCopy);
-      //this.unbindEvent(angular.element(innerDoc), 'paste', this.blockPaste);
+      this.unbindEvent(angular.element(innerDoc), 'cut', this.blockCut);
+      this.unbindEvent(angular.element(innerDoc), 'copy', this.blockCopy);
+      this.unbindEvent(angular.element(innerDoc), 'paste', this.blockPaste);
       this.isTracking = false;
     }
   }

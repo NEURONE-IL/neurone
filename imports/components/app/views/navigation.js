@@ -292,7 +292,7 @@ class Navigation {
   }
 
   tutorialModal(stageNumber) {
-    if (stageNumber === 1) {
+    if (stageNumber === 0) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
@@ -300,7 +300,37 @@ class Navigation {
         fields: {}
       };
 
-      this.modal.openModal(modalObject, (err, res) => {});  
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tutorial_stage1_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 2) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tutorial_stage1_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 3) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tutorial_stage1_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
       console.log('TutorialModal', stageNumber);

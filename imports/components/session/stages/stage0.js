@@ -6,6 +6,8 @@ class Stage0 {
   constructor($scope, $rootScope, $reactive, $translate, UserDataService) {
     'ngInject';
 
+    this.$rootScope = $rootScope;
+
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
