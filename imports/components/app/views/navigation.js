@@ -348,7 +348,11 @@ class Navigation {
   }
 
   readyAction(stageNumber) {
-    if (stageNumber === 1) {
+    if (stageNumber === 0) {
+      this.$rootScope.$broadcast('readyStage0');
+      this.$state.go('search');
+    }
+    else if (stageNumber === 1) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var maximumStars = 3,
          userBookmarks = UserBookmarks.find().fetch(),

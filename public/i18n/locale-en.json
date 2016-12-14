@@ -51,7 +51,8 @@
   "start": {
     "beginButton": "Begin",
     "instructions1": "Press the Begin button to start (or continue)",
-    "idea": "Idea {{number}}"
+    "idea": "Idea {{number}}",
+    "ideaPlaceholder": "Write your idea here!"
   },
   "search": {
     "searchEngineTitle": "My Search Engine",

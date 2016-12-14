@@ -1,21 +1,28 @@
 <div class="container">
+  <br>
   <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-1 col-xs-offset-1">
-      
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 col-lg-offset-3 col-md-offset-3 col-sm-offset-2 col-xs-offset-2">
+      <img src="modals/instructionGirl.png" class="img-responsive">
     </div>
-    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
+    <div class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
+      <p>Hello there!</p>
+      <p>Before you start to search for three best possible sources, think about it and write down two different ways you could get the best results.</p>
+      <p>I think it works and helps you with your search.</p>
+      <p> Write your ideas in the boxes below!</p>
     </div>
   </div>
+  <br>
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8 col-lg-offset-3 col-md-offset-3 col-sm-offset-2 col-xs-offset-2">
-      <form>
+      <form ng-submit="stage0.submit()">
         <div class="input-group">
-          <span class="input-group-addon">{{"start.idea" | translate: { number: $index+1 } }}</span>
-          <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info">
+          <span class="input-group-addon">{{"start.idea" | translate: { number: 1 } }}</span>
+          <input id="msg" type="text" class="form-control" name="idea1" placeholder="{{'start.ideaPlaceholder' | translate}}" ng-model="stage0.idea1" required>
         </div>
+        <br>
         <div class="input-group">
-          <span class="input-group-addon">Text</span>
-          <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info">
+          <span class="input-group-addon">{{"start.idea" | translate: { number: 2 } }}</span>
+          <input id="msg" type="text" class="form-control" name="idea2" placeholder="{{'start.ideaPlaceholder' | translate}}" ng-model="stage0.idea2" required>
         </div>
       </form>
     </div>

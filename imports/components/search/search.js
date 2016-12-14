@@ -88,7 +88,7 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
-      user: ($auth) => {
+      user($auth) {
         return $auth.awaitUser();
       },
       userDataSub(UserDataService) {

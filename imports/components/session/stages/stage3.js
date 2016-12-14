@@ -142,7 +142,6 @@ class Stage3 {
     }, Utils.sec2millis(30));
   }
 
-  // TODO rewrite
   submit() {
     if (!!Meteor.userId()) {
       var answer = {
@@ -216,7 +215,7 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
-      user: ($auth) => {
+      user($auth) {
         return $auth.awaitUser();
       },
       userDataSub(UserDataService) {

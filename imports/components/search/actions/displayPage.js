@@ -60,11 +60,10 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider
-    .state('displayPage', {
-      url: '/page/:docName',
-      template: '<display-page></display-page>',
-      resolve: {
+  $stateProvider.state('displayPage', {
+    url: '/page/:docName',
+    template: '<display-page></display-page>',
+    resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
@@ -73,7 +72,7 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
-      user: ($auth) => {
+      user($auth) {
         return $auth.awaitUser();
       },
       userDataSub(UserDataService) {

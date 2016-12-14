@@ -29,8 +29,7 @@ class Start {
       console.log(currentState);
 
       if (!this.currentState) {
-        // TODO change for Stage0 when implemented
-        this.$state.go('search');
+        this.$state.go('stage0');
       }
       else {
         var state = currentState.substr(currentState.indexOf('/') + 1);
