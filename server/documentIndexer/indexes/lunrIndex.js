@@ -2,16 +2,16 @@ import lunr from 'lunr';
 import sum from 'sum';
 import 'array.prototype.move';
 
-import Utils from '../lib/utils';
+import Utils from '../../lib/utils';
 
-import { Documents } from '../../imports/api/documents/index';
-import { Indexes } from '../../imports/api/indexes/index';
+import { Documents } from '../../../imports/api/documents/index';
+import { Indexes } from '../../../imports/api/indexes/index';
 
 var searchIndex = {};
 
-export default class InvertedIndex {
+export default class LunrIndex {
   static generate() {
-    console.log('Generating Inverted Index...');
+    console.log('Generating Inverted Index using Lunr...');
 
     var allDocs = Documents.find({});
     
@@ -32,7 +32,7 @@ export default class InvertedIndex {
     var currentIndex = Indexes.findOne({ type: 'LunrIndex', version: 1 }, { sort: { serverTimestamp: -1 }});
 
     if (!Utils.isEmptyObject(currentIndex)) {
-      console.log('Loading Inverted Index...');
+      console.log('Loading Lunr Inverted Index...');
       searchIndex = lunr.Index.load(JSON.parse(currentIndex.index));
     }
     else {
@@ -41,7 +41,7 @@ export default class InvertedIndex {
   }
 
   static save() {
-    console.log('Saving Inverted Index...');
+    console.log('Saving Lunr Inverted Index...');
 
     var serializedIndex = { type: 'LunrIndex', version: 1, serverTimestamp: Utils.getTimestamp(),  index: JSON.stringify(searchIndex) };
 
@@ -180,32 +180,3 @@ export default class InvertedIndex {
     });
   }
 }
-
-Meteor.methods({
-  searchDocuments: function(query) {
-    try {
-      var results = InvertedIndex.searchDocuments(query);
-
-      if (results.length >= 1) {
-        return InvertedIndex.iFuCoSort(results, 3, 2);
-      }
-      else {
-        return results;
-      }  
-    }
-    catch (err) {
-      throw new Meteor.Error('DocumentRetrievalError', 'Cannot get documents from query', err);
-    }
-  },
-  getDocument: function(documentName) {
-    try {
-      var asyncCall = Meteor.wrapAsync(InvertedIndex.getDocument),
-                doc = asyncCall(documentName);
-
-      return doc;
-    }
-    catch (err) {
-      throw new Meteor.Error('DocumentRetrievalError', 'Cannot get document for display', err);
-    }
-  }
-});

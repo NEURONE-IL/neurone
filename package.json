@@ -36,6 +36,8 @@
     "meteor-node-stubs": "^0.2.3",
     "path": "^0.12.7",
     "request": "^2.75.0",
+    "solr-client": "^0.6.0",
+    "solr-node": "^1.0.13",
     "sum": "^0.1.4",
     "uppercamelcase": "^1.1.0",
     "useragent": "^2.1.9",

@@ -3,7 +3,8 @@ import path from 'path';
 import glob from 'glob';
 
 import Utils from '../lib/utils';
-import InvertedIndex from './invertedIndex';
+import SolrIndex from './indexes/solrIndex';
+import LunrIndex from './indexes/lunrIndex';
 import DocumentParser from './documentParser';
 
 import { Documents } from '../../imports/api/documents/index';
@@ -35,7 +36,12 @@ export default class Indexer {
       Documents.upsert({ route: docObj.route }, docObj);
     });
 
-    InvertedIndex.generate();
+    if (process.env.NEURONE_SOLR_HOST) {
+      SolrIndex.generate();
+    }
+    else {
+      LunrIndex.generate();
+    }
 
     /*
     glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
@@ -152,8 +158,13 @@ export default class Indexer {
   }
 
   static loadInvertedIndex() {
-    InvertedIndex.load();
-    return true;
+    if (!process.env.NEURONE_SOLR_HOST) {
+      LunrIndex.load();
+      return true;  
+    }
+    else {
+      return false;
+    }
   }
 
   static getDocumentCount() {
