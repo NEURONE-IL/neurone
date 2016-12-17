@@ -56,8 +56,6 @@ export default class LunrIndex {
 
     search = searchIndex.search(query);
     
-    //console.log(search);
-
     search.forEach((obj) => {
       var docId = obj.ref,
          docObj = Documents.findOne({_id: docId});
@@ -103,51 +101,6 @@ export default class LunrIndex {
     }
 
     return snippet;
-  }
-
-  // dgacitua: Custom sorting algorithm for iFuCo Project
-  // PARAMS:  documentArray  Array with resulting documents from Lunr
-  //          insertions     Algorithm will check from first to <insertions> position for relevant documents
-  //          offset         Algorithm will insert a relevant document at this position (1 is first position)
-  static iFuCoSort(documentArray, insertions, offset) {
-    check(documentArray, Array);
-
-    // iFuCoSort v2
-    var insertNum = documentArray.length < insertions ? documentArray.length : insertions,
-        offsetPos = documentArray.length < offset ? documentArray.length : offset;
-
-    for (var i=0; i<insertNum; i++) {
-      if (documentArray[i].relevant === true) return documentArray;
-    }
-
-    for (var j=0; j<documentArray.length; j++) {
-      if (documentArray[j].relevant === true) {
-        documentArray.move(j, offsetPos-1);
-        return documentArray;  
-      }
-    }
-
-    return documentArray;
-
-    // iFuCoSort v1
-    /*
-    var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch()),
-           insertNum = relevantDocs.length < insertions ? relevantDocs.length : insertions,
-           offsetNum = (documentArray.length < offset ? documentArray.length : offset) - 1;
-
-    for (i=0; i<insertNum; i++) {
-      var index = documentArray.indexOf(relevantDocs[i]);
-
-      if (index != -1) {
-        documentArray.move(index, offsetNum);
-      }
-      else {
-        documentArray.splice(offsetNum, 0, relevantDocs[i]);
-      }
-    }
-
-    return this.removeArrayDuplicates(a => a._id, documentArray);
-    */
   }
 
   // dgacitua: Implemented Fisher-Yates Shuffle algorithm

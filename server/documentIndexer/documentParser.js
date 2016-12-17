@@ -3,6 +3,7 @@ import path from 'path';
 import md5File from 'md5-file';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
+import unfluff from 'unfluff';
 import uppercamelcase from 'uppercamelcase';
 
 import Utils from '../lib/utils';
@@ -13,6 +14,15 @@ export default class DocumentParser {
       var relPath = documentPath,   //Meteor.absolutePath + documentPath;
          htmlFile = fs.readFileSync(relPath);
 
+      var site = unfluff.lazy(htmlFile),
+          lang = site.lang(),
+         title = site.title(),
+           url = site.canonicalLink(),
+          text = site.text();
+
+      return text || '';
+
+      /*
       var options = {
         wordwrap: false,
         uppercaseHeadings: false,
@@ -21,6 +31,7 @@ export default class DocumentParser {
       };
 
       return htmlToText.fromString(htmlFile, options);
+      */
     }
     catch (e) {
       console.error(e);

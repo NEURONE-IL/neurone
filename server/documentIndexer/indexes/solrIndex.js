@@ -52,7 +52,7 @@ export default class SolrIndex {
         // dgacitua: Adding new documents
         searchIndex._requestPost('update?commit=true', idxDocs, {}, (err2, res2) => {
           if (!err2) {
-            console.log('Documents added to Solr Index!', res2.responseHeader);
+            console.log('Documents added to Solr Index!');
           }
           else {
             console.error('Error while adding documents to Solr Index', err2);
@@ -81,41 +81,48 @@ export default class SolrIndex {
     });
   }
 
-  static searchDocuments(queryText) {
-    try {
-      check(queryText, String);
+  static searchDocuments(queryText, callback) {
+    check(queryText, String);
 
-      var query = searchIndex.query()
-                    .q('title_t:' + queryText + ' OR ' + 'indexedBody_t:' + queryText)
-                    .dismax()
-                    .df('indexedBody_t')
-                    .hlQuery({fl: 'indexedBody_t', snippets: 3, alternateField: 'body_t'}),
-         search = Meteor.wrapAsync(searchIndex.search),
-        results = search(query);
+    var q1 = 'q=' + 'title_t:' + queryText + ' OR ' + 'indexedBody_t:' + queryText,
+        q2 = 'df=indexedBody_t',
+        q3 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre="&hl.simple.post="&hl.fragsize=150',
+        q4 = 'wt=json',
+     query = q1 + '&' + q2 + '&' + q3 + '&' + q4;
 
-      console.log('results', res);
-      return results;
-    }
-    catch (err) {
-      throw new Meteor.Error('SearchError', 'Could not get search results for query', err);
-    }
+    var respDocs = [];
+
+    searchIndex.search(query, Meteor.bindEnvironment((err, res) => {
+      if (!err) {
+        var searchResponse = res,
+                 searchNum = searchResponse.response.numFound,
+                searchDocs = searchResponse.response.docs,
+                  searchHl = searchResponse.highlighting;
+        
+        searchResponse.response.docs.forEach((doc) => {
+          var docId = doc.id,
+             docObj = Documents.findOne({_id: docId});
+
+          docObj.body = '';
+
+          // Underscore.js iterate object
+          _.each(searchHl[docId], function(value, key) {
+            docObj.body += value[0];
+          });
+
+          delete docObj.indexedBody;
+          
+          respDocs.push(docObj);
+        });
+
+        callback(null, respDocs);
+      }
+      else {
+        console.error(err);
+        callback(err);
+      }
+    }));
   }
-
-  static getDocument(documentName, callback) {
-    check(documentName, String);
-
-    var doc = Documents.findOne({ _id: documentName });
-
-    if (doc && doc._id && doc.route) {
-      doc.routeUrl = '/' + doc.route;
-      callback(null, doc);
-    }
-    else {
-      var err = 'Document not found!';
-      callback(err);
-    }
-  }
-
 
   static randomInteger(low, high) {
     // dgacitua: https://blog.tompawlak.org/generate-random-values-nodejs-javascript
@@ -133,5 +140,10 @@ export default class SolrIndex {
       .replace(/[\n]/g, ' ')
       .replace(/[\r]/g, ' ')
       .replace(/[\t]/g, ' ');
+  }
+
+  static getVarType(obj) {
+    // dgacitua: http://stackoverflow.com/a/28475765
+    return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
   }
 }

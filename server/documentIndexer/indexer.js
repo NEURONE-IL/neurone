@@ -25,15 +25,21 @@ export default class Indexer {
 
       var docObj = {};
       var parsedObj = DocumentParser.parseDocument(docRoute);
-      var jsonObj = documentList.find(o => o.route === doc.route);
+      //var jsonObj = documentList.find(o => o.route === doc.route);
 
       // dgacitua: http://stackoverflow.com/a/171256
       for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
       for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
 
+      // dgacitua: Underscore.js extend and merge
+      //docObj = _.extend(docObj, jsonObj);
+      //docObj = _.extend(docObj, parsedObj);
+      
       docObj.route = path.join('web', docObj.route);
 
-      Documents.upsert({ route: docObj.route }, docObj);
+      Documents.upsert({ route: docObj.route }, docObj, (err, res) => {
+        //if (!err) console.log('Document indexed!', (idx+1) + ' of ' + total);
+      });
     });
 
     if (process.env.NEURONE_SOLR_HOST) {
@@ -42,6 +48,8 @@ export default class Indexer {
     else {
       LunrIndex.generate();
     }
+
+    // TODO Remove all documents
 
     /*
     glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {

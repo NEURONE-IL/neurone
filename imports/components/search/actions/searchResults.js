@@ -1,6 +1,7 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
+import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
 
 import 'mark.js';
@@ -19,7 +20,7 @@ import { name as Logger } from '../../logger/logger';
 */
 
 class SearchResults {
-  constructor($scope, $rootScope, $reactive, $state, $document, $stateParams, UserDataService, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $state, $document, $stateParams, $sanitize, UserDataService, QueryTrackService) {
     'ngInject';
 
     this.$scope = $scope;
@@ -117,6 +118,7 @@ const name = 'searchResults';
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
+  angularSanitize,
   'truncate',
   Logger
 ])
