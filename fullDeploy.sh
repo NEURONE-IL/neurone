@@ -93,12 +93,13 @@ echo ">> Deploy offline NEURONE image in remote host... [12/13]"
 ssh $USER@$HOST docker run -d \
                 -e ROOT_URL="http://$HOST" \
                 -e MONGO_URL="mongodb://$NEURONE_DB_USER:$NEURONE_DB_PASS@$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
-                -e NEURONE_SOLR_HOST="127.0.0.1" \
+                -e NEURONE_SOLR_HOST=$NEURONE_SOLR_NAME \
                 -e NEURONE_SOLR_CORE=$NEURONE_SOLR_PORT \
                 -e NEURONE_SOLR_CORE=$NEURONE_SOLR_CORE \
                 -p $NEURONE_APP_PORT:80 \
                 -v $NEURONE_ASSET_PATH:/assets \
                 --link $NEURONE_DB_NAME:mongo \
+                --link $NEURONE_SOLR_NAME:solr \
                 --name $NEURONE_APP_NAME \
                 --restart=unless-stopped \
                 dgacitua/neurone
