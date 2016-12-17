@@ -13,10 +13,14 @@ class End {
 
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({ standbyMode: false });
+      this.uds.setSession({ stageHome: '/home' });
+      this.uds.setSession({ statusMessage: '' });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ standbyMode: true });
+      this.uds.setSession({ stageHome: '/end' });
+      this.uds.setSession({ stageNumber: 4 });
 
       this.$rootScope.$broadcast('updateNavigation');
     });

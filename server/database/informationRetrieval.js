@@ -46,6 +46,20 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmark Status from Database!', err);
     }
+  },
+  userDataFromId: function(userId) {
+    // dgacitua: Server-only method
+    // https://github.com/themeteorchef/server-only-methods
+    try {
+      check(userId, String);
+
+      console.log(Meteor.users.findOne({ _id: userId }).username);
+      if (this.connection == null) return Meteor.users.findOne({ _id: userId });
+      else return undefined;
+    }
+    catch (err) {
+      throw new Meteor.Error('UserDataError', 'Could not get User Data from userId!', err);
+    }
   }
 });
 

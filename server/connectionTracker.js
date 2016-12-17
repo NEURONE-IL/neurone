@@ -1,50 +1,118 @@
 import Utils from './lib/utils';
 
-import { FlowLogs } from '../imports/api/flowLogs/index';
-import { FlowSessions } from '../imports/api/flowSessions/index';
-import { EventLogs } from '../imports/api/eventLogs/index';
-
 UserPresenceMonitor.onSetUserStatus((user, status, statusConnection) => {
-  var userId = user._id,
-    username = user.username || user.emails[0].address,
-   timestamp = Utils.getTimestamp(),
-        date = Utils.timestamp2date(timestamp),
-        time = Utils.timestamp2time(timestamp),
-      action = '';
+  var timestamp = Utils.getTimestamp();
 
-  if (status === 'away') {
-    action = 'StatusAway';
-  }
-  else if (status === 'offline') {
-    action = 'StatusOffline';
-  }
-  else if (status === 'online') {
-    action = 'StatusOnline';
-  }
-  else {
-    action = 'StatusChange';
-  }
-
-  var action = {
-    userId: userId,
-    username: username,
-    action: action,
-    actionId: '',
-    clientDate: date,
-    clientTime: time,
+  var obj = {
+    userId: user._id,
+    action: 'UserConnected',
     clientTimestamp: timestamp,
-    serverDate: date,
-    serverTime: time,
-    serverTimestamp: timestamp,
-    ipAddr: '',
-    userAgent: '',
-    extras: ''
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
   };
 
+  if (status === 'away') {
+    obj.action = 'StatusAway';
+  }
+  else if (status === 'offline') {
+    obj.action = 'StatusOffline';
+
+    // dgacitua: Delete user login tokens on logout
+    //Meteor.users.update({ _id: user._id }, { $set: { 'services.resume.loginTokens': [] }});
+  }
+  else if (status === 'online') {
+    obj.action = 'StatusOnline';
+  }
+  else {
+    obj.action = 'StatusChange';
+  }
+
   try {
-    EventLogs.insert(action);
+    //EventLogs.insert(action);
+    Meteor.call('storeTrackingStatus', obj);
   }
   catch (err) {
-    throw new Meteor.error('DatabaseError', 'Could not save in Database!');
+    throw new Meteor.error('DatabaseError', 'Could not save User Status in Database!', err);
   }
 });
+
+/*
+UserPresence.onSessionConnected(function(connection) {
+  var timestamp = Utils.getTimestamp();
+
+  var obj = {
+    userId: connection.userId,
+    action: 'UserConnected',
+    clientTimestamp: timestamp,
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
+  };
+
+  Meteor.call('storeTrackingStatus', obj);
+  console.log(obj.action, obj.userId);
+});
+
+UserPresence.onSessionDisconnected(function(connection) {
+  var timestamp = Utils.getTimestamp();
+
+  var obj = {
+    userId: connection.userId,
+    action: 'UserDisconnected',
+    clientTimestamp: timestamp,
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
+  };
+
+  Meteor.call('storeTrackingStatus', obj);
+  console.log(obj.action, obj.userId);
+});
+
+UserPresence.onCleanup(function() {
+  //Meteor.users.update({}, { $unset: { status: true }}, { multi: true });
+});
+
+UserPresence.onUserOnline(function(userId) {
+  var timestamp = Utils.getTimestamp();
+
+  var obj = {
+    userId: userId,
+    action: 'StatusOnline',
+    clientTimestamp: timestamp,
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
+  };
+
+  Meteor.call('storeTrackingStatus', obj);
+  console.log(obj.action, obj.userId);
+});
+
+UserPresence.onUserIdle(function(userId) {
+  var timestamp = Utils.getTimestamp();
+
+  var obj = {
+    userId: userId,
+    action: 'StatusAway',
+    clientTimestamp: timestamp,
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
+  };
+
+  Meteor.call('storeTrackingStatus', obj);
+  console.log(obj.action, obj.userId);
+});
+
+UserPresence.onUserOffline(function(userId) {
+  var timestamp = Utils.getTimestamp();
+
+  var obj = {
+    userId: userId,
+    action: 'StatusOffline',
+    clientTimestamp: timestamp,
+    clientDate: Utils.timestamp2date(timestamp),
+    clientTime: Utils.timestamp2time(timestamp)
+  };
+
+  Meteor.call('storeTrackingStatus', obj);
+  console.log(obj.action, obj.userId);
+});
+*/

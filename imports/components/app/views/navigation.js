@@ -58,7 +58,7 @@ class Navigation {
         this.sub0 = this.uds.check();
         this.sub1 = $promiser.subscribe('userBookmarks');
         this.sub2 = $promiser.subscribe('userSnippets');
-        console.log('autorun!');
+        console.log('Subscription AUTORUN!');
       }
     });
 
@@ -67,7 +67,7 @@ class Navigation {
     this._counters = new ReactiveObject({});
     
     $q.all([this.sub0, this.sub1, this.sub2]).then((res) => {
-      this._counters.defineProperty('bookmarks', UserBookmarks.find().count());
+      this._counters.defineProperty('bookmarks', 0);
       this._counters.defineProperty('words', 0);
 
       // dgacitua: Set snippet button
@@ -90,12 +90,15 @@ class Navigation {
           // TODO
         }
         else if (stage === 1) {
-          //this.checkBookmarkStatus();
+          this._counters.bookmarks = this.uds.getSession().bookmarkCount || 0;
         }
         else if (stage === 2) {
           this.checkSnippetStatus();
         }
         else if (stage === 3) {
+          // TODO
+        }
+        else if (stage === 4) {
           // TODO
         }
         else {
@@ -106,15 +109,6 @@ class Navigation {
       this.$rootScope.$on('updateBookmarkButton', (event, data) => {
         this.checkBookmarkStatus();
       });
-
-      /*
-      this.$rootScope.$on('flushSubscription', (event, data) => {
-        res[0].stop();
-        res[1].stop();
-        res[2].stop();
-        console.log('flushed!');
-      });
-      */
 
       this.helpers({
         isLoggedIn: () => {

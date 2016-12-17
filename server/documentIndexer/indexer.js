@@ -166,12 +166,13 @@ export default class Indexer {
   }
 
   static loadInvertedIndex() {
-    if (!process.env.NEURONE_SOLR_HOST) {
-      LunrIndex.load();
+    if (process.env.NEURONE_SOLR_HOST) {
+      SolrIndex.load();
       return true;  
     }
     else {
-      return false;
+      LunrIndex.load();
+      return true;
     }
   }
 

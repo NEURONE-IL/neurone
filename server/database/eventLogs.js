@@ -18,6 +18,7 @@ const snippetPattern = { userId: String, username: String, action: String, snipp
 const linkPattern = { userId: String, username: String, state: String, title: String, url: String, localTimestamp: Number };
 const sessionPattern = { userId: String, username: String, state: String, localTimestamp: Number };
 const formResponsePattern = { userId: String, username: String, action: String, reason: String, answer: Array, localTimestamp: Number };
+const trackingStatusPattern = { userId: String, action: String, clientTimestamp: Number, clientDate: String, clientTime: String };
 
 Meteor.methods({
   storeQuery: function(jsonObject) {
@@ -263,6 +264,31 @@ Meteor.methods({
     }
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not save Snippet in Database!', err);
+    }
+  },
+  storeTrackingStatus: function(trackingStatus) {
+    try {
+      check(trackingStatus, trackingStatusPattern);
+
+      var time = Utils.getTimestamp(),
+          user = Meteor.users.findOne({ _id: trackingStatus.userId });
+
+      trackingStatus.username = user.username || user.emails[0].address;
+      trackingStatus.actionId = '';
+      trackingStatus.serverTimestamp = time;
+      trackingStatus.serverDate = Utils.timestamp2date(time);
+      trackingStatus.serverTime = Utils.timestamp2time(time);
+      trackingStatus.ipAddr = '';
+      trackingStatus.userAgent = '';
+      trackingStatus.extras = '';
+
+      EventLogs.insert(trackingStatus);
+
+      //console.log(trackingStatus.action, trackingStatus.userId, trackingStatus.serverTimestamp);
+      return { status: 'success' };
+    }
+    catch(err) {
+      throw new Meteor.Error('DatabaseError', 'Could not save Tracking Status in Database!', err);
     }
   },
   ping: function() {

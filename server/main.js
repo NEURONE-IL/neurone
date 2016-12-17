@@ -30,14 +30,8 @@ Meteor.startup(() => {
 
     // dgacitua: Load HTML documents, parse them and index them
     if (ServerConfigs.reloadDocCollectionOnDeploy) {
-      //if (Indexer.getDocumentCount() === 0) {
-        //console.log('Generating Document Collection...');
-        docStatus = Indexer.generateDocumentCollection(assetPath);
-      //}
-      //else {
-        //console.log('Updating Document Collection...');
-        //docStatus = Indexer.updateDocumentCollection(assetPath);
-      //}
+      console.log('Generating Document Collection...');
+      docStatus = Indexer.generateDocumentCollection(assetPath);
     }
     else {
       docStatus = Indexer.loadInvertedIndex();

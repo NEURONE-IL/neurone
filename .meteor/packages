@@ -35,8 +35,6 @@ jalik:ufs-local
 williamledoux:static-server
 dispatch:mocha-phantomjs
 mizzao:timesync
-konecty:user-presence
-konecty:multiple-instances-status
 konecty:mongo-counter
 random@1.0.10
 momentjs:moment
@@ -44,3 +42,5 @@ xolvio:cleaner
 underscore
 jcbernack:reactive-aggregate
 mrt:reactive-extra
+konecty:multiple-instances-status
+konecty:user-presence

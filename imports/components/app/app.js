@@ -93,10 +93,22 @@ function config($locationProvider, $urlRouterProvider, $translateProvider) {
 function run($rootScope, $state) {
   'ngInject';
 
-  $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+  $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     if (error === 'AUTH_REQUIRED') {
       $state.go('login');
     }
+  });
+
+  $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, error) => {
+    
+  });
+
+  Accounts.onLogin(() => {
+    $state.go('start');
+  });
+
+  Accounts.onLoginFailure(() => {
+    $state.go('login');
   });
 };
 

@@ -7,7 +7,7 @@ import { Documents } from '../../../imports/api/documents/index';
 let searchIndex;
 
 export default class SolrIndex {
-  static start() {
+  static load() {
     var options = {
       host: process.env.NEURONE_SOLR_HOST || 'localhost',
       port: process.env.NEURONE_SOLR_PORT || '8983',
@@ -19,13 +19,13 @@ export default class SolrIndex {
 
     searchIndex.ping((err, res) => {
       if (!err) {
-        console.log('Solr Index created successfully');
+        console.log('Solr index loaded successfully');
       }
     });
   }
 
   static generate() {
-    this.start();
+    this.load();
 
     var docs = Documents.find().fetch(),
      idxDocs = [];
