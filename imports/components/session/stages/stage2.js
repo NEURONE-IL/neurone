@@ -22,7 +22,7 @@ class Stage2 {
     $scope.$on('$stateChangeStart', (event) => {
       //this.$rootScope.$broadcast('updateSnippetCounter', false);
       this.uds.setSession({ snippetCounter: false });
-      this.uds.setSession({ stageHome: '/home' });
+      //this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ snippetButton: false });
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ statusMessage: '' });

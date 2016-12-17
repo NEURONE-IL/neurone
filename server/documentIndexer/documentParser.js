@@ -14,6 +14,7 @@ export default class DocumentParser {
       var relPath = documentPath,   //Meteor.absolutePath + documentPath;
          htmlFile = fs.readFileSync(relPath);
 
+      /*
       var site = unfluff.lazy(htmlFile),
           lang = site.lang(),
          title = site.title(),
@@ -21,8 +22,8 @@ export default class DocumentParser {
           text = site.text();
 
       return text || '';
-
-      /*
+      */
+      
       var options = {
         wordwrap: false,
         uppercaseHeadings: false,
@@ -30,8 +31,7 @@ export default class DocumentParser {
         ignoreImage: true
       };
 
-      return htmlToText.fromString(htmlFile, options);
-      */
+      return htmlToText.fromString(htmlFile, options) || '';
     }
     catch (e) {
       console.error(e);

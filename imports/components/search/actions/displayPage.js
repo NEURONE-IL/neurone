@@ -20,7 +20,7 @@ class DisplayPage {
       this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: false });
       this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/home' });
+      //this.uds.setSession({ stageHome: '/home' });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {

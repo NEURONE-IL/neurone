@@ -12,7 +12,7 @@ class Stage0 {
 
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/home' });
+      //this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ statusMessage: '' });
     });
 
