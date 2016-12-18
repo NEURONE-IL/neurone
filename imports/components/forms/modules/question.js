@@ -108,10 +108,10 @@ class QuestionCtrl2 {
   constructor($scope, $compile) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$compile = $compile;
 
-    var vm = this;
-    if (vm.data.type === 'scale') vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
+    if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
   }
 
   range(start, stop, step) {
@@ -134,10 +134,10 @@ class Question2 {
     'ngInject';
 
     this.restrict = 'E';
-    //this.scope = {},
+    this.scope = { data: '=' },
     this.controller = QuestionCtrl2;
     this.controllerAs = '$ctrl';
-    this.bindToController = { data: '=' };
+    this.bindToController = true;
   }
 
   link(scope, element, attrs, ctrl) {

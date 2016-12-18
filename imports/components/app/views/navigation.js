@@ -242,7 +242,7 @@ class Navigation {
   saveBookmark() {
     if (!!Meteor.userId()) {
       this.bookmarkAction((err, res) => {
-        if (!err) {
+        if (!err && res !== false) {
           this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
             //this.$rootScope._navbarMessage.set(res || err);
             this.uds.setSession({ statusMessage: (res || err) });
