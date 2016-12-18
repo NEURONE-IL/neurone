@@ -5,5 +5,5 @@ export ROOT_URL="http://localhost"
 MONGO_URL="mongodb://localhost:3001/meteor"
 
 meteor build --architecture=os.linux.x86_64 ./.neuroneBuild --directory
-cd ./.neuroneBuild/bundle
+cd ./.neuroneBuild/bundle/programs
 node server

@@ -14,6 +14,7 @@ import RatingQuestion from '../templates/rating';
 
 const name = 'formTemplates';
 
+/*
 // http://stackoverflow.com/a/8273091
 function range(start, stop, step) {
   if (typeof stop == 'undefined') stop = start, start = 0;
@@ -101,6 +102,95 @@ function questionDirective($compile) {
     link: linker
   }
 };
+*/
+
+class QuestionCtrl2 {
+  constructor($scope, $compile) {
+    'ngInject';
+
+    this.$compile = $compile;
+
+    var vm = this;
+    if (vm.data.type === 'scale') vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
+  }
+
+  range(start, stop, step) {
+    if (typeof stop == 'undefined') stop = start, start = 0;
+    if (typeof step == 'undefined') step = 1;
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
+
+    var result = [];
+    for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
+      result.push(i);
+    }
+
+    return result;
+  }
+}
+
+
+class Question2 {
+  constructor() {
+    'ngInject';
+
+    this.restrict = 'E';
+    //this.scope = {},
+    this.controller = QuestionCtrl2;
+    this.controllerAs = '$ctrl';
+    this.bindToController = { data: '=' };
+  }
+
+  link(scope, element, attrs, ctrl) {
+    element.html(this.getTemplate(ctrl.data.type)).show();
+    ctrl.$compile(element.contents())(scope);
+  }
+
+  getTemplate(questionType) {
+    const textQuestionTemplate = TextQuestion.template;
+    const paragraphQuestionTemplate = ParagraphQuestion.template;
+    const multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
+    const checkboxQuestionTemplate = CheckboxQuestion.template;
+    const listQuestionTemplate = ListQuestion.template;
+    const scaleQuestionTemplate = ScaleQuestion.template;
+    const dateQuestionTemplate = DateQuestion.template;
+    const timeQuestionTemplate = TimeQuestion.template;
+    const ratingQuestionTemplate = RatingQuestion.template;
+
+    var template = '';
+
+    switch (questionType) {
+      case 'text':
+        template = textQuestionTemplate;
+        break;
+      case 'paragraph':
+        template = paragraphQuestionTemplate;
+        break;
+      case 'multipleChoice':
+        template = multipleChoiceQuestionTemplate;
+        break;
+      case 'checkbox':
+        template = checkboxQuestionTemplate;
+        break;
+      case 'list':
+        template = listQuestionTemplate;
+        break;
+      case 'scale':
+        template = scaleQuestionTemplate;
+        break;
+      case 'date':
+        template = dateQuestionTemplate;
+        break;
+      case 'time':
+        template = timeQuestionTemplate;
+        break;
+      case 'rating':
+        template = ratingQuestionTemplate;
+        break;
+    }
+
+    return template;
+  }
+}
 
 export default angular.module(name, [])
 .component('textQuestion', TextQuestion)
@@ -112,4 +202,6 @@ export default angular.module(name, [])
 .component('dateQuestion', DateQuestion)
 .component('timeQuestion', TimeQuestion)
 .component('ratingQuestion', RatingQuestion)
-.directive('question', questionDirective);
+.directive('question', () => new Question2());
+
+//register(name).directive('question', Question2);
