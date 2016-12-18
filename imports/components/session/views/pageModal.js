@@ -17,13 +17,30 @@ class PageModal {
     this.$rootScope.docId = this.docId;
 
     this.iframeReady = true;
-    
+
+    this.highlightSnippet(this.snippet);
+    //console.log('PageModal', this.docId, this.snippet);
     this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
   }
 
   closeModal() {
     delete this.$rootScope.docId;
     this.close();
+  }
+
+  highlightSnippet(snippet) {
+    var snip = snippet || '';
+    
+    var searchables = this.$document.find('.highlight').toArray();
+    var markInstance = new Mark(searchables);
+
+    markInstance.unmark({ iframes: true }).mark(snip, {
+      accurracy: 'exactly',
+      iframes: true,
+      acrossElements: true,
+      separateWordSearch: false,
+      className: 'highlightSnippet'
+    });
   }
 }
 

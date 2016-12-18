@@ -1,7 +1,24 @@
+const availableLocales = [
+  'en',
+  'es',
+  'fi'
+];
+
+const availableTasks = [
+  'pre',
+  'post'
+];
+
+const availableTopics = [
+  'pilot',
+  'science',
+  'social'
+];
+
 export default SharedSettings = {
-  locale: 'fi',
+  locale: availableLocales[0],
   task: availableTasks[0],
-  topics: availableTopics[0],
+  topic: availableTopics[0],
   queryIdeas: 2,
   minBookmarks: 3,
   maxBookmarks: 3,
@@ -16,15 +33,4 @@ export default SharedSettings = {
   // Legacy configs
   snippetsPerPage: 3,
   snippetLength: 15
-}
-
-const availableTasks = [
-  'pre',
-  'post'
-];
-
-const availableTopics = [
-  'pilot',
-  'science',
-  'social'
-];
+};

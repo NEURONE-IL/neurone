@@ -172,9 +172,9 @@ class Navigation {
     if (!!Meteor.userId()) {
       var limit = this.uds.getConfigs().maxBookmarks;//Meteor.user() && Meteor.user().profile.maxBookmarks;
       this.uds.setSession({ bookmarkCount: UserBookmarks.find().count() });
-      this._counters.bookmarks = this.uds.getSession().bookmarkCount;
+      this._counters.bookmarks = UserBookmarks.find().count();
       //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
-      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
+      var setReady = (this._counters.bookmarks >= limit) ? true : false;
       this.uds.setSession({ readyButton: setReady });
 
       this.bms.isBookmarked((err, res) => {
@@ -221,15 +221,21 @@ class Navigation {
 
   checkSnippetStatus() {
     if (!!Meteor.userId()) {
-      var snippets = UserSnippets.find().count();
-      var snippetLimit = this.uds.getConfigs().snippetsPerPage * this.uds.getConfigs().maxBookmarks;
+      var snippets = UserSnippets.find().count(),
+      snippetsPage = this.uds.getConfigs().snippetsPerPage,
+            maxBkm = UserBookmarks.find().count(),
+        snippetLim = snippetsPage * maxBkm,
+             docId = this.uds.getSession().docId,
+        snippetCnt = UserSnippets.find({ docId: docId }).count();
 
-      var setReady = (snippets >= snippetLimit) ? true : false;
+      //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
+
+      var setReady = (snippets >= snippetLim) ? true : false;
       this.uds.setSession({ readyButton: setReady });
 
-      var snippetCount = UserSnippets.find({ docId: this.uds.getSession().docId }).count();
-      var setSnippet = (snippetCount < this.uds.getConfigs().snippetsPerPage) ? true : false;
-      this.uds.setSession({ snippetButton: setSnippet });
+      //var setSnippet = (snippetCnt < snippetsPage) ? true : false;
+      //this.uds.setSession({ snippetButton: setSnippet });
+      this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
     }
   }
 

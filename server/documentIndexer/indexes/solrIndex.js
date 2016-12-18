@@ -37,10 +37,12 @@ export default class SolrIndex {
       var newDoc = {
         id: doc._id,
         docId_s: doc._id,
-        relevant_b: doc.relevant,
-        title_t: doc.title,
-        body_t: doc.body,
-        indexedBody_t: this.escapeString(doc.indexedBody)
+        locale_s: doc.locale,
+        relevant_b: doc.relevant || false,
+        title_t: doc.title || '',
+        body_t: doc.body || '',
+        indexedBody_t: this.escapeString(doc.indexedBody) || '',
+        keywords_s: doc.keywords || []
       };
 
       idxDocs.push(newDoc);

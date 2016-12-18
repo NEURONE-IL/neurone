@@ -80,7 +80,7 @@ export default class Utils {
     navbarMessageElement.fadeOut(5000);
   }
 
-  // dgacitua: Set a fade out message for notifications
+  // dgacitua: Hide current notification
   static notificationHide(messageDivId) {
     // You will need to use this method with 'this.$scope.$apply()' for AngularJS Controllers
     var navbarMessageElement = angular.element(document.getElementById(messageDivId));

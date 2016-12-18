@@ -1,5 +1,7 @@
 import angularTruncate from 'angular-truncate-2';
 
+import 'mark.js';
+
 import Utils from '../../globalUtils';
 
 import { UserBookmarks, UserSnippets } from '../../userCollections';
@@ -42,10 +44,28 @@ class Stage2 {
 }
 
 class Stage2pv {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $document, $q, $promiser, SnippetTrackService, UserDataService) {
     'ngInject';
 
+    this.$scope = $scope;
+    this.$document = $document;
+
     this.meteorReady = true;
+
+    $rootScope.$on('highlightSnippet', (event, data) => {
+      var snip = data || '';
+      
+      var searchables = this.$document.find('.highlight').toArray();
+      var markInstance = new Mark(searchables);
+
+      markInstance.unmark({ iframes: true }).mark(snip, {
+        accurracy: 'exactly',
+        iframes: true,
+        acrossElements: true,
+        separateWordSearch: false,
+        className: 'highlightSnippet'
+      });
+    });
   }
 }
 
@@ -166,6 +186,10 @@ class Stage2sb {
 
   url2docName(url) {
     return url.substr(url.lastIndexOf('/') + 1);
+  }
+
+  viewSnippet(snippet) {
+    this.$rootScope.$broadcast('highlightSnippet', snippet);
   }
 
   deleteSnippet(index) {

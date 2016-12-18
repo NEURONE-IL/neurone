@@ -8,7 +8,7 @@ import { name as Logger } from './services/kmTrackIframe';
 import { name as ActionBlocker } from './services/actionBlockerIframe';
 
 class DisplayIframe {
-	constructor($scope, $rootScope, $timeout, $reactive, $state, $stateParams, KMTrackIframeService, ActionBlockerIframeService) {
+	constructor($scope, $rootScope, $timeout, $reactive, $state, $stateParams, $document, KMTrackIframeService, ActionBlockerIframeService) {
 		'ngInject';
 
 		this.$scope = $scope;
@@ -16,6 +16,7 @@ class DisplayIframe {
 		this.$rootScope = $rootScope;
 		this.$stateParams = $stateParams;
 		this.$timeout = $timeout;
+		this.$document = $document;
 		this.kmtis = KMTrackIframeService;
 		this.abis = ActionBlockerIframeService;
 
@@ -48,7 +49,8 @@ class DisplayIframe {
 	}
 
 	loadPage(pageUrl, snippet='') {
-		console.log('loadPage', pageUrl);
+		console.log('loadPage', pageUrl, snippet);
+		Session.set('docId', pageUrl);
 		// From https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', pageUrl, (err, res) => {
 			if (!err) {
@@ -77,16 +79,15 @@ class DisplayIframe {
 	}
 
 	highlightSnippet(snippet) {
-		console.log('hl!');
     var snip = snippet || '';
     
     var searchables = this.$document.find('.highlight').toArray();
     var markInstance = new Mark(searchables);
 
-    markInstance.mark(snip, {
+    markInstance.unmark({ iframes: true }).mark(snip, {
+      accurracy: 'exactly',
       iframes: true,
       acrossElements: true,
-      separateWordSearch: true,
       className: 'highlightSnippet'
     });
   }

@@ -2,12 +2,15 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../lib/utils';
 
+import { EventLogs } from '../../imports/api/eventLogs/index';
+
 import { FormAnswers } from '../../imports/api/formAnswers/index';
 import { FormQuestions } from '../../imports/api/formQuestions/index';
 import { FormQuestionnaires } from '../../imports/api/formQuestionnaires/index';
 import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
 import { SynthesisAnswers } from '../../imports/api/synthesisAnswers/index';
 
+const synthesisAnswerPattern = { userId: String, username: String, startTime: Number, questionId: Match.OneOf(Number, String), question: String, answer: String, completeAnswer: Boolean, localTimestamp: Number };
 Meteor.methods({
   getForm: function(formId) {
     check(formId, Match.OneOf(Number, String));
@@ -64,21 +67,38 @@ Meteor.methods({
     return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
   },
   storeSynthesisAnswer: function(jsonObject) {
-    check(jsonObject, Object);
+    try {
+      check(jsonObject, synthesisAnswerPattern);
 
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
 
-    var currentAnswer = SynthesisAnswers.findOne({ userId: this.userId, questionId: jsonObject.questionId, completeAnswer: false });
+      var answerId = SynthesisAnswers.insert(jsonObject);
 
-    if (Utils.isEmptyObject(currentAnswer)) {
-      SynthesisAnswers.insert(jsonObject);
+      if (jsonObject.completeAnswer) {
+        var action = {
+          userId: jsonObject.userId,
+          username: jsonObject.username,
+          action: 'SynthesisAnswer',
+          actionId: answerId,
+          clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+          clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+          clientTimestamp: jsonObject.localTimestamp,
+          serverDate: Utils.timestamp2date(time),
+          serverTime: Utils.timestamp2time(time),
+          serverTimestamp: time,
+          ipAddr: (this.connection ? this.connection.clientAddress : ''),
+          userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+          extras: ''
+        };
+
+        EventLogs.insert(action);
+      }
+
+      return { status: 'success' };
     }
-    else {
-      SynthesisAnswers.update(currentAnswer, {$set: {answer: jsonObject.answer, localTimestamp: jsonObject.localTimestamp, serverTimestamp: jsonObject.serverTimestamp, completeAnswer: jsonObject.completeAnswer}});
+    catch (err) {
+      throw new Meteor.Error('DatabaseError', 'Could not save Synthesis Answer in Database!', err);
     }
-
-    //console.log('Synthesis Answer Stored!', questionId, time);
-    return jsonObject;
   }
 });

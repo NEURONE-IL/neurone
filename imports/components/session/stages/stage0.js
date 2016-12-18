@@ -17,7 +17,7 @@ class Stage0 {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({ readyButton: true });
+      this.uds.setSession({ readyButton: false });
       this.uds.setSession({ stageHome: '/stage0' });
       this.uds.setSession({ stageNumber: 0 });
 
@@ -26,24 +26,41 @@ class Stage0 {
 
     $reactive(this).attach($scope);
 
-    this.idea1 = '';
-    this.idea2 = '';
+    this.numberIdeas = this.uds.getConfigs().queryIdeas;
+    this.ideas = [];
+    this.queryIdeasForm = {};
+    
+    for (var i=0; i<this.numberIdeas; i++) {
+      var form = {
+        num: (i+1),
+        query: ''
+      };
 
+      this.ideas.push(form);
+    }
+
+    this.stageReady = true;
+    this.formReady = this.queryIdeasForm;
+    
     $rootScope.$on('readyStage0', (event, data) => {
       this.submit();
     });
   }
 
   submit() {
-    var answer = {
+    var answers = angular.toJson(this.ideas);
+
+    var response = {
       userId: Meteor.userId(),
       username: Meteor.user().username || Meteor.user().emails[0].address,
       action: 'ReadyStage0',
-      clientTimestamp: Utils.getTimestamp(),
-      extras: { answers: [ this.idea1, this.idea2 ] }
+      localTimestamp: Utils.getTimestamp(),
+      extras: { answers: answers }
     };
 
-    this.call('storeCustomEvent', answer, (err,res) => {
+    console.log(response);
+
+    this.call('storeCustomEvent', response, (err,res) => {
       if (!err) {
         console.log('Success!');
       }
@@ -51,6 +68,10 @@ class Stage0 {
         console.error('Error while saving Stage0 answers', err);
       }
     });
+  }
+
+  enableReady() {
+    this.uds.setSession({ readyButton: true });
   }
 }
 

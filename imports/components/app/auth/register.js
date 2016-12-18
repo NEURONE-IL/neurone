@@ -32,10 +32,7 @@ class Register {
 
   register(userRole) {
     this.credentials.role = userRole || 'undefined';
-    this.credentials.configs.maxBookmarks = Settings.locale || 'en';
-    this.credentials.configs.maxBookmarks = Settings.maxBookmarks || 3;
-    this.credentials.configs.snippetsPerPage = Settings.snippetsPerPage || 3;
-    this.credentials.configs.snippetLength = Settings.snippetLength || 15;
+    this.credentials.configs = Settings;
     
     this.auth.register(this.credentials, (err, res) => {
       if (!err) {

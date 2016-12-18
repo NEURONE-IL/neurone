@@ -49,7 +49,7 @@ class Stage3 {
     this.synthesisMessage = '';
     this.messageId = 'synthesisMessage';
 
-    this.questionId = this.uds.getConfigs().questionStage3;
+    this.questionId = 'syn-pilot-en'; // TODO remove hardcoded value
     this.question = '';
     this.answer = '';
     this.docId = '';

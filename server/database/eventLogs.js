@@ -22,30 +22,30 @@ const trackingStatusPattern = { userId: String, action: String, clientTimestamp:
 
 Meteor.methods({
   storeQuery: function(jsonObject) {
-    check(jsonObject, queryPattern);
-
-    var time = Utils.getTimestamp(),
-       query = jsonObject.query;
-
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: 'Query',
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
     try {
+      check(jsonObject, queryPattern);
+
+      var time = Utils.getTimestamp(),
+         query = jsonObject.query;
+
+      jsonObject.serverTimestamp = time;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: 'Query',
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: ''
+      };
+
       var queryId = Queries.insert(jsonObject);
       action.actionId = queryId;
       EventLogs.insert(action);
@@ -57,28 +57,28 @@ Meteor.methods({
     }
   },
   storeBookmark: function(jsonObject) {
-    check(jsonObject, bookmarkPattern);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.action,
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
     try {
+      check(jsonObject, bookmarkPattern);
+
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.action,
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: ''
+      };
+
       var bookmarkId = Bookmarks.insert(jsonObject);
       action.actionId = bookmarkId;
       EventLogs.insert(action);
@@ -90,29 +90,29 @@ Meteor.methods({
     }
   },
   storeSnippet: function(jsonObject) {
-    check(jsonObject, snippetPattern);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-    jsonObject.snippetId = (jsonObject.action === 'Snippet') ? incrementCounter(Counters, 'snippetId') : jsonObject.snippetId;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.action,
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
     try {
+      check(jsonObject, snippetPattern);
+
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
+      jsonObject.snippetId = (jsonObject.action === 'Snippet') ? incrementCounter(Counters, 'snippetId') : jsonObject.snippetId;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.action,
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: ''
+      };
+    
       var snippetId = Snippets.insert(jsonObject);
       action.actionId = snippetId;
       EventLogs.insert(action);
@@ -124,28 +124,28 @@ Meteor.methods({
     }
   },
   storeVisitedLink: function(jsonObject) {
-    check(jsonObject, linkPattern);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.state,
-      actionId: '',
-      clientDate: moment(jsonObject.localTimestamp).format("YYYY-MM-DD"),
-      clientTime: moment(jsonObject.localTimestamp).format("HH:mm:ss.SSS"),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: moment(time).format("YYYY-MM-DD"),
-      serverTime: moment(time).format("HH:mm:ss.SSS"),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
     try {
+      check(jsonObject, linkPattern);
+
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.state,
+        actionId: '',
+        clientDate: moment(jsonObject.localTimestamp).format("YYYY-MM-DD"),
+        clientTime: moment(jsonObject.localTimestamp).format("HH:mm:ss.SSS"),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: moment(time).format("YYYY-MM-DD"),
+        serverTime: moment(time).format("HH:mm:ss.SSS"),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: ''
+      };
+    
       var linkId = VisitedLinks.insert(jsonObject);
       action.actionId = linkId;
       EventLogs.insert(action);
@@ -157,43 +157,43 @@ Meteor.methods({
     }
   },
   storeSessionLog: function(jsonObject) {
-    check(jsonObject, sessionPattern);
-
-    var time = Utils.getTimestamp(),
-    realTime = Utils.timestamp2datetime(time),
-      ipAddr = this.connection ? this.connection.clientAddress : '',
-         rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
-         oua = rua ? UserAgent.parse(rua) : '',               // object user agent
-     browser = oua ? oua.toAgent() : 'undefined',
-          os = oua ? oua.os.toString() : 'undefined',
-      device = oua ? oua.device.toString() : 'undefined',
-       state = jsonObject.state;
-
-    jsonObject.serverTimestamp = time;
-    jsonObject.createdTime = realTime;
-    jsonObject.clientAddress = ipAddr;
-    jsonObject.clientBrowser = browser;
-    jsonObject.clientOperatingSystem = os;
-    jsonObject.clientDevice = device;
-    jsonObject.userAgent = rua;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.state,
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: ''
-    };
-
     try {
+      check(jsonObject, sessionPattern);
+
+      var time = Utils.getTimestamp(),
+      realTime = Utils.timestamp2datetime(time),
+        ipAddr = this.connection ? this.connection.clientAddress : '',
+           rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
+           oua = rua ? UserAgent.parse(rua) : '',               // object user agent
+       browser = oua ? oua.toAgent() : 'undefined',
+            os = oua ? oua.os.toString() : 'undefined',
+        device = oua ? oua.device.toString() : 'undefined',
+         state = jsonObject.state;
+
+      jsonObject.serverTimestamp = time;
+      jsonObject.createdTime = realTime;
+      jsonObject.clientAddress = ipAddr;
+      jsonObject.clientBrowser = browser;
+      jsonObject.clientOperatingSystem = os;
+      jsonObject.clientDevice = device;
+      jsonObject.userAgent = rua;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.state,
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: ''
+      };
+
       var sessionId = SessionLogs.insert(jsonObject);
       action.actionId = sessionId;
       EventLogs.insert(action);
@@ -205,28 +205,28 @@ Meteor.methods({
     }
   },
   storeFormResponse: function(jsonObject) {
-    check(jsonObject, formResponsePattern);
-
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.action,
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: jsonObject.reason
-    };
-
     try {
+      check(jsonObject, formResponsePattern);
+
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.action,
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: jsonObject.reason
+      };
+
       var answerId = FormAnswers.insert(jsonObject);
       action.actionId = answerId;
       EventLogs.insert(action);
@@ -238,32 +238,31 @@ Meteor.methods({
     }
   },
   storeCustomEvent: function(jsonObject) {
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
-
-    var action = {
-      userId: jsonObject.userId,
-      username: jsonObject.username,
-      action: jsonObject.action,
-      actionId: '',
-      clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-      clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-      clientTimestamp: jsonObject.localTimestamp,
-      serverDate: Utils.timestamp2date(time),
-      serverTime: Utils.timestamp2time(time),
-      serverTimestamp: time,
-      ipAddr: (this.connection ? this.connection.clientAddress : ''),
-      userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
-      extras: jsonObject.extras,
-    };
-
     try {
+      var time = Utils.getTimestamp();
+
+      var action = {
+        userId: jsonObject.userId,
+        username: jsonObject.username,
+        action: jsonObject.action,
+        actionId: '',
+        clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
+        clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
+        clientTimestamp: jsonObject.localTimestamp,
+        serverDate: Utils.timestamp2date(time),
+        serverTime: Utils.timestamp2time(time),
+        serverTimestamp: time,
+        ipAddr: (this.connection ? this.connection.clientAddress : ''),
+        userAgent: (this.connection ? this.connection.httpHeaders['user-agent'] : ''),
+        extras: jsonObject.extras,
+      };
+      
       EventLogs.insert(action);
 
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Snippet in Database!', err);
+      throw new Meteor.Error('DatabaseError', 'Could not save Custom Event in Database!', err);
     }
   },
   storeTrackingStatus: function(trackingStatus) {

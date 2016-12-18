@@ -107,9 +107,11 @@ function run($rootScope, $state) {
     $state.go('start');
   });
 
+  /*
   Accounts.onLoginFailure(() => {
     $state.go('login');
   });
+  */
 };
 
 function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlockerService) {
