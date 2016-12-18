@@ -35,17 +35,17 @@ function QuestionCtrl() {
 function questionDirective($compile) {
   'ngInclude';
 
-  var textQuestionTemplate = TextQuestion.template;
-  var paragraphQuestionTemplate = ParagraphQuestion.template;
-  var multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
-  var checkboxQuestionTemplate = CheckboxQuestion.template;
-  var listQuestionTemplate = ListQuestion.template;
-  var scaleQuestionTemplate = ScaleQuestion.template;
-  var dateQuestionTemplate = DateQuestion.template;
-  var timeQuestionTemplate = TimeQuestion.template;
-  var ratingQuestionTemplate = RatingQuestion.template;
+  const textQuestionTemplate = TextQuestion.template;
+  const paragraphQuestionTemplate = ParagraphQuestion.template;
+  const multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
+  const checkboxQuestionTemplate = CheckboxQuestion.template;
+  const listQuestionTemplate = ListQuestion.template;
+  const scaleQuestionTemplate = ScaleQuestion.template;
+  const dateQuestionTemplate = DateQuestion.template;
+  const timeQuestionTemplate = TimeQuestion.template;
+  const ratingQuestionTemplate = RatingQuestion.template;
 
-  var getTemplate = (questionType) => {
+  function getTemplate(questionType) {
     var template = '';
 
     switch (questionType) {
@@ -81,23 +81,19 @@ function questionDirective($compile) {
     return template;
   }
 
-  var linker = (scope, element, attrs, ctrl) => {
-    element.html(getTemplate(scope.data.type)).show();
+  function linker(scope, element, attrs, ctrl) {
+    element.html(getTemplate(ctrl.data.type)).show();
     $compile(element.contents())(scope);
   }
 
-  // From https://toddmotto.com/no-scope-soup-bind-to-controller-angularjs/
+  // dgacitua: https://toddmotto.com/no-scope-soup-bind-to-controller-angularjs/
   return {
     restrict: 'E',
+    scope: {},
     controller: QuestionCtrl,
     controllerAs: '$ctrl',
-    link: linker,
-    scope: {
-      data: '='
-    },
-    bindToController: {
-      data: '='
-    }
+    bindToController: { data: '=' },
+    link: linker
   }
 };
 

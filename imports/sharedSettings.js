@@ -29,7 +29,7 @@ export default SharedSettings = {
   snippetWordTruncateThreshold: 25,
   minSynthesisWordLength: 50,
   syhtesisAutosaveInterval: 30,
-  stageLength: [5, 10, 10, 10],
+  stageLength: [5, 10, 20, 10],
   // Legacy configs
   snippetsPerPage: 3,
   snippetLength: 15
