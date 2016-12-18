@@ -1,3 +1,5 @@
+import '../../../lib/register.js';
+
 import TextQuestion from '../templates/text';
 import ParagraphQuestion from '../templates/paragraph';
 import MultipleChoiceQuestion from '../templates/multipleChoice';
@@ -12,22 +14,25 @@ import RatingQuestion from '../templates/rating';
 
 const name = 'formTemplates';
 
-function QuestionCtrl() {
-  // http://stackoverflow.com/a/8273091
-  this.range = (start, stop, step) => {
-    if (typeof stop == 'undefined') stop = start, start = 0;
-    if (typeof step == 'undefined') step = 1;
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
+// http://stackoverflow.com/a/8273091
+function range(start, stop, step) {
+  if (typeof stop == 'undefined') stop = start, start = 0;
+  if (typeof step == 'undefined') step = 1;
+  if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
 
-    var result = [];
-    for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
-      result.push(i);
-    }
+  var result = [];
+  for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
+    result.push(i);
+  }
 
-    return result;
-  };
+  return result;
+}
 
-  this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+function QuestionCtrl($scope) {
+  'ngInclude';
+
+  var vm = this;
+  vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
 }
 
 
@@ -89,7 +94,7 @@ function questionDirective($compile) {
   // dgacitua: https://toddmotto.com/no-scope-soup-bind-to-controller-angularjs/
   return {
     restrict: 'E',
-    scope: {},
+    //scope: {},
     controller: QuestionCtrl,
     controllerAs: '$ctrl',
     bindToController: { data: '=' },
