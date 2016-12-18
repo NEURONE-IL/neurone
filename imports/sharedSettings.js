@@ -15,6 +15,13 @@ const availableTopics = [
   'social'
 ];
 
+const availableStages = [
+  { id: 'stage0', length: 5, home: '/stage0' },
+  { id: 'stage1', length: 10, home: '/search' },
+  { id: 'stage2', length: 20, home: '/stage2' },
+  { id: 'stage3', length: 10, home: '/stage3' }
+];
+
 export default SharedSettings = {
   locale: availableLocales[0],
   task: availableTasks[0],
@@ -29,7 +36,7 @@ export default SharedSettings = {
   snippetWordTruncateThreshold: 25,
   minSynthesisWordLength: 50,
   syhtesisAutosaveInterval: 30,
-  stageLength: [5, 10, 20, 10],
+  stages: availableStages,
   // Legacy configs
   snippetsPerPage: 3,
   snippetLength: 15

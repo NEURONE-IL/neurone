@@ -1,28 +1,119 @@
 import Utils from '../../globalUtils';
 
 class FlowService {
-  constructor($state, $rootScope, $interval) {
+  constructor($state, $rootScope, $interval, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
     this.$interval = $interval;
 
-    this.timerInterval = 1;
-    this.trackerInterval = 5;
-    this.synchronizerInterval = 15;
+    this.uds = UserDataService;
 
-    this.flowTemplate = {
-      flowId: 'fl1',
-      stages: [
-        { name: 'Stage 1', route: 'search', type: 'search', time: 15000 },
-        { name: 'Stage 2', route: 'documents', type: 'evaluation', time: 10000 },
-        { name: 'Stage 3', route: 'synthesis', params: { id: 'syn3'}, type: 'synthesis', time: 12000 },
-        { name: 'Stage 4', route: 'form', params: { id: 'st1'}, type: 'form', time: 14000 }
-      ]
+    this.uds.check().then((res) => {
+      this.timerInterval = 1;
+      this.trackerInterval = 5;
+      this.synchronizerInterval = 15;
+
+      this.timer = {};
+      this.timerCount = 0;
+      this.stageCount = 0;
+      
+      this.stages = [];
+      this.stageTime = 0;
+      this.totalTime = 0;
+    
+      // dgacitua: Triggered when stage time finishes
+      this.$rootScope.$on('endStageTime', (event, data) => {
+        console.log('EndStageTime', data);
+        this.stageCount = 0;
+
+        if (data < this.stages.length-1) {
+          var nextState = this.stages[data+1].home;
+          var state = nextState.substr(nextState.indexOf('/') + 1);
+          this.$rootScope.$broadcast('timeoutModal', data);
+          this.$state.go(state);
+        }
+        else {
+          this.stopFlow();
+          this.totalCount = 0;
+          this.stageCount = 0;
+          this.$state.go('end');
+        }
+      });
+
+      // dgacitua: Triggered when simulation time finishes
+      this.$rootScope.$on('endFlowTime', (event, data) => {
+        console.log('EndFlowTime', data);
+        this.stopFlow();
+        this.totalCount = 0;
+        this.stageCount = 0;
+        this.$state.go('end');
+      });
+    });
+  }
+
+  startFlow() {
+    if (!!Meteor.userId()) {
+      this.uds.check().then((res) => {
+        if (!this.uds.getSession().finished) {
+          this.stages = this.uds.getConfigs().stages;
+
+          for (var stage in this.stages) {
+            this.totalTime += stage.length;
+          }
+
+          var tt = this.uds.getSession().totalTimer,
+              st = this.uds.getSession().stageTimer;
+
+          console.log('StartFlow', st, tt, this.stageTime, this.totalTime);
+          if (tt && st) {
+            this.timerCount = tt;
+            this.stageCount = st;
+            this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));
+          }
+          else {
+            this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));
+          }
+        }        
+      });
     }
   }
 
+  stopFlow() {
+    if (!!Meteor.userId()) {
+      this.uds.check().then((res) => {
+        this.$interval.cancel(this.timer);
+      });
+    }
+  }
+
+  tick() {
+    this.uds.check().then((res) => {
+      if (!!Meteor.userId() && res.ready()) {
+        this.currentStage = this.uds.getSession().stageNumber;
+        this.stageTime = this.uds.getConfigs().stages[this.currentStage].length;
+
+        this.timerCount += this.timerInterval;
+        this.stageCount += this.timerInterval;
+        this.uds.setSession({ totalTimer: this.timerCount, stageTimer: this.stageCount });
+        
+
+        if (Math.trunc(this.stageCount/60) >= this.stageTime) {
+          this.$rootScope.$broadcast('endStageTime', this.currentStage);
+        }
+        else if (Math.trunc(this.timerCount/60) >= this.totalTime) {
+          this.$rootScope.$broadcast('endFlowTime', true);
+        }
+        else {
+          console.log('Timer!', this.stageCount, this.timerCount);  
+        }
+      }
+    });
+  }
+
+
+  /*
   requestTimerSync(syncType) {
     if (!!Meteor.userId()) {
       var localTime = Utils.getTimestamp();
@@ -143,6 +234,7 @@ class FlowService {
   getFlowTemplate() {
     return this.flowTemplate;
   }
+  */
 
   getServerTimestamp() {
     return Utils.getTimestamp();

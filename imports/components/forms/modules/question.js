@@ -111,7 +111,7 @@ class QuestionCtrl2 {
     this.$scope = $scope;
     this.$compile = $compile;
 
-    if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+    //if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
   }
 
   range(start, stop, step) {

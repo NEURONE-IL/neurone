@@ -90,8 +90,10 @@ function config($locationProvider, $urlRouterProvider, $translateProvider) {
   $translateProvider.preferredLanguage('en');
 };
 
-function run($rootScope, $state) {
+function run($rootScope, $state, $window, FlowService) {
   'ngInject';
+
+  fs = FlowService;
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     if (error === 'AUTH_REQUIRED') {
@@ -99,8 +101,8 @@ function run($rootScope, $state) {
     }
   });
 
-  $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, error) => {
-    
+  angular.element($window).on('beforeunload', () => {
+    fs.stopFlow();
   });
 
   Accounts.onLogin(() => {

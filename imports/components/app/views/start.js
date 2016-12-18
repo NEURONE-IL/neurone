@@ -3,12 +3,13 @@ import template from './start.html';
 const name = 'start';
 
 class Start {
-  constructor($scope, $rootScope, $reactive, $state, UserDataService) {
+  constructor($scope, $rootScope, $reactive, $state, UserDataService, FlowService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
 
+    this.fs = FlowService;
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
@@ -27,7 +28,7 @@ class Start {
   begin() {
     if (!!Meteor.userId()) {
       var currentState = this.uds.getSession().stageHome;
-      console.log(currentState);
+      this.fs.startFlow();
 
       if (!currentState) {
         this.$state.go('stage0');
