@@ -32,7 +32,7 @@ function QuestionCtrl($scope) {
   'ngInclude';
 
   var vm = this;
-  vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
+  if (vm.data.type === 'scale') vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
 }
 
 
