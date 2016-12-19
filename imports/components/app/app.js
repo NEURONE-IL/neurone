@@ -87,7 +87,7 @@ function config($locationProvider, $urlRouterProvider, $translateProvider) {
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage('en');
+  $translateProvider.preferredLanguage('fi');
 };
 
 function run($rootScope, $state, $window, FlowService) {

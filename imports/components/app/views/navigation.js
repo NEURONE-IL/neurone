@@ -282,7 +282,7 @@ class Navigation {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
       title: 'My Email',
-      templateAsset: 'modals/taskAssignment_en.html',
+      templateAsset: 'modals/taskAssignment_fi.html',
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
         subject: 'I need your help!'
@@ -293,18 +293,48 @@ class Navigation {
   }
 
   tipsModal(stageNumber) {
-    if (stageNumber === 1) {
+    if (stageNumber === 0) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
-        title: 'Tips',
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage0_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
         templateAsset: 'modals/tips_stage1_en.html',
         fields: {}
       };
 
-      this.modal.openModal(modalObject, (err, res) => {});  
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 2) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage2_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 3) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage3_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
-      console.log('TipsModal', stageNumber);
+      console.log('TutorialModal', stageNumber);
     }
   }
 
@@ -313,7 +343,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage0_en.html',
         fields: {}
       };
 
@@ -333,7 +363,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage2_en.html',
         fields: {}
       };
 
@@ -343,7 +373,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage3_en.html',
         fields: {}
       };
 
@@ -385,8 +415,21 @@ class Navigation {
 
   readyAction(stageNumber) {
     if (stageNumber === 0) {
-      this.$rootScope.$broadcast('readyStage0');
-      this.$state.go('search');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage0_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok' && res.answers) {
+            this.$rootScope.$broadcast('readyStage0');
+            this.$state.go('search');            
+          }
+        }
+      });
     }
     else if (stageNumber === 1) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -422,12 +465,38 @@ class Navigation {
       });  
     }
     else if (stageNumber === 2) {
-      this.$rootScope.$broadcast('readyStage2');
-      this.$state.go('stage3');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage2_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok' && res.answers) {
+            this.$rootScope.$broadcast('readyStage2');
+            this.$state.go('stage3');
+          }
+        }
+      });
     }
     else if (stageNumber === 3) {
-      this.$rootScope.$broadcast('readyStage3');
-      this.$state.go('end');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage3_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok' && res.answers) {
+            this.$rootScope.$broadcast('readyStage3');
+            this.$state.go('end');
+          }
+        }
+      });
     }
     else {
       console.log('ReadyModal', stageNumber);

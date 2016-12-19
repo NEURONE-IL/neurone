@@ -116,7 +116,7 @@
     "documentsFound": "You found {{goodPages}} great page(s)!",
     "currentScore": "You score is {{stars}} star(s)",
     "nextStageInstructions": "Now you can go to the next stage",
-    "goBackInstructions": "Go back and keep seaching!",
+    "goBackInstructions": "Go back and keep searching!",
     "timeWarning": "You ran out of time!",
     "confirmChanges": "Are you sure that you want to continue to next stage?",
     "keepSearching": "Keep seaching for better pages"
