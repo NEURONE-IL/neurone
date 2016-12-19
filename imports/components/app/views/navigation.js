@@ -424,7 +424,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          if (res.message === 'ok' && res.answers) {
+          if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage0');
             this.$state.go('search');            
           }
@@ -474,7 +474,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          if (res.message === 'ok' && res.answers) {
+          if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage2');
             this.$state.go('stage3');
           }
@@ -491,7 +491,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          if (res.message === 'ok' && res.answers) {
+          if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage3');
             this.$state.go('end');
           }
