@@ -105,13 +105,16 @@ function questionDirective($compile) {
 */
 
 class QuestionCtrl2 {
-  constructor($scope, $compile) {
+  constructor($scope, $compile, $timeout) {
     'ngInject';
 
     this.$scope = $scope;
     this.$compile = $compile;
+    this.$timeout = $timeout;
 
-    //if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+    this.$timeout(() => {
+      if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+    }, 0);
   }
 
   range(start, stop, step) {
@@ -203,5 +206,4 @@ export default angular.module(name, [])
 .component('timeQuestion', TimeQuestion)
 .component('ratingQuestion', RatingQuestion)
 .directive('question', () => new Question2());
-
 //register(name).directive('question', Question2);

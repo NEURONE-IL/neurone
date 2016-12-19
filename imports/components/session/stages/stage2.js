@@ -121,7 +121,7 @@ class Stage2sb {
 
   loadForms() {
     this.pages.forEach((page, idx) => {
-      this.call('getForm', 'stage2', (err, res) => {
+      this.call('getForm', 'stage2-fi', (err, res) => { // TODO change hardcoded value
         if (!err) {
           var pageForm = {
             index: idx,
@@ -211,6 +211,7 @@ class Stage2sb {
     this.currentDocId = this.$rootScope.docId;
 
     this.uds.setSession({ docId: this.currentDocId });
+    Session.set('docId', this.currentDocId);
     console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docId, this.$rootScope.docId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);

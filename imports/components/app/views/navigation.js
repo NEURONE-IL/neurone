@@ -356,42 +356,31 @@ class Navigation {
 
   bookmarkAction(callback) {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var modalObject = {
-      title: this.$translate.instant('nav.bookmarkButton'),
-      templateAsset: 'modals/bookmark_stage1_en.html',
-      buttonType: 'okcancel',
-      fields: {
-        url: '',
-        questions: [
-          {
-            questionId: 'bm1',
-            title: 'How useful is this page?',
-            type: 'rating',
-            required: true,
-            maxStars: 5
-          },
-          {
-            questionId: 'bm2',
-            type: 'multipleChoice',
-            title: 'Why do you think so?',
-            required: true,
-            other: false,
-            options: [
-                'I like this page',
-                'It\'s sources are trustworthy',
-                'It\'s well written'
-              ]
-          }
-        ]
-      }
-    };
-
-    this.modal.openModal(modalObject, (err, res) => {
+    this.call('getForm', 'stage1-fi', (err, res) => { // TODO change hardcoded value
       if (!err) {
-        if (res.message === 'ok' && res.answers) callback(null, res);
-        else callback(null, false);
+        var myQuestions = res.questions;
+
+        var modalObject = {
+          title: this.$translate.instant('nav.bookmarkButton'),
+          templateAsset: 'modals/bookmark_stage1_en.html',
+          buttonType: 'okcancel',
+          fields: {
+            url: '',
+            questions: myQuestions
+          }
+        };
+
+        this.modal.openModal(modalObject, (err, res) => {
+          if (!err) {
+            if (res.message === 'ok' && res.answers) callback(null, res);
+            else callback(null, false);
+          }
+        });
       }
-    });
+      else {
+        console.error('Error while loading Stage2 forms', err);
+      }
+    });    
   }
 
   readyAction(stageNumber) {
@@ -405,14 +394,15 @@ class Navigation {
          userBookmarks = UserBookmarks.find().fetch(),
               goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
                  stars = goodDocs,    // TODO Make score formula
-           timeWarning = false;        // TODO Enable time warning
+           timeWarning = false,       // TODO Enable time warning
+          maxBookmarks = this.uds.getConfigs().maxBookmarks;
 
       console.log(userBookmarks);
 
       var modalObject = {
         title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage1_en.html',
-        buttonType: (timeWarning === true ? 'nextstage' : 'back'),
+        buttonType: (goodDocs >= maxBookmarks ? 'nextstage' : 'back'),
         fields: {
           stars: stars,
           maxStars: maximumStars,
@@ -424,7 +414,9 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          this.$state.go('stage2');
+          if (goodDocs >= maxBookmarks) {
+            this.$state.go('stage2');  
+          }
         }
       });  
     }
