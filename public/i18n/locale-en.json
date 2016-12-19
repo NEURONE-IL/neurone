@@ -111,13 +111,15 @@
     "acceptButton": "Accept",
     "cancelButton": "Cancel",
     "nextButton": "Next",
-    "goodDocument": "Good page",
-    "badDocument": "Bad page",
-    "documentsFound": "You found {{goodPages}} good page(s)!",
+    "goodDocument": "Great page!",
+    "badDocument": "Good page",
+    "documentsFound": "You found {{goodPages}} great page(s)!",
     "currentScore": "You score is {{stars}} star(s)",
     "nextStageInstructions": "Now you can go to the next stage",
     "goBackInstructions": "Go back and keep seaching!",
-    "timeWarning": "You ran out of time!"
+    "timeWarning": "You ran out of time!",
+    "confirmChanges": "Are you sure that you want to continue to next stage?",
+    "keepSearching": "Keep seaching for better pages"
   },
   "hints": {
     "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",

@@ -12,15 +12,15 @@ class PageModal {
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
 
-    this.docId = this.resolve.docId;
-    this.snippet = this.resolve.snippet;
-    
-     this.$rootScope.docId = this.docId;
-
-     this.iframeReady = true;
-
-    //console.log('PageModal', this.docId, this.snippet);
     this.$timeout(() => {
+      this.docId = this.resolve.docId;
+      this.snippet = this.resolve.snippet;
+      
+      this.$rootScope.docId = this.docId;
+      this.iframeReady = true;
+
+      //console.log('PageModal', this.docId, this.snippet);
+    
       this.highlightSnippet(this.snippet);
       this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
     }, 0);
