@@ -28,7 +28,7 @@ class Start {
   begin() {
     if (!!Meteor.userId()) {
       var currentState = this.uds.getSession().stageHome;
-      this.fs.startFlow();
+      //this.fs.startFlow();
 
       if (!currentState) {
         this.$state.go('stage0');

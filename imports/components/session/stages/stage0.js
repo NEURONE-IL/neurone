@@ -3,7 +3,7 @@ import Utils from '../../globalUtils';
 import template from './stage0.html';
 
 class Stage0 {
-  constructor($scope, $rootScope, $reactive, $translate, UserDataService) {
+  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
     'ngInject';
 
     this.$rootScope = $rootScope;
@@ -40,11 +40,17 @@ class Stage0 {
     }
 
     this.stageReady = true;
-    this.formReady = this.queryIdeasForm;
     
     $rootScope.$on('readyStage0', (event, data) => {
       this.submit();
     });
+
+    $timeout(() => {
+      $scope.$watch(() => this.queryIdeasForm.$valid, (newVal, oldVal) => {
+        if (newVal) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
   }
 
   submit() {
@@ -68,10 +74,6 @@ class Stage0 {
         console.error('Error while saving Stage0 answers', err);
       }
     });
-  }
-
-  enableReady() {
-    this.uds.setSession({ readyButton: true });
   }
 }
 

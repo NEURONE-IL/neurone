@@ -102,7 +102,7 @@ function run($rootScope, $state, $window, FlowService) {
   });
 
   angular.element($window).on('beforeunload', () => {
-    fs.stopFlow();
+    //fs.stopFlow();
   });
 
   Accounts.onLogin(() => {

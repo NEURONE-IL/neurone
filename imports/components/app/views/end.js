@@ -13,7 +13,7 @@ class End {
 
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({ standbyMode: false });
-      this.uds.setSession({ stageHome: '/home' });
+      //this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ statusMessage: '' });
     });
 
