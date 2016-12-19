@@ -67,9 +67,11 @@ class DisplayIframe {
 					console.log('Loading iframe trackers...');
 					this.abis.service();
 					this.kmtis.service();
-					
-					if (snippet) this.highlightSnippet(snippet);
 				});
+
+				this.$timeout(() => {
+					if (snippet) this.highlightSnippet(snippet);
+				}, 0);
 			}
 			else {
 				console.error('Error while loading document', pageUrl, err);
@@ -88,6 +90,7 @@ class DisplayIframe {
       accurracy: 'exactly',
       iframes: true,
       acrossElements: true,
+      separateWordSearch: false,
       className: 'highlightSnippet'
     });
   }

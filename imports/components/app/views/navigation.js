@@ -408,7 +408,8 @@ class Navigation {
           maxStars: maximumStars,
           goodPages: goodDocs,
           timeWarning: timeWarning,
-          bookmarks: userBookmarks
+          bookmarks: userBookmarks,
+          keepSearching: (goodDocs < maxBookmarks)
         }
       };
 

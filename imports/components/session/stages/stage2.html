@@ -34,7 +34,9 @@
           <div>
             <div uib-alert class="snippet-box" ng-repeat="snippet in snippetbar.snippetListPerPage track by snippet._id">
               <div class="snippet-element">
-                <div class="snippet-text" type="button" ng-click="snippetbar.viewSnippet(snippet.snippedText)">{{snippet.snippedText | words: 25}}</div>
+                <div class="snippet-text">
+                  <a href="javascript:void(0)" ng-click="snippetbar.viewSnippet(snippet.snippedText)">{{snippet.snippedText | words: 25}}</a>
+                </div>
                 <div class="snippet-delete">
                   <i type="button" class="fa fa-trash fa-lg" ng-click="snippetbar.deleteSnippet(snippet.snippetId)"></i>
                 </div>

@@ -112,7 +112,7 @@
     "cancelButton": "Cancel",
     "nextButton": "Next",
     "goodDocument": "Great page!",
-    "badDocument": "Good page",
+    "badDocument": "Average page",
     "documentsFound": "You found {{goodPages}} great page(s)!",
     "currentScore": "You score is {{stars}} star(s)",
     "nextStageInstructions": "Now you can go to the next stage",
@@ -126,5 +126,8 @@
     "taskButton": "Remember to click the Task button to see your assignment!",
     "tutorialButton": "Remember to click the Tutorial button to get help in how to complete your assignment!",
     "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
+  },
+  "tutorial": {
+    "tryNow": "Now it's your time to try"
   }
 }
