@@ -18,11 +18,21 @@
         <ng-form name="queryIdea" ng-repeat="idea in stage0.ideas" ng-class="{ 'has-error' : queryIdea.query.$invalid }">
           <div class="input-group">
             <span class="input-group-addon">{{"start.idea" | translate: { number:   idea.num } }}</span>
-            <input id="msg" type="text" class="form-control" name="query" placeholder="{{'start.ideaPlaceholder' | translate}}" ng-model="idea.query" required>
+            <input id="msg" type="text" class="form-control" name="query" placeholder="{{'start.ideaPlaceholder' | translate}}" ng-model="idea.query" ng-required="true">
           </div>
           <br>
         </ng-form>
       </form>
     </div>
   </div>
+<<<<<<< HEAD
+=======
+  <!--
+  <div ng-if="stage0.stageReady && stage0.queryIdeasForm.$valid" ng-init="stage0.enableReady()"></div>
+  <pre>
+  {{ !!queryIdeasForm.$error.required | json }}
+  {{ queryIdeasForm.$valid | json }}
+  </pre>
+  -->
+>>>>>>> master
 </div>

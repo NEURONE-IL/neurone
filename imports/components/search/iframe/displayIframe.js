@@ -97,6 +97,7 @@ class DisplayIframe {
       accurracy: 'exactly',
       iframes: true,
       acrossElements: true,
+      separateWordSearch: false,
       className: 'highlightSnippet'
     });
   }

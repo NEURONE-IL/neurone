@@ -9,7 +9,7 @@ class UserDataService {
     Meteor.autorun(() => {
       var userId = Meteor.userId();
       this.hdl = $promiser.subscribe('userDataToggle', userId);
-      console.log('UserDataService AUTORUN!', userId);
+      //console.log('UserDataService AUTORUN!', userId);
     });
   }
 
@@ -38,7 +38,7 @@ class UserDataService {
         var dataId = UserData.findOne()._id;
         UserData.update({ _id: dataId }, { $set: property }, (err, res) => {
           if (!err) {
-            Utils.logToConsole('UserDataService SET!', property);
+            //Utils.logToConsole('UserDataService SET!', property);
           }
         });
       });
@@ -58,7 +58,7 @@ class UserDataService {
         
         UserData.update({ _id: dataId }, { $set: setObj }, (err, res) => {
           if (!err) {
-            console.log('UserDataService SESSION SET!', setObj);
+            //console.log('UserDataService SESSION SET!', setObj);
           }
         });
       });

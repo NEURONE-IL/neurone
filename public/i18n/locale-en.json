@@ -111,18 +111,23 @@
     "acceptButton": "Accept",
     "cancelButton": "Cancel",
     "nextButton": "Next",
-    "goodDocument": "Good page",
-    "badDocument": "Bad page",
-    "documentsFound": "You found {{goodPages}} good page(s)!",
+    "goodDocument": "Great page!",
+    "badDocument": "Average page",
+    "documentsFound": "You found {{goodPages}} great page(s)!",
     "currentScore": "You score is {{stars}} star(s)",
     "nextStageInstructions": "Now you can go to the next stage",
-    "goBackInstructions": "Go back and keep seaching!",
-    "timeWarning": "You ran out of time!"
+    "goBackInstructions": "Go back and keep searching!",
+    "timeWarning": "You ran out of time!",
+    "confirmChanges": "Are you sure that you want to continue to next stage?",
+    "keepSearching": "Keep seaching for better pages"
   },
   "hints": {
     "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
     "taskButton": "Remember to click the Task button to see your assignment!",
     "tutorialButton": "Remember to click the Tutorial button to get help in how to complete your assignment!",
     "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
+  },
+  "tutorial": {
+    "tryNow": "Now it's your time to try"
   }
 }

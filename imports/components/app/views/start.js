@@ -1,14 +1,17 @@
 import template from './start.html';
 
+import Configs from '../../globalConfigs';
+
 const name = 'start';
 
 class Start {
-  constructor($scope, $rootScope, $reactive, $state, UserDataService) {
+  constructor($scope, $rootScope, $reactive, $state, UserDataService, FlowService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
 
+    this.fs = FlowService;
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
@@ -27,6 +30,8 @@ class Start {
   begin() {
     if (!!Meteor.userId()) {
       var currentState = this.uds.getSession().stageHome;
+      
+      if (Configs.flowEnabled) this.fs.startFlow();
 
       if (!currentState) {
         this.$state.go('stage0');

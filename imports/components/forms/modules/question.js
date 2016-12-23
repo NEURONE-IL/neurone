@@ -1,3 +1,5 @@
+import '../../../lib/register.js';
+
 import TextQuestion from '../templates/text';
 import ParagraphQuestion from '../templates/paragraph';
 import MultipleChoiceQuestion from '../templates/multipleChoice';
@@ -12,22 +14,26 @@ import RatingQuestion from '../templates/rating';
 
 const name = 'formTemplates';
 
-function QuestionCtrl() {
-  // http://stackoverflow.com/a/8273091
-  this.range = (start, stop, step) => {
-    if (typeof stop == 'undefined') stop = start, start = 0;
-    if (typeof step == 'undefined') step = 1;
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
+/*
+// http://stackoverflow.com/a/8273091
+function range(start, stop, step) {
+  if (typeof stop == 'undefined') stop = start, start = 0;
+  if (typeof step == 'undefined') step = 1;
+  if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
 
-    var result = [];
-    for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
-      result.push(i);
-    }
+  var result = [];
+  for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
+    result.push(i);
+  }
 
-    return result;
-  };
+  return result;
+}
 
-  this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+function QuestionCtrl($scope) {
+  'ngInclude';
+
+  var vm = this;
+  if (vm.data.type === 'scale') vm.scaleArray = range(vm.data.min, vm.data.max, vm.data.step);
 }
 
 
@@ -35,17 +41,17 @@ function QuestionCtrl() {
 function questionDirective($compile) {
   'ngInclude';
 
-  var textQuestionTemplate = TextQuestion.template;
-  var paragraphQuestionTemplate = ParagraphQuestion.template;
-  var multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
-  var checkboxQuestionTemplate = CheckboxQuestion.template;
-  var listQuestionTemplate = ListQuestion.template;
-  var scaleQuestionTemplate = ScaleQuestion.template;
-  var dateQuestionTemplate = DateQuestion.template;
-  var timeQuestionTemplate = TimeQuestion.template;
-  var ratingQuestionTemplate = RatingQuestion.template;
+  const textQuestionTemplate = TextQuestion.template;
+  const paragraphQuestionTemplate = ParagraphQuestion.template;
+  const multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
+  const checkboxQuestionTemplate = CheckboxQuestion.template;
+  const listQuestionTemplate = ListQuestion.template;
+  const scaleQuestionTemplate = ScaleQuestion.template;
+  const dateQuestionTemplate = DateQuestion.template;
+  const timeQuestionTemplate = TimeQuestion.template;
+  const ratingQuestionTemplate = RatingQuestion.template;
 
-  var getTemplate = (questionType) => {
+  function getTemplate(questionType) {
     var template = '';
 
     switch (questionType) {
@@ -81,25 +87,113 @@ function questionDirective($compile) {
     return template;
   }
 
-  var linker = (scope, element, attrs, ctrl) => {
-    element.html(getTemplate(scope.data.type)).show();
+  function linker(scope, element, attrs, ctrl) {
+    element.html(getTemplate(ctrl.data.type)).show();
     $compile(element.contents())(scope);
   }
 
-  // From https://toddmotto.com/no-scope-soup-bind-to-controller-angularjs/
+  // dgacitua: https://toddmotto.com/no-scope-soup-bind-to-controller-angularjs/
   return {
     restrict: 'E',
+    //scope: {},
     controller: QuestionCtrl,
     controllerAs: '$ctrl',
-    link: linker,
-    scope: {
-      data: '='
-    },
-    bindToController: {
-      data: '='
-    }
+    bindToController: { data: '=' },
+    link: linker
   }
 };
+*/
+
+class QuestionCtrl2 {
+  constructor($scope, $compile, $timeout) {
+    'ngInject';
+
+    this.$scope = $scope;
+    this.$compile = $compile;
+    this.$timeout = $timeout;
+
+    this.$timeout(() => {
+      if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+    }, 0);
+  }
+
+  range(start, stop, step) {
+    if (typeof stop == 'undefined') stop = start, start = 0;
+    if (typeof step == 'undefined') step = 1;
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
+
+    var result = [];
+    for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
+      result.push(i);
+    }
+
+    return result;
+  }
+}
+
+
+class Question2 {
+  constructor() {
+    'ngInject';
+
+    this.restrict = 'E';
+    this.scope = { data: '=' },
+    this.controller = QuestionCtrl2;
+    this.controllerAs = '$ctrl';
+    this.bindToController = true;
+  }
+
+  link(scope, element, attrs, ctrl) {
+    element.html(this.getTemplate(ctrl.data.type)).show();
+    ctrl.$compile(element.contents())(scope);
+  }
+
+  getTemplate(questionType) {
+    const textQuestionTemplate = TextQuestion.template;
+    const paragraphQuestionTemplate = ParagraphQuestion.template;
+    const multipleChoiceQuestionTemplate = MultipleChoiceQuestion.template;
+    const checkboxQuestionTemplate = CheckboxQuestion.template;
+    const listQuestionTemplate = ListQuestion.template;
+    const scaleQuestionTemplate = ScaleQuestion.template;
+    const dateQuestionTemplate = DateQuestion.template;
+    const timeQuestionTemplate = TimeQuestion.template;
+    const ratingQuestionTemplate = RatingQuestion.template;
+
+    var template = '';
+
+    switch (questionType) {
+      case 'text':
+        template = textQuestionTemplate;
+        break;
+      case 'paragraph':
+        template = paragraphQuestionTemplate;
+        break;
+      case 'multipleChoice':
+        template = multipleChoiceQuestionTemplate;
+        break;
+      case 'checkbox':
+        template = checkboxQuestionTemplate;
+        break;
+      case 'list':
+        template = listQuestionTemplate;
+        break;
+      case 'scale':
+        template = scaleQuestionTemplate;
+        break;
+      case 'date':
+        template = dateQuestionTemplate;
+        break;
+      case 'time':
+        template = timeQuestionTemplate;
+        break;
+      case 'rating':
+        template = ratingQuestionTemplate;
+        break;
+    }
+
+    return template;
+  }
+}
 
 export default angular.module(name, [])
 .component('textQuestion', TextQuestion)
@@ -111,4 +205,5 @@ export default angular.module(name, [])
 .component('dateQuestion', DateQuestion)
 .component('timeQuestion', TimeQuestion)
 .component('ratingQuestion', RatingQuestion)
-.directive('question', questionDirective);
+.directive('question', () => new Question2());
+//register(name).directive('question', Question2);

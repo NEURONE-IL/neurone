@@ -3,7 +3,7 @@ import template from './end.html';
 const name = 'end';
 
 class End {
-  constructor($scope, $rootScope, $state, $reactive, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, UserDataService, FlowService) {
     'ngInject';
 
     this.$state = $state;
@@ -13,7 +13,7 @@ class End {
 
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({ standbyMode: false });
-      this.uds.setSession({ stageHome: '/home' });
+      //this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ statusMessage: '' });
     });
 
@@ -21,6 +21,8 @@ class End {
       this.uds.setSession({ standbyMode: true });
       this.uds.setSession({ stageHome: '/end' });
       this.uds.setSession({ stageNumber: 4 });
+      this.uds.setSession({ finished: true });
+      this.uds.setSession({ totalTimer: 0, stageTimer: 0 });
 
       this.$rootScope.$broadcast('updateNavigation');
     });

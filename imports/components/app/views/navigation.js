@@ -242,7 +242,7 @@ class Navigation {
   saveBookmark() {
     if (!!Meteor.userId()) {
       this.bookmarkAction((err, res) => {
-        if (!err) {
+        if (!err && res !== false) {
           this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
             //this.$rootScope._navbarMessage.set(res || err);
             this.uds.setSession({ statusMessage: (res || err) });
@@ -282,7 +282,7 @@ class Navigation {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
       title: 'My Email',
-      templateAsset: 'modals/taskAssignment_en.html',
+      templateAsset: 'modals/taskAssignment_fi.html',
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
         subject: 'I need your help!'
@@ -293,18 +293,48 @@ class Navigation {
   }
 
   tipsModal(stageNumber) {
-    if (stageNumber === 1) {
+    if (stageNumber === 0) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
-        title: 'Tips',
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage0_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 1) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
         templateAsset: 'modals/tips_stage1_en.html',
         fields: {}
       };
 
-      this.modal.openModal(modalObject, (err, res) => {});  
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 2) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage2_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (stageNumber === 3) {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: 'Tutorial',
+        templateAsset: 'modals/tips_stage3_en.html',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
-      console.log('TipsModal', stageNumber);
+      console.log('TutorialModal', stageNumber);
     }
   }
 
@@ -313,7 +343,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage0_en.html',
         fields: {}
       };
 
@@ -333,7 +363,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage2_en.html',
         fields: {}
       };
 
@@ -343,7 +373,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage3_en.html',
         fields: {}
       };
 
@@ -356,48 +386,50 @@ class Navigation {
 
   bookmarkAction(callback) {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
-    var modalObject = {
-      title: this.$translate.instant('nav.bookmarkButton'),
-      templateAsset: 'modals/bookmark_stage1_en.html',
-      buttonType: 'okcancel',
-      fields: {
-        url: '',
-        questions: [
-          {
-            questionId: 'bm1',
-            title: 'How useful is this page?',
-            type: 'rating',
-            required: true,
-            maxStars: 5
-          },
-          {
-            questionId: 'bm2',
-            type: 'multipleChoice',
-            title: 'Why do you think so?',
-            required: true,
-            other: false,
-            options: [
-                'I like this page',
-                'It\'s sources are trustworthy',
-                'It\'s well written'
-              ]
-          }
-        ]
-      }
-    };
-
-    this.modal.openModal(modalObject, (err, res) => {
+    this.call('getForm', 'stage1-fi', (err, res) => { // TODO change hardcoded value
       if (!err) {
-        if (res.message === 'ok' && res.answers) callback(null, res);
-        else callback(null, false);
+        var myQuestions = res.questions;
+
+        var modalObject = {
+          title: this.$translate.instant('nav.bookmarkButton'),
+          templateAsset: 'modals/bookmark_stage1_en.html',
+          buttonType: 'okcancel',
+          fields: {
+            url: '',
+            questions: myQuestions
+          }
+        };
+
+        this.modal.openModal(modalObject, (err, res) => {
+          if (!err) {
+            if (res.message === 'ok' && res.answers) callback(null, res);
+            else callback(null, false);
+          }
+        });
       }
-    });
+      else {
+        console.error('Error while loading Stage2 forms', err);
+      }
+    });    
   }
 
   readyAction(stageNumber) {
     if (stageNumber === 0) {
-      this.$rootScope.$broadcast('readyStage0');
-      this.$state.go('search');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage0_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyStage0');
+            this.$state.go('search');            
+          }
+        }
+      });
     }
     else if (stageNumber === 1) {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -405,36 +437,66 @@ class Navigation {
          userBookmarks = UserBookmarks.find().fetch(),
               goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
                  stars = goodDocs,    // TODO Make score formula
-           timeWarning = false;        // TODO Enable time warning
+           timeWarning = false,       // TODO Enable time warning
+          maxBookmarks = this.uds.getConfigs().maxBookmarks;
 
       console.log(userBookmarks);
 
       var modalObject = {
         title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage1_en.html',
-        buttonType: (timeWarning === true ? 'nextstage' : 'back'),
+        buttonType: (goodDocs >= maxBookmarks ? 'nextstage' : 'back'),
         fields: {
           stars: stars,
           maxStars: maximumStars,
           goodPages: goodDocs,
           timeWarning: timeWarning,
-          bookmarks: userBookmarks
+          bookmarks: userBookmarks,
+          keepSearching: (goodDocs < maxBookmarks)
         }
       };
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          this.$state.go('stage2');
+          if (goodDocs >= maxBookmarks) {
+            this.$state.go('stage2');  
+          }
         }
       });  
     }
     else if (stageNumber === 2) {
-      this.$rootScope.$broadcast('readyStage2');
-      this.$state.go('stage3');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage2_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyStage2');
+            this.$state.go('stage3');
+          }
+        }
+      });
     }
     else if (stageNumber === 3) {
-      this.$rootScope.$broadcast('readyStage3');
-      this.$state.go('end');
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage3_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyStage3');
+            this.$state.go('end');
+          }
+        }
+      });
     }
     else {
       console.log('ReadyModal', stageNumber);

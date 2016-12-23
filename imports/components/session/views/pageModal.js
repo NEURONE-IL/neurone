@@ -5,22 +5,25 @@ import template from './pageModal.html';
 const name = 'pageModal';
 
 class PageModal {
-  constructor($state, $rootScope, $document) {
+  constructor($state, $rootScope, $document, $timeout) {
     'ngInject';
 
     this.$document = $document;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
 
-    this.docId = this.resolve.docId;
-    this.snippet = this.resolve.snippet;
+    this.$timeout(() => {
+      this.docId = this.resolve.docId;
+      this.snippet = this.resolve.snippet;
+      
+      this.$rootScope.docId = this.docId;
+      this.iframeReady = true;
+
+      //console.log('PageModal', this.docId, this.snippet);
     
-    this.$rootScope.docId = this.docId;
-
-    this.iframeReady = true;
-
-    this.highlightSnippet(this.snippet);
-    //console.log('PageModal', this.docId, this.snippet);
-    this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
+      this.highlightSnippet(this.snippet);
+      this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
+    }, 0);
   }
 
   closeModal() {
