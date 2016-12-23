@@ -27,7 +27,11 @@ class Start {
   begin() {
     if (!!Meteor.userId()) {
       var currentState = this.uds.getSession().stageHome;
+<<<<<<< Updated upstream
       console.log(currentState);
+=======
+      //this.fs.startFlow();
+>>>>>>> Stashed changes
 
       if (!currentState) {
         this.$state.go('stage0');

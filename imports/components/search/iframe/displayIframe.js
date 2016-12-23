@@ -27,8 +27,8 @@ class DisplayIframe {
 			this.$rootScope.docId = '';
 			this.$rootScope.documentTitle = '';
 			this.$rootScope.documentRelevant = false;
-			this.kmtis.antiService();
-			this.abis.antiService();
+			//this.kmtis.antiService();
+			//this.abis.antiService();
 		};
 
 		this.$rootScope.$on('changeIframePage', (event, data) => {
@@ -67,7 +67,20 @@ class DisplayIframe {
 					console.log('Loading iframe trackers...');
 					this.abis.service();
 					this.kmtis.service();
+<<<<<<< Updated upstream
 					
+=======
+				});
+
+				// dgacitua: Execute on iframe end
+				angular.element(this.iframeDoc.contentWindow).on('unload', () => {
+					console.log('Unloading iframe trackers...');
+					this.kmtis.antiService();
+					this.abis.antiService();
+				});
+
+				this.$timeout(() => {
+>>>>>>> Stashed changes
 					if (snippet) this.highlightSnippet(snippet);
 				});
 			}

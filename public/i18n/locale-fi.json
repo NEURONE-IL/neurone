@@ -1,0 +1,134 @@
+{
+  "app": {
+    "pageTitle": "NEURONI",
+    "navbarTitle": "NEURONI",
+    "toggleNav": "Navigointi",
+    "search": "Hae",
+    "documents": "Sivut",
+    "showcase": "Showcase",
+    "visitedLinks": "Avatut sivut",
+    "snippets": "Merkityt kohdat",
+    "bookmarks": "Valitut sivut",
+    "i18n": "Kansainvlistyminen",
+    "forms": "Lomakkeet",
+    "synthesis": "Yhteenveto",
+    "flow": "Tehtvpolku"
+  },
+  "nav": {
+    "tutorialButton": "Ohjeet",
+    "tipsButton": "Vinkit",
+    "taskButton": "Tehtv",
+    "readyButton": "Ready",
+    "selectedPages": "Valittuja sivuja: {{bookmarks}}",
+    "snippetCount": "You have selected {{words}} word(s)",
+    "snippetButton": "Save Snippet",
+    "bookmarkButton": "Bookmark",
+    "unbookmarkButton": "Unbookmark",
+    "taskResults": "Task results"
+  },
+  "auth": {
+    "registerButton": "Rekisteridy",
+    "loginButton": "Kirjaudu",
+    "logoutButton": "Poistu",
+    "registerMessage": "Rekisteridy Neuroniin",
+    "loginMessage": "Kirjaudu Neuroniin",
+    "email": "Shkposti",
+    "username": "Kyttjtunnus",
+    "password": "Salasana",
+    "required": "Vaadittu tieto",
+    "emailPlaceholder": "Anna shkpostiosoitteesi",
+    "usernamePlaceholder": "Anna kyttjtunnuksesi",
+    "passwordPlaceholder": "Anna salasanasi",
+    "studentRole": "Oppilas",
+    "experimenterRole": "Opettaja"
+  },
+  "home": {
+    "welcome": "Tervetuloa NEURONIin!",
+    "acronym": "Nettilukutaidon testi",
+    "instructions1": "Rekisteridy ja kirjaudu sisn kyttjtunnuksellasi!"
+  },
+  "start": {
+    "beginButton": "Begin",
+    "instructions1": "Press the Begin button to start (or continue)",
+    "idea": "Idea {{number}}",
+    "ideaPlaceholder": "Write your idea here!"
+  },
+  "actions": {
+    "snippetButton": "Tallenna merkityt",
+    "bookmarkButton": "Valitse sivu",
+    "unbookmarkButton": "Poista sivu"
+  },
+  "search": {
+    "searchEngineTitle": "Hakukone",
+    "searchButton": "Hae",
+    "noResults": "Haullasi ei lytynyt yhtn sivua",
+    "searchPlaceholder": "Enter text to search",
+    "loading": "Loading results..."
+  },
+  "showcase": {
+    "documentList": "Document List",
+    "visitedLinksList": "Visited Link List",
+    "snippetsList": "Snippet List",
+    "bookmarksList": "Bookmark List"
+  },
+  "alerts": {
+    "error": "Mrittelemtn virhe",
+    "snippetSaved": "Merkint tallennettu!",
+    "snippetRemoved": "Snippet removed!",
+    "bookmarkSaved": "Valittu sivu tallennettu!",
+    "bookmarkRemoved": "Valittu sivu poistettu!",
+    "snippetError": "Error while processing Snippet",
+    "bookmarkError": "Error while processing Bookmark"
+  },
+  "form": {
+    "title": "Lomake",
+    "instructions": "Ole hyv ja vastaa joihinkin kysymyksiin!",
+    "requiredAnswer": "Vaadittu vastaus",
+    "submitButton": "Lhet",
+    "submitted": "Vastauksesi on lhetetty!",
+    "submittedError": "Tapahtui virhe!",
+    "title": "Questionnaire",
+    "instructions": "Now you must answer some questions!",
+    "requiredAnswer": "Required answer",
+    "submitButton": "Submit"
+  },
+  "snippet": {
+    "page": "Page {{pageNum}}"
+  },
+  "synthesis": {
+    "title": "Yhteenveto",
+    "submitButton": "Lhet",
+    "saved": "Vastaustasi tallennetaan ...",
+    "submitted": "Vastauksesi on lhetetty!",
+    "error": "Tapahtui virhe!",
+    "snippets": "Merkityt kohdat",
+    "bookmarks": "Valitut sivut",
+    "closeButton": "Sulje",
+    "snippetModalTitle": "Merkityt kohdat",
+    "bookmarkModalTitle": "Valitut sivut"
+  },
+  "modal": {
+    "closeButton": "Sulje",
+    "nextStageButton": "Jatka",
+    "goBackButton": "Palaa",
+    "acceptButton": "Hyvksy",
+    "cancelButton": "Peruuta",
+    "nextButton": "Seuraava",
+    "goodDocument": "Good page",
+    "badDocument": "Bad page",
+    "documentsFound": "You found {{goodPages}} good page(s)!",
+    "currentScore": "You score is {{stars}} star(s)",
+    "nextStageInstructions": "Now you can go to the next stage",
+    "goBackInstructions": "Go back and keep seaching!",
+    "timeWarning": "You ran out of time!"
+  },
+  "hints": {
+    "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
+    "taskButton": "Remember to click the Task button to see your assignment!",
+    "tutorialButton": "Remember to click the Tutorial button to get help in how to complete your assignment!",
+    "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
+  },
+  "tutorial": {
+    "tryNow": "Now it's your time to try"
+  }
+}
