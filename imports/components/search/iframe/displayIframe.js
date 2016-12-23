@@ -67,9 +67,6 @@ class DisplayIframe {
 					console.log('Loading iframe trackers...');
 					this.abis.service();
 					this.kmtis.service();
-<<<<<<< Updated upstream
-					
-=======
 				});
 
 				// dgacitua: Execute on iframe end
@@ -80,9 +77,8 @@ class DisplayIframe {
 				});
 
 				this.$timeout(() => {
->>>>>>> Stashed changes
 					if (snippet) this.highlightSnippet(snippet);
-				});
+				}, 0);
 			}
 			else {
 				console.error('Error while loading document', pageUrl, err);
