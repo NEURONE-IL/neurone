@@ -51,10 +51,10 @@ class DisplayIframe {
 	loadPage(pageUrl, snippet='') {
 		console.log('loadPage', pageUrl, snippet);
 		Session.set('docId', pageUrl);
-		// From https://github.com/meteor/meteor/issues/7189
+
+		// dgacitua: https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', pageUrl, (err, res) => {
 			if (!err) {
-				//console.log(res);
 				this.routeUrl = res.routeUrl;
 				this.documentTitle = res.title;
 				this.$rootScope.docId = res._id;

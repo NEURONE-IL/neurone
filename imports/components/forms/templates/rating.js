@@ -1,8 +1,15 @@
 import template from './rating.html';
 
-export default CheckboxQuestion = {
+export default RatingQuestion = {
+  template,
+  require: '?ngModel',
   bindings: {
     data: '='
   },
-  template
+  controller: () => {
+    this.$isEmpty = () => {
+      if (this.data.answer <= 0) return false;
+      else return true;
+    }
+  }
 }
