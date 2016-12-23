@@ -40,6 +40,8 @@ class AuthService {
         callback(err);
       }
       else {
+        if (Configs.flowEnabled) this.fs.stopFlow();
+        
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);
       }

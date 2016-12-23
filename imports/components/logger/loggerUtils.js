@@ -43,7 +43,7 @@ export default class Utils {
     }
   }
 
-  // From http://stackoverflow.com/a/10779201
+  // dgacitua: http://stackoverflow.com/a/10779201
   static getFramedWindow(f) {
     if(f.parentNode == null)
       f = document.body.appendChild(f);

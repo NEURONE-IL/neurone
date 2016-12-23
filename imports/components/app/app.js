@@ -101,8 +101,8 @@ function run($rootScope, $state, $window, FlowService) {
     }
   });
 
-  angular.element($window).on('beforeunload', () => {
-    //fs.stopFlow();
+  angular.element($window).on('unload', () => {
+    if (Configs.flowEnabled) this.fs.stopFlow();
   });
 
   Accounts.onLogin(() => {
