@@ -3,5 +3,5 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
-  <textarea id="paragraphAnswer" class="form-control" rows="3" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" placeholder="{{$ctrl.data.placeholder}}">
+  <textarea id="paragraphAnswer" name="question" class="form-control" rows="3" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" placeholder="{{$ctrl.data.placeholder}}">
 </div>

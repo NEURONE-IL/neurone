@@ -3,7 +3,7 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
-  <select id="listAnswer" class="form-control" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required">
+  <select id="listAnswer" class="form-control" name="question" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required">
     <option></option>
     <option ng-repeat="option in $ctrl.data.options track by $index" ng-value="option">{{option}}</option>
   </select>

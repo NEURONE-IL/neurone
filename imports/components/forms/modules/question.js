@@ -27,20 +27,18 @@ class QuestionCtrl {
     this.$compile(this.$element.contents())(this.$scope);
 
     this.$timeout(() => {
+      /*
       if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
       
-      
+      if (this.data.type === 'rating') {
+        this.$scope.$watch(() => this.data.answer, (newVal, oldVal) => {
+          var valid = !!this.data.answer && this.data.answer > 0;
+          if (valid) this.ngModel.$isEmpty(newVal);
+          else this.ngModel.$isEmpty(NaN);
+        });
+      }
+      */
     }, 0);
-  }
-
-  $isEmpty(value) {
-    if (this.data.type === 'rating') {
-      if (value && value > 0) return false;
-      else return true;
-    }
-    else {
-      super.$isEmpty(value);
-    }
   }
 
   getTemplate(questionType) {
@@ -103,7 +101,20 @@ class QuestionCtrl {
   }
 }
 
-class Question {
+const Question = {
+  // dgacitua: http://stackoverflow.com/a/30268579
+  require: {
+    //scaleQuestion: '^',
+    //ratingQuestion: '^'
+  },
+  bindings: {
+    data: '='
+  },
+  controller: QuestionCtrl,
+  controllerAs: '$ctrl'
+};
+
+/*
   constructor() {
     'ngInject';
 
@@ -114,7 +125,7 @@ class Question {
     this.controllerAs = '$ctrl';
     this.bindToController = true;
   }
-}
+*/
 
 export default angular.module(name, [])
 .component('textQuestion', TextQuestion)
@@ -126,4 +137,4 @@ export default angular.module(name, [])
 .component('dateQuestion', DateQuestion)
 .component('timeQuestion', TimeQuestion)
 .component('ratingQuestion', RatingQuestion)
-.directive('question', () => new Question());
+.component('question', Question);

@@ -28,9 +28,16 @@ class ModalCtrl {
 
     $ctrl.ok = function() {
       $ctrl.response.message = 'ok';
-      if ($ctrl.fields.questions) $ctrl.response.answers = $ctrl.parseAnswers($ctrl.fields.questions);
 
-      $uibModalInstance.close($ctrl.response);
+      if ($ctrl.fields.questions) {
+        if ($ctrl.modalForm.$valid) {
+          $ctrl.response.answers = $ctrl.parseAnswers($ctrl.fields.questions);
+          $uibModalInstance.close($ctrl.response);  
+        }
+      }
+      else {
+        $uibModalInstance.close($ctrl.response);
+      }
     };
 
     $ctrl.cancel = function() {

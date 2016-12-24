@@ -5,7 +5,7 @@
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
   <div id="checkboxAnswer" class="checkbox" ng-repeat="option in $ctrl.data.options track by $index">
     <label>
-      <input type="checkbox" ng-model="$ctrl.data.answer[option]" ng-value="option">
+      <input type="checkbox" name="question" ng-model="$ctrl.data.answer[option]" ng-value="option">
       {{option}}
     </label>
   </div>

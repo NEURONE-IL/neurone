@@ -15,9 +15,9 @@
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8 col-lg-offset-3 col-md-offset-3 col-sm-offset-2 col-xs-offset-2">
       <form name="stage0.queryIdeasForm" ng-submit="stage0.submit()" novalidate>
-        <ng-form name="queryIdea" ng-repeat="idea in stage0.ideas" ng-class="{ 'has-error' : queryIdea.query.$invalid }">
+        <ng-form name="queryIdea" ng-repeat="idea in stage0.ideas" ng-class="{ 'has-error': queryIdea.query.$invalid }">
           <div class="input-group">
-            <span class="input-group-addon">{{"start.idea" | translate: { number:   idea.num } }}</span>
+            <span class="input-group-addon">{{"start.idea" | translate: { number: idea.num } }}</span>
             <input id="msg" type="text" class="form-control" name="query" placeholder="{{'start.ideaPlaceholder' | translate}}" ng-model="idea.query" ng-required="true">
           </div>
           <br>

@@ -6,7 +6,7 @@
   <div id="multipleChoiceAnswer">
     <div class="radio" ng-repeat="option in $ctrl.data.options track by $index">
       <label>
-        <input type="radio" name="{{$ctrl.data.title}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required && !$ctrl.data.isOtherAnswer">
+        <input type="radio" name="question" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required && !$ctrl.data.isOtherAnswer">
         {{option}}
       </label>
     </div>
