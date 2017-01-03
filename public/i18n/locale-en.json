@@ -119,7 +119,15 @@
     "goBackInstructions": "Go back and keep searching!",
     "timeWarning": "You ran out of time!",
     "confirmChanges": "Are you sure that you want to continue to next stage?",
-    "keepSearching": "Keep seaching for better pages"
+    "keepSearching": "Keep seaching for better pages",
+    "timeup": {
+      "title": "Time is over!",
+      "instruction": "Time is over for this stage. Now you will continue to next stage."
+    },
+    "confirm": {
+      "title": "Continue to next stage",
+      "instruction": "Are you sure you want to continue? Your answers will be submitted and you not will be able to go back."
+    }
   },
   "hints": {
     "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
@@ -128,6 +136,31 @@
     "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
   },
   "tutorial": {
-    "tryNow": "Now it's your time to try"
+    "tryNow": "Now it's your time to try",
+    "stage0": {
+      "i1": "Write a phrase that you think it will be a good search query!"
+    },
+    "stage1": {
+      "i1": "Write a phrase to search in the box and click Search",
+      "i2": "Pick a page from the results list and click in the title to open it",
+      "i3": "While inside a page, click Bookmark to save the page for future reference, or click Unbookmark to remove the page from your bookmark list",
+      "i4": "The bookmark list stores your current saved bookmarks",
+      "ex_2a": "My web page",
+      "ex_2b": "www.mywebpage.com",
+      "ex_2c": "This is a very relevant web site!"
+    },
+    "stage2": {
+      "i1": "Click the tabs to load a page from your bookmark list",
+      "i2": "Remember to answer the questions for every page!",
+      "i3": "Select some text from the page and click the Save Snippet button to save a relevant piece of text",
+      "i4": "You can revisit or delete your snippet if you want",
+      "ex_4a": "I'm a snippet! Click me!"
+    },
+    "stage3": {
+      "i1": "Write your answer in the field below (you can style it!)",
+      "i2": "You can visit your snippets by clicking in the tabs",
+      "i3": "You can revisit the page where a snippet came from by clicking the snippet",
+      "ex_3a": "I'm a snippet! Click me!"
+    }
   }
 }
