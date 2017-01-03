@@ -16,10 +16,10 @@ const availableTopics = [
 ];
 
 const availableStages = [
-  { id: 'stage0', length: 5, home: '/stage0' },
-  { id: 'stage1', length: 10, home: '/search' },
-  { id: 'stage2', length: 20, home: '/stage2' },
-  { id: 'stage3', length: 10, home: '/stage3' }
+  { id: 'stage0', time: 1, home: '/stage0' },
+  { id: 'stage1', time: 2, home: '/search' },
+  { id: 'stage2', time: 3, home: '/stage2' },
+  { id: 'stage3', time: 1, home: '/stage3' }
 ];
 
 export default SharedSettings = {
@@ -36,7 +36,7 @@ export default SharedSettings = {
   snippetWordTruncateThreshold: 25,
   minSynthesisWordLength: 50,
   syhtesisAutosaveInterval: 30,
-  stages: availableStages,
+  stages: availableStages.map(a => Object.assign({}, a)),   // http://stackoverflow.com/a/40283265
   // Legacy configs
   snippetsPerPage: 3,
   snippetLength: 15

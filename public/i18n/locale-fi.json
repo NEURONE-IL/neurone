@@ -1,7 +1,7 @@
 {
   "app": {
-    "pageTitle": "NEURONI",
-    "navbarTitle": "NEURONI",
+    "pageTitle": "NEURONE",
+    "navbarTitle": "NEURONE",
     "toggleNav": "Navigointi",
     "search": "Hae",
     "documents": "Sivut",
@@ -19,6 +19,7 @@
     "tipsButton": "Vinkit",
     "taskButton": "Tehtv",
     "readyButton": "Ready",
+    "bookmarkList": "Bookmark List",
     "selectedPages": "Valittuja sivuja: {{bookmarks}}",
     "snippetCount": "You have selected {{words}} word(s)",
     "snippetButton": "Save Snippet",
@@ -43,7 +44,7 @@
     "experimenterRole": "Opettaja"
   },
   "home": {
-    "welcome": "Tervetuloa NEURONIin!",
+    "welcome": "Welcome to NEURONE!",
     "acronym": "Nettilukutaidon testi",
     "instructions1": "Rekisteridy ja kirjaudu sisn kyttjtunnuksellasi!"
   },
@@ -52,11 +53,6 @@
     "instructions1": "Press the Begin button to start (or continue)",
     "idea": "Idea {{number}}",
     "ideaPlaceholder": "Write your idea here!"
-  },
-  "actions": {
-    "snippetButton": "Tallenna merkityt",
-    "bookmarkButton": "Valitse sivu",
-    "unbookmarkButton": "Poista sivu"
   },
   "search": {
     "searchEngineTitle": "Hakukone",
@@ -86,11 +82,7 @@
     "requiredAnswer": "Vaadittu vastaus",
     "submitButton": "Lhet",
     "submitted": "Vastauksesi on lhetetty!",
-    "submittedError": "Tapahtui virhe!",
-    "title": "Questionnaire",
-    "instructions": "Now you must answer some questions!",
-    "requiredAnswer": "Required answer",
-    "submitButton": "Submit"
+    "submittedError": "Tapahtui virhe!"
   },
   "snippet": {
     "page": "Page {{pageNum}}"
@@ -105,7 +97,12 @@
     "bookmarks": "Valitut sivut",
     "closeButton": "Sulje",
     "snippetModalTitle": "Merkityt kohdat",
-    "bookmarkModalTitle": "Valitut sivut"
+    "bookmarkModalTitle": "Valitut sivut",
+    "allPages": "All",
+    "page": "Page {{pageNum}}",
+    "snippet": "Snippet {{snipNum}} - Page {{pageNum}}",
+    "snippetAll": "Snippet {{snipNum}}",
+    "allTitle": "All Pages"
   },
   "modal": {
     "closeButton": "Sulje",
@@ -114,13 +111,15 @@
     "acceptButton": "Hyvksy",
     "cancelButton": "Peruuta",
     "nextButton": "Seuraava",
-    "goodDocument": "Good page",
-    "badDocument": "Bad page",
-    "documentsFound": "You found {{goodPages}} good page(s)!",
+    "goodDocument": "Great page!",
+    "badDocument": "Average page",
+    "documentsFound": "You found {{goodPages}} great page(s)!",
     "currentScore": "You score is {{stars}} star(s)",
     "nextStageInstructions": "Now you can go to the next stage",
-    "goBackInstructions": "Go back and keep seaching!",
-    "timeWarning": "You ran out of time!"
+    "goBackInstructions": "Go back and keep searching!",
+    "timeWarning": "You ran out of time!",
+    "confirmChanges": "Are you sure that you want to continue to next stage?",
+    "keepSearching": "Keep seaching for better pages"
   },
   "hints": {
     "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
