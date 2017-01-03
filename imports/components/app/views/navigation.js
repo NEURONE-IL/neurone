@@ -106,6 +106,32 @@ class Navigation {
         }
       });
 
+      /*
+      this.$rootScope.$on('timeoutModal', (event, data) => {
+        var stage = data;
+        Utils.notificationHide(this.navbarMessageId);
+
+        if (stage === 0) {
+          // TODO
+        }
+        else if (stage === 1) {
+          this._counters.bookmarks = this.uds.getSession().bookmarkCount || 0;
+        }
+        else if (stage === 2) {
+          this.checkSnippetStatus();
+        }
+        else if (stage === 3) {
+          // TODO
+        }
+        else if (stage === 4) {
+          // TODO
+        }
+        else {
+          // TODO
+        }
+      });
+      */
+
       this.$rootScope.$on('updateBookmarkButton', (event, data) => {
         this.checkBookmarkStatus();
       });

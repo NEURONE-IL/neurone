@@ -16,10 +16,10 @@ const availableTopics = [
 ];
 
 const availableStages = [
-  { id: 'stage0', time: 1, home: '/stage0' },
-  { id: 'stage1', time: 2, home: '/search' },
-  { id: 'stage2', time: 3, home: '/stage2' },
-  { id: 'stage3', time: 1, home: '/stage3' }
+  { id: 'stage0', time: 5, home: '/stage0' },
+  { id: 'stage1', time: 10, home: '/search' },
+  { id: 'stage2', time: 20, home: '/stage2' },
+  { id: 'stage3', time: 10, home: '/stage3' }
 ];
 
 export default SharedSettings = {
