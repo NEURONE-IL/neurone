@@ -5,6 +5,9 @@ FROM phusion/passenger-nodejs:0.9.19
 # Contact the maintainer in case of problems
 MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 
+# Update Passenger Phusion
+RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+
 # Set correct environment variables
 ENV HOME /root
 
