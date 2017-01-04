@@ -21,8 +21,10 @@ class QuestionCtrl {
     this.$element = $element;
     this.$timeout = $timeout;
 
-    this.$element.html(this.getTemplate(this.data.type)).show();
-    this.$compile(this.$element.contents())(this.$scope);
+    this.$timeout(() => {
+      this.$element.html(this.getTemplate(this.data.type)).show();
+      this.$compile(this.$element.contents())(this.$scope);
+    }, 0);
   }
 
   getTemplate(questionType) {
