@@ -1,6 +1,0 @@
-<processor class="org.apache.solr.update.processor.TikaLanguageIdentifierUpdateProcessorFactory">
-  <lst name="defaults">
-    <str name="langid.fl">title,subject,text,keywords</str>
-    <str name="langid.langField">language_s</str>
-  </lst>
-</processor>

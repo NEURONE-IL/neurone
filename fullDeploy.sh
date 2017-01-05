@@ -21,6 +21,7 @@ set -e
 NEURONE_MONGO_DATABASE="neurone"
 NEURONE_SOLR_CORE="neurone"
 NEURONE_APP_NAME="neurone-app"
+NEURONE_AJAX_NAME="neurone-ajax"
 NEURONE_APP_PORT=80
 NEURONE_DB_NAME="neurone-db"
 NEURONE_DB_PORT=27017
@@ -94,8 +95,9 @@ ssh $USER@$HOST docker run -d \
                 -e ROOT_URL="http://$HOST" \
                 -e MONGO_URL="mongodb://$NEURONE_DB_USER:$NEURONE_DB_PASS@$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
                 -e NEURONE_SOLR_HOST=$NEURONE_SOLR_NAME \
-                -e NEURONE_SOLR_CORE=$NEURONE_SOLR_PORT \
+                -e NEURONE_SOLR_PORT=$NEURONE_SOLR_PORT \
                 -e NEURONE_SOLR_CORE=$NEURONE_SOLR_CORE \
+                -e DISABLE_WEBSOCKETS=0 \
                 -p $NEURONE_APP_PORT:80 \
                 -v $NEURONE_ASSET_PATH:/assets \
                 --link $NEURONE_DB_NAME:mongo \
@@ -103,6 +105,22 @@ ssh $USER@$HOST docker run -d \
                 --name $NEURONE_APP_NAME \
                 --restart=unless-stopped \
                 dgacitua/neurone
+
+ssh $USER@$HOST docker run -d \
+                -e ROOT_URL="http://$HOST" \
+                -e MONGO_URL="mongodb://$NEURONE_DB_USER:$NEURONE_DB_PASS@$NEURONE_DB_NAME:$NEURONE_DB_PORT/$NEURONE_MONGO_DATABASE" \
+                -e NEURONE_SOLR_HOST=$NEURONE_SOLR_NAME \
+                -e NEURONE_SOLR_PORT=$NEURONE_SOLR_PORT \
+                -e NEURONE_SOLR_CORE=$NEURONE_SOLR_CORE \
+                -e DISABLE_WEBSOCKETS=1 \
+                -p 81:80 \
+                -v $NEURONE_ASSET_PATH:/assets \
+                --link $NEURONE_DB_NAME:mongo \
+                --link $NEURONE_SOLR_NAME:solr \
+                --name $NEURONE_AJAX_NAME \
+                --restart=unless-stopped \
+                dgacitua/neurone
+
 
 echo ">> Deploy to local server is ready! [13/13]"
 set +u
