@@ -76,6 +76,9 @@ class Stage3 {
       snippetListPerPage: () => {
         return UserSnippets.find({ docId: this.getReactively('docId') });
       },
+      snippetListGlobal2: (docId) => {
+        return UserSnippets.find(docId);
+      },
       snippetListGlobal: () => {
         return UserSnippets.find();
       }

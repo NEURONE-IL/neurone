@@ -57,9 +57,10 @@ echo ">> Removing local offline image... [6/13]"
 rm neuroneimage.tar
 
 echo ">> Removing old Docker app containers... [7/13]"
-ssh $USER@$HOST "docker stop $NEURONE_DB_NAME || true && docker stop $NEURONE_SOLR_NAME || true && docker stop $NEURONE_APP_NAME || true && docker stop $NEURONE_AJAX_NAME || true"
-ssh $USER@$HOST "docker rm $NEURONE_DB_NAME || true && docker rm $NEURONE_SOLR_NAME || true && docker rm $NEURONE_APP_NAME || true && docker rm $NEURONE_AJAX_NAME || true"
-
+#ssh $USER@$HOST "docker stop $NEURONE_DB_NAME || true && docker stop $NEURONE_SOLR_NAME || true && docker stop $NEURONE_APP_NAME || true && docker stop $NEURONE_AJAX_NAME || true"
+#ssh $USER@$HOST "docker rm $NEURONE_DB_NAME || true && docker rm $NEURONE_SOLR_NAME || true && docker rm $NEURONE_APP_NAME || true && docker rm $NEURONE_AJAX_NAME || true"
+ssh $USER@$HOST "docker stop $NEURONE_DB_NAME || true && docker stop $NEURONE_APP_NAME || true && docker stop $NEURONE_AJAX_NAME || true"
+ssh $USER@$HOST "docker rm $NEURONE_DB_NAME || true && docker rm $NEURONE_APP_NAME || true && docker rm $NEURONE_AJAX_NAME || true"
 
 echo ">> Loading offline image in remote host... [8/13]"
 ssh $USER@$HOST docker load -i $WORKDIR/neuroneimage.tar
@@ -84,11 +85,11 @@ ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo $NEURONE_MONGO_DATABASE -
                 roles: [{ role: \\\"dbOwner\\\", db: \\\"$NEURONE_MONGO_DATABASE\\\" }]})\" || true"
 
 echo ">> Deploy Solr seach module in remote host... [11/13]"
-ssh $USER@$HOST docker run -d \
-                -p $NEURONE_SOLR_PORT:8983 \
-                --name $NEURONE_SOLR_NAME \
-                --restart=unless-stopped \
-                solr solr-create -c $NEURONE_SOLR_CORE
+#ssh $USER@$HOST docker run -d \
+#                -p $NEURONE_SOLR_PORT:8983 \
+#                --name $NEURONE_SOLR_NAME \
+#                --restart=unless-stopped \
+#                solr solr-create -c $NEURONE_SOLR_CORE
 
 echo ">> Deploy offline NEURONE image in remote host... [12/13]"
 ssh $USER@$HOST docker run -d \

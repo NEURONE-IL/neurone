@@ -17,6 +17,38 @@
         <uib-tab index="0" heading="{{'synthesis.allPages' | translate}}">
           <h4>{{"synthesis.allTitle" | translate}}</h4>
           <hr>
+          <!--
+          <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListGlobal2 track by $index">
+            <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
+              <uib-accordion-heading>
+                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: stage3.pageIndex+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+              </uib-accordion-heading>
+              <div role="button" ng-click="stage3.launchPageModal(snippet)">
+                {{snippet.snippedText}}
+              </div>
+            </div>
+          </uib-accordion>
+          <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListPerPage track by $index">
+            <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
+              <uib-accordion-heading>
+                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: stage3.pageIndex+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+              </uib-accordion-heading>
+              <div role="button" ng-click="stage3.launchPageModal(snippet)">
+                {{snippet.snippedText}}
+              </div>
+            </div>
+          </uib-accordion>
+          <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListPerPage track by $index">
+            <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
+              <uib-accordion-heading>
+                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: stage3.pageIndex+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+              </uib-accordion-heading>
+              <div role="button" ng-click="stage3.launchPageModal(snippet)">
+                {{snippet.snippedText}}
+              </div>
+            </div>
+          </uib-accordion>
+          -->
           <uib-accordion index="$index+1" ng-repeat="snippet in stage3.snippetListGlobal track by $index">
             <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
               <uib-accordion-heading>
