@@ -87,13 +87,14 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage('en');
+  $translateProvider.preferredLanguage('fi');
 };
 
-function run($rootScope, $state, $window, FlowService) {
+function run($rootScope, $state, $window, $translate, FlowService, UserDataService) {
   'ngInject';
 
   fs = FlowService;
+  uds = UserDataService;
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     if (error === 'AUTH_REQUIRED') {
@@ -102,11 +103,20 @@ function run($rootScope, $state, $window, FlowService) {
   });
 
   angular.element($window).on('unload', () => {
-    if (Configs.flowEnabled) this.fs.stopFlow();
+    if (Configs.flowEnabled) fs.stopFlow();
   });
 
   Accounts.onLogin(() => {
+    if (uds.ready()) {
+      var locale = uds.getConfigs().locale;
+      $translate.use(locale);
+    }
+
     $state.go('start');
+  });
+
+  Accounts.onLogout(() => {
+    //$translate.use('en');
   });
 
   /*

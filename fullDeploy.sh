@@ -58,7 +58,7 @@ rm neuroneimage.tar
 
 echo ">> Removing old Docker app containers... [7/13]"
 ssh $USER@$HOST "docker stop $NEURONE_DB_NAME || true && docker stop $NEURONE_SOLR_NAME || true && docker stop $NEURONE_APP_NAME || true && docker stop $NEURONE_AJAX_NAME || true"
-ssh $USER@$HOST "docker rm $NEURONE_DB_NAME || true && docker rm $NEURONE_SOLR_NAME || true && docker rm $NEURONE_APP_NAME || true && docker stop $NEURONE_AJAX_NAME || true"
+ssh $USER@$HOST "docker rm $NEURONE_DB_NAME || true && docker rm $NEURONE_SOLR_NAME || true && docker rm $NEURONE_APP_NAME || true && docker rm $NEURONE_AJAX_NAME || true"
 
 
 echo ">> Loading offline image in remote host... [8/13]"

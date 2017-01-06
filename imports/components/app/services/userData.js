@@ -25,6 +25,12 @@ class UserDataService {
     return this.hdl;
   }
 
+  ready() {
+    return this.hdl.then((handle) => {
+      return handle.ready();
+    });
+  }
+
   subscribe(userId) {
     this.hdl = this.$promiser.subscribe('userDataToggle', userId);
     console.log('UserData Subscription!', userId);

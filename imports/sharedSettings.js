@@ -25,7 +25,7 @@ const availableStages = [
 ];
 
 export default SharedSettings = {
-  locale: availableLocales[0],
+  locale: availableLocales[2],
   task: availableTasks[0],
   topic: availableTopics[0],
   queryIdeas: 2,
