@@ -154,10 +154,8 @@ Meteor.publish({
 
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }
-    /*
     else {
       this.ready();
     }
-    */
   }
 });

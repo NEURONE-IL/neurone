@@ -78,7 +78,7 @@ class FlowService {
 
   startFlow() {
     //this.uds.check().then((res) => {
-      if (!!Meteor.userId() && res.ready()) {
+      if (!!Meteor.userId()) {
         if (!this.uds.getSession().finished) {
           var gt = this.uds.getConfigs().maxGlobalTime,
               tt = this.uds.getSession().totalTimer,
@@ -103,14 +103,14 @@ class FlowService {
   }
 
   stopFlow() {
-    this.uds.check().then((res) => {
-      if (!!Meteor.userId() && res.ready()) this.$interval.cancel(this.timer);
-    });
+    //this.uds.check().then((res) => {
+      if (!!Meteor.userId()) this.$interval.cancel(this.timer);
+    //});
   }
 
   tick() {
     //this.uds.check().then((res) => {
-      if (!!Meteor.userId() && res.ready()) {
+      if (!!Meteor.userId()) {
         var cs = this.uds.getSession().stageNumber,
             st = this.uds.getConfigs().stages[cs].time;
 
