@@ -2,7 +2,7 @@ import Utils from '../../globalUtils';
 
 import template from './stage0.html';
 
-class Stage0 {
+class StagePre0 {
   constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
     'ngInject';
 
@@ -18,66 +18,24 @@ class Stage0 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/stage0' });
-      this.uds.setSession({ stageNumber: 0 });
+      this.uds.setSession({ stageHome: '/stagere0' });
+      this.uds.setSession({ stageNumber: 'stagePre0' });
 
       this.$rootScope.$broadcast('updateNavigation');
     });
 
     $reactive(this).attach($scope);
-
-    this.numberIdeas = this.uds.getConfigs().queryIdeas;
-    this.ideas = [];
-    this.queryIdeasForm = {};
     
-    for (var i=0; i<this.numberIdeas; i++) {
-      var form = {
-        num: (i+1),
-        query: ''
-      };
-
-      this.ideas.push(form);
-    }
-
-    this.stageReady = true;
-    
-    $rootScope.$on('readyStage0', (event, data) => {
-      this.submit();
-    });
-
     $timeout(() => {
       $scope.$watch(() => this.queryIdeasForm.$valid, (newVal, oldVal) => {
         if (newVal) this.uds.setSession({ readyButton: true });
         else this.uds.setSession({ readyButton: false });
       });
-    }, 10);
-  }
-
-  submit() {
-    var answers = angular.toJson(this.ideas);
-
-    var response = {
-      userId: Meteor.userId(),
-      username: Meteor.user().username || Meteor.user().emails[0].address,
-      action: 'ReadyStage0',
-      localTimestamp: Utils.getTimestamp(),
-      extras: { answers: answers }
-    };
-
-    console.log(response);
-
-    this.call('storeCustomEvent', response, (err,res) => {
-      if (!err) {
-        console.log('Success!');
-      }
-      else {
-        console.error('Error while saving Stage0 answers', err);
-      }
-    });
+    }, 0);
   }
 }
 
-const name = 'stage0';
+const name = 'stagepre0';
 
 // create a module
 export default angular.module(name, [
@@ -85,16 +43,16 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Stage0
+  controller: StagePre0
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('stage0', {
-    url: '/stage0',
-    template: '<stage0></stage0>',
+  $stateProvider.state('stagepre0', {
+    url: '/stagepre0',
+    template: '<stagepre0></stagepre0>',
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

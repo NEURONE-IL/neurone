@@ -15,13 +15,16 @@ class Start {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ standbyMode: false });
+      if (!!Meteor.userId()) {
+        this.uds.setSession({ standbyMode: false });
+      }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({ standbyMode: true });
-
-      this.$rootScope.$broadcast('updateNavigation');
+      if (!!Meteor.userId()) {
+        this.uds.setSession({ standbyMode: true });
+        this.$rootScope.$broadcast('updateNavigation');  
+      }
     });
 
     $reactive(this).attach($scope);
@@ -30,16 +33,31 @@ class Start {
   begin() {
     if (!!Meteor.userId()) {
       var currentState = this.uds.getSession().stageHome;
-
-      if (Configs.flowEnabled) this.fs.startFlow();
-
+      
       if (!currentState) {
+        if (Configs.flowEnabled) this.fs.startFlow();
         this.$state.go('stage0');
       }
       else {
+        if (Configs.flowEnabled) this.fs.startFlow();
         var state = currentState.substr(currentState.indexOf('/') + 1);
         this.$state.go(state);
       }
+
+      /*
+      var currentStage = this.uds.getCurrentStage();
+
+      if (!currentStage) {
+        var 
+
+      }
+      else {
+        var stage = this.uds.getCurrentStageData().home;
+
+        var state = stage.substr(stage.indexOf('/') + 1);
+        this.$state.go(state);
+      }
+      */
     }
   }
 }

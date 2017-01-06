@@ -369,7 +369,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage0_en.html',
+        templateAsset: 'modals/tutorial_stage0.html',
         fields: {}
       };
 
@@ -379,7 +379,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage1_en.html',
+        templateAsset: 'modals/tutorial_stage1.html',
         fields: {}
       };
 
@@ -389,7 +389,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage2_en.html',
+        templateAsset: 'modals/tutorial_stage2.html',
         fields: {}
       };
 
@@ -399,7 +399,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tutorial_stage3_en.html',
+        templateAsset: 'modals/tutorial_stage3.html',
         fields: {}
       };
 
@@ -452,7 +452,8 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage0');
-            this.$state.go('search');            
+            //this.$state.go('search');
+            this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
       });
@@ -485,7 +486,8 @@ class Navigation {
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
           if (goodDocs >= maxBookmarks) {
-            this.$state.go('stage2');  
+            //this.$state.go('stage2');
+            this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
       });  
@@ -502,7 +504,8 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage2');
-            this.$state.go('stage3');
+            //this.$state.go('stage3');
+            this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
       });
@@ -519,7 +522,8 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage3');
-            this.$state.go('end');
+            //this.$state.go('end');
+            this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
       });
@@ -543,4 +547,20 @@ export default angular.module(name, [
   template,
   controllerAs: name,
   controller: Navigation
-});
+})
+.config(config);
+
+function config($stateProvider) {
+  'ngInject';
+
+  $stateProvider.state('navigation', {
+    url: '/navigation',
+    template: '<navigation></navigation>',
+    resolve: {
+      userDataSub(UserDataService) {
+        const uds = UserDataService;
+        return uds.check();
+      }
+    }
+  });
+};

@@ -74,7 +74,7 @@ export default angular.module(name, [
 .run(run)
 .run(setTrackers);
 
-function config($locationProvider, $urlRouterProvider, $translateProvider) {
+function config($stateProvider, $locationProvider, $urlRouterProvider, $translateProvider) {
   'ngInject';
  
   // uiRouter settings

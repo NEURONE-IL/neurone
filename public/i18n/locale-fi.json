@@ -5,162 +5,162 @@
     "toggleNav": "Navigointi",
     "search": "Hae",
     "documents": "Sivut",
-    "showcase": "Showcase",
+    "showcase": "Hakutulokset",
     "visitedLinks": "Avatut sivut",
     "snippets": "Merkityt kohdat",
     "bookmarks": "Valitut sivut",
-    "i18n": "Kansainvlistyminen",
+    "i18n": "Kansainvälistyminen",
     "forms": "Lomakkeet",
     "synthesis": "Yhteenveto",
-    "flow": "Tehtvpolku"
+    "flow": "Tehtäväpolku"
   },
   "nav": {
-    "tutorialButton": "Ohjeet",
-    "tipsButton": "Vinkit",
-    "taskButton": "Tehtv",
-    "readyButton": "Ready",
-    "bookmarkList": "Bookmark List",
+    "tutorialButton": "Ohje",
+    "tipsButton": "Vihjeet",
+    "taskButton": "Tehtävä",
+    "readyButton": "Valmis",
+    "bookmarkList": "Valittujen sivujen lista",
     "selectedPages": "Valittuja sivuja: {{bookmarks}}",
-    "snippetCount": "You have selected {{words}} word(s)",
-    "snippetButton": "Save Snippet",
-    "bookmarkButton": "Bookmark",
-    "unbookmarkButton": "Unbookmark",
-    "taskResults": "Task results"
+    "snippetCount": "Olet valinnut {{words}} sanaa",
+    "snippetButton": "Tallenna merkkaus",
+    "bookmarkButton": "Valitse sivu",
+    "unbookmarkButton": "Poista sivu",
+    "taskResults": "Vastaus"
   },
   "auth": {
-    "registerButton": "Rekisteridy",
+    "registerButton": "Rekisteröidy",
     "loginButton": "Kirjaudu",
     "logoutButton": "Poistu",
-    "registerMessage": "Rekisteridy Neuroniin",
-    "loginMessage": "Kirjaudu Neuroniin",
-    "email": "Shkposti",
-    "username": "Kyttjtunnus",
+    "registerMessage": "Rekisteröidy Neuroneen",
+    "loginMessage": "Kirjaudu Neuroneen",
+    "email": "Sähköposti",
+    "username": "Käyttäjätunnus",
     "password": "Salasana",
     "required": "Vaadittu tieto",
-    "emailPlaceholder": "Anna shkpostiosoitteesi",
-    "usernamePlaceholder": "Anna kyttjtunnuksesi",
+    "emailPlaceholder": "Anna sähköpostiosoitteesi",
+    "usernamePlaceholder": "Anna käyttäjätunnuksesi",
     "passwordPlaceholder": "Anna salasanasi",
     "studentRole": "Oppilas",
     "experimenterRole": "Opettaja"
   },
   "home": {
-    "welcome": "Welcome to NEURONE!",
+    "welcome": "Tervetuloa nettilukutaidon testiin!",
     "acronym": "Nettilukutaidon testi",
-    "instructions1": "Rekisteridy ja kirjaudu sisn kyttjtunnuksellasi!"
+    "instructions1": "Rekisteröidy ja kirjaudu sisään käyttäjätunnuksellasi!"
   },
   "start": {
-    "beginButton": "Begin",
-    "instructions1": "Press the Begin button to start (or continue)",
+    "beginButton": "Aloita",
+    "instructions1": "Paina Aloita-painiketta siirtyäksesi tehtävään",
     "idea": "Idea {{number}}",
-    "ideaPlaceholder": "Write your idea here!"
+    "ideaPlaceholder": "Kirjoita ideasi tähän!"
   },
   "search": {
     "searchEngineTitle": "Hakukone",
     "searchButton": "Hae",
-    "noResults": "Haullasi ei lytynyt yhtn sivua",
-    "searchPlaceholder": "Enter text to search",
-    "loading": "Loading results..."
+    "noResults": "Haullasi ei löytynyt yhtään sivua",
+    "searchPlaceholder": "Kirjoita hakusanoja",
+    "loading": "Lataa tuloksia..."
   },
   "showcase": {
-    "documentList": "Document List",
-    "visitedLinksList": "Visited Link List",
-    "snippetsList": "Snippet List",
-    "bookmarksList": "Bookmark List"
+    "documentList": "Haetut sivut",
+    "visitedLinksList": "Katsotut sivut",
+    "snippetsList": "Merkkaukset",
+    "bookmarksList": "Valitut sivut"
   },
   "alerts": {
-    "error": "Mrittelemtn virhe",
-    "snippetSaved": "Merkint tallennettu!",
-    "snippetRemoved": "Snippet removed!",
+    "error": "Määrittelemätön virhe",
+    "snippetSaved": "Merkkaus tallennettu!",
+    "snippetRemoved": "Merkkaus poistettu!",
     "bookmarkSaved": "Valittu sivu tallennettu!",
     "bookmarkRemoved": "Valittu sivu poistettu!",
-    "snippetError": "Error while processing Snippet",
-    "bookmarkError": "Error while processing Bookmark"
+    "snippetError": "Virhe merkkauksessa",
+    "bookmarkError": "Virhe sivun valinnassa"
   },
   "form": {
     "title": "Lomake",
-    "instructions": "Ole hyv ja vastaa joihinkin kysymyksiin!",
-    "requiredAnswer": "Vaadittu vastaus",
-    "submitButton": "Lhet",
-    "submitted": "Vastauksesi on lhetetty!",
+    "instructions": "Ole hyvä ja vastaa seuraaviin kysymyksiin!",
+    "requiredAnswer": "Vastaus vaaditaan",
+    "submitButton": "Valmis",
+    "submitted": "Vastauksesi on lähetetty!",
     "submittedError": "Tapahtui virhe!"
   },
   "snippet": {
-    "page": "Page {{pageNum}}"
+    "page": "Sivu {{pageNum}}"
   },
   "synthesis": {
     "title": "Yhteenveto",
-    "submitButton": "Lhet",
+    "submitButton": "Valmis",
     "saved": "Vastaustasi tallennetaan ...",
-    "submitted": "Vastauksesi on lhetetty!",
+    "submitted": "Vastauksesi on lähetetty!",
     "error": "Tapahtui virhe!",
-    "snippets": "Merkityt kohdat",
+    "snippets": "Merkatut kohdat",
     "bookmarks": "Valitut sivut",
     "closeButton": "Sulje",
-    "snippetModalTitle": "Merkityt kohdat",
+    "snippetModalTitle": "Merkitut kohdat",
     "bookmarkModalTitle": "Valitut sivut",
-    "allPages": "All",
-    "page": "Page {{pageNum}}",
-    "snippet": "Snippet {{snipNum}} - Page {{pageNum}}",
-    "snippetAll": "Snippet {{snipNum}}",
-    "allTitle": "All Pages"
+    "allPages": "Kaikki",
+    "page": "Sivu {{pageNum}}",
+    "snippet": "Merkkaus {{snipNum}} - Sivu {{pageNum}}",
+    "snippetAll": "Merkkaus {{snipNum}}",
+    "allTitle": "Kaikki sivut"
   },
   "modal": {
     "closeButton": "Sulje",
     "nextStageButton": "Jatka",
     "goBackButton": "Palaa",
-    "acceptButton": "Hyvksy",
+    "acceptButton": "Vahvista",
     "cancelButton": "Peruuta",
     "nextButton": "Seuraava",
-    "goodDocument": "Great page!",
-    "badDocument": "Average page",
-    "documentsFound": "You found {{goodPages}} great page(s)!",
-    "currentScore": "You score is {{stars}} star(s)",
-    "nextStageInstructions": "Now you can go to the next stage",
-    "goBackInstructions": "Go back and keep searching!",
-    "timeWarning": "You ran out of time!",
-    "confirmChanges": "Are you sure that you want to continue to next stage?",
-    "keepSearching": "Keep seaching for better pages",
+    "goodDocument": "Mainio valinta!",
+    "badDocument": "Huono valinta?",
+    "documentsFound": "Valitsit {{goodPages}} erinomaista sivua!",
+    "currentScore": "Onistuit valitsemaan {{stars}} tähtisivua!",
+    "nextStageInstructions": "Nyt voit jatkaa seuraavaan osatehtävään",
+    "goBackInstructions": "Palaa ja yritä löytää parempia sivuja!",
+    "timeWarning": "Aika kuluu, jatka pian seuraavaan osatehtävään!",
+    "confirmChanges": "Oletko valmis jatkamaan seuraavaan osatehtävään?",
+    "keepSearching": "Koeta löytää parempia sivuja!",
     "timeup": {
-      "title": "Time is over!",
-      "instruction": "Time is over for this stage. Now you will continue to next stage."
+      "title": "Aika on lopussa!",
+      "instruction": "Tähän osatehtävään varattu aika loppui. Siirryt nyt seuraavaan."
     },
     "confirm": {
-      "title": "Continue to next stage",
-      "instruction": "Are you sure you want to continue? Your answers will be submitted and you not will be able to go back."
+      "title": "Jatka seuraavaan osatehtävään",
+      "instruction": "Oletko varma että vastauksesi on valmis? Painettuasi Valmis-painiketta vastauksesi tallennetaan, etkä voi muuttaa sitä."
     }
   },
   "hints": {
-    "neuroneButton": "If you get lost, press the NEURONE button to get to the main page of your current task",
-    "taskButton": "Remember to click the Task button to see your assignment!",
-    "tutorialButton": "Remember to click the Tutorial button to get help in how to complete your assignment!",
-    "tipsButton": "Remember to click the Tips button to get some hints for your assignment"
+    "neuroneButton": "Jos eksyt, paina NEURONE-painiketta. Palaat osatehtäväsi aloitussivulle.",
+    "taskButton": "Klikkaa Tehtävä niin voit lukea tehtäväohjeen uudestaan!",
+    "tutorialButton": "Klikkaa Ohje saadaksesi apua osatehtävän suoritukseen!",
+    "tipsButton": "Klikkaa Vihjeet saadaksesi apua tehtävän suoritukseen"
   },
   "tutorial": {
-    "tryNow": "Now it's your time to try",
+    "tryNow": "Nyt on sinun vuorosi yrittää!",
     "stage0": {
-      "i1": "Write a phrase that you think it will be a good search query!"
+      "i1": "Kirjoita hakusanoja, joilla voisi löytyä asiasta kertovia sivuja!"
     },
     "stage1": {
-      "i1": "Write a phrase to search in the box and click Search",
-      "i2": "Pick a page from the results list and click in the title to open it",
-      "i3": "While inside a page, click Bookmark to save the page for future reference, or click Unbookmark to remove the page from your bookmark list",
-      "i4": "The bookmark list stores your current saved bookmarks",
-      "ex_2a": "My web page",
+      "i1": "Kirjoita hakusanat ja klikkaa Hae",
+      "i2": "Avaa sivu klikkaamalla sivun otsikkoa tuloslistalla",
+      "i3": "Klikkaa Valitse sivu tallentaaksesi se jatkokäyttöä varten; klikkaa Poista sivu, kun haluat vaihtaa sivun parempaan",
+      "i4": "Valitut sivut -lista kertoo, mitkä sivut olet jo tallentanut",
+      "ex_2a": "Nettisivuni",
       "ex_2b": "www.mywebpage.com",
-      "ex_2c": "This is a very relevant web site!"
+      "ex_2c": "Sivu vaikuttaa erittäin hyödylliseltä!"
     },
     "stage2": {
-      "i1": "Click the tabs to load a page from your bookmark list",
-      "i2": "Remember to answer the questions for every page!",
-      "i3": "Select some text from the page and click the Save Snippet button to save a relevant piece of text",
-      "i4": "You can revisit or delete your snippet if you want",
-      "ex_4a": "I'm a snippet! Click me!"
+      "i1": "Klikkaa otsikkoa avataksesi joku valitsemistasi sivuista",
+      "i2": "Muista vastata kaikkiin kysymyksiin joka sivulla!",
+      "i3": "Maalaa tärkeältä tuntuva kohta sivulla ja tallenna se klikkaamalla Tallenna merkkaus",
+      "i4": "Voit poistaa merkkauksen klikkaamalla roskiksen kuvaa",
+      "ex_4a": "Klikkaa merkkausta nähdäksesi sen kokonaan!"
     },
     "stage3": {
-      "i1": "Write your answer in the field below (you can style it!)",
-      "i2": "You can visit your snippets by clicking in the tabs",
-      "i3": "You can revisit the page where a snippet came from by clicking the snippet",
-      "ex_3a": "I'm a snippet! Click me!"
+      "i1": "Kirjoita vastauksesi alla olevaan ruutuun (voit myös muotoilla tekstiä!)",
+      "i2": "Voit katsella merkattua tekstiä klikkaamalla otsikkoa (esim. Merkkaus 4)",
+      "i3": "Voit vierailla sivulla klikkaamalla merkkaustekstiä",
+      "ex_3a": "Merkkasit sivulta tämän kohdan! Klikkaa!"
     }
   }
 }
