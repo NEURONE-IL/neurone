@@ -50,10 +50,10 @@ function config($stateProvider) {
       user($auth) {
         return $auth.awaitUser();
       },
-      userDataSub(UserDataService) {
+      /*userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();
-      }
+      }*/
     }
   });
 };

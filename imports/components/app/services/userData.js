@@ -3,24 +3,30 @@ import Utils from '../../globalUtils';
 import { UserData } from '../../../api/userData/index';
 
 class UserDataService {
-  constructor($promiser) {
+  constructor($rootScope, $promiser) {
     'ngInject';
 
     this.$promiser = $promiser;
+    this.$rootScope = $rootScope;
 
-    this.hdl = {};
     this.userId = Meteor.userId();
-    this.subscribe(this.userId);
+    this.hdl = {}; //this.$promiser.subscribe('userDataToggle', userId);
     
+    this.userSession = new ReactiveObj;
+    this.userConfigs = new ReactiveObj;
 
     Meteor.autorun(() => {
-      // dgacitua: Subscribe user to MiniMongo userData Collection and return handle object as a promise
       this.userId = Meteor.userId();
-      this.stopSubscription();
-      this.subscribe(this.userId);
+
+      if (!!this.userId) {
+        console.log('UserData AUTORUN!');
+        this.fetchConfigs();
+        this.fetchSession();
+      }
     });
   }
 
+  /*
   check() {
     return this.hdl;
   }
@@ -51,27 +57,49 @@ class UserDataService {
     else return {};
     //return UserData.findOne();
   }
+  */
+
+  fetchSession() {
+    Meteor.call('userSession', (err, res) => {
+      if (!err) {
+        for (var p in res) {
+          if (res.hasOwnProperty(p)) {
+            this.userSession.set(p, res[p]);
+          }
+        }
+        console.log('Session', this.userSession);
+      }
+      else {
+        console.error(err);
+      }
+    });
+  }
+
+  fetchConfigs() {
+    Meteor.call('userConfigs', (err, res) => {
+      if (!err) {
+        for (var p in res) {
+          if (res.hasOwnProperty(p)) {
+            this.userConfigs.set(p, res[p]);
+          }
+        }
+        console.log('Configs', this.userConfigs);
+      }
+      else {
+        console.error(err);
+      }
+    });
+  }
 
   getSession() {
-    //return this.hdl.then((res) => {
-    //  return UserData.findOne().session;
-    //});
-
-    if (!!Meteor.userId()) return UserData.findOne().session;
-    else return {};
-    //return UserData.findOne().session;
+    return this.userSession.get();
   }
 
   getConfigs() {
-    //return this.hdl.then((res) => {
-    //  return UserData.findOne().configs;
-    //});
-
-    if (!!Meteor.userId()) return UserData.findOne().configs;
-    else return {};
-    //return UserData.findOne().configs;
+    return this.userConfigs.get();
   }
 
+  /*
   set(property) {
     this.hdl.then((res) => {
       // dgacitua: If user is logged and subscription is ready
@@ -85,30 +113,39 @@ class UserDataService {
       }
     });
   }
+  */
 
   setSession(property) {
-    this.hdl.then((res) => {
+    //this.hdl.then((res) => {
       // dgacitua: If user is logged and subscription is ready
-      if (!!Meteor.userId() && res.ready()) {
-      
-        // dgacitua: http://stackoverflow.com/a/2958894
-        var dataId = UserData.findOne()._id;
-        var setObj = {};
-
-        for (var key in property) {
-          setObj['session.' + key] = property[key];
-        }
-        
-        UserData.update({ _id: dataId }, { $set: setObj }, (err, res) => {
+      if (!!Meteor.userId()) {
+        Meteor.call('setSession', property, (err, res) => {
           if (!err) {
-            //console.log('UserDataService SESSION SET!', setObj);
+            Meteor.call('userSession', (err2, res2) => {
+              if (!err2) {
+                for (var p in res2) {
+                  if (res2.hasOwnProperty(p)) {
+                    this.userSession.set(p, res2[p]);
+                  }
+                }
+                console.log('setSession', property, this.userSession);
+                //this.$rootScope.$broadcast('updateSession');
+              }
+              else {
+                console.error(err);
+              }
+            });
+          }
+          else {
+            console.error(err);
           }
         });
       }
-    });
+    //});
   }
 
   // dgacitua: stage functions
+  /*
   getStages() {
     return this.hdl.then((res) => {
       return UserData.findOne().configs.stages;
@@ -155,6 +192,7 @@ class UserDataService {
       this.setSession({stageNumber: idx});
     });
   }
+  */
 }
 
 const name = 'userDataService';

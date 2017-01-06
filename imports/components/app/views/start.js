@@ -80,11 +80,11 @@ function config($stateProvider) {
     resolve: {
       user($auth) {
         return $auth.awaitUser();
-      },
+      }/*,
       userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();
-      }
+      }*/
     }
   });
 };

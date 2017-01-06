@@ -50,7 +50,7 @@ class Stage0 {
         if (newVal) this.uds.setSession({ readyButton: true });
         else this.uds.setSession({ readyButton: false });
       });
-    }, 10);
+    }, 0);
   }
 
   submit() {
@@ -106,11 +106,11 @@ function config($stateProvider) {
       },
       user($auth) {
         return $auth.awaitUser();
-      },
+      }/*,
       userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();
-      }
+      }*/
     }
   });
 };

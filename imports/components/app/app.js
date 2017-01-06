@@ -31,6 +31,9 @@ import { name as Logger } from '../logger/logger';
 
 import { name as Stages } from '../session/stages';
 
+//import template1 from './app.html';
+//import template2 from './views/navigation.html';
+
 class App {}
 
 const name = 'app';
@@ -81,6 +84,20 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
   $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise('/home');
 
+  /*
+  $stateProvider.state('app', {
+    url: '/',
+    views: {
+      'navigation': {
+        template: '<navigation></navigation>'
+      },
+      'container': {
+        template: '<home></home>'
+      }
+    }
+  });
+  */
+
   // angularTranslate settings
   $translateProvider.useStaticFilesLoader({
       prefix: 'i18n/locale-',
@@ -107,10 +124,10 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
   });
 
   Accounts.onLogin(() => {
-    if (uds.ready()) {
+    //if (uds.ready()) {
       var locale = uds.getConfigs().locale;
       $translate.use(locale);
-    }
+    //}
 
     $state.go('start');
   });

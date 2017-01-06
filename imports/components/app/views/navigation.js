@@ -55,7 +55,7 @@ class Navigation {
       var isLoggedIn = !!Meteor.userId();
 
       if (isLoggedIn) {
-        this.sub0 = this.uds.check();
+        //this.sub0 = {} //this.uds.check();
         this.sub1 = $promiser.subscribe('userBookmarks');
         this.sub2 = $promiser.subscribe('userSnippets');
         console.log('Subscription AUTORUN!');
@@ -65,8 +65,9 @@ class Navigation {
     this.navbarMessageId = 'navbarMessage';
 
     this._counters = new ReactiveObject({});
+    this._session = new ReactiveObject({});
     
-    $q.all([this.sub0, this.sub1, this.sub2]).then((res) => {
+    $q.all([this.sub1, this.sub2]).then((res) => {
       this._counters.defineProperty('bookmarks', 0);
       this._counters.defineProperty('words', 0);
 
@@ -136,6 +137,18 @@ class Navigation {
         this.checkBookmarkStatus();
       });
 
+      /*
+      this.$rootScope.$on('updateSession', (event, data) => {
+        this._session = this.uds.getSession();
+        this._readyButton = this._session.readyButton;
+        this._standbyMode = this._session.standbyMode;
+      });
+      */
+
+      this.autorun(() => {
+        console.log(this.uds.getSession().standbyMode);
+      });
+
       this.helpers({
         isLoggedIn: () => {
           return !!Meteor.userId();
@@ -168,7 +181,7 @@ class Navigation {
           return this.uds.getSession().snippetCounter;//this.$rootScope._enableSnippetCounter.get();
         },
         enableReady: () => {
-          return this.uds.getSession().readyButton;//this.$rootScope._enableReady.get();
+          return this.uds.getSession().readyButton;//this._session.readyButton;
         },
         stageHome: () => {
           return this.uds.getSession().stageHome;//this.$rootScope._stageHome.get();
@@ -177,7 +190,7 @@ class Navigation {
           return this.uds.getSession().stageNumber;//this.getReactively('_stageNumber');
         },
         standbyMode: () => {
-          return this.uds.getSession().standbyMode;
+          return this.uds.getSession().standbyMode;//this._session.standbyMode;
         }
       });
     });
@@ -202,17 +215,17 @@ class Navigation {
       //this.$rootScope._enableReady.set((this.$rootScope._counters.bookmarks >= limit) ? true : false);
       var setReady = (this._counters.bookmarks >= limit) ? true : false;
       this.uds.setSession({ readyButton: setReady });
-
+      
       this.bms.isBookmarked((err, res) => {
         if (!err) {
           //console.log('checkBookmarkStatus', res, this.$rootScope._counters.bookmarks, limit);
-          if (this.uds.getSession().bookmarkCount > limit) {
+          if (this._counters.bookmarks > limit) {
             this.uds.setSession({ bookmarkButton: false });
             this.uds.setSession({ unbookmarkButton: false });
             //this.$rootScope._enableBookmark.set(false);
             //this.$rootScope._enableUnbookmark.set(false);
           }
-          else if (this.uds.getSession().bookmarkCount === limit) {
+          else if (this._counters.bookmarks === limit) {
             if (res === true) {
               this.uds.setSession({ bookmarkButton: false });
               this.uds.setSession({ unbookmarkButton: true });
@@ -557,10 +570,10 @@ function config($stateProvider) {
     url: '/navigation',
     template: '<navigation></navigation>',
     resolve: {
-      userDataSub(UserDataService) {
+      /*userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();
-      }
+      }*/
     }
   });
 };

@@ -60,6 +60,56 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error('UserDataError', 'Could not get User Data from userId!', err);
     }
+  },
+  userSession: function() {
+    try {
+      if (this.userId) {
+        //var met = Meteor.wrapAsync(UserData.findOne),
+        //   call = met({ userId: this.userId });
+
+        //return call.session;
+        return UserData.findOne({ userId: this.userId }).session;
+      }
+      else {
+        return {};
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error('UserDataError', 'Could not read user session!', err);
+    }
+  },
+  userConfigs: function() {
+    try {
+      if (this.userId) {
+        //var met = Meteor.wrapAsync(UserData.findOne),
+        //   call = met({ userId: this.userId });
+
+        //return call.configs;
+        return UserData.findOne({ userId: this.userId }).configs;
+      }
+      else {
+        return {};
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error('UserDataError', 'Could not read user configs!', err);
+    }
+  },
+  setSession: function(property) {
+    try {
+      if (this.userId) {
+        var setObj = {};
+
+        for (var key in property) {
+          setObj['session.' + key] = property[key];
+        }
+        
+        UserData.update({ userId: this.userId }, { $set: setObj });
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error('UserDataError', 'Could not update object', err);
+    }
   }
 });
 
@@ -104,8 +154,10 @@ Meteor.publish({
 
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }
+    /*
     else {
       this.ready();
     }
+    */
   }
 });

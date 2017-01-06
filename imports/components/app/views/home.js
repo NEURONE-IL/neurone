@@ -41,10 +41,10 @@ function config($stateProvider) {
     url: '/home',
     template: '<home></home>',
     resolve: {
-      userDataSub(UserDataService) {
+      /*userDataSub(UserDataService) {
         const uds = UserDataService;
         return uds.check();
-      }
+      }*/
     }
   });
 };

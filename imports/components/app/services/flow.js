@@ -10,7 +10,7 @@ class FlowService {
 
     this.uds = UserDataService;
 
-    this.uds.check().then((res) => {
+    //this.uds.check().then((res) => {
       this.timerInterval = 5;
       //this.trackerInterval = 5;
       //this.synchronizerInterval = 15;
@@ -73,11 +73,11 @@ class FlowService {
           this.$state.go('end');
         }
       });
-    });
+    //});
   }
 
   startFlow() {
-    this.uds.check().then((res) => {
+    //this.uds.check().then((res) => {
       if (!!Meteor.userId() && res.ready()) {
         if (!this.uds.getSession().finished) {
           var gt = this.uds.getConfigs().maxGlobalTime,
@@ -99,7 +99,7 @@ class FlowService {
           }
         }        
       }
-    });
+    //});
   }
 
   stopFlow() {
@@ -109,7 +109,7 @@ class FlowService {
   }
 
   tick() {
-    this.uds.check().then((res) => {
+    //this.uds.check().then((res) => {
       if (!!Meteor.userId() && res.ready()) {
         var cs = this.uds.getSession().stageNumber,
             st = this.uds.getConfigs().stages[cs].time;
@@ -131,7 +131,7 @@ class FlowService {
           console.log('Timer Tick!', 'CurrentStage:' + this.currentStage, 'StageTime:' + this.stageTime, 'GlobalTime:' + this.globalTime, 'StageTotal:' + this.stageTotal, 'GlobalTotal:' + this.globalTotal);
         }
       }
-    });
+    //});
   }
 }
 
