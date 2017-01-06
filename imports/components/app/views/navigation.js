@@ -323,7 +323,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tips_stage0_en.html',
+        templateAsset: 'modals/tips_stage0.html',
         fields: {}
       };
 
@@ -333,7 +333,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tips_stage1_en.html',
+        templateAsset: 'modals/tips_stage1.html',
         fields: {}
       };
 
@@ -343,7 +343,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tips_stage2_en.html',
+        templateAsset: 'modals/tips_stage2.html',
         fields: {}
       };
 
@@ -353,7 +353,7 @@ class Navigation {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: 'Tutorial',
-        templateAsset: 'modals/tips_stage3_en.html',
+        templateAsset: 'modals/tips_stage3.html',
         fields: {}
       };
 
