@@ -4,5 +4,5 @@ export default ClientConfigs = {
   idleCheckInterval: 1,   // measured in seconds
   idleOnBlur: true,
   iframeId: 'pageContainer',
-  flowEnabled: false
+  flowEnabled: (Meteor.isProduction ? true : false)
 }
