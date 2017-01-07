@@ -133,6 +133,7 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
   });
 
   Accounts.onLogout(() => {
+    //uds.flush();
     //$translate.use('en');
   });
 

@@ -12,8 +12,8 @@ class UserDataService {
     this.userId = Meteor.userId();
     this.hdl = {}; //this.$promiser.subscribe('userDataToggle', userId);
     
-    this.userSession = new ReactiveObj;
-    this.userConfigs = new ReactiveObj;
+    this.userSession = new ReactiveObj();
+    this.userConfigs = new ReactiveObj();
 
     Meteor.autorun(() => {
       this.userId = Meteor.userId();
@@ -22,6 +22,10 @@ class UserDataService {
         console.log('UserData AUTORUN!');
         this.fetchConfigs();
         this.fetchSession();
+      }
+      else {
+        console.log('UserData FLUSH!');
+        this.flush();
       }
     });
   }
@@ -99,6 +103,11 @@ class UserDataService {
     return this.userConfigs.get();
   }
 
+  flush() {
+    this.userSession.set([], {});
+    this.userConfigs.set([], {});
+  }
+
   /*
   set(property) {
     this.hdl.then((res) => {
@@ -128,7 +137,7 @@ class UserDataService {
                     this.userSession.set(p, res2[p]);
                   }
                 }
-                console.log('setSession', property, this.userSession);
+                //console.log('setSession', property, this.userSession);
                 //this.$rootScope.$broadcast('updateSession');
               }
               else {

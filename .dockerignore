@@ -9,3 +9,4 @@ neuroneimage.tar
 neuroneapp.tar.gz
 
 .deploy/remoteDeployMUP.sh
+.deploy/pm2-meteor.json

@@ -145,10 +145,6 @@ class Navigation {
       });
       */
 
-      this.autorun(() => {
-        console.log(this.uds.getSession().standbyMode);
-      });
-
       this.helpers({
         isLoggedIn: () => {
           return !!Meteor.userId();

@@ -20,33 +20,61 @@ module.exports = {
     one: {
       host: process.env.MUP_SERVER_HOST || '127.0.0.1',
       username: process.env.MUP_SERVER_USERNAME || 'root',
-      password: process.env.MUP_SERVER_PASSWORD || 'password'
-      // pem: '~/.ssh/id_rsa'
-      // or leave blank for authenticate from ssh-agent
+      // pem: '/home/user/.ssh/id_rsa', // mup doesn't support '~' alias for home directory
+      // password: 'password',
+      // or leave blank to authenticate using ssh-agent
+      opts: {
+          port: 22,
+      },
     }
   },
 
   meteor: {
     name: 'neurone',
-    path: '..',
+    path: '..', // mup doesn't support '~' alias for home directory
+    // port: 000, // useful when deploying multiple instances (optional)
+    volumes: { // lets you add docker volumes (optional)
+      "/home/neurone/assets": "/assets" // passed as '-v /host/path:/container/path' to the docker run command
+    },
+    docker: {
+      //image: 'kadirahq/meteord', // (optional)
+      image: 'abernix/meteord:base', // use this image if using Meteor 1.4+
+      args:[ // lets you add/overwrite any parameter on the docker run command (optional)
+      //  "--link=myCustomMongoDB:myCustomMongoDB", // linking example
+      //  "--memory-reservation 200M" // memory reservation example
+      ]
+    },
     servers: {
-      one: {}
+      one: {}, two: {}, three: {} // list of servers to deploy, from the 'servers' list
     },
     buildOptions: {
       serverOnly: true,
-      cleanAfterBuild: true
+      debug: true,
+      cleanAfterBuild: true // default
+      //buildLocation: '/my/build/folder', // defaults to /tmp/<uuid>
+      //mobileSettings: {
+      //  yourMobileSetting: "setting value"
+      //}
     },
     env: {
-      ROOT_URL: process.env.MUP_ROOT_URL || 'http://localhost'
-      // MONGO_URL: process.env.MUP_MONGO_URL || 'mongodb://localhost/meteor'
+      ROOT_URL: process.env.MUP_ROOT_URL || 'http://localhost',
+      MONGO_URL: process.env.MUP_MONGO_URL || 'mongodb://localhost/meteor'
     },
-
-    //dockerImage: 'kadirahq/meteord'
-    dockerImage: 'abernix/meteord:base',
-    deployCheckWaitTime: 60
+    //log: { // (optional)
+    //  driver: 'syslog',
+    //  opts: {
+    //    "syslog-address":'udp://syslogserverurl.com:1234'
+    //  }
+    //},
+    //ssl: {
+    //  port: 443,
+    //  crt: 'bundle.crt',
+    //  key: 'private.key',
+    //},
+    deployCheckWaitTime: 60 // default 10
   },
 
-  mongo: {
+  mongo: { // (optional)
     oplog: true,
     port: 27017,
     servers: {

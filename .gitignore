@@ -4,6 +4,7 @@
 node_modules/
 
 .deploy/remoteDeployMUP.sh
+.deploy/pm2-meteor.json
 
 neuroneimage.tar
 neuroneapp.tar.gz
