@@ -137,7 +137,7 @@ Meteor.publish({
     if (this.userId) {
       // dgacitua: http://stackoverflow.com/a/40266075
       var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
-         limit = user.configs.snippetsPerPage,
+         limit = user.configs.maxSnippetsPerPage,
                pipe = [
                         { $match: { userId: this.userId }},
                         { $sort: { serverTimestamp: -1 }},

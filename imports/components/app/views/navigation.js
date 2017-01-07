@@ -31,7 +31,7 @@ import Utils from '../../globalUtils';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $window, $auth, $reactive, $state, $translate, $filter, $q, $promiser, AuthService, UserDataService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $window, $auth, $reactive, $state, $translate, $filter, $q, $timeout, $promiser, AuthService, UserDataService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -40,6 +40,7 @@ class Navigation {
     this.$translate = $translate;
     this.$filter = $filter;
     this.$window = $window;
+    this.$timeout = $timeout;
 
     this.fs = FlowService;
     this.sts = SnippetTrackService;
@@ -73,14 +74,25 @@ class Navigation {
 
       // dgacitua: Set snippet button
       this.$rootScope.$on('updateSnippetButton', (event, data) => {
-        if (data !== false) {
-          var snippetCount = UserSnippets.find({ docId: data }).count();
+        /*
+        this.$timeout(() => {
+          if (data !== false) {
+            var snippetCount = UserSnippets.find({ docId: data }).count();
 
-          if (snippetCount < this.uds.getConfigs().snippetsPerPage) this.uds.setSession({ snippetButton: true });
-          else this.uds.setSession({ snippetButton: false });
+            if (snippetCount < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
+            else this.uds.setSession({ snippetButton: false });
 
-          console.log('enableSnippet', snippetCount, data);
-        }
+            this.checkSnippetStatus();
+            console.log('enableSnippet', snippetCount, data);
+          }
+        }, 0);
+        */
+        this.checkSnippetStatus();
+      });
+
+      // dgacitua: Set bookmark button
+      this.$rootScope.$on('updateBookmarkButton', (event, data) => {
+        this.checkBookmarkStatus();
       });
 
       this.$rootScope.$on('updateNavigation', (event, data) => {
@@ -130,18 +142,6 @@ class Navigation {
         else {
           // TODO
         }
-      });
-      */
-
-      this.$rootScope.$on('updateBookmarkButton', (event, data) => {
-        this.checkBookmarkStatus();
-      });
-
-      /*
-      this.$rootScope.$on('updateSession', (event, data) => {
-        this._session = this.uds.getSession();
-        this._readyButton = this._session.readyButton;
-        this._standbyMode = this._session.standbyMode;
       });
       */
 
@@ -255,23 +255,37 @@ class Navigation {
   }
 
   checkSnippetStatus() {
-    if (!!Meteor.userId()) {
-      var snippets = UserSnippets.find().count(),
-      snippetsPage = this.uds.getConfigs().snippetsPerPage,
-            maxBkm = UserBookmarks.find().count(),
-        snippetLim = snippetsPage * maxBkm,
-             docId = this.uds.getSession().docId,
-        snippetCnt = UserSnippets.find({ docId: docId }).count();
+    this.$timeout(() => {
+      if (!!Meteor.userId()) {
+        var snippets = UserSnippets.find().count(),
+         minSnippets = this.uds.getConfigs().minSnippetsPerPage,
+        //snippetsPage = this.uds.getConfigs().snippetsPerPage,
+                bkms = UserBookmarks.find(),
+              maxBkm = bkms.count(),
+        //  snippetLim = snippetsPage * maxBkm,
+               docId = this.uds.getSession().docId,
+          snippetCnt = UserSnippets.find({ docId: docId }).count();
 
-      //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
+        // dgacitua: Set Snippet button
+        if (snippetCnt < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
+        else this.uds.setSession({ snippetButton: false });
 
-      var setReady = (snippets >= snippetLim) ? true : false;
-      this.uds.setSession({ readyButton: setReady });
+        console.log('EnableSnippet', snippetCnt, docId);
 
-      //var setSnippet = (snippetCnt < snippetsPage) ? true : false;
-      //this.uds.setSession({ snippetButton: setSnippet });
-      this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
-    }
+        // dgacitua: Set ready button
+        var setReady = true;
+
+        bkms.forEach((bm) => {
+          if (UserSnippets.find({ docId: bm.docId }).count() < minSnippets) setReady = false;
+        });
+
+        this.uds.setSession({ readyButton: setReady });
+
+        //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
+        //var setReady = (snippets >= snippetLim) ? true : false;
+        //this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
+      }
+    }, 0);
   }
 
   saveBookmark() {

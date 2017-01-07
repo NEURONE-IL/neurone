@@ -41,4 +41,31 @@ export default class ContentLoader {
       }
     }));
   }
+
+  static loadUserSettings(assetPath) {
+    glob(path.join(assetPath, 'userSettings.json'), Meteor.bindEnvironment((err, files) => {
+      if (!err) {
+        var total = files.length;
+
+        files.forEach((file, idx) => {
+          console.log('Reading question file!', (idx+1) + ' of ' + total);
+          var settingsFile = fs.readFileSync(file),
+            loadedSettings = JSON.parse(settingsFile);          
+
+          loadedSettings.forEach((s) => {
+            // TODO Question syntax checker
+            if (s.settingsId) {
+              UserSettings.upsert({ settingsId: s.settingsId }, s);
+            }
+            else {
+              console.warn('Wrong user settings format detected in object');
+            }
+          });
+        });
+      }
+      else {
+        console.error('Error while loading user settings!', err);
+      }
+    }));
+  }
 }
