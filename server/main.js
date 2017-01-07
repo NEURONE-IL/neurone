@@ -20,12 +20,15 @@ Meteor.startup(() => {
     UserPresence.start();
 
     // dgacitua: Aux variables
-    let questionStatus, docStatus;
+    let docStatus;
+
+    console.log('Loading Settings and Profiles...');
+    ContentLoader.loadSettings(assetPath);
 
     // dgacitua: Preloading of Form and Synthesis questions
     console.log('Loading Questions...');
     if (ServerConfigs.reloadQuestionsOnDeploy) {
-      questionStatus = ContentLoader.loadQuestions(assetPath);  
+      ContentLoader.loadQuestions(assetPath);
     }  
 
     // dgacitua: Load HTML documents, parse them and index them

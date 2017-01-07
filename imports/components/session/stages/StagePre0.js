@@ -18,8 +18,8 @@ class StagePre0 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/stagere0' });
-      this.uds.setSession({ stageNumber: 'stagePre0' });
+      this.uds.setSession({ stageHome: '/stagepre0' });
+      this.uds.setSession({ stageNumber: 'stagepre0' });
 
       this.$rootScope.$broadcast('updateNavigation');
     });

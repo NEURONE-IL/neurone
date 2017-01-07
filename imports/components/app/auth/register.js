@@ -31,18 +31,25 @@ class Register {
   }
 
   register(userRole) {
-    this.credentials.role = userRole || 'undefined';
-    this.credentials.configs = Settings;
-    
-    this.auth.register(this.credentials, (err, res) => {
-      if (!err) {
-        this.error = res;
-        this.$state.go('start');
+    this.call('initialConfigs', (err, res) => {
+      if (!err)  {
+        this.credentials.role = userRole || 'undefined';
+        this.credentials.configs = res;
+        
+        this.auth.register(this.credentials, (err2, res2) => {
+          if (!err2) {
+            this.error = res2;
+            this.$state.go('start');
+          }
+          else {
+            this.error = err2;
+          } 
+        });  
       }
       else {
-        this.error = err;
-      } 
-    });
+        console.error(err);
+      }
+    })
   }
 }
 

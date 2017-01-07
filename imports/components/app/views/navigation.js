@@ -255,37 +255,35 @@ class Navigation {
   }
 
   checkSnippetStatus() {
-    this.$timeout(() => {
-      if (!!Meteor.userId()) {
-        var snippets = UserSnippets.find().count(),
-         minSnippets = this.uds.getConfigs().minSnippetsPerPage,
-        //snippetsPage = this.uds.getConfigs().snippetsPerPage,
-                bkms = UserBookmarks.find(),
-              maxBkm = bkms.count(),
-        //  snippetLim = snippetsPage * maxBkm,
-               docId = this.uds.getSession().docId,
-          snippetCnt = UserSnippets.find({ docId: docId }).count();
+    if (!!Meteor.userId()) {
+      var snippets = UserSnippets.find().count(),
+       minSnippets = this.uds.getConfigs().minSnippetsPerPage,
+      //snippetsPage = this.uds.getConfigs().snippetsPerPage,
+              bkms = UserBookmarks.find(),
+            maxBkm = bkms.count(),
+      //  snippetLim = snippetsPage * maxBkm,
+             docId = this.uds.getSession().docId,
+        snippetCnt = UserSnippets.find({ docId: docId }).count();
 
-        // dgacitua: Set Snippet button
-        if (snippetCnt < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
-        else this.uds.setSession({ snippetButton: false });
+      // dgacitua: Set Snippet button
+      if (snippetCnt < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
+      else this.uds.setSession({ snippetButton: false });
 
-        console.log('EnableSnippet', snippetCnt, docId);
+      console.log('EnableSnippet', snippetCnt, docId);
 
-        // dgacitua: Set ready button
-        var setReady = true;
+      // dgacitua: Set ready button
+      var setReady = true;
 
-        bkms.forEach((bm) => {
-          if (UserSnippets.find({ docId: bm.docId }).count() < minSnippets) setReady = false;
-        });
+      bkms.forEach((bm) => {
+        if (UserSnippets.find({ docId: bm.docId }).count() < minSnippets) setReady = false;
+      });
 
-        this.uds.setSession({ readyButton: setReady });
+      this.uds.setSession({ readyButton: setReady });
 
-        //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
-        //var setReady = (snippets >= snippetLim) ? true : false;
-        //this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
-      }
-    }, 0);
+      //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
+      //var setReady = (snippets >= snippetLim) ? true : false;
+      //this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
+    }
   }
 
   saveBookmark() {

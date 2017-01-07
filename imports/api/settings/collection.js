@@ -1,8 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 
-export const UserSettings = new Mongo.Collection('usersettings');
+export const Settings = new Mongo.Collection('settings');
 
-UserSettings.allow({
+Settings.allow({
   insert(userId, us) {
     return userId && us.userId === userId;
   },

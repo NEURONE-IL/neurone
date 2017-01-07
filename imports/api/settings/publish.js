@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { UserSettings } from './collection';
+import { Settings } from './collection';
 
 if (Meteor.isServer) {
-  Meteor.publish('usersettings', function() {
+  Meteor.publish('settings', function() {
     const selector = { $and: [
       { userId: this.userId }, { userId: { $exists: true } }
     ]};
     
-    return UserSettings.find(selector);
+    return Settings.find(selector);
   });
 }
