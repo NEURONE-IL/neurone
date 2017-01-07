@@ -22,22 +22,24 @@ class Stage2 {
     this.sts = SnippetTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      //this.$rootScope.$broadcast('updateSnippetCounter', false);
       this.uds.setSession({ snippetCounter: false });
-      //this.uds.setSession({ stageHome: '/home' });
       this.uds.setSession({ snippetButton: false });
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ statusMessage: '' });
-      this.sts.bindWordCounter();
+      this.sts.unbindWordCounter();
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      //this.$rootScope.$broadcast('updateSnippetCounter', true);
       this.uds.setSession({ snippetCounter: true });
-      this.uds.setSession({ stageHome: '/stage2' });
-      this.uds.setSession({ stageNumber: 2 });
-      this.sts.unbindWordCounter();
+      //this.uds.setSession({ stageHome: '/stage2' });
+      //this.uds.setSession({ stageNumber: 2 });
+      this.sts.bindWordCounter();  
 
+      var stageNumber = this.uds.getSession().currentStageNumber,
+         currentStage = this.uds.getConfigs().stages[stageNumber];
+
+      this.uds.setSession({ currentStageName: currentStage.id });
+      
       this.$rootScope.$broadcast('updateNavigation');
     });
   }

@@ -7,7 +7,7 @@ import Utils from '../lib/utils';
 import { FormQuestions } from '../../imports/api/formQuestions/index';
 import { FormQuestionnaires } from '../../imports/api/formQuestionnaires/index';
 import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
-import { Settings} from '../../imports/api/settings/index';
+import { Settings } from '../../imports/api/settings/index';
 
 export default class ContentLoader {
   static loadQuestions(assetPath) {

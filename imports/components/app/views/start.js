@@ -32,32 +32,35 @@ class Start {
 
   begin() {
     if (!!Meteor.userId()) {
-      var currentState = this.uds.getSession().stageHome;
-      
-      if (!currentState) {
+      //var currentState = this.uds.getSession().stageHome;
+      var currentStageNumber = this.uds.getSession().currentStageNumber;
+
+      if (!currentStageNumber) {
         if (Configs.flowEnabled) this.fs.startFlow();
-        this.$state.go('stage0');
+
+        this.uds.setSession({ currentStageNumber: 0 });
+        var currentStage = this.uds.getConfigs().stages[0];
+
+        this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: 0 }, (err, res) => {
+          if (!err) {
+            this.$state.go(currentStage.state, currentStage.urlParams);
+          }  
+        });
+        
       }
       else {
         if (Configs.flowEnabled) this.fs.startFlow();
-        var state = currentState.substr(currentState.indexOf('/') + 1);
-        this.$state.go(state);
+
+        var currentStage = this.uds.getConfigs().stages[currentStageNumber];
+        this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: currentStageNumber }, (err, res) => {
+          if (!err) {
+            this.$state.go(currentStage.state, currentStage.urlParams);
+          }  
+        });
+
+        //var state = currentState.substr(currentState.indexOf('/') + 1);
+        //this.$state.go(state);
       }
-
-      /*
-      var currentStage = this.uds.getCurrentStage();
-
-      if (!currentStage) {
-        var 
-
-      }
-      else {
-        var stage = this.uds.getCurrentStageData().home;
-
-        var state = stage.substr(stage.indexOf('/') + 1);
-        this.$state.go(state);
-      }
-      */
     }
   }
 }
@@ -80,11 +83,7 @@ function config($stateProvider) {
     resolve: {
       user($auth) {
         return $auth.awaitUser();
-      }/*,
-      userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      }*/
+      }
     }
   });
 };

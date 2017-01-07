@@ -18,14 +18,24 @@ class Stage0 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/stage0' });
-      this.uds.setSession({ stageNumber: 0 });
+      //this.uds.setSession({ stageHome: '/stage0' });
+      //this.uds.setSession({ stageNumber: 0 });
+
+      var stageNumber = this.uds.getSession().currentStageNumber,
+         currentStage = this.uds.getConfigs().stages[stageNumber];
+
+      this.uds.setSession({ currentStageName: currentStage.id });
 
       this.$rootScope.$broadcast('updateNavigation');
     });
 
     $reactive(this).attach($scope);
 
+    var stageName = this.uds.getSession().currentStageName,
+      stageNumber = this.uds.getSession().currentStageNumber;
+
+    this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
+    
     this.numberIdeas = this.uds.getConfigs().queryIdeas;
     this.ideas = [];
     this.queryIdeasForm = {};

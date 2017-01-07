@@ -7,6 +7,7 @@ Accounts.onCreateUser((options, user) => {
   
   var data = {
     userId: user._id,
+    username: user.username,
     role: options.role || 'undefined',
     profile: options.profile || {},
     configs: options.configs || {},

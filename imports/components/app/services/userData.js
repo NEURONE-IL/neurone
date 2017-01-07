@@ -66,11 +66,7 @@ class UserDataService {
   fetchSession() {
     Meteor.call('userSession', (err, res) => {
       if (!err) {
-        for (var p in res) {
-          if (res.hasOwnProperty(p)) {
-            this.userSession.set(p, res[p]);
-          }
-        }
+        Object.keys(res).map((p) => this.userSession.set(p, res[p]));
         console.log('Session', this.userSession);
       }
       else {
@@ -82,11 +78,7 @@ class UserDataService {
   fetchConfigs() {
     Meteor.call('userConfigs', (err, res) => {
       if (!err) {
-        for (var p in res) {
-          if (res.hasOwnProperty(p)) {
-            this.userConfigs.set(p, res[p]);
-          }
-        }
+        Object.keys(res).map((p) => this.userConfigs.set(p, res[p]));
         console.log('Configs', this.userConfigs);
       }
       else {
@@ -124,33 +116,27 @@ class UserDataService {
   }
   */
 
-  setSession(property) {
-    //this.hdl.then((res) => {
-      // dgacitua: If user is logged and subscription is ready
-      if (!!Meteor.userId()) {
-        Meteor.call('setSession', property, (err, res) => {
-          if (!err) {
-            Meteor.call('userSession', (err2, res2) => {
-              if (!err2) {
-                for (var p in res2) {
-                  if (res2.hasOwnProperty(p)) {
-                    this.userSession.set(p, res2[p]);
-                  }
-                }
-                //console.log('setSession', property, this.userSession);
-                //this.$rootScope.$broadcast('updateSession');
-              }
-              else {
-                console.error(err);
-              }
-            });
-          }
-          else {
-            console.error(err);
-          }
-        });
-      }
-    //});
+  setSession(property, callback) {
+    if (!!Meteor.userId()) {
+      Meteor.call('setSession', property, (err, res) => {
+        if (!err) {
+          Meteor.call('userSession', (err2, res2) => {
+            if (!err2) {
+              Object.keys(res2).map((p) => this.userSession.set(p, res2[p]));
+              typeof callback === 'function' && callback(null, property);
+            }
+            else {
+              console.error(err);
+              typeof callback === 'function' && callback(err);
+            }
+          });
+        }
+        else {
+          console.error(err);
+          typeof callback === 'function' && callback(err);
+        }
+      });
+    }
   }
 
   // dgacitua: stage functions

@@ -461,6 +461,64 @@ class Navigation {
   }
 
   readyAction(stageNumber) {
+    var currentStage = this.uds.getSession().currentStageName,
+         stageNumber = this.uds.getSession().currentStageNumber;
+
+    if (currentStage === 'stage0') {
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage0_en.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyStage0');
+            this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+        }
+      });
+    }
+    else if (currentStage === 'stage1') {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var maximumStars = 3,
+         userBookmarks = UserBookmarks.find().fetch(),
+              goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+                 stars = goodDocs,    // TODO Make score formula
+           timeWarning = false,       // TODO Enable time warning
+          maxBookmarks = this.uds.getConfigs().maxBookmarks;
+
+      console.log(userBookmarks);
+
+      var modalObject = {
+        title: this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_stage1_en.html',
+        buttonType: (goodDocs >= maxBookmarks ? 'nextstage' : 'back'),
+        fields: {
+          stars: stars,
+          maxStars: maximumStars,
+          goodPages: goodDocs,
+          timeWarning: timeWarning,
+          bookmarks: userBookmarks,
+          keepSearching: (goodDocs < maxBookmarks)
+        }
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (goodDocs >= maxBookmarks) {
+            this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+        }
+      });
+    }
+    else {
+      this.$rootScope.$broadcast('endStage', stageNumber);
+    }
+
+    /*
     if (stageNumber === 0) {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
@@ -552,6 +610,7 @@ class Navigation {
     else {
       console.log('ReadyModal', stageNumber);
     }
+    */
   }
 }
 
