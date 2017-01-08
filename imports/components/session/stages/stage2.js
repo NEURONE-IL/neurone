@@ -89,19 +89,16 @@ class Stage2sb {
     $reactive(this).attach($scope);
 
     this.currentDocId = '';
-    //this.userData = {};
     this.pages = [];
     this.forms = [];
     this.snippetCount = 0;
 
-    //this.userData = this.uds.get();
     this.pages = UserBookmarks.find().fetch();
     this.changePage(0);
     this.loadForms();
     this.meteorReady = true;
 
     this.autorun(() => {
-      //this.userData = this.uds.get();
       this.pages = UserBookmarks.find().fetch();
       this.currentDocId = this.uds.getSession().docId;
       this.snippetCount = UserSnippets.find({ docId: this.currentDocId }).count();
@@ -248,8 +245,9 @@ function config($stateProvider) {
   // dgacitua: http://stackoverflow.com/a/37964199
   $stateProvider.state('stage2', {
     url: '/stage2',
+    template: '<stage2></stage2>',
     views: {
-      '@stage2': {
+      '@': {
         template: '<stage2></stage2>'
       },
       'pageview@stage2': {
