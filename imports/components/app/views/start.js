@@ -5,11 +5,12 @@ import Configs from '../../globalConfigs';
 const name = 'start';
 
 class Start {
-  constructor($scope, $rootScope, $reactive, $state, UserDataService, FlowService) {
+  constructor($scope, $rootScope, $reactive, $state, $timeout, UserDataService, FlowService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
 
     this.fs = FlowService;
     this.uds = UserDataService;
@@ -42,7 +43,10 @@ class Start {
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: 0 }, (err, res) => {
           if (!err) {
             if (Configs.flowEnabled) this.fs.startFlow();
-            this.$state.go(currentStage.state, currentStage.urlParams);
+
+            this.$timeout(() => {
+              this.$state.go(currentStage.state, currentStage.urlParams);
+            }, 0);
           }  
         });
         
@@ -52,7 +56,10 @@ class Start {
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: currentStageNumber }, (err, res) => {
           if (!err) {
             if (Configs.flowEnabled) this.fs.startFlow();
-            this.$state.go(currentStage.state, currentStage.urlParams);
+
+            this.$timeout(() => {
+              this.$state.go(currentStage.state, currentStage.urlParams);
+            }, 0);
           }  
         });
 
@@ -79,6 +86,14 @@ function config($stateProvider) {
     url: '/start',
     template: '<start></start>',
     resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      },
       user($auth) {
         return $auth.awaitUser();
       }

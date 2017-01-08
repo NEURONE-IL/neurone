@@ -1,4 +1,5 @@
 import { name as Instructions } from './stages/instructions';
+import { name as Demo } from './stages/demo';
 import { name as Stage0 } from './stages/stage0';
 import { name as Stage1 } from './stages/stage1';
 import { name as Stage2 } from './stages/stage2';
@@ -11,6 +12,7 @@ const name = 'stages';
 // create a module
 export default angular.module(name, [
   Instructions,
+  Demo,
   Stage0,
   Stage1,
   Stage2,

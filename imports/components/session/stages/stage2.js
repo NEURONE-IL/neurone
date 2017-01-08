@@ -7,6 +7,8 @@ import Utils from '../../globalUtils';
 import { UserBookmarks, UserSnippets } from '../../userCollections';
 
 import template from './stage2.html';
+import templateSB from './stage2sb.html';
+import templatePV from './stage2pv.html';
 
 const name = 'stage2';
 
@@ -31,8 +33,10 @@ class Stage2 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       console.log('Stage2 Success');
+      event.preventDefault();
       this.uds.setSession({ snippetCounter: true });
       this.uds.setSession({ stageHome: '/stage2' });
+      this.uds.setSession({ statusMessage: '' });
       this.sts.bindWordCounter();  
 
       var stageNumber = this.uds.getSession().currentStageNumber,
@@ -228,12 +232,14 @@ export default angular.module(name, [
   controller: Stage2
 })
 .component('pageview', {
-  templateUrl: 'stage2/pageview.html',
+  //templateUrl: 'stage2/pageview.html',
+  template: templatePV,
   controllerAs: 'pageview',
   controller: Stage2pv
 })
 .component('snippetbar', {
-  templateUrl: 'stage2/snippetbar.html',
+  //templateUrl: 'stage2/snippetbar.html',
+  template: templateSB,
   controllerAs: 'snippetbar',
   controller: Stage2sb
 })
@@ -245,7 +251,6 @@ function config($stateProvider) {
   // dgacitua: http://stackoverflow.com/a/37964199
   $stateProvider.state('stage2', {
     url: '/stage2',
-    template: '<stage2></stage2>',
     views: {
       '@': {
         template: '<stage2></stage2>'

@@ -1,11 +1,12 @@
 import Utils from '../../globalUtils';
 
 class FlowService {
-  constructor($state, $rootScope, $interval, UserDataService) {
+  constructor($state, $rootScope, $timeout, $interval, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
     this.$interval = $interval;
 
     this.uds = UserDataService;
@@ -35,7 +36,10 @@ class FlowService {
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-            this.$state.go(nextState.state, nextState.urlParams, { reload: true });    
+            
+            this.$timeout(() => {
+              this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+            }, 0);
           }
           else {
             console.error(err);
@@ -68,7 +72,10 @@ class FlowService {
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-            this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+
+            this.$timeout(() => {
+              this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+            }, 0);
           }
           else {
             console.error(err);

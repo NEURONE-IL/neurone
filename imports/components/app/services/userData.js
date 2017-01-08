@@ -19,7 +19,7 @@ class UserDataService {
       this.userId = Meteor.userId();
 
       if (!!this.userId) {
-        console.log('UserData AUTORUN!');
+        console.log('UserData AUTORUN!', this.userId);
         this.fetchConfigs();
         this.fetchSession();
       }
