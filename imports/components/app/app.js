@@ -104,9 +104,10 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
     }
   });
 
-  angular.element($window).on('unload', () => {
+  angular.element($window).on('beforeunload', () => {
     if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
+    //localstorage.clear();
   });
 
   Accounts.onLogin(() => {

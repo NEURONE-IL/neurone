@@ -18,3 +18,16 @@ Accounts.onCreateUser((options, user) => {
 
   return user;
 });
+
+Accounts.validateLoginAttempt((attempt) => {
+  if (attempt.methodName === 'resume') {
+    return false;
+  }
+  else {
+    return true;
+  }
+});
+
+Accounts.onLogout((user, connection) => {
+
+});
