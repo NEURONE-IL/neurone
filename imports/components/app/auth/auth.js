@@ -8,6 +8,7 @@ import template from './auth.html';
 
 import { name as DisplayNameFilter } from '../../../filters/displayNameFilter';
 import { name as Login } from './login';
+import { name as Logout } from './logout';
 import { name as Register } from './register';
 import { name as Password } from './password';
 
@@ -50,6 +51,7 @@ export default angular.module(name, [
   angularMeteor,
   DisplayNameFilter,
   Login,
+  Logout,
   Register,
   Password
 ])

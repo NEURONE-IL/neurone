@@ -11,8 +11,6 @@ class FlowService {
     this.uds = UserDataService;
 
     this.timerInterval = 5;
-    //this.trackerInterval = 5;
-    //this.synchronizerInterval = 15;
 
     this.timer = {};
     this.globalTime = 0;
@@ -24,50 +22,65 @@ class FlowService {
 
     // dgacitua: Triggered when user changes state
     this.$rootScope.$on('endStage', (event, data) => {
-      console.log('EndStage', data);
-      this.stages = this.uds.getConfigs().stages;
       this.stageTime = 0;
+      this.stages = this.uds.getConfigs().stages;
 
-      if (data < this.stages.length-1) {
-        var nextState = this.stages[data+1];
+      var currentStage = this.uds.getSession().currentStageName,
+           stageNumber = this.uds.getSession().currentStageNumber;
+
+      console.log('EndStage', data, stageNumber, this.stages);
+
+      if (stageNumber < this.stages.length-1) {
+        var nextState = this.stages[stageNumber+1];
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
+            console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
             this.$state.go(nextState.state, nextState.urlParams, { reload: true });    
+          }
+          else {
+            console.error(err);
           }
         });
       }
       else {
         this.stopFlow();
-        this.globalTime = 0;
-        this.stageTime = 0;
-        this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
+        this.uds.setSession({ totalTimer: 0, stageTimer: 0 });
 
         var nextState = this.stages.slice(-1)[0];
+        console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
         this.$state.go(nextState.state, nextState.urlParams, { reload: true });
       }
     });
   
     // dgacitua: Triggered when stage time finishes
     this.$rootScope.$on('endStageTime', (event, data) => {
-      console.log('EndStageTime', data);
       this.stageTime = 0;
+      this.stages = this.uds.getConfigs().stages;
 
-      if (data < this.stages.length-1) {
-        var nextState = this.stages[data+1];
+      var currentStage = this.uds.getSession().currentStageName,
+           stageNumber = this.uds.getSession().currentStageNumber;
+
+      console.log('EndStageTime', data, stageNumber, this.stages);
+
+      if (stageNumber < this.stages.length-1) {
+        var nextState = this.stages[stageNumber+1];
         this.$rootScope.$broadcast('timeoutModal', data);
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
-            this.$state.go(nextState.state, nextState.urlParams, { reload: true });    
+            console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
+            this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+          }
+          else {
+            console.error(err);
           }
         });
       }
       else {
         this.stopFlow();
-        this.globalTime = 0;
-        this.stageTime = 0;
-        this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
+        this.uds.setSession({ totalTimer: 0, stageTimer: 0 });
 
         var nextState = this.stages.slice(-1)[0];
+        console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
         this.$state.go(nextState.state, nextState.urlParams, { reload: true });
       }
     });
@@ -76,11 +89,10 @@ class FlowService {
     this.$rootScope.$on('endGlobalTime', (event, data) => {
       console.log('EndGlobalTime', data);
       this.stopFlow();
-      this.globalTime = 0;
-      this.stageTime = 0;
-      this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
+      this.uds.setSession({ totalTimer: 0, stageTimer: 0 });
 
       var nextState = this.stages.slice(-1)[0];
+      console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
       this.$state.go(nextState.state, nextState.urlParams, { reload: true });
     });
   }
@@ -111,6 +123,12 @@ class FlowService {
 
   stopFlow() {
     if (!!Meteor.userId()) this.$interval.cancel(this.timer);
+
+    this.globalTime = 0;
+    this.stageTime = 0;
+    
+    this.globalTotal = 0;
+    this.stageTotal = 0;
   }
 
   tick() {

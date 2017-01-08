@@ -18,6 +18,7 @@ class Instructions {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Instructions Success');
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ statusMessage: '' });
       this.uds.setSession({ stageHome: '#' });

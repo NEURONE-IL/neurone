@@ -29,6 +29,7 @@ class Stage1 {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Stage1 Success');
       this.uds.setSession({ bookmarkButton: false });
       this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: true });

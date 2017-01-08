@@ -30,9 +30,9 @@ class Stage2 {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Stage2 Success');
       this.uds.setSession({ snippetCounter: true });
       this.uds.setSession({ stageHome: '/stage2' });
-      //this.uds.setSession({ stageNumber: 2 });
       this.sts.bindWordCounter();  
 
       var stageNumber = this.uds.getSession().currentStageNumber,
@@ -249,7 +249,7 @@ function config($stateProvider) {
   $stateProvider.state('stage2', {
     url: '/stage2',
     views: {
-      '': {
+      '@stage2': {
         template: '<stage2></stage2>'
       },
       'pageview@stage2': {
@@ -271,10 +271,6 @@ function config($stateProvider) {
       user($auth) {
         return $auth.awaitUser();
       },
-      /*userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      },*/
       userBookmarksSub($promiser) {
         return $promiser.subscribe('userBookmarks');
       },

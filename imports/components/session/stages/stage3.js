@@ -37,6 +37,7 @@ class Stage3 {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Stage3 Success');
       this.uds.setSession({ synthesis: true });
       this.uds.setSession({ stageHome: '/stage3' });
       this.uds.setSession({ stageNumber: 3 });

@@ -17,6 +17,7 @@ class Stage0 {
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Stage0 Success');
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ stageHome: '/stage0' });
       //this.uds.setSession({ stageNumber: 0 });

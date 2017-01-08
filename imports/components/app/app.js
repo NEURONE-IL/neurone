@@ -106,18 +106,19 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
 
   angular.element($window).on('unload', () => {
     if (Configs.flowEnabled) fs.stopFlow();
+    uds.flush();
   });
 
   Accounts.onLogin(() => {
     var locale = uds.getConfigs().locale;
     $translate.use(locale);
     
-    $state.go('start');
+    if ($state.current.name !== 'logout') $state.go('start');
   });
 
   Accounts.onLogout(() => {
-    uds.flush();
     if (Configs.flowEnabled) fs.stopFlow();
+    uds.flush();
     //$translate.use('en');
     
   });

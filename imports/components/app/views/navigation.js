@@ -119,31 +119,13 @@ class Navigation {
         }
       });
 
-      /*
+      
       this.$rootScope.$on('timeoutModal', (event, data) => {
-        var stage = data;
-        Utils.notificationHide(this.navbarMessageId);
+        var currentStage = this.uds.getSession().currentStageName,
+             stageNumber = this.uds.getSession().currentStageNumber;
 
-        if (stage === 0) {
-          // TODO
-        }
-        else if (stage === 1) {
-          this._counters.bookmarks = this.uds.getSession().bookmarkCount || 0;
-        }
-        else if (stage === 2) {
-          this.checkSnippetStatus();
-        }
-        else if (stage === 3) {
-          // TODO
-        }
-        else if (stage === 4) {
-          // TODO
-        }
-        else {
-          // TODO
-        }
+        Utils.notificationHide(this.navbarMessageId);Utils.notificationHide(this.navbarMessageId);
       });
-      */
 
       this.helpers({
         isLoggedIn: () => {
@@ -475,7 +457,7 @@ class Navigation {
     });    
   }
 
-  readyAction(stageNumber) {
+  readyAction(stage) {
     var currentStage = this.uds.getSession().currentStageName,
          stageNumber = this.uds.getSession().currentStageNumber;
 

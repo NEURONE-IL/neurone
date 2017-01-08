@@ -30,39 +30,6 @@ class UserDataService {
     });
   }
 
-  /*
-  check() {
-    return this.hdl;
-  }
-
-  ready() {
-    return this.hdl.then((handle) => {
-      return handle.ready();
-    });
-  }
-
-  subscribe(userId) {
-    this.hdl = this.$promiser.subscribe('userDataToggle', userId);
-    console.log('UserData Subscription!', userId);
-  }
-
-  stopSubscription() {
-    this.hdl.then((handle) => {
-      handle.stop();
-    });
-  }
-
-  get() {
-    //return this.hdl.then((res) => {
-    //  return UserData.findOne();
-    //});
-
-    if (!!Meteor.userId()) return UserData.findOne();
-    else return {};
-    //return UserData.findOne();
-  }
-  */
-
   fetchSession() {
     Meteor.call('userSession', (err, res) => {
       if (!err) {
@@ -100,22 +67,6 @@ class UserDataService {
     this.userConfigs.set([], {});
   }
 
-  /*
-  set(property) {
-    this.hdl.then((res) => {
-      // dgacitua: If user is logged and subscription is ready
-      if (!!Meteor.userId() && res.ready()) {
-        var dataId = UserData.findOne()._id;
-        UserData.update({ _id: dataId }, { $set: property }, (err, res) => {
-          if (!err) {
-            //Utils.logToConsole('UserDataService SET!', property);
-          }
-        });
-      }
-    });
-  }
-  */
-
   setSession(property, callback) {
     if (!!Meteor.userId()) {
       Meteor.call('setSession', property, (err, res) => {
@@ -123,6 +74,7 @@ class UserDataService {
           Meteor.call('userSession', (err2, res2) => {
             if (!err2) {
               Object.keys(res2).map((p) => this.userSession.set(p, res2[p]));
+              //console.log('SessionSet', property);
               typeof callback === 'function' && callback(null, property);
             }
             else {
