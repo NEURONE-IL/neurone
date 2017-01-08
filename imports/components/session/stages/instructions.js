@@ -20,7 +20,7 @@ class Instructions {
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ readyButton: false });
       this.uds.setSession({ statusMessage: '' });
-      //this.uds.setSession({ stageHome: '/instructions' });
+      this.uds.setSession({ stageHome: '#' });
       //this.uds.setSession({ stageNumber: 'instructions' });
 
       var stageNumber = this.uds.getSession().currentStageNumber,
@@ -39,7 +39,7 @@ class Instructions {
     this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
 
     this.$timeout(() => {
-      this.uds.setSession({ readyButton: true });
+      if (stageName !== 'end') this.uds.setSession({ readyButton: true });
     }, Configs.instructionTimeout);
   }
 }

@@ -32,10 +32,11 @@ class Stage1 {
       this.uds.setSession({ bookmarkButton: false });
       this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: true });
+      this.uds.setSession({ stageHome: '/stage1' });
       this.uds.setSession({ statusMessage: '' });
       
       // TODO optimize code
-      var limit = this.uds.getConfigs().maxBookmarks;
+      var limit = this.uds.getConfigs().minBookmarks;
       var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
       this.uds.setSession({ readyButton: setReady });
 
@@ -57,12 +58,12 @@ class Stage1 {
 
   doSearch() {
     var queryText = this.searchText.toString();
-    this.firstSearch = true;
     this.getResults(queryText);
   }
 
   getResults(queryText) {
     if (!Utils.isEmpty(queryText)) {
+      this.firstSearch = true;
       this.qts.saveQuery(queryText);
       this.$state.go('.', {query: queryText}, {notify: false});
 

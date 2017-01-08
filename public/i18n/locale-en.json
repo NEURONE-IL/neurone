@@ -162,5 +162,9 @@
       "i3": "You can revisit the page where a snippet came from by clicking the snippet",
       "ex_3a": "I'm a snippet! Click me!"
     }
+  },
+  "end": {
+    "t1": "You have completed the task!",
+    "t2": "Thank you for join us!"
   }
 }

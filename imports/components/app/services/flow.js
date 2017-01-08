@@ -32,7 +32,7 @@ class FlowService {
         var nextState = this.stages[data+1];
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
-            this.$state.go(nextState.state, nextState.urlParams);    
+            this.$state.go(nextState.state, nextState.urlParams, { reload: true });    
           }
         });
       }
@@ -43,7 +43,7 @@ class FlowService {
         this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
 
         var nextState = this.stages.slice(-1)[0];
-        this.$state.go(nextState.state, nextState.urlParams);
+        this.$state.go(nextState.state, nextState.urlParams, { reload: true });
       }
     });
   
@@ -57,7 +57,7 @@ class FlowService {
         this.$rootScope.$broadcast('timeoutModal', data);
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
-            this.$state.go(nextState.state, nextState.urlParams);    
+            this.$state.go(nextState.state, nextState.urlParams, { reload: true });    
           }
         });
       }
@@ -68,7 +68,7 @@ class FlowService {
         this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
 
         var nextState = this.stages.slice(-1)[0];
-        this.$state.go(nextState.state, nextState.urlParams);
+        this.$state.go(nextState.state, nextState.urlParams, { reload: true });
       }
     });
 
@@ -81,7 +81,7 @@ class FlowService {
       this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
 
       var nextState = this.stages.slice(-1)[0];
-      this.$state.go(nextState.state, nextState.urlParams);
+      this.$state.go(nextState.state, nextState.urlParams, { reload: true });
     });
   }
 

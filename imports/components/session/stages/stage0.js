@@ -18,7 +18,7 @@ class Stage0 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/stage0' });
+      this.uds.setSession({ stageHome: '/stage0' });
       //this.uds.setSession({ stageNumber: 0 });
 
       var stageNumber = this.uds.getSession().currentStageNumber,

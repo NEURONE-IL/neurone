@@ -36,24 +36,22 @@ class Start {
       var currentStageNumber = this.uds.getSession().currentStageNumber;
 
       if (!currentStageNumber) {
-        if (Configs.flowEnabled) this.fs.startFlow();
-
         this.uds.setSession({ currentStageNumber: 0 });
         var currentStage = this.uds.getConfigs().stages[0];
 
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: 0 }, (err, res) => {
           if (!err) {
+            if (Configs.flowEnabled) this.fs.startFlow();
             this.$state.go(currentStage.state, currentStage.urlParams);
           }  
         });
         
       }
       else {
-        if (Configs.flowEnabled) this.fs.startFlow();
-
         var currentStage = this.uds.getConfigs().stages[currentStageNumber];
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: currentStageNumber }, (err, res) => {
           if (!err) {
+            if (Configs.flowEnabled) this.fs.startFlow();
             this.$state.go(currentStage.state, currentStage.urlParams);
           }  
         });

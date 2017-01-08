@@ -31,7 +31,7 @@ class Stage2 {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ snippetCounter: true });
-      //this.uds.setSession({ stageHome: '/stage2' });
+      this.uds.setSession({ stageHome: '/stage2' });
       //this.uds.setSession({ stageNumber: 2 });
       this.sts.bindWordCounter();  
 

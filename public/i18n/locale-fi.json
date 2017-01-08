@@ -162,5 +162,9 @@
       "i3": "Voit vierailla sivulla klikkaamalla merkkaustekstiä",
       "ex_3a": "Merkkasit sivulta tämän kohdan! Klikkaa!"
     }
+  },
+  "end": {
+    "t1": "You have completed the task!",
+    "t2": "Thank you for join us!"
   }
 }
