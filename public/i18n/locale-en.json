@@ -161,6 +161,13 @@
       "i2": "You can visit your snippets by clicking in the tabs",
       "i3": "You can revisit the page where a snippet came from by clicking the snippet",
       "ex_3a": "I'm a snippet! Click me!"
+    },
+    "instruction": {
+      "i1": "Please read carefully the instructions and think in how you can complete it"
+    },
+    "demo": {
+      "i1": "Click a tab to see different elements that you can interact with in NEURONE",
+      "i2": "Read the instructions and play with the elements!"
     }
   },
   "end": {

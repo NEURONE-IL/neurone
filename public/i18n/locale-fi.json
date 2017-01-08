@@ -130,37 +130,37 @@
     }
   },
   "hints": {
-    "neuroneButton": "Jos eksyt, paina NEURONE-painiketta. Palaat osatehtäväsi aloitussivulle.",
-    "taskButton": "Klikkaa Tehtävä niin voit lukea tehtäväohjeen uudestaan!",
-    "tutorialButton": "Klikkaa Ohje saadaksesi apua osatehtävän suoritukseen!",
-    "tipsButton": "Klikkaa Vihjeet saadaksesi apua tehtävän suoritukseen"
+    "neuroneButton": "Jos joudut eksyksiin, paina NEURONE-painiketta päästäksesi osatehtävän aloitussivulle",
+    "taskButton": "Klikkaa Tehtävä-painiketta nähdäksesi tehtävän esittelytekstin!",
+    "tutorialButton": "Klikkaa Ohje-painiketta nähdäksesi ohjeen, mitä osatehtävässä tehdään",
+    "tipsButton": "Klikkaa Vihjeet-painiketta saadaksesi apua tehtävän suoritukseen"
   },
   "tutorial": {
-    "tryNow": "Nyt on sinun vuorosi yrittää!",
+    "tryNow": "Nyt on sinun vuorosi yrittää",
     "stage0": {
-      "i1": "Kirjoita hakusanoja, joilla voisi löytyä asiasta kertovia sivuja!"
+      "i1": "Kirjoita hakusanoja, joiden arvelet hakevan hyvin tehtävän aiheeseen liittyviä sivuja!"
     },
     "stage1": {
-      "i1": "Kirjoita hakusanat ja klikkaa Hae",
-      "i2": "Avaa sivu klikkaamalla sivun otsikkoa tuloslistalla",
-      "i3": "Klikkaa Valitse sivu tallentaaksesi se jatkokäyttöä varten; klikkaa Poista sivu, kun haluat vaihtaa sivun parempaan",
-      "i4": "Valitut sivut -lista kertoo, mitkä sivut olet jo tallentanut",
+      "i1": "Hei! Tervetuloa käyttämään Neurone-hakukonetta. Voit hakea nettisivuja kirjoittamalla hakusanoja alla olevaan lokeroon ja painamalla Haku-painiketta. Kokeile.",
+      "i2": "Neurone näyttää seuraavaksi löytyneiden nettisivujen otsikot. Klikkaa otsikkoa niin sivu avautuu. Kokeile.",
+      "i3": "Avattuasi nettisivun, joka tuntuu hyödylliseltä, klikkaa Valitse sivu -painiketta tallentaaksesi sen. Neurone kysyy kuinka hyödylliseltä sivu tuntuu ja miksi. Klikkaa antamiesi tähtien määrä ja paras perustelu. Jos myöhemmin muutat mieltäsi, voit hylätä valitun nettisivun painikkeella Poista sivu. Kokeile.",
+      "i4": "Voit tarkistaa sivun yläreunasta, kuinka monta sivua olet tallentanut. Klikkaamalla saat esille valittujen sivujen otsikot ja voit siirtyä lukemaan sivua. Kokeile.",
       "ex_2a": "Nettisivuni",
       "ex_2b": "www.mywebpage.com",
-      "ex_2c": "Sivu vaikuttaa erittäin hyödylliseltä!"
+      "ex_2c": "Tämä on erittäin hyödyllinen sivu!"
     },
     "stage2": {
-      "i1": "Klikkaa otsikkoa avataksesi joku valitsemistasi sivuista",
-      "i2": "Muista vastata kaikkiin kysymyksiin joka sivulla!",
-      "i3": "Maalaa tärkeältä tuntuva kohta sivulla ja tallenna se klikkaamalla Tallenna merkkaus",
-      "i4": "Voit poistaa merkkauksen klikkaamalla roskiksen kuvaa",
-      "ex_4a": "Klikkaa merkkausta nähdäksesi sen kokonaan!"
+      "i1": "Hei taas! Nyt sinulla on mahdollisuus vierailla kaikilla valitsemillasi nettisivuilla. Paina oikean reunan valikosta Sivu 1, Sivu 2 tai Sivu 3. Kokeile.",
+      "i2": "Jokaisella nettisivulla sinun tulee arvioida, kuinka luotettavana pidät sivua. Anna tähtiä sitä enemmän, mitä uskottavammalta sivu tuntuu. Kirjoita tekstilokeroon, millä perusteella teit luotettavuusarviosi. Kokeile.",
+      "i3": "Tehdäksesi muistiinpanoja tärkeistä tekstissä esitetyistä asioista, maalaa hiirellä kyseinen kohta ja klikkaa Tallenna merkkaus -painiketta. Kokeile.",
+      "i4": "Voit myöhemmin palata merkkaamiisi kohtiin, poistaa merkkauksen ja tehdä uusia merkkauksia.",
+      "ex_4a": "Minä olen Merkkaus! Klikkaa minua!"
     },
     "stage3": {
-      "i1": "Kirjoita vastauksesi alla olevaan ruutuun (voit myös muotoilla tekstiä!)",
-      "i2": "Voit katsella merkattua tekstiä klikkaamalla otsikkoa (esim. Merkkaus 4)",
-      "i3": "Voit vierailla sivulla klikkaamalla merkkaustekstiä",
-      "ex_3a": "Merkkasit sivulta tämän kohdan! Klikkaa!"
+      "i1": "Olet melkein tehtävän lopussa. Kirjoita artikkelin teksti sille varattuun ruutuun. Voit myös muotoilla tekstiä. Kokeile.",
+      "i2": "Voit palata lukemaan valittuja sivuja (Sivu 1/Sivu 2/Sivu 3) klikkaamalla linkkejä näytön oikeassa reunassa. Kokeile.",
+      "i3": "Voit avata merkkauksesi klikkaamalla linkkiä (esim. Merkkaus 1, jne). Voit palata myös sivulle merkattuun kohtaan klikkaamalla avaamaasi merkkausta.",
+      "ex_3a": "Minä olen Merkkaus! Klikkaa minua!"
     }
   },
   "end": {
