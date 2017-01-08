@@ -107,14 +107,14 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
   angular.element($window).on('beforeunload', () => {
     if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
-    //localstorage.clear();
+    localstorage.clear();
   });
 
   Accounts.onLogin(() => {
     var locale = uds.getConfigs().locale;
     $translate.use(locale);
     
-    if ($state.current.name !== 'logout') $state.go('start');
+    if (!!Meteor.userId()) $state.go('start');
   });
 
   Accounts.onLogout(() => {

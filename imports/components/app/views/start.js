@@ -33,7 +33,6 @@ class Start {
 
   begin() {
     if (!!Meteor.userId()) {
-      //var currentState = this.uds.getSession().stageHome;
       var currentStageNumber = this.uds.getSession().currentStageNumber;
 
       if (!currentStageNumber) {
@@ -43,28 +42,18 @@ class Start {
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: 0 }, (err, res) => {
           if (!err) {
             if (Configs.flowEnabled) this.fs.startFlow();
-
-            this.$timeout(() => {
-              this.$state.go(currentStage.state, currentStage.urlParams);
-            }, 0);
+            this.$state.go(currentStage.state, currentStage.urlParams);
           }  
         });
-        
       }
       else {
         var currentStage = this.uds.getConfigs().stages[currentStageNumber];
         this.uds.setSession({ currentStageName: currentStage.id, currentStageNumber: currentStageNumber }, (err, res) => {
           if (!err) {
             if (Configs.flowEnabled) this.fs.startFlow();
-
-            this.$timeout(() => {
-              this.$state.go(currentStage.state, currentStage.urlParams);
-            }, 0);
+            this.$state.go(currentStage.state, currentStage.urlParams);
           }  
         });
-
-        //var state = currentState.substr(currentState.indexOf('/') + 1);
-        //this.$state.go(state);
       }
     }
   }

@@ -119,7 +119,6 @@ class Navigation {
         }
       });
 
-      
       this.$rootScope.$on('timeoutModal', (event, data) => {
         var currentStage = this.uds.getSession().currentStageName,
              stageNumber = this.uds.getSession().currentStageNumber;

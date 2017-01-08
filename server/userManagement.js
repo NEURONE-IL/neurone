@@ -20,14 +20,9 @@ Accounts.onCreateUser((options, user) => {
 });
 
 Accounts.validateLoginAttempt((attempt) => {
-  if (attempt.methodName === 'resume') {
-    return false;
-  }
-  else {
-    return true;
-  }
-});
-
-Accounts.onLogout((user, connection) => {
-
+  // dgacitua: http://stackoverflow.com/a/26382222
+  
+  //if (attempt.type == 'resume') return false;
+  //if (attempt.methodName == 'resume') return false;
+  return true;
 });

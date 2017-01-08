@@ -31,15 +31,12 @@ class FlowService {
 
       console.log('EndStage', data, stageNumber, this.stages);
 
-      if (stageNumber < this.stages.length-1) {
+      if (stageNumber+1 < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-            
-            this.$timeout(() => {
-              this.$state.go(nextState.state, nextState.urlParams, { reload: true });
-            }, 0);
+            this.$state.go(nextState.state, nextState.urlParams);
           }
           else {
             console.error(err);
@@ -52,7 +49,7 @@ class FlowService {
 
         var nextState = this.stages.slice(-1)[0];
         console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-        this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+        this.$state.go(nextState.state, nextState.urlParams);
       }
     });
   
@@ -66,16 +63,13 @@ class FlowService {
 
       console.log('EndStageTime', data, stageNumber, this.stages);
 
-      if (stageNumber < this.stages.length-1) {
+      if (stageNumber+1 < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
         this.$rootScope.$broadcast('timeoutModal', data);
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-
-            this.$timeout(() => {
-              this.$state.go(nextState.state, nextState.urlParams, { reload: true });
-            }, 0);
+            this.$state.go(nextState.state, nextState.urlParams);
           }
           else {
             console.error(err);
@@ -88,7 +82,7 @@ class FlowService {
 
         var nextState = this.stages.slice(-1)[0];
         console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-        this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+        this.$state.go(nextState.state, nextState.urlParams);
       }
     });
 
@@ -100,7 +94,7 @@ class FlowService {
 
       var nextState = this.stages.slice(-1)[0];
       console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
-      this.$state.go(nextState.state, nextState.urlParams, { reload: true });
+      this.$state.go(nextState.state, nextState.urlParams);
     });
   }
 
