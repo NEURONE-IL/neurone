@@ -31,7 +31,7 @@ class FlowService {
 
       console.log('EndStage', data, stageNumber, this.stages);
 
-      if (stageNumber+1 < this.stages.length-1) {
+      if (stageNumber < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
           if (!err) {
@@ -63,7 +63,7 @@ class FlowService {
 
       console.log('EndStageTime', data, stageNumber, this.stages);
 
-      if (stageNumber+1 < this.stages.length-1) {
+      if (stageNumber < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
         this.$rootScope.$broadcast('timeoutModal', data);
         this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
