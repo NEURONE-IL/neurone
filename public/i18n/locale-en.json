@@ -12,7 +12,8 @@
     "i18n": "Internationalization",
     "forms": "Forms",
     "synthesis": "Synthesis",
-    "flow": "Flow"
+    "flow": "Flow",
+    "searchResults": "Hakutulokset"
   },
   "nav": {
     "tutorialButton": "Tutorial",

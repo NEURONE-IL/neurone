@@ -33,7 +33,7 @@ export default class SnippetTrackService {
                   docId = this.$rootScope.docId,
                 pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
           
-          var truncatedLimit = this.uds.getConfigs().snippetWordTruncateThreshold,
+          var truncatedLimit = this.uds.getConfigs().maxSnippetWordLength,
             truncatedSnippet = truncatedLimit ? snippet.split(" ").splice(0, truncatedLimit).join(" ") : snippet;
 
           var snippetObject = {
