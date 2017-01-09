@@ -31,8 +31,8 @@
     "registerButton": "Rekisteröidy",
     "loginButton": "Kirjaudu",
     "logoutButton": "Poistu",
-    "registerMessage": "Rekisteröidy Neuroneen",
-    "loginMessage": "Kirjaudu Neuroneen",
+    "registerMessage": "Rekisteröidy NEURONE",
+    "loginMessage": "Kirjaudu NEURONE",
     "email": "Sähköposti",
     "username": "Käyttäjätunnus",
     "password": "Salasana",
@@ -154,6 +154,8 @@
       "i2": "Jokaisella nettisivulla sinun tulee arvioida, kuinka luotettavana pidät sivua. Anna tähtiä sitä enemmän, mitä uskottavammalta sivu tuntuu. Kirjoita tekstilokeroon, millä perusteella teit luotettavuusarviosi. Kokeile.",
       "i3": "Tehdäksesi muistiinpanoja tärkeistä tekstissä esitetyistä asioista, maalaa hiirellä kyseinen kohta ja klikkaa Tallenna merkkaus -painiketta. Kokeile.",
       "i4": "Voit myöhemmin palata merkkaamiisi kohtiin, poistaa merkkauksen ja tehdä uusia merkkauksia.",
+      "ex_2a": "Kuinka luotettavalta tämä nettisivu tuntuu? Montako tähteä annat?",
+      "ex_2b": "Millä perusteella päädyit arvioosi?",
       "ex_4a": "Minä olen Merkkaus! Klikkaa minua!"
     },
     "stage3": {
@@ -161,6 +163,9 @@
       "i2": "Voit palata lukemaan valittuja sivuja (Sivu 1/Sivu 2/Sivu 3) klikkaamalla linkkejä näytön oikeassa reunassa. Kokeile.",
       "i3": "Voit avata merkkauksesi klikkaamalla linkkiä (esim. Merkkaus 1, jne). Voit palata myös sivulle merkattuun kohtaan klikkaamalla avaamaasi merkkausta.",
       "ex_3a": "Minä olen Merkkaus! Klikkaa minua!"
+    },
+    "general": {
+      "i1": "Hi. Tutorial will be available only while performing the task. Try it later if you need it."
     }
   },
   "end": {

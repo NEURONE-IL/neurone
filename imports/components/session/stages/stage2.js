@@ -59,15 +59,17 @@ class Stage2pv {
     $rootScope.$on('highlightSnippet', (event, data) => {
       var snip = data || '';
       
-      this.searchables = this.$document.find('.highlight').toArray();
+      this.searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
       this.markInstance = new Mark(this.searchables);
 
-      this.markInstance.unmark({ iframes: true }).mark(snip, {
-        accurracy: 'exactly',
-        iframes: true,
-        acrossElements: true,
-        separateWordSearch: false,
-        className: 'highlightSnippet'
+      this.markInstance.unmark({ done: () => {
+          this.markInstance.mark(snip, {
+            accurracy: 'exactly',
+            acrossElements: true,
+            separateWordSearch: false,
+            className: 'highlightSnippet'
+          });
+        } 
       });
     });
 
@@ -209,16 +211,18 @@ class Stage2sb {
 
   changePage(index) {
     this.url = this.pages[index] ? this.pages[index].url : '/error';
-    this.$rootScope.docId = this.url2docName(this.url);
-    this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
-    this.currentDocId = this.$rootScope.docId;
+    this.currentDocId = this.pages[index] ? this.pages[index].docId : '';
+    this.$rootScope.docId = this.currentDocId;
+    //this.$rootScope.docId = this.url2docName(this.url);
+    //this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
+    //this.currentDocId = this.$rootScope.docId;
 
     this.uds.setSession({ docId: this.currentDocId });
     Session.set('docId', this.currentDocId);
-    console.log('ChangePage', this.url, this.currentDocId, this.$rootScope.docId, this.$rootScope.docId);
+    console.log('ChangePage', this.url, this.currentDocId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
-    this.$rootScope.$broadcast('updateNavigation');
+    this.$rootScope.$broadcast('updateSnippetButton');
   }
 }
 

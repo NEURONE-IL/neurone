@@ -90,15 +90,18 @@ class DisplayIframe {
 	highlightSnippet(snippet) {
     var snip = snippet || '';
     
-    var searchables = this.$document.find('.highlight').toArray();
+    var searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
     var markInstance = new Mark(searchables);
 
-    markInstance.unmark({ iframes: true }).mark(snip, {
-      accurracy: 'exactly',
-      iframes: true,
-      acrossElements: true,
-      separateWordSearch: false,
-      className: 'highlightSnippet'
+    markInstance.unmark({ iframes: true, done: () => {
+        markInstance.mark(snip, {
+          accurracy: 'exactly',
+          iframes: true,
+          acrossElements: true,
+          separateWordSearch: false,
+          className: 'highlightSnippet'
+        });
+      } 
     });
   }
 }

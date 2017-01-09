@@ -105,7 +105,7 @@ class SearchResults {
     var qt = queryText ? queryText : '';
     check(qt, String);
 
-    var searchables = this.$document.find('.highlight').toArray();
+    var searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
     var markInstance = new Mark(searchables);
     markInstance.mark(qt, {
       className: 'highlightSearch'

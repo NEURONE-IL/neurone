@@ -99,7 +99,7 @@ class Navigation {
         var currentStage = this.uds.getSession().currentStageName,
              stageNumber = this.uds.getSession().currentStageNumber;
 
-        var stage = this.uds.getSession().stageNumber;
+        //var stage = this.uds.getSession().stageNumber;
         Utils.notificationHide(this.navbarMessageId);
 
         if (currentStage === 'stage0') {
@@ -229,18 +229,15 @@ class Navigation {
     if (!!Meteor.userId()) {
       var snippets = UserSnippets.find().count(),
        minSnippets = this.uds.getConfigs().minSnippetsPerPage,
-      //snippetsPage = this.uds.getConfigs().snippetsPerPage,
               bkms = UserBookmarks.find(),
             maxBkm = bkms.count(),
-      //  snippetLim = snippetsPage * maxBkm,
-             docId = this.uds.getSession().docId,
-        snippetCnt = UserSnippets.find({ docId: docId }).count();
+             docId = Session.get('docId'),//this.uds.getSession().docId,
+        snippetCnt = UserSnippets.find({ docId: docId }).count(),
+       snippetCond = !!(snippetCnt < this.uds.getConfigs().maxSnippetsPerPage);
 
       // dgacitua: Set Snippet button
-      if (snippetCnt < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
-      else this.uds.setSession({ snippetButton: false });
-
-      console.log('EnableSnippet', snippetCnt, docId);
+      this.uds.setSession({ snippetButton: snippetCond });
+      console.log('EnableSnippet', snippetCnt, snippetCond, docId);
 
       // dgacitua: Set ready button
       var setReady = true;
