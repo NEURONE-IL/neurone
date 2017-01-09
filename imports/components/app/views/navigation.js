@@ -501,7 +501,7 @@ class Navigation {
       var modalObject = {
         title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage1.html',
-        buttonType: (goodDocs >= minBookmarks ? 'nextstage' : 'back'),
+        buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
         fields: {
           stars: stars,
           maxStars: maximumStars,
@@ -514,7 +514,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          if (goodDocs >= minBookmarks) {
+          if (res.message === 'ok' && goodDocs >= minBookmarks) {
             this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
