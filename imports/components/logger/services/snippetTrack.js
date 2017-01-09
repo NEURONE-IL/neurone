@@ -30,15 +30,18 @@ export default class SnippetTrackService {
 
         if (!Utils.isEmpty(snippet)) {
           var pageTitle = this.$rootScope.documentTitle,
-              docId = this.$rootScope.docId,
-            pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
-      
+                  docId = this.$rootScope.docId,
+                pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
+          
+          var truncatedLimit = this.uds.getConfigs().snippetWordTruncateThreshold,
+            truncatedSnippet = truncatedLimit ? snippet.split(" ").splice(0, truncatedLimit).join(" ") : snippet;
+
           var snippetObject = {
             userId: Meteor.userId(),
             username: Meteor.user().username || Meteor.user().emails[0].address,
             action: type,
             snippetId: 0,
-            snippedText: snippet,
+            snippedText: truncatedSnippet,
             title: (pageTitle ? pageTitle : document.title),
             url: (pageUrl ? pageUrl : window.location.href),
             docId: (docId ? docId : ''),
