@@ -127,6 +127,10 @@
     "confirm": {
       "title": "Jatka seuraavaan osatehtävään",
       "instruction": "Oletko varma että vastauksesi on valmis? Painettuasi Valmis-painiketta vastauksesi tallennetaan, etkä voi muuttaa sitä."
+    },
+    "logout": {
+      "title": "Logout",
+      "confirm": "Are you sure that you want to logout?"
     }
   },
   "hints": {

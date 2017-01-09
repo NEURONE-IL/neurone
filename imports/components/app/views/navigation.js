@@ -285,9 +285,22 @@ class Navigation {
   }
 
   logout() {
-    this.auth.logout((err, res) => {
+    var modalObject = {
+      title: this.$translate.instant('modal.logout.title'),
+      templateAsset: 'modals/logout.html',
+      buttonType: 'okcancel',
+      fields: {}
+    };
+
+    this.modal.openModal(modalObject, (err, res) => {
       if (!err) {
-        this.$state.go('home');
+        if (res.message === 'ok') {
+          this.auth.logout((err, res) => {
+            if (!err) {
+              this.$state.go('home');
+            }
+          });
+        }
       }
     });
   }

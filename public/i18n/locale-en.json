@@ -127,6 +127,10 @@
     "confirm": {
       "title": "Continue to next stage",
       "instruction": "Are you sure you want to continue? Your answers will be submitted and you not will be able to go back."
+    },
+    "logout": {
+      "title": "Logout",
+      "confirm": "Are you sure that you want to logout?"
     }
   },
   "hints": {
