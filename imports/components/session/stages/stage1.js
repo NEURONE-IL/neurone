@@ -51,7 +51,7 @@ class Stage1 {
 
     $reactive(this).attach($scope);
 
-    this.searchText = '';
+    this.searchText = this.$stateParams.query || '';
     this.firstSearch = false;
     this.resultsReady = false;
     this.getResults(this.$stateParams.query);
