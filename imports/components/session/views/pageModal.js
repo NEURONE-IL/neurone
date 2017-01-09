@@ -34,7 +34,7 @@ class PageModal {
   highlightSnippet(snippet) {
     var snip = snippet || '';
     
-    var searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
+    var searchables = this.$document.find('.highlight').toArray();//document.getElementById('pageContainer').contentDocument;
     var markInstance = new Mark(searchables);
 
     markInstance.unmark({ iframes: true, done: () => {
