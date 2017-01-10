@@ -64,10 +64,12 @@ Meteor.methods({
         }
         
         UserData.update({ userId: this.userId }, { $set: setObj });
+        
+        return UserData.findOne({ userId: this.userId }).session;
       }
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not update object', err);
+      throw new Meteor.Error('UserDataError', 'Could not update user session!', err);
     }
   },
   initialConfigs: function() {

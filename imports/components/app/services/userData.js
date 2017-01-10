@@ -71,6 +71,9 @@ class UserDataService {
     if (!!Meteor.userId()) {
       Meteor.call('setSession', property, (err, res) => {
         if (!err) {
+          Object.keys(res).map((p) => this.userSession.set(p, res[p]));
+          typeof callback === 'function' && callback(null, property);
+          /*
           Meteor.call('userSession', (err2, res2) => {
             if (!err2) {
               Object.keys(res2).map((p) => this.userSession.set(p, res2[p]));
@@ -82,6 +85,7 @@ class UserDataService {
               typeof callback === 'function' && callback(err);
             }
           });
+          */
         }
         else {
           console.error(err);
