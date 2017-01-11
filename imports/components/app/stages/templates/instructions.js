@@ -13,23 +13,39 @@ class Instructions {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ statusMessage: '' });
+      this.uds.setSession({
+        readyButton: false,
+        statusMessage: ''
+      }, (err, res) => {
+        if (!err) {
+          // dgacitua: Do nothing for now
+        }
+        else {
+          console.error('Error while unloading Stage!', err);
+        }
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      console.log('Instructions Success');
-      this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ statusMessage: '' });
-      this.uds.setSession({ stageHome: '#' });
-      //this.uds.setSession({ stageNumber: 'instructions' });
+      this.uds.setSession({
+        readyButton: false,
+        statusMessage: '',
+        stageHome: '#'
+      }, (err, res) => {
+        if (!err) {
+          var stageNumber = this.uds.getSession().currentStageNumber,
+             currentStage = this.uds.getConfigs().stages[stageNumber];
 
-      var stageNumber = this.uds.getSession().currentStageNumber,
-         currentStage = this.uds.getConfigs().stages[stageNumber];
+          this.uds.setSession({ currentStageName: currentStage.id });
 
-      this.uds.setSession({ currentStageName: currentStage.id });
+          this.$rootScope.$broadcast('updateNavigation');
 
-      this.$rootScope.$broadcast('updateNavigation');
+          console.log('Instructions loaded!');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        }
+      });
     });
 
     $reactive(this).attach($scope);

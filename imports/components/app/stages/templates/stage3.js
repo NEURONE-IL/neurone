@@ -31,19 +31,33 @@ class Stage3 {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ synthesis: false });
-      this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/home' });
-      this.uds.setSession({ statusMessage: '' });
+      this.uds.setSession({
+        synthesis: false,
+        readyButton: false,
+        statusMessage: ''
+      }, (err, res) => {
+        if (!err) {
+          // dgacitua: Do nothing for now
+        }
+        else {
+          console.error('Error while unloading Stage!', err);
+        }
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      console.log('Stage3 Success');
-      this.uds.setSession({ synthesis: true });
-      this.uds.setSession({ stageHome: '/stage3' });
-      this.uds.setSession({ stageNumber: 3 });
-
-      this.$rootScope.$broadcast('updateNavigation');
+      this.uds.setSession({
+        synthesis: true,
+        stageHome: '/stage3'
+      }, (err, res) => {
+        if (!err) {
+          this.$rootScope.$broadcast('updateNavigation');
+          console.log('Stage3 loaded!');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        }
+      });
     });
 
     $reactive(this).attach($scope);

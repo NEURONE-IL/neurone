@@ -21,33 +21,42 @@ class Stage1 {
     this.qts = QueryTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ bookmarkButton: false });
-      this.uds.setSession({ unbookmarkButton: false });
-      this.uds.setSession({ bookmarkList: false });
-      this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/home' });
-      this.uds.setSession({ statusMessage: '' });
+      this.uds.setSession({
+        bookmarkButton: false,
+        unbookmarkButton: false,
+        bookmarkList: false,
+        readyButton: false,
+        statusMessage: ''
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      console.log('Stage1 Success');
-      this.uds.setSession({ bookmarkButton: false });
-      this.uds.setSession({ unbookmarkButton: false });
-      this.uds.setSession({ bookmarkList: true });
-      this.uds.setSession({ stageHome: '/stage1' });
-      this.uds.setSession({ statusMessage: '' });
-      
-      // TODO optimize code
-      var limit = this.uds.getConfigs().minBookmarks;
-      var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
-      this.uds.setSession({ readyButton: setReady });
+      this.uds.setSession({
+        bookmarkButton: false,
+        unbookmarkButton: false,
+        bookmarkList: true,
+        stageHome: '/stage1',
+        statusMessage: ''
+      }, (err, res) => {
+        if (!err) {
+          // TODO optimize code
+          var limit = this.uds.getConfigs().minBookmarks;
+          var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
+          this.uds.setSession({ readyButton: setReady });
 
-      var stageNumber = this.uds.getSession().currentStageNumber,
-         currentStage = this.uds.getConfigs().stages[stageNumber];
+          var stageNumber = this.uds.getSession().currentStageNumber,
+             currentStage = this.uds.getConfigs().stages[stageNumber];
 
-      this.uds.setSession({ currentStageName: currentStage.id });
+          this.uds.setSession({ currentStageName: currentStage.id });
 
-      this.$rootScope.$broadcast('updateNavigation');
+          this.$rootScope.$broadcast('updateNavigation');
+
+          console.log('Stage1 loaded!');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        }
+      });
     });
 
     $reactive(this).attach($scope);

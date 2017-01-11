@@ -7,6 +7,7 @@ class UserDataService {
 
     this.userId = Meteor.userId();
     
+    // dgacitua: https://github.com/xamfoo/reactive-obj
     this.userSession = new ReactiveObj();
     this.userConfigs = new ReactiveObj();
 

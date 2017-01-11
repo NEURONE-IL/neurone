@@ -64,28 +64,15 @@ class Navigation {
 
     this.navbarMessageId = 'navbarMessage';
 
-    this._counters = new ReactiveObject({});
-    this._session = new ReactiveObject({});
+    // dgacitua: https://github.com/xamfoo/reactive-obj
+    this._counters = new ReactiveObj();
     
     $q.all([this.sub1, this.sub2]).then((res) => {
-      this._counters.defineProperty('bookmarks', 0);
-      this._counters.defineProperty('words', 0);
+      this._counters.set('bookmarks', 0);
+      this._counters.set('words', 0);
 
       // dgacitua: Set snippet button
       this.$rootScope.$on('updateSnippetButton', (event, data) => {
-        /*
-        this.$timeout(() => {
-          if (data !== false) {
-            var snippetCount = UserSnippets.find({ docId: data }).count();
-
-            if (snippetCount < this.uds.getConfigs().maxSnippetsPerPage) this.uds.setSession({ snippetButton: true });
-            else this.uds.setSession({ snippetButton: false });
-
-            this.checkSnippetStatus();
-            console.log('enableSnippet', snippetCount, data);
-          }
-        }, 0);
-        */
         this.checkSnippetStatus();
       });
 
@@ -105,7 +92,8 @@ class Navigation {
           // TODO
         }
         else if (currentStage === 'stage1') {
-          this._counters.bookmarks = this.uds.getSession().bookmarkCount || 0;
+          //this._counters.set('bookmarks', (this.uds.getSession().bookmarkCount || 0));
+          this._counters.set('bookmarks', (UserBookmarks.find().count() || 0));
         }
         else if (currentStage === 'stage2') {
           this.checkSnippetStatus();
@@ -133,7 +121,7 @@ class Navigation {
           return Meteor.user();
         },
         counters: () => {
-          return this._counters;//this.getReactively('_counters');
+          return this._counters.get();//this.getReactively('_counters');
         },
         statusMessage: () => {
           return this.uds.getSession().statusMessage;//this.$rootScope._navbarMessage.get();
@@ -174,7 +162,7 @@ class Navigation {
 
   saveSnippet() {
     this.sts.saveSnippet((err, res) => {
-      this._counters.words = this.uds.getSession().wordCount;
+      this._counters.set('words', (this.uds.getSession().wordCount || 0));
       this.checkSnippetStatus();
       this.uds.setSession({ statusMessage: (res || err) });
       Utils.notificationFadeout(this.navbarMessageId);
@@ -188,18 +176,19 @@ class Navigation {
        required = this.uds.getConfigs().minBookmarks;
 
       this.uds.setSession({ bookmarkCount: UserBookmarks.find().count() });
-      this._counters.bookmarks = UserBookmarks.find().count();
+      this._counters.set('bookmarks', (UserBookmarks.find().count() || 0));
+      //this._counters.bookmarks = UserBookmarks.find().count();
       var setReady = !!(UserBookmarks.find().count() >= required);
       this.uds.setSession({ readyButton: setReady });
       
       this.bms.isBookmarked((err, res) => {
         if (!err) {
           //console.log('checkBookmarkStatus', res, this.$rootScope._counters.bookmarks, limit);
-          if (this._counters.bookmarks > limit) {
+          if (this._counters.get('bookmarks') > limit) {
             this.uds.setSession({ bookmarkButton: false });
             this.uds.setSession({ unbookmarkButton: false });
           }
-          else if (this._counters.bookmarks === limit) {
+          else if (this._counters.get('bookmarks') === limit) {
             if (res === true) {
               this.uds.setSession({ bookmarkButton: false });
               this.uds.setSession({ unbookmarkButton: true });

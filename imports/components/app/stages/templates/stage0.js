@@ -12,23 +12,32 @@ class Stage0 {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/home' });
-      this.uds.setSession({ statusMessage: '' });
+      this.uds.setSession({
+        readyButton: false,
+        statusMessage: ''
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       console.log('Stage0 Success');
-      this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ stageHome: '/stage0' });
-      //this.uds.setSession({ stageNumber: 0 });
+      this.uds.setSession({
+        readyButton: false,
+        stageHome: '/stage0'
+      }, (err, res) => {
+        if (!err) {
+          var stageNumber = this.uds.getSession().currentStageNumber,
+             currentStage = this.uds.getConfigs().stages[stageNumber];
 
-      var stageNumber = this.uds.getSession().currentStageNumber,
-         currentStage = this.uds.getConfigs().stages[stageNumber];
+          this.uds.setSession({ currentStageName: currentStage.id });
 
-      this.uds.setSession({ currentStageName: currentStage.id });
+          this.$rootScope.$broadcast('updateNavigation');
 
-      this.$rootScope.$broadcast('updateNavigation');
+          console.log('Stage0 loaded!');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        }
+      });
     });
 
     $reactive(this).attach($scope);

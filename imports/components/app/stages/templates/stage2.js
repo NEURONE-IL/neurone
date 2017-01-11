@@ -25,25 +25,42 @@ class Stage2 {
     $reactive(this).attach($scope);
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ snippetCounter: false });
-      this.uds.setSession({ snippetButton: false });
-      this.uds.setSession({ readyButton: false });
-      this.uds.setSession({ statusMessage: '' });
-      this.sts.unbindWordCounter();
+      this.uds.setSession({
+        snippetCounter: false,
+        snippetButton: false,
+        readyButton: false,
+        statusMessage: ''
+      }, (err, res) => {
+        if (!err) {
+          this.sts.unbindWordCounter();      
+        }
+        else {
+          console.error('Error while unloading Stage!', err);
+        }
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      console.log('Stage2 Success');
-      this.uds.setSession({ snippetCounter: true });
-      this.uds.setSession({ stageHome: '/stage2' });
-      this.sts.bindWordCounter();  
+      this.uds.setSession({
+        snippetCounter: true,
+        stageHome: '/stage2'
+      }, (err, res) => {
+        if (!err) {
+          this.sts.bindWordCounter();
 
-      var stageNumber = this.uds.getSession().currentStageNumber,
-         currentStage = this.uds.getConfigs().stages[stageNumber];
+          var stageNumber = this.uds.getSession().currentStageNumber,
+             currentStage = this.uds.getConfigs().stages[stageNumber];
 
-      this.uds.setSession({ currentStageName: currentStage.id });
-      
-      this.$rootScope.$broadcast('updateNavigation');
+          this.uds.setSession({ currentStageName: currentStage.id });
+          
+          this.$rootScope.$broadcast('updateNavigation');
+
+          console.log('Stage2 loaded!');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        }
+      });
     });
   }
 }

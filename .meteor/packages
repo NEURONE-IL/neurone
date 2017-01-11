@@ -41,7 +41,6 @@ momentjs:moment
 xolvio:cleaner
 underscore
 jcbernack:reactive-aggregate
-mrt:reactive-extra
 konecty:multiple-instances-status
 konecty:user-presence
 xamfoo:reactive-obj
