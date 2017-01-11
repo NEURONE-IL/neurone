@@ -1,4 +1,5 @@
-import Utils from '../../globalUtils';
+import Utils from '../globalUtils';
+import Configs from '../globalConfigs';
 
 class FlowService {
   constructor($state, $rootScope, $timeout, $interval, UserDataService) {

@@ -11,25 +11,27 @@ import angularTranslateLoader from 'angular-translate-loader-static-files';
 
 import template from './app.html';
 
+import { name as Navigation } from './navigation/navigation';
+import { name as Iframe } from './iframe/displayIframe';
+
 import { name as Auth } from './auth/auth';
 import { name as Home } from './views/home';
-import { name as Navigation } from './views/navigation';
 import { name as Start } from './views/start';
 import { name as End } from './views/end';
-import { name as ErrorPage } from '../modules/error';
+import { name as ErrorPage } from './views/error';
 
 import { name as Search } from '../search/search';
 import { name as Forms } from '../forms/formCtrl';
 import { name as Synthesis } from '../synthesis/synthesis';
 import { name as Showcase } from '../showcase/showcase';
 
-import { name as AuthService } from './services/auth';
-import { name as UserDataService } from './services/userData';
-import { name as ActionBlocker } from './services/actionBlocker';
-import { name as Flow } from './services/flow';
-import { name as Logger } from '../logger/logger';
+import { name as AuthService } from '../services/auth';
+import { name as UserDataService } from '../services/userData';
+import { name as ActionBlocker } from '../services/actionBlocker';
+import { name as Flow } from '../services/flow';
+import { name as Logger } from '../services/logger/logger';
 
-import { name as Stages } from '../session/stages';
+import { name as Stages } from './stages/stages';
 
 import Configs from '../globalConfigs';
 
@@ -57,10 +59,12 @@ export default angular.module(name, [
   Synthesis,
   Forms,
   Showcase,
-  // App views
+  // Modular Components
   Navigation,
-  Home,
+  Iframe,
+  // App views
   Auth,
+  Home,
   Start,
   End,
   ErrorPage,

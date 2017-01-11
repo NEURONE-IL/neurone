@@ -1,14 +1,15 @@
 import angularTruncate from 'angular-truncate-2';
 
-import ngWig from '../../../lib/ngWig/ng-wig';
-import '../../../lib/ngWig/css/ng-wig.css';
-import '../../../lib/ngWig/plugins/formats.ngWig';
-import '../../../lib/ngWig/plugins/forecolor.ngWig';
-import '../../../lib/ngWig/plugins/clear-styles.ngWig';
+import ngWig from '../../../../lib/ngWig/ng-wig';
+import '../../../../lib/ngWig/css/ng-wig.css';
+import '../../../../lib/ngWig/plugins/formats.ngWig';
+import '../../../../lib/ngWig/plugins/forecolor.ngWig';
+import '../../../../lib/ngWig/plugins/clear-styles.ngWig';
 
-import Utils from '../../globalUtils';
+import Utils from '../../../globalUtils';
+import Configs from '../../../globalConfigs';
 
-import { UserBookmarks, UserSnippets } from '../../userCollections';
+import { UserBookmarks, UserSnippets } from '../../../userCollections';
 
 import { name as PageModal } from '../views/pageModal';
 

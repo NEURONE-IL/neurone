@@ -8,8 +8,6 @@ import 'mark.js';
 
 import template from './searchResults.html';
 
-import { name as Logger } from '../../logger/logger';
-
 /*
     dgacitua
 
@@ -119,8 +117,7 @@ export default angular.module(name, [
   angularMeteor,
   uiRouter,
   angularSanitize,
-  'truncate',
-  Logger
+  'truncate'
 ])
 .component(name, {
   template,

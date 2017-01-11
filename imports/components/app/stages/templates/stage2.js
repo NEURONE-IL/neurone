@@ -2,9 +2,10 @@ import angularTruncate from 'angular-truncate-2';
 
 import 'mark.js';
 
-import Utils from '../../globalUtils';
+import Utils from '../../../globalUtils';
+import Configs from '../../../globalConfigs';
 
-import { UserBookmarks, UserSnippets } from '../../userCollections';
+import { UserBookmarks, UserSnippets } from '../../../userCollections';
 
 import template from './stage2.html';
 

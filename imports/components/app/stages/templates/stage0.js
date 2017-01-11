@@ -1,4 +1,5 @@
-import Utils from '../../globalUtils';
+import Utils from '../../../globalUtils';
+import Configs from '../../../globalConfigs';
 
 import template from './stage0.html';
 

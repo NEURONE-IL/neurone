@@ -1,5 +1,5 @@
-import Utils from '../../globalUtils';
-import Configs from '../../globalConfigs';
+import Utils from '../globalUtils';
+import Configs from '../globalConfigs';
 
 class AuthService {
   constructor($rootScope, $translate, FlowService, UserDataService, SessionTrackService) {

@@ -1,16 +1,11 @@
-import Utils from '../../globalUtils';
-
-import { UserData } from '../../../api/userData/index';
+import Utils from '../globalUtils';
+import Configs from '../globalConfigs';
 
 class UserDataService {
-  constructor($rootScope, $promiser) {
+  constructor() {
     'ngInject';
 
-    this.$promiser = $promiser;
-    this.$rootScope = $rootScope;
-
     this.userId = Meteor.userId();
-    this.hdl = {}; //this.$promiser.subscribe('userDataToggle', userId);
     
     this.userSession = new ReactiveObj();
     this.userConfigs = new ReactiveObj();
@@ -94,56 +89,6 @@ class UserDataService {
       });
     }
   }
-
-  // dgacitua: stage functions
-  /*
-  getStages() {
-    return this.hdl.then((res) => {
-      return UserData.findOne().configs.stages;
-    });    
-  }
-
-  getCurrentStage() {
-    return this.hdl.then((res) => {
-      return UserData.findOne().session.stageNumber;
-    });
-  }
-
-  stageId2Pos(stageId) {
-    return this.hdl.then((res) => {
-      var stages = UserData.findOne().session.stages,
-              st = stages.find({id: stageId}),
-             idx = stages.indexOf(st);
-
-      return idx;
-    });
-  }
-
-  stagePos2Id(stagePosition) {
-    return this.hdl.then((res) => {
-      return UserData.findOne().session.stages[stagePosition].id;
-    });
-  }
-
-  getCurrentStageData() {
-    return this.hdl.then((res) => {
-      var cs = UserData.findOne().session.stageNumber,
-          sd = UserData.findOne().session.stageNumber[cs];
-
-      return sd;
-    });
-  }
-
-  setCurrentStage(stageId) {
-    this.hdl.then((res) => {
-      var stages = UserData.findOne().session.stages,
-              st = stages.find({id: stageId}),
-             idx = stages.indexOf(st);
-
-      this.setSession({stageNumber: idx});
-    });
-  }
-  */
 }
 
 const name = 'userDataService';

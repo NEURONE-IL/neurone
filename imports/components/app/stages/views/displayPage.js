@@ -1,21 +1,19 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 
-import template from './search.html';
+import template from './displayPage.html';
 
-import { name as SearchResults } from './actions/searchResults';
-import { name as DisplayPage } from './actions/displayPage';
-
-class Search {
-  constructor($scope, $rootScope, $reactive, $state, UserDataService, QueryTrackService) {
+class DisplayPage {
+  constructor($scope, $rootScope, $reactive, $state, $stateParams, UserDataService) {
     'ngInject';
 
     this.$state = $state;
     this.$rootScope = $rootScope;
-    this.qts = QueryTrackService;
-    this.uds = UserDataService;
 
+    this.uds = UserDataService;
+    
     $scope.$on('$stateChangeStart', (event) => {
       //this.$rootScope.$broadcast('updateBookmarkList', false);
       this.uds.setSession({ bookmarkButton: false });
@@ -27,53 +25,44 @@ class Search {
 
     $scope.$on('$stateChangeSuccess', (event) => {
       //this.$rootScope.$broadcast('updateBookmarkList', true);
-      var limit = this.uds.getConfigs().maxBookmarks;
-      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
+      var limit = this.uds.getConfigs().minBookmarks;
+      var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
 
-      this.uds.setSession({ bookmarkButton: false });
-      this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: true });
-      this.uds.setSession({ stageNumber: 1 });
+      //this.uds.setSession({ stageNumber: 1 });
       this.uds.setSession({ readyButton: setReady });
-      this.uds.setSession({ stageHome: '/search' });
+      //this.uds.setSession({ stageHome: '/search' });
 
       this.$rootScope.$broadcast('updateNavigation');
+      this.$rootScope.$broadcast('updateBookmarkButton');
     });
 
     $reactive(this).attach($scope);
-
-    this.searchText = '';
-  }
-
-  doSearch() {
-    var queryText = this.searchText ? this.searchText.toString() : '';
-    this.qts.saveQuery(queryText);
-    this.$state.go('searchResults', {query: queryText});
   }
 }
 
-const name = 'search';
+const name = 'displayPage';
 
-// create a module
 export default angular.module(name, [
   angularMeteor,
-  uiRouter,
-  SearchResults,
-  DisplayPage,
+  angularSanitize,
+  uiRouter
+  //Logger,
+  //ActionBlocker
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: Search
+  controller: DisplayPage
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('search', {
-    url: '/search',
-    template: '<search></search>',
+  $stateProvider.state('displayPage', {
+    url: '/page/:docName',
+    template: '<display-page></display-page>',
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

@@ -12,7 +12,7 @@ import { UserBookmarks, UserSnippets } from '../../userCollections';
 
 import { name as ModalService } from '../../modules/modal';
 
-import { name as Logger } from '../../logger/logger';
+//import { name as Logger } from '../../logger/logger';
 import Utils from '../../globalUtils';
 
 /*
@@ -21,7 +21,6 @@ import Utils from '../../globalUtils';
     Module Dependencies:
         angularTranslate
         ModalService
-        Logger
         Login
         Register
         Password
@@ -563,7 +562,7 @@ class Navigation {
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  Logger,
+  //Logger,
   Login,
   Register,
   Password,
