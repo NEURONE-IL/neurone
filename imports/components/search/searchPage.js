@@ -2,12 +2,12 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
-import template from './search.html';
+import template from './searchPage.html';
 
-import { name as SearchResults } from './actions/searchResults';
+import { name as SearchPageResults } from './actions/searchResults';
 import { name as DisplayPage } from './actions/displayPage';
 
-class Search {
+class SearchPage {
   constructor($scope, $rootScope, $reactive, $state, UserDataService, QueryTrackService) {
     'ngInject';
 
@@ -28,14 +28,14 @@ class Search {
     $scope.$on('$stateChangeSuccess', (event) => {
       //this.$rootScope.$broadcast('updateBookmarkList', true);
       var limit = this.uds.getConfigs().maxBookmarks;
-      var setReady = (this.uds.getSession().bookmarkCount >= limit) ? true : false;
+      var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
 
       this.uds.setSession({ bookmarkButton: false });
       this.uds.setSession({ unbookmarkButton: false });
       this.uds.setSession({ bookmarkList: true });
       this.uds.setSession({ stageNumber: 1 });
       this.uds.setSession({ readyButton: setReady });
-      this.uds.setSession({ stageHome: '/search' });
+      this.uds.setSession({ stageHome: '/searchPage' });
 
       this.$rootScope.$broadcast('updateNavigation');
     });
@@ -46,34 +46,34 @@ class Search {
   }
 
   doSearch() {
-    var queryText = this.searchText ? this.searchText.toString() : '';
+    var queryText = this.searchText.toString() || '';
     this.qts.saveQuery(queryText);
     this.$state.go('searchResults', {query: queryText});
   }
 }
 
-const name = 'search';
+const name = 'searchPage';
 
 // create a module
 export default angular.module(name, [
   angularMeteor,
   uiRouter,
-  SearchResults,
+  SearchPageResults,
   DisplayPage,
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: Search
+  controller: SearchPage
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('search', {
-    url: '/search',
-    template: '<search></search>',
+  $stateProvider.state('searchPage', {
+    url: '/searchPage',
+    template: '<search-page></search-page>',
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
@@ -85,11 +85,7 @@ function config($stateProvider) {
       },
       user($auth) {
         return $auth.awaitUser();
-      }/*,
-      userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      }*/
+      }
     }
   });
 };

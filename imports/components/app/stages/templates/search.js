@@ -5,9 +5,9 @@ import 'mark.js';
 import Utils from '../../../globalUtils';
 import Configs from '../../../globalConfigs';
 
-import template from './stage1.html';
+import template from './search.html';
 
-class Stage1 {
+class Search {
   constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, UserDataService, QueryTrackService) {
     'ngInject';
 
@@ -35,7 +35,7 @@ class Stage1 {
         bookmarkButton: false,
         unbookmarkButton: false,
         bookmarkList: true,
-        stageHome: '/stage1',
+        stageHome: '/search',
         statusMessage: ''
       }, (err, res) => {
         if (!err) {
@@ -51,7 +51,7 @@ class Stage1 {
 
           this.$rootScope.$broadcast('updateNavigation');
 
-          console.log('Stage1 loaded!');
+          console.log('Search loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -121,7 +121,7 @@ class Stage1 {
   }
 }
 
-const name = 'stage1';
+const name = 'search';
 
 // create a module
 export default angular.module(name, [
@@ -130,16 +130,16 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Stage1
+  controller: Search
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('stage1', {
-    url: '/stage1?query',
-    template: '<stage1></stage1>',
+  $stateProvider.state('search', {
+    url: '/search?query',
+    template: '<search></search>',
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

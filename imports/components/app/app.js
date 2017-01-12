@@ -20,10 +20,10 @@ import { name as Start } from './views/start';
 import { name as End } from './views/end';
 import { name as ErrorPage } from './views/error';
 
-import { name as Search } from '../search/search';
-import { name as Forms } from '../forms/formCtrl';
-import { name as Synthesis } from '../synthesis/synthesis';
-import { name as Showcase } from '../showcase/showcase';
+import { name as SearchModule } from '../search/searchPage';
+import { name as FormsModule } from '../forms/formCtrl';
+import { name as SynthesisModule } from '../synthesis/synthesis';
+import { name as ShowcaseModule } from '../showcase/showcase';
 
 import { name as AuthService } from '../services/auth';
 import { name as UserDataService } from '../services/userData';
@@ -55,10 +55,10 @@ export default angular.module(name, [
   ActionBlocker,
   Flow,
   // Prototype components
-  Search,
-  Synthesis,
-  Forms,
-  Showcase,
+  SearchModule,
+  SynthesisModule,
+  FormsModule,
+  ShowcaseModule,
   // Modular Components
   Navigation,
   Iframe,
