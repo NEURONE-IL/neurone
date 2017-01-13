@@ -80,6 +80,10 @@ function config($stateProvider) {
     url: '/neuroneViewAllDocs',
     template: '<view-documents></view-documents>',
     resolve: {
+      userData(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
       currentUser($q) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
@@ -87,9 +91,6 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
-      },
-      user($auth) {
-        return $auth.awaitUser();
       }
     }
   });
