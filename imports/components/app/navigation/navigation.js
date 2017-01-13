@@ -96,10 +96,13 @@ class Navigation {
           //this._counters.set('bookmarks', (this.uds.getSession().bookmarkCount || 0));
           this._counters.set('bookmarks', (UserBookmarks.find().count() || 0));
         }
-        else if (currentState === 'stage2') {
+        else if (currentState === 'collection') {
           this.checkSnippetStatus();
         }
-        else if (currentState === 'stage3') {
+        else if (currentState === 'criticalEval') {
+          // TODO
+        }
+        else if (currentState === 'synthesis') {
           // TODO
         }
         else {
@@ -410,7 +413,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentState === 'stage2') {
+    else if (currentState === 'collection') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -420,7 +423,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentState === 'stage3') {
+    else if (currentState === 'synthesis') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -442,6 +445,7 @@ class Navigation {
     }
   }
 
+  /*
   bookmarkAction(callback) {
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     this.call('getForm', 'stage1-fi', (err, res) => { // TODO change hardcoded value
@@ -470,6 +474,7 @@ class Navigation {
       }
     });    
   }
+  */
 
   readyAction(stage) {
     var stageNumber = this.uds.getSession().currentStageNumber, 
@@ -526,7 +531,7 @@ class Navigation {
         }
       });
     }
-    else if (currentState === 'stage2') {
+    else if (currentState === 'collection' || currentState === 'criticalEval') {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
         templateAsset: 'modals/ready_stage2.html',
@@ -543,7 +548,7 @@ class Navigation {
         }
       });
     }
-    else if (currentState === 'stage3') {
+    else if (currentState === 'synthesis') {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
         templateAsset: 'modals/ready_stage3.html',

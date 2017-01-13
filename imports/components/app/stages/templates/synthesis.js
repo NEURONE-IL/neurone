@@ -1,6 +1,7 @@
 import angularTruncate from 'angular-truncate-2';
+import ngWig from 'ng-wig';
 
-import ngWig from '../../../../lib/ngWig/ng-wig';
+//import ngWig from '../../../../lib/ngWig/ng-wig';
 import '../../../../lib/ngWig/css/ng-wig.css';
 import '../../../../lib/ngWig/plugins/formats.ngWig';
 import '../../../../lib/ngWig/plugins/forecolor.ngWig';
@@ -13,11 +14,11 @@ import { UserBookmarks, UserSnippets } from '../../../userCollections';
 
 import { name as PageModal } from '../views/pageModal';
 
-import template from './stage3.html';
+import template from './synthesis.html';
 
-const name = 'stage3';
+const name = 'synthesis';
 
-class Stage3 {
+class Synthesis {
   constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $translate, $interval, $uibModal, UserDataService) {
     'ngInject';
 
@@ -50,13 +51,11 @@ class Stage3 {
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({
         synthesis: true,
-        stageHome: '/stage3'
+        stageHome: '/synthesis'
       }, (err, res) => {
         if (!err) {
           this.$rootScope.$broadcast('updateNavigation');
-
-          Session.set('lockButtons', false);
-          console.log('Stage3 loaded!');
+          console.log('Synthesis loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -69,7 +68,7 @@ class Stage3 {
     this.synthesisMessage = '';
     this.messageId = 'synthesisMessage';
 
-    this.questionId = 'syn-pilot-en'; // TODO remove hardcoded value
+    this.questionId = 'syn-blank'; // TODO remove hardcoded value
     this.question = '';
     this.answer = '';
     this.docId = '';
@@ -81,7 +80,7 @@ class Stage3 {
     this.getQuestion();
     this.autosaveService();
 
-    this.$rootScope.$on('readyStage3', (event, data) => {
+    this.$rootScope.$on('readySynthesis', (event, data) => {
       this.submit();
     });
 
@@ -134,6 +133,8 @@ class Stage3 {
   }
 
   autosaveService() {
+    var interval = Utils.sec2millis(this.uds.getConfigs().synthesisAutosaveInterval || 30);
+
     this.autosave = this.$interval(() => {
       if (!!Meteor.userId()) {
         var answer = {
@@ -162,7 +163,7 @@ class Stage3 {
 
         if (!Utils.isEmpty(this.answer)) this.uds.setSession({ readyButton: true });
       }
-    }, Utils.sec2millis(30));
+    }, interval);
   }
 
   submit() {
@@ -213,12 +214,13 @@ class Stage3 {
 // create a module
 export default angular.module(name, [
   'truncate',
+  'ngWig',
   PageModal
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: Stage3
+  controller: Synthesis
 })
 .config(ngWigConfig)
 .config(config);
@@ -226,15 +228,15 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('stage3', {
-    url: '/stage3',
-    template: '<stage3></stage3>',
+  $stateProvider.state('synthesis', {
+    url: '/synthesis',
+    template: '<synthesis></synthesis>',
     resolve: {
-      userData(UserDataService) {
+      dataReady(UserDataService) {
         var uds = UserDataService;
         return uds.ready();
       },
-      stageLock($q, UserDataService) {
+      stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
@@ -246,17 +248,17 @@ function config($stateProvider) {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
-                stst = 'demo';
+                stst = 'collection';
 
             if (csst !== stst) return $q.reject('WRONG_STAGE');
             else return $q.resolve();
           });
         }
       },
-      userBookmarksSub($promiser) {
+      userBookmarksSub($promiser, stageLock) {
         return $promiser.subscribe('userBookmarks');
       },
-      userSnippetsSub($promiser) {
+      userSnippetsSub($promiser, stageLock) {
         return $promiser.subscribe('userSnippets');
       }
     }

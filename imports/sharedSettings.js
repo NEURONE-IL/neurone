@@ -37,7 +37,7 @@ export default SharedSettings = {
   maxSnippetWordLength: 50,
   snippetWordTruncateThreshold: 25,
   minSynthesisWordLength: 50,
-  syhtesisAutosaveInterval: 30,
+  synthesisAutosaveInterval: 30,
   stages: availableStages,    //availableStages.map(a => Object.assign({}, a)),   // http://stackoverflow.com/a/40283265
   maxGlobalTime: -1,
   // Legacy configs

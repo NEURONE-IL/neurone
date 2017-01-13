@@ -1,9 +1,9 @@
 import Utils from '../../../globalUtils';
 import Configs from '../../../globalConfigs';
 
-import template from './demo.html';
+import template from './tutorial.html';
 
-class Demo {
+class Tutorial {
   constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
     'ngInject';
 
@@ -41,7 +41,7 @@ class Demo {
           //this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
           this.$rootScope.$broadcast('updateNavigation');
 
-          console.log('Demo loaded!');
+          console.log('Tutorial loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -53,7 +53,7 @@ class Demo {
 
     var stageNumber = this.uds.getSession().currentStageNumber;
     
-    this.demoPage = this.uds.getConfigs().stages[stageNumber].page;
+    this.page = this.uds.getConfigs().stages[stageNumber].page;
 
     this.$timeout(() => {
       this.uds.setSession({ readyButton: true });
@@ -61,7 +61,7 @@ class Demo {
   }
 }
 
-const name = 'demo';
+const name = 'tutorial';
 
 // create a module
 export default angular.module(name, [
@@ -69,16 +69,16 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Demo
+  controller: Tutorial
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('demo', {
-    url: '/demo?stage',
-    template: '<demo></demo>',
+  $stateProvider.state('tutorial', {
+    url: '/tutorial?stage',
+    template: '<tutorial></tutorial>',
     resolve: {
       dataReady(UserDataService) {
         var uds = UserDataService;
@@ -96,7 +96,7 @@ function config($stateProvider) {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
-                stst = 'demo';
+                stst = 'tutorial';
 
             if (csst !== stst) return $q.reject('WRONG_STAGE');
             else return $q.resolve();
