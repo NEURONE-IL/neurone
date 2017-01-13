@@ -31,6 +31,8 @@ class Stage3 {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
+      Session.set('lockButtons', true);
+
       this.uds.setSession({
         synthesis: false,
         readyButton: false,
@@ -52,6 +54,8 @@ class Stage3 {
       }, (err, res) => {
         if (!err) {
           this.$rootScope.$broadcast('updateNavigation');
+
+          Session.set('lockButtons', false);
           console.log('Stage3 loaded!');
         }
         else {

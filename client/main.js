@@ -13,7 +13,7 @@ Meteor.startup(() => {
   TimeSync.isSynced();
 
   // dgacitua: User presence tracker
-  UserPresence.awayTime = 30000;
   UserPresence.awayOnWindowBlur = true;
+  //UserPresence.awayTime = 30000;
   UserPresence.start();
 });

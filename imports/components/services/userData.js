@@ -33,13 +33,13 @@ class UserDataService {
           p2 = this.fetchSession();
 
       this.$q.all([p1, p2]).then((res) => {
-        this.udsp.resolve('LOGGED_USER');  
+        this.udsp.resolve('USER_LOGGED');
       });
     }
     else {
       console.log('UserData FLUSH!');
       this.flush();
-      this.udsp.resolve('UNLOGGED_USER');
+      this.udsp.resolve('USER_NOT_LOGGED');
     }
   }
 
@@ -47,7 +47,6 @@ class UserDataService {
     var dfr = this.$q.defer();
 
     Meteor.call('userSession', (err, res) => {
-      console.log('fetchS');
       if (!err) {
         Object.keys(res).map((p) => this.userSession.set(p, res[p]));
         console.log('Session', this.userSession);
@@ -66,7 +65,6 @@ class UserDataService {
     var dfr = this.$q.defer();
 
     Meteor.call('userConfigs', (err, res) => {
-      console.log('fetchC');
       if (!err) {
         Object.keys(res).map((p) => this.userConfigs.set(p, res[p]));
         console.log('Configs', this.userConfigs);

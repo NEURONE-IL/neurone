@@ -15,24 +15,23 @@ class DisplayPage {
     this.uds = UserDataService;
     
     $scope.$on('$stateChangeStart', (event) => {
-      //this.$rootScope.$broadcast('updateBookmarkList', false);
-      this.uds.setSession({ bookmarkButton: false });
-      this.uds.setSession({ unbookmarkButton: false });
-      this.uds.setSession({ bookmarkList: false });
-      this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/home' });
+      this.uds.setSession({
+        bookmarkButton: false,
+        unbookmarkButton: false,
+        bookmarkList: false,
+        readyButton: false
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      //this.$rootScope.$broadcast('updateBookmarkList', true);
       var limit = this.uds.getConfigs().minBookmarks;
       var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
 
-      this.uds.setSession({ bookmarkList: true });
-      //this.uds.setSession({ stageNumber: 1 });
-      this.uds.setSession({ readyButton: setReady });
-      //this.uds.setSession({ stageHome: '/search' });
-
+      this.uds.setSession({
+        bookmarkList: true,
+        readyButton: setReady
+      });
+      
       this.$rootScope.$broadcast('updateNavigation');
       this.$rootScope.$broadcast('updateBookmarkButton');
     });

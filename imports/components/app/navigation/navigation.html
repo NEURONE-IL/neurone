@@ -7,17 +7,17 @@
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn && !navigation.standbyMode">
         <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.statusMessage}}</div>
-        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippetCounter && navigation.enableSnippet" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableUnbookmark" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
-        <button type="button" class="btn btn-success navbar-btn horizontal-button-margin" ng-if="navigation.enableReady" ng-click="navigation.readyAction(navigation.stageNumber)"><i class="fa fa-check" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>
+        <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippetCounter && navigation.enableSnippet" ng-disabled="navigation.lockButtons" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark" ng-disabled="navigation.lockButtons" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableUnbookmark" ng-disabled="navigation.lockButtons" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
+        <button type="button" class="btn btn-success navbar-btn horizontal-button-margin" ng-if="navigation.enableReady" ng-disabled="navigation.lockButtons" ng-click="navigation.readyAction(navigation.stageNumber)"><i class="fa fa-check" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>
       </div>
       <!--<div class="nav pull-left" ng-if="navigation.isLoggedIn">-->
       <div class="nav pull-left" ng-if="false">
         <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
       <div class="nav pull-left btn-group horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
-        <button type="button" class="btn btn-success navbar-btn" ui-sref="register"><i class="fa fa-user-plus" aria-hidden="trueR"></i> {{"auth.registerButton" | translate}}</button>
+        <button type="button" class="btn btn-success navbar-btn" ui-sref="register"><i class="fa fa-user-plus" aria-hidden="true"></i> {{"auth.registerButton" | translate}}</button>
         <button type="button" class="btn btn-primary navbar-btn" ui-sref="login"><i class="fa fa-sign-in" aria-hidden="true"></i> {{"auth.loginButton" | translate}}</button>
       </div>
       <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle" ng-if="navigation.isLoggedIn">

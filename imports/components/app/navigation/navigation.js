@@ -82,28 +82,31 @@ class Navigation {
       });
 
       this.$rootScope.$on('updateNavigation', (event, data) => {
-        var currentStage = this.uds.getSession().currentStageName,
-             stageNumber = this.uds.getSession().currentStageNumber;
+        var stageNumber = this.uds.getSession().currentStageNumber, 
+           currentStage = this.uds.getSession().currentStageName,
+           currentState = this.uds.getSession().currentStageState;
 
         //var stage = this.uds.getSession().stageNumber;
         Utils.notificationHide(this.navbarMessageId);
 
-        if (currentStage === 'stage0') {
+        if (currentState === 'stage0') {
           // TODO
         }
-        else if (currentStage === 'stage1') {
+        else if (currentState === 'search') {
           //this._counters.set('bookmarks', (this.uds.getSession().bookmarkCount || 0));
           this._counters.set('bookmarks', (UserBookmarks.find().count() || 0));
         }
-        else if (currentStage === 'stage2') {
+        else if (currentState === 'stage2') {
           this.checkSnippetStatus();
         }
-        else if (currentStage === 'stage3') {
+        else if (currentState === 'stage3') {
           // TODO
         }
         else {
           // TODO
         }
+
+        Session.set('lockButtons', false);
       });
 
       this.$rootScope.$on('timeoutModal', (event, data) => {
@@ -121,40 +124,43 @@ class Navigation {
           return Meteor.user();
         },
         counters: () => {
-          return this._counters.get();//this.getReactively('_counters');
+          return this._counters.get();
         },
         statusMessage: () => {
-          return this.uds.getSession().statusMessage;//this.$rootScope._navbarMessage.get();
+          return this.uds.getSession().statusMessage;
         },
         bookmarkList: () => {
-          return UserBookmarks.find();//this.$rootScope._bml.list();//this.getReactively('_bookmarkList');//this.getReactively('_bookmarkList');
+          return UserBookmarks.find();
         },
         enableBookmark: () => {
-          return this.uds.getSession().bookmarkButton;//this.$rootScope._enableBookmark.get();//this.getReactively('_enableBookmark');
+          return this.uds.getSession().bookmarkButton;
         },
         enableUnbookmark: () => {
-          return this.uds.getSession().unbookmarkButton;//this.$rootScope._enableUnbookmark.get();//this.getReactively('_enableUnbookmark');
+          return this.uds.getSession().unbookmarkButton;
         },
         enableBookmarkList: () => {
-          return this.uds.getSession().bookmarkList;//this.$rootScope._enableBookmarkList.get();
+          return this.uds.getSession().bookmarkList;
         },
         enableSnippet: () => {
-          return this.uds.getSession().snippetButton;//this.$rootScope._enableSnippet.get();
+          return this.uds.getSession().snippetButton;
         },
         enableSnippetCounter: () => {
-          return this.uds.getSession().snippetCounter;//this.$rootScope._enableSnippetCounter.get();
+          return this.uds.getSession().snippetCounter;
         },
         enableReady: () => {
-          return this.uds.getSession().readyButton;//this._session.readyButton;
+          return this.uds.getSession().readyButton;
         },
         stageHome: () => {
-          return this.uds.getSession().stageHome;//this.$rootScope._stageHome.get();
+          return this.uds.getSession().stageHome;
         },
         stageNumber: () => {
-          return this.uds.getSession().stageNumber;//this.getReactively('_stageNumber');
+          return this.uds.getSession().stageNumber;
         },
         standbyMode: () => {
-          return this.uds.getSession().standbyMode;//this._session.standbyMode;
+          return this.uds.getSession().standbyMode;
+        },
+        lockButtons: () => {
+          return Session.get('lockButtons');
         }
       });
     });
@@ -323,10 +329,11 @@ class Navigation {
   }
 
   tipsModal(stageNumber) {
-    var currentStage = this.uds.getSession().currentStageName,
-         stageNumber = this.uds.getSession().currentStageNumber;
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
 
-    if (currentStage === 'stage0') {
+    if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
@@ -336,7 +343,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage1') {
+    else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
@@ -346,7 +353,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage2') {
+    else if (currentState === 'stage2') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
@@ -356,7 +363,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage3') {
+    else if (currentState === 'stage3') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
@@ -379,10 +386,11 @@ class Navigation {
   }
 
   tutorialModal(stageNumber) {
-    var currentStage = this.uds.getSession().currentStageName,
-         stageNumber = this.uds.getSession().currentStageNumber;
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
 
-    if (currentStage === 'stage0') {
+    if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -392,7 +400,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage1') {
+    else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -402,7 +410,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage2') {
+    else if (currentState === 'stage2') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -412,7 +420,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    else if (currentStage === 'stage3') {
+    else if (currentState === 'stage3') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
@@ -464,10 +472,11 @@ class Navigation {
   }
 
   readyAction(stage) {
-    var currentStage = this.uds.getSession().currentStageName,
-         stageNumber = this.uds.getSession().currentStageNumber;
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
 
-    if (currentStage === 'stage0') {
+    if (currentState === 'stage0') {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
         templateAsset: 'modals/ready_stage0.html',
@@ -484,7 +493,7 @@ class Navigation {
         }
       });
     }
-    else if (currentStage === 'stage1') {
+    else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var maximumStars = 3,
          userBookmarks = UserBookmarks.find().fetch(),
@@ -517,7 +526,7 @@ class Navigation {
         }
       });
     }
-    else if (currentStage === 'stage2') {
+    else if (currentState === 'stage2') {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
         templateAsset: 'modals/ready_stage2.html',
@@ -534,7 +543,7 @@ class Navigation {
         }
       });
     }
-    else if (currentStage === 'stage3') {
+    else if (currentState === 'stage3') {
       var modalObject = {
         title: this.$translate.instant('nav.bookmarkButton'),
         templateAsset: 'modals/ready_stage3.html',

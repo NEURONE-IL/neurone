@@ -13,6 +13,8 @@ class Instructions {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
+      Session.set('lockButtons', true);
+      
       this.uds.setSession({
         readyButton: false,
         statusMessage: ''
@@ -36,7 +38,7 @@ class Instructions {
           var stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
-          this.uds.setSession({ currentStageName: currentStage.id });
+          //this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
 
           this.$rootScope.$broadcast('updateNavigation');
 
@@ -80,11 +82,11 @@ function config($stateProvider) {
     url: '/instructions?stage',
     template: '<instructions></instructions>',
     resolve: {
-      userData(UserDataService) {
+      dataReady(UserDataService) {
         var uds = UserDataService;
         return uds.ready();
       },
-      stageLock($q, UserDataService) {
+      stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
@@ -96,7 +98,7 @@ function config($stateProvider) {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
-                stst = 'demo';
+                stst = 'instructions';
 
             if (csst !== stst) return $q.reject('WRONG_STAGE');
             else return $q.resolve();

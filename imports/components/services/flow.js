@@ -34,7 +34,7 @@ class FlowService {
 
       if (stageNumber < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
-        this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
+        this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1, currentStageState: nextState.state }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
             this.$state.go(nextState.state, nextState.urlParams);
@@ -67,7 +67,7 @@ class FlowService {
       if (stageNumber < this.stages.length-1) {
         var nextState = this.stages[stageNumber+1];
         this.$rootScope.$broadcast('timeoutModal', data);
-        this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1 }, (err, res) => {
+        this.uds.setSession({ currentStageName: nextState.id, currentStageNumber: data+1, currentStageState: nextState.state }, (err, res) => {
           if (!err) {
             console.log('ChangeState', nextState.state, nextState.urlParams, nextState);
             this.$state.go(nextState.state, nextState.urlParams);
