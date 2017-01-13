@@ -60,7 +60,7 @@ export default class LunrIndex {
       var docId = obj.ref,
          docObj = Documents.findOne({_id: docId});
 
-      docObj.body = this.snippetGenerator(docObj.indexedBody, query);
+      docObj.searchSnippet = this.snippetGenerator(docObj.indexedBody, query);
 
       respDocs.push(docObj);
     });

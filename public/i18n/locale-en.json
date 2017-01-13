@@ -13,7 +13,8 @@
     "forms": "Forms",
     "synthesis": "Synthesis",
     "flow": "Flow",
-    "searchResults": "Hakutulokset"
+    "searchResults": "Search Results",
+    "documentList": "Document List"
   },
   "nav": {
     "tutorialButton": "Tutorial",
@@ -131,7 +132,8 @@
     },
     "logout": {
       "title": "Logout",
-      "confirm": "Are you sure that you want to logout?"
+      "confirm": "Are you sure that you want to logout?",
+      "action": "Logging out of NEURONE"
     }
   },
   "hints": {

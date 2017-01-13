@@ -1,7 +1,3 @@
-import angular from 'angular';
-import angularMeteor from 'angular-meteor';
-import uiRouter from 'angular-ui-router';
-
 import Utils from '../../globalUtils';
 
 import template from './logout.html';
@@ -9,7 +5,7 @@ import template from './logout.html';
 import { name as Register } from './register';
 
 class Logout {
-  constructor($scope, $rootScope, $reactive, $state, AuthService) {
+  constructor($scope, $rootScope, $reactive, $state, $timeout, AuthService) {
     'ngInject';
 
     this.$scope = $scope;
@@ -19,7 +15,9 @@ class Logout {
 
     $reactive(this).attach($scope);
 
-    this.logout();
+    $timeout(() => {
+      this.logout();
+    }, 1000);
   }
 
   logout() {
@@ -35,8 +33,6 @@ const name = 'logout';
 
 // create a module
 export default angular.module(name, [
-  angularMeteor,
-  uiRouter
 ])
 .component(name, {
   template,
@@ -50,6 +46,16 @@ function config($stateProvider) {
 
   $stateProvider.state('logout', {
     url: '/logout',
-    template: '<logout></logout>'
+    template: '<logout></logout>',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          return $q.resolve();
+        }
+      }
+    }
   });
 }

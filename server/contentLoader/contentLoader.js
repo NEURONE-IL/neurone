@@ -16,7 +16,9 @@ export default class ContentLoader {
         var total = files.length;
 
         files.forEach((file, idx) => {
-          console.log('Reading question file!', (idx+1) + ' of ' + total);
+          var fn = path.basename(file);
+          console.log('Reading question file!', fn, (idx+1) + ' of ' + total);
+
           var questionFile = fs.readFileSync(file),
            loadedQuestions = JSON.parse(questionFile);          
 
@@ -49,7 +51,9 @@ export default class ContentLoader {
         var total = files.length;
 
         files.forEach((file, idx) => {
-          console.log('Reading settings file!', (idx+1) + ' of ' + total);
+          var fn = path.basename(file);
+          console.log('Reading settings file!', fn, (idx+1) + ' of ' + total);
+
           var settingsFile = fs.readFileSync(file),
             loadedSettings = JSON.parse(settingsFile);          
 

@@ -13,7 +13,8 @@
     "forms": "Lomakkeet",
     "synthesis": "Yhteenveto",
     "flow": "Tehtäväpolku",
-    "searchResults": "Hakutulokset"
+    "searchResults": "Hakutulokset",
+    "documentList": "Document List"
   },
   "nav": {
     "tutorialButton": "Ohje",
@@ -131,7 +132,8 @@
     },
     "logout": {
       "title": "Poistu",
-      "confirm": "Olet kirjautumassa ulos. Oletko varma?"
+      "confirm": "Olet kirjautumassa ulos. Oletko varma?",
+      "action": "Logging out of NEURONE"
     }
   },
   "hints": {

@@ -39,10 +39,6 @@ class Auth {
         this.$state.go('home');
       }
     });
-    /*
-    Accounts.logout();
-    this.$state.go('home');
-    */
   }
 }
 

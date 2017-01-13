@@ -102,11 +102,9 @@ export default class BookmarkTrackService {
     }
   }
   
-  saveBookmark(rating, reason, callback) {
+  saveBookmark(callback) {
     var params = {
-      type: 'Bookmark',
-      rating: rating,
-      reason: reason
+      type: 'Bookmark'
     }
 
     this.makeBookmark(params, (err, res) => {

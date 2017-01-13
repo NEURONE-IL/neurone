@@ -1,6 +1,7 @@
 <div class="form-group">
   <div>
-    <b>{{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span></b>
+    <div><b>{{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span></b></div>
+    <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
   </div>
   <div>
     <span uib-rating ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" max="$ctrl.data.maxStars" read-only="$ctrl.data.isReadonly" state-on="'fa fa-star fa-3x rating-on'" state-off="'fa fa-star-o fa-3x rating-off'" enable-reset="false" name="question"></span>

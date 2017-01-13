@@ -1,13 +1,13 @@
 <!-- dgacitua: Home mode -->
-<div class="container" ng-if="!stage1.firstSearch">
+<div class="container" ng-if="!search.firstSearch">
   <div class="text-center">
     <br><br>
     <!--<img src="http://localhost/logo.png" class="img-responsive center-block">-->
     <h1>{{"search.searchEngineTitle" | translate}}</h1>
     <br>
-    <form class="row center-block" ng-submit="stage1.doSearch()">
+    <form class="row center-block" ng-submit="search.doSearch()">
       <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 input-group">
-        <input class="form-control input-lg" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="stage1.searchText">
+        <input class="form-control input-lg" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="search.searchText">
         <div class="input-group-btn">
           <button type="submit" class="btn btn-lg btn-success" id="btn-search">
             <i class="fa fa-search"></i> {{"search.searchButton" | translate}}
@@ -20,11 +20,11 @@
 </div>
 
 <!-- dgacitua: Display results mode -->
-<div class="container" ng-if="stage1.firstSearch">
+<div class="container" ng-if="search.firstSearch">
   <div class="small-search text-center">   
-    <form class="row center-block" ng-submit="stage1.doSearch()">
+    <form class="row center-block" ng-submit="search.doSearch()">
       <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 input-group">
-        <input class="form-control" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="stage1.searchText">
+        <input class="form-control" placeholder="{{'search.searchPlaceholder' | translate}}" id="searchText" type="text" ng-model="search.searchText">
         <div class="input-group-btn">
           <button type="submit" class="btn btn-success" id="btn-search">
             <i class="fa fa-search"></i> {{"search.searchButton" | translate}}
@@ -34,24 +34,24 @@
     </form>
   </div>
   <hr>
-  <div id="stage1" class="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1">
-    <div ng-if="!stage1.resultsReady">
+  <div id="search" class="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1">
+    <div ng-if="!search.resultsReady">
       <div class="text-center">
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         <span class="sr-only">{{"search.loading" | translate}}</span>
       </div>
     </div>
-    <div ng-if="stage1.resultsReady">
-      <div ng-repeat="doc in stage1.documents.slice(((stage1.currentPage-1)*stage1.resultsPerPage), ((stage1.currentPage)*stage1.resultsPerPage)) track by doc._id">
+    <div ng-if="search.resultsReady">
+      <div ng-repeat="doc in search.documents.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage)) track by doc._id">
         <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })">{{doc.title}}</a>
         <div class="search-result-url">{{doc.url}}</div>
-        <div class="search-result-snippet highlight">{{doc.body | words: 50}}</div>
+        <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
         <br>
       </div>
-      <div class="pagination-wrapper" ng-if="stage1.documents.length > 0">
-        <ul uib-pagination total-items="stage1.totalResults" ng-model="stage1.currentPage" items-per-page="stage1.resultsPerPage"></ul>
+      <div class="pagination-wrapper" ng-if="search.documents.length > 0">
+        <ul uib-pagination total-items="search.totalResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
       </div>
-      <div ng-if="stage1.documents.length <= 0" class="text-center">
+      <div ng-if="search.documents.length <= 0" class="text-center">
         <h3>{{"search.noResults" | translate}}</h3>
       </div>
     </div>

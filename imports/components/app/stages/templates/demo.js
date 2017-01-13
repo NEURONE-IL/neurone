@@ -37,10 +37,7 @@ class Demo {
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
           this.uds.setSession({ currentStageName: currentStage.id });
-
           this.$rootScope.$broadcast('updateNavigation');
-
-          console.log('Demo loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -49,14 +46,13 @@ class Demo {
     });
 
     $reactive(this).attach($scope);
-    
-    var stageName = this.uds.getSession().currentStageName,
-      stageNumber = this.uds.getSession().currentStageNumber;
 
+    var stageNumber = this.uds.getSession().currentStageNumber;
+    
     this.demoPage = this.uds.getConfigs().stages[stageNumber].page;
 
     this.$timeout(() => {
-      if (stageName !== 'end') this.uds.setSession({ readyButton: true });
+      this.uds.setSession({ readyButton: true });
     }, Configs.instructionTimeout);
   }
 }
@@ -80,16 +76,28 @@ function config($stateProvider) {
     url: '/demo?stage',
     template: '<demo></demo>',
     resolve: {
-      currentUser($q) {
+      userData(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
+      stageLock($q, UserDataService) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          return $q.resolve();
+          var uds = UserDataService,
+              dfr = uds.ready();
+
+          dfr.then((res) => {
+            var cstn = uds.getSession().currentStageNumber,
+                csst = uds.getConfigs().stages[cstn].state,
+                cstp = uds.getConfigs().stages[cstn].urlParams,
+                stst = 'demo';
+
+            if (csst !== stst) return $q.reject('WRONG_STAGE');
+            else return $q.resolve();
+          });
         }
-      },
-      user($auth) {
-        return $auth.awaitUser();
       }
     }
   });

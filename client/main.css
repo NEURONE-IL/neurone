@@ -138,6 +138,12 @@ img.logo-home {
   color: gray;
 }
 
+em.hl {
+  font-weight: bold !important;
+  background: none !important;
+  color: black !important;
+}
+
 mark.highlightSearch {
   font-weight: bold !important;
   background: none !important;

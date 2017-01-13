@@ -1,6 +1,7 @@
 import SolrNode from 'solr-node';
 
 import Utils from '../../lib/utils';
+import RemoveDiacritics from '../../lib/removeDiacritics';
 
 import { Documents } from '../../../imports/api/documents/index';
 
@@ -40,7 +41,7 @@ export default class SolrIndex {
         locale_s: doc.locale,
         relevant_b: doc.relevant || false,
         title_t: doc.title || '',
-        body_t: doc.body || '',
+        searchSnippet_t: doc.searchSnippet || '',
         indexedBody_t: this.escapeString(doc.indexedBody) || '',
         keywords_s: doc.keywords || []
       };
@@ -88,7 +89,7 @@ export default class SolrIndex {
 
     var q1 = 'q=' + 'title_t:' + queryText + ' OR ' + 'indexedBody_t:' + queryText,
         q2 = 'df=indexedBody_t',
-        q3 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre="&hl.simple.post="',
+        q3 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
         q4 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
      query = q1 + '&' + q2 + '&' + q3 + '&' + q4;
 
@@ -105,16 +106,11 @@ export default class SolrIndex {
           var docId = doc.id,
              docObj = Documents.findOne({_id: docId});
 
-          docObj.body = '';
-
-          // Underscore.js iterate object
-          //_.each(searchHl[docId], function(value, key) {
-          //  docObj.body += value[0];
-          //});
+          docObj.searchSnippet = '';
 
           searchHl[docId].indexedBody_t.forEach((snip, idx, arr) => {
-            docObj.body += snip;
-            if (idx < arr.length-1) docObj.body += ' ... ';
+            docObj.searchSnippet += snip;
+            if (idx < arr.length-1) docObj.searchSnippet += ' ... ';
           });
 
           delete docObj.indexedBody;

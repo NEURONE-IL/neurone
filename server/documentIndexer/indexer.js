@@ -17,9 +17,10 @@ export default class Indexer {
     var total = documentList.length;
 
     documentList.forEach((doc, idx) => {
-      console.log('Indexing documents...', (idx+1) + ' of ' + total);
+      var fn = path.basename(doc.route);
+      console.log('Indexing documents...', fn, (idx+1) + ' of ' + total);
 
-      var docRoute = path.join(assetPath, 'web', doc.route);
+      var docRoute = path.join(assetPath, doc.route);
 
       DocumentParser.cleanDocument(docRoute);
 
@@ -30,12 +31,8 @@ export default class Indexer {
       // dgacitua: http://stackoverflow.com/a/171256
       for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
       for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
-
-      // dgacitua: Underscore.js extend and merge
-      //docObj = _.extend(docObj, jsonObj);
-      //docObj = _.extend(docObj, parsedObj);
       
-      docObj.route = path.join('web', docObj.route);
+      docObj.route = path.join(docObj.route);
 
       Documents.upsert({ route: docObj.route }, docObj, (err, res) => {
         //if (!err) console.log('Document indexed!', (idx+1) + ' of ' + total);

@@ -2,10 +2,13 @@ import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
 class UserDataService {
-  constructor() {
+  constructor($q) {
     'ngInject';
 
+    this.$q = $q;
+
     this.userId = Meteor.userId();
+    this.udsp = this.$q.defer();
     
     // dgacitua: https://github.com/xamfoo/reactive-obj
     this.userSession = new ReactiveObj();
@@ -13,41 +16,69 @@ class UserDataService {
 
     Meteor.autorun(() => {
       this.userId = Meteor.userId();
-
-      if (!!this.userId) {
-        console.log('UserData AUTORUN!', this.userId);
-        this.fetchConfigs();
-        this.fetchSession();
-      }
-      else {
-        console.log('UserData FLUSH!');
-        this.flush();
-      }
+      this.autorun(this.userId);
     });
+  }
+
+  ready() {
+    return this.udsp.promise;
+  }
+
+  autorun(userId) {
+    this.udsp = this.$q.defer();
+
+    if (!!userId) {
+      console.log('UserData AUTORUN!', userId);
+      var p1 = this.fetchConfigs(),
+          p2 = this.fetchSession();
+
+      this.$q.all([p1, p2]).then((res) => {
+        this.udsp.resolve('LOGGED_USER');  
+      });
+    }
+    else {
+      console.log('UserData FLUSH!');
+      this.flush();
+      this.udsp.resolve('UNLOGGED_USER');
+    }
   }
 
   fetchSession() {
+    var dfr = this.$q.defer();
+
     Meteor.call('userSession', (err, res) => {
+      console.log('fetchS');
       if (!err) {
         Object.keys(res).map((p) => this.userSession.set(p, res[p]));
         console.log('Session', this.userSession);
+        dfr.resolve();
       }
       else {
         console.error(err);
+        dfr.reject();
       }
     });
+
+    return dfr.promise;
   }
 
   fetchConfigs() {
+    var dfr = this.$q.defer();
+
     Meteor.call('userConfigs', (err, res) => {
+      console.log('fetchC');
       if (!err) {
         Object.keys(res).map((p) => this.userConfigs.set(p, res[p]));
         console.log('Configs', this.userConfigs);
+        dfr.resolve();
       }
       else {
         console.error(err);
+        dfr.reject();
       }
     });
+
+    return dfr.promise;
   }
 
   getSession() {
@@ -59,8 +90,12 @@ class UserDataService {
   }
 
   flush() {
+    var dfr = this.$q.defer();
+
     this.userSession.set([], {});
     this.userConfigs.set([], {});
+
+    return dfr.resolve();
   }
 
   setSession(property, callback) {

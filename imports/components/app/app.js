@@ -33,6 +33,8 @@ import { name as Logger } from '../services/logger/logger';
 
 import { name as Stages } from './stages/stages';
 
+import { name as ViewDocuments } from '../modules/viewDocuments';
+
 import Configs from '../globalConfigs';
 
 class App {}
@@ -69,7 +71,9 @@ export default angular.module(name, [
   End,
   ErrorPage,
   // iFuCo Simulation
-  Stages
+  Stages,
+  // Other modules
+  ViewDocuments
 ])
 .component(name, {
   template,
@@ -85,7 +89,8 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
  
   // uiRouter settings
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise('/home');
+  //$urlRouterProvider.deferIntercept();
+  $urlRouterProvider.otherwise('/start');
 
   // angularTranslate settings
   $translateProvider.useStaticFilesLoader({
@@ -96,17 +101,29 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
   $translateProvider.preferredLanguage('fi');
 };
 
-function run($rootScope, $state, $window, $translate, FlowService, UserDataService) {
+function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {
   'ngInject';
 
   fs = FlowService;
   uds = UserDataService;
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
-    if (error === 'AUTH_REQUIRED') {
-      $state.go('login');
-    }
+    console.log(event, toState, toParams, error);
+    if (error === 'AUTH_REQUIRED') $state.go('login');
+    if (error === 'WRONG_STAGE') $state.go('start');
   });
+
+  $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams, error) => {
+    console.log(event, toState, toParams);
+  });
+
+  // dgacitua: http://stackoverflow.com/a/29943256
+  $rootScope.$on('$locationChangeSuccess', (event) => {
+    //event.preventDefault();
+    //$urlRouter.sync();
+  });
+
+  //$urlRouter.listen();
 
   angular.element($window).on('beforeunload', () => {
     if (Configs.flowEnabled) fs.stopFlow();
@@ -117,15 +134,22 @@ function run($rootScope, $state, $window, $translate, FlowService, UserDataServi
   Accounts.onLogin(() => {
     var locale = uds.getConfigs().locale;
     $translate.use(locale);
-    
-    if (!!Meteor.userId()) $state.go('start');
+        
+    /*
+    if (!!Meteor.userId()) {
+      if ($state.is('viewDocuments')) {
+        $state.go('viewDocuments');
+      }
+      else {
+        $state.go('start');
+      }
+    }
+    */
   });
 
   Accounts.onLogout(() => {
     if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
-    //$translate.use('en');
-    
   });
 };
 
