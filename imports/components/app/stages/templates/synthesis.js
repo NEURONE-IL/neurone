@@ -1,7 +1,7 @@
 import angularTruncate from 'angular-truncate-2';
-import ngWig from 'ng-wig';
+//import ngWig from 'ng-wig';
 
-//import ngWig from '../../../../lib/ngWig/ng-wig';
+import ngWig from '../../../../lib/ngWig/ng-wig';
 import '../../../../lib/ngWig/css/ng-wig.css';
 import '../../../../lib/ngWig/plugins/formats.ngWig';
 import '../../../../lib/ngWig/plugins/forecolor.ngWig';

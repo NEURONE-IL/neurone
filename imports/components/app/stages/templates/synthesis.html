@@ -1,6 +1,6 @@
 <div class="container-fluid container-wrapper">
   <div class="row container-wrapper">
-    <div class="col-lg-8 col-md-8 col-sm-8 container-wrapper">
+    <div class="col-lg-7 col-md-7 col-sm-7 container-wrapper">
       <br>
       <p><b>{{synthesis.question}}</b></p>
       <form ng-submit="synthesis.submit()">
@@ -11,7 +11,7 @@
         </div>
       </form>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 container-wrapper">
+    <div class="col-lg-5 col-md-5 col-sm-5 container-wrapper">
       <div class="interaction-bar">
       <uib-tabset active="active">
         <uib-tab index="0" heading="{{'synthesis.allPages' | translate}}">
@@ -20,7 +20,7 @@
           <uib-accordion index="$index+1" ng-repeat="snippet in synthesis.snippetListGlobal track by $index">
             <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
               <uib-accordion-heading>
-                {{"synthesis.snippetAll" | translate: {snipNum: $index+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+                {{"synthesis.snippetAll" | translate: {snipNum: $index+1} }} <i>{{snippet.snippedText | words: 5}}</i> <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
               </uib-accordion-heading>
               <div role="button" ng-click="synthesis.launchPageModal(snippet)">
                 {{snippet.snippedText}}
@@ -34,7 +34,7 @@
           <uib-accordion index="$index+1" ng-repeat="snippet in synthesis.snippetListPerPage track by $index">
             <div uib-accordion-group class="panel-default"  is-open="snippet.isOpen">
               <uib-accordion-heading>
-                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: synthesis.pageIndex+1} }} <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
+                {{"synthesis.snippet" | translate: {snipNum: $index+1, pageNum: synthesis.pageIndex+1} }} <i>{{snippet.snippedText | words: 5}}</i> <i class="pull-right fa" ng-class="{'fa-chevron-down': snippet.isOpen, 'fa-chevron-right': !snippet.isOpen}"></i>
               </uib-accordion-heading>
               <div role="button" ng-click="synthesis.launchPageModal(snippet)">
                 {{snippet.snippedText}}
