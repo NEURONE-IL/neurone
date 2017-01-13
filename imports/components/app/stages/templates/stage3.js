@@ -226,21 +226,29 @@ function config($stateProvider) {
     url: '/stage3',
     template: '<stage3></stage3>',
     resolve: {
-      currentUser($q) {
+      userData(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
+      stageLock($q, UserDataService) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          return $q.resolve();
+          var uds = UserDataService,
+              dfr = uds.ready();
+
+          dfr.then((res) => {
+            var cstn = uds.getSession().currentStageNumber,
+                csst = uds.getConfigs().stages[cstn].state,
+                cstp = uds.getConfigs().stages[cstn].urlParams,
+                stst = 'demo';
+
+            if (csst !== stst) return $q.reject('WRONG_STAGE');
+            else return $q.resolve();
+          });
         }
       },
-      user($auth) {
-        return $auth.awaitUser();
-      },
-      /*userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      },*/
       userBookmarksSub($promiser) {
         return $promiser.subscribe('userBookmarks');
       },

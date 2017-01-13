@@ -244,7 +244,7 @@ class Navigation {
 
   saveBookmark() {
     if (!!Meteor.userId()) {
-      this.bms.saveBookmark(res.answers[0].answer, res.answers[1].answer, (err, res) => {
+      this.bms.saveBookmark((err, res) => {
         this.uds.setSession({ statusMessage: (res || err) });
         Utils.notificationFadeout(this.navbarMessageId);
         this.$scope.$apply();
