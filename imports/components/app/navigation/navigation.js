@@ -324,7 +324,7 @@ class Navigation {
       templateAsset: template,
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
-        subject: 'I need your help!'
+        subject: ''
       }
     };
 
@@ -334,7 +334,8 @@ class Navigation {
   tipsModal(stageNumber) {
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
-       currentState = this.uds.getSession().currentStageState;
+       currentState = this.uds.getSession().currentStageState,
+          stageData = this.uds.getConfigs().stages[stageNumber];
 
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -346,6 +347,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
+    /*
     else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
@@ -376,6 +378,17 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
+    */
+    else if (currentState === 'search' || currentState === 'collection' || currentState === 'criticalEval' || currentState === 'synthesis') {
+      var modalObject = {
+        title: this.$translate.instant('nav.tipsButton'),
+        templateAsset: stageData.tips,
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+
     else {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
@@ -391,7 +404,8 @@ class Navigation {
   tutorialModal(stageNumber) {
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
-       currentState = this.uds.getSession().currentStageState;
+       currentState = this.uds.getSession().currentStageState,
+          stageData = this.uds.getConfigs().stages[stageNumber];
 
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -403,6 +417,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
+    /*
     else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
@@ -429,6 +444,19 @@ class Navigation {
         title: this.$translate.instant('nav.tutorialButton'),
         templateAsset: 'modals/tutorial_stage3.html',
         fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    */
+    else if (currentState === 'search' || currentState === 'collection' || currentState === 'criticalEval' || currentState === 'synthesis') {
+      // dgacitua: Modal template location is relative to NEURONE's Asset Path
+      var modalObject = {
+        title: this.$translate.instant('nav.tutorialButton'),
+        templateAsset: 'modals/tutorial_stages.html',
+        fields: {
+          slides: stageData.tutorial
+        }
       };
 
       this.modal.openModal(modalObject, (err, res) => {});
