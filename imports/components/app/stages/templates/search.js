@@ -80,10 +80,17 @@ class Search {
       this.qts.saveQuery(queryText);
       this.$state.go('.', {query: queryText}, {notify: false});
 
-      this.call('searchDocuments', queryText, function(err, res) {
+      var queryObj = {
+        query: queryText,
+        locale: this.uds.getConfigs().locale,
+        test: this.uds.getConfigs().test,
+        topic: this.uds.getConfigs().topic
+      }
+
+      this.call('searchDocuments', queryObj, function(err, res) {
         if (!err) {
           this.documents = res;
-
+          
           // dgacitua: Pagination
           this.totalResults = this.documents.length;
           this.currentPage = 1;

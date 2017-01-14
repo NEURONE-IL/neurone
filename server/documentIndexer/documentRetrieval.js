@@ -1,6 +1,8 @@
 import SolrIndex from './indexes/solrIndex';
 import LunrIndex from './indexes/lunrIndex';
 
+import 'array.prototype.move';
+
 import { Documents } from '../../imports/api/documents/index';
 
 export default class DocumentRetrieval {
@@ -28,7 +30,35 @@ export default class DocumentRetrieval {
     check(insertions, Number);
     check(offset, Number);
 
+    // iFuCoSort v3
+    var newArray = documentArray,
+       insertNum = newArray.length < insertions ? newArray.length : insertions,
+       offsetPos = newArray.length < offset ? newArray.length : offset;
+
+    if (newArray.length >= 2 && newArray[0].relevant) {
+      for (var k=0; k<newArray.length; k++) {
+        if (!newArray[k].relevant) {
+          newArray = this.moveInArray(newArray, k, 0);
+          break;
+        }
+      }        
+    }
+
+    for (var i=0; i<insertNum; i++) {
+      if (newArray[i].relevant) return newArray;
+    }
+
+    for (var j=0; j<newArray.length; j++) {
+      if (newArray[j].relevant) {
+        newArray = this.moveInArray(newArray, j, offsetPos-1);
+        return newArray;  
+      }
+    }
+
+    return newArray;
+
     // iFuCoSort v2
+    /*
     var insertNum = documentArray.length < insertions ? documentArray.length : insertions,
         offsetPos = documentArray.length < offset ? documentArray.length : offset;
 
@@ -44,6 +74,7 @@ export default class DocumentRetrieval {
     }
 
     return documentArray;
+    */
 
     // iFuCoSort v1
     /*
@@ -65,22 +96,45 @@ export default class DocumentRetrieval {
     return this.removeArrayDuplicates(a => a._id, documentArray);
     */
   }
+
+  // dgacitua: http://stackoverflow.com/a/5306832
+  static moveInArray(array, old_index, new_index) {
+    while (old_index < 0) {
+      old_index += array.length;
+    }
+    while (new_index < 0) {
+      new_index += array.length;
+    }
+    if (new_index >= array.length) {
+      var k = new_index - array.length;
+      while ((k--) + 1) {
+        array.push(undefined);
+      }
+    }
+    array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+
+    return array;
+  }
 }
 
 Meteor.methods({
-  searchDocuments: function(query) {
+  searchDocuments: function(queryObj) {
     try {
       if (process.env.NEURONE_SOLR_HOST) {
-        var call = Meteor.wrapAsync(SolrIndex.searchDocuments),//(query, (err, res) => {
-             res = call(query);
+        var qo = queryObj,
+          call = Meteor.wrapAsync(SolrIndex.searchDocuments),
+          res1 = call(qo.query),
+          res2 = res1.filter((d) => { return d.locale === qo.locale && d.test.indexOf(qo.test) !== -1 && d.topics.indexOf(qo.topic) !== -1 });
 
-        if (res.length >= 1) return DocumentRetrieval.iFuCoSort(res, 3, 2);
+        if (res2.length >= 1) return DocumentRetrieval.iFuCoSort(res2, 3, 2);
         else return res;
       }
       else {
-        var results = LunrIndex.searchDocuments(query);
+        var qo = queryObj,
+          res1 = LunrIndex.searchDocuments(qo.query),
+          res2 = res1.filter((d) => { return d.locale === qo.locale && d.test.indexOf(qo.test) !== -1 && d.topics.indexOf(qo.topic) !== -1 });
 
-        if (results.length >= 1) return DocumentRetrieval.iFuCoSort(results, 3, 2);
+        if (res2.length >= 1) return DocumentRetrieval.iFuCoSort(res2, 3, 2);
         else return results;
       }
     }

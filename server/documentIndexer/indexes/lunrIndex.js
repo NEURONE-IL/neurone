@@ -1,5 +1,6 @@
 import lunr from 'lunr';
 import sum from 'sum';
+
 import 'array.prototype.move';
 
 import Utils from '../../lib/utils';

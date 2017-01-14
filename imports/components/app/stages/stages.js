@@ -1,3 +1,4 @@
+import { name as TaskQuestions } from './templates/taskQuestions';
 import { name as Instructions } from './templates/instructions';
 import { name as Tutorial } from './templates/tutorial';
 import { name as Stage0 } from './templates/stage0';
@@ -12,6 +13,7 @@ const name = 'stages';
 
 // create a module
 export default angular.module(name, [
+  TaskQuestions,
   Instructions,
   Tutorial,
   //Stage0,

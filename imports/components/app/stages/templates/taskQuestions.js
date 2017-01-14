@@ -58,7 +58,7 @@ class TaskQuestions {
     this.page = this.uds.getConfigs().stages[stageNumber].page;
 
     this.$timeout(() => {
-      if (stageName !== 'end') this.uds.setSession({ readyButton: true });
+      this.uds.setSession({ readyButton: true });
     }, Configs.instructionTimeout);
   }
 }

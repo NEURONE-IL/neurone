@@ -61,22 +61,6 @@ export default class SolrIndex {
             console.error('Error while adding documents to Solr Index', err2);
           }
         });
-        /*
-        // dgacitua: Adding new documents
-        docs.forEach((doc, idx, arr) => {
-          // dgacitua: Need to set timeout to avoid saturating Solr Index
-          setTimeout(() => {
-            searchIndex.update(doc, (err2, res2) => {
-              if (!err2) idxCnt++;
-              else idxErr++;
-            });
-          }, this.randomInteger(50,100));
-
-          if (idxCnt+idxErr === arr.length) {
-            console.log('Documents indexed in Solr!', 'OK:' + idxCnt, 'ERROR:' + idxErr);    
-          }
-        });
-        */
       }
       else {
         console.error('Error while removing old documents from Solr Index', err);
