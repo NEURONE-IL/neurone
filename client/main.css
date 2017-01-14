@@ -139,6 +139,7 @@ img.logo-home {
 }
 
 em.hl {
+  font-style: normal !important;
   font-weight: bold !important;
   background: none !important;
   color: black !important;

@@ -53,7 +53,8 @@ class Tutorial {
 
     var stageNumber = this.uds.getSession().currentStageNumber;
     
-    this.page = this.uds.getConfigs().stages[stageNumber].page;
+    // this.page = this.uds.getConfigs().stages[stageNumber].page;
+    this.slides = this.uds.getConfigs().stages[stageNumber].slides;
 
     this.$timeout(() => {
       this.uds.setSession({ readyButton: true });
@@ -63,7 +64,6 @@ class Tutorial {
 
 const name = 'tutorial';
 
-// create a module
 export default angular.module(name, [
 ])
 .component(name, {

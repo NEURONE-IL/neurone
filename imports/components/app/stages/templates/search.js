@@ -1,3 +1,4 @@
+import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
 
 import 'mark.js';
@@ -8,7 +9,7 @@ import Configs from '../../../globalConfigs';
 import template from './search.html';
 
 class Search {
-  constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, UserDataService, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, $sanitize, UserDataService, QueryTrackService) {
     'ngInject';
 
     this.$scope = $scope;
@@ -134,6 +135,7 @@ const name = 'search';
 
 // create a module
 export default angular.module(name, [
+  'ngSanitize',
   'truncate'
 ])
 .component(name, {

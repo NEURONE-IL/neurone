@@ -47,16 +47,12 @@ class ViewDocuments {
 
     $reactive(this).attach($scope);
 
-    this.sub = $promiser.subscribe('documents');
-
-    this.sub.then((res) => {
-      // dgacitua: Pagination
-      this.documents = Documents.find({}).fetch();
-      this.totalResults = Documents.find({}).count();
-      this.currentPage = 1;
-      this.resultsPerPage = 10;
-      this.paginationMaxSize = 5;
-    });
+    // dgacitua: Pagination
+    this.documents = Documents.find({}).fetch();
+    this.totalResults = Documents.find({}).count();
+    this.currentPage = 1;
+    this.resultsPerPage = 10;
+    this.paginationMaxSize = 5;
   }
 }
 
@@ -84,13 +80,16 @@ function config($stateProvider) {
         var uds = UserDataService;
         return uds.ready();
       },
-      currentUser($q) {
+      currentUser($q, userData) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
           return $q.resolve();
         }
+      },
+      documentSub(currentUser) {
+        return $promiser.subscribe('documents');
       }
     }
   });

@@ -24,6 +24,7 @@ export default class DocumentParser {
       return text || '';
       */
       
+      /*
       var options = {
         wordwrap: false,
         uppercaseHeadings: false,
@@ -32,6 +33,14 @@ export default class DocumentParser {
       };
 
       return htmlToText.fromString(htmlFile, options) || '';
+      */
+
+      var $ = cheerio.load(htmlFile.toString());
+      
+      $('script').remove();
+      $('noscript').remove();
+      
+      return $('body').text().toString().replace(/\s{2,9999}/g, ' ');
     }
     catch (e) {
       console.error(e);
