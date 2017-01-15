@@ -247,10 +247,6 @@ class Navigation {
       });
 
       this.uds.setSession({ readyButton: setReady });
-
-      //console.log('SnipStat', snippets, snippetsPage, maxBkm, snippetLim, snippetCnt);
-      //var setReady = (snippets >= snippetLim) ? true : false;
-      //this.$rootScope.$broadcast('updateSnippetButton', Session.get('docId'));
     }
   }
 
@@ -291,6 +287,16 @@ class Navigation {
         if (!err) this.checkBookmarkStatus();
       });
     }
+  }
+
+  removeNonRelevantBookmarks() {
+    if (!!Meteor.userId()) {
+      var docs = UserBookmarks.find({ relevant: false }).fetch();
+
+      this.bms.removeNonRelevantBookmarks(docs, (err, res) => {
+        if (!err) this.checkBookmarkStatus();
+      });
+    } 
   }
 
   logout() {
@@ -562,6 +568,9 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok' && goodDocs >= minBookmarks) {
             this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+          else {
+            this.removeNonRelevantBookmarks();
           }
         }
       });

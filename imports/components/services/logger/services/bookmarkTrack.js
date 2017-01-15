@@ -101,7 +101,38 @@ export default class BookmarkTrackService {
       callback(msg);
     }
   }
-  
+
+  customBookmark(bookmarkObject, params, callback) {
+    if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
+      
+      bookmarkObject.action = params.type
+
+      var navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
+         consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
+
+
+      //console.log('Bookmark', bookmarkObject);
+
+      Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
+        if (!err) {
+          var msg = this.$translate.instant(navbarMsg);
+          Utils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
+          callback(null, msg);
+        }
+        else {
+          var msg = this.$translate.instant('alerts.bookmarkError');
+          console.error('Error saving bookmark!', err);
+          callback(msg);
+        }
+      });
+    }
+    else {
+      var msg = this.$translate.instant('alerts.bookmarkError');
+      console.error('Error while saving bookmark!');
+      callback(msg);
+    }
+  }
+
   saveBookmark(callback) {
     var params = {
       type: 'Bookmark'
@@ -130,5 +161,21 @@ export default class BookmarkTrackService {
         callback(err);
       }
     });
+  }
+
+  removeNonRelevantBookmarks(bookmarkArray, callback) {
+    var params = {
+      type: 'Unbookmark'
+    }
+    
+    bookmarkArray.forEach((bkm) => {
+      if (bkm.relevant === true) {
+        this.customBookmark(bkm, params, (err, res) => {
+          if (err) callback(err);
+        });
+      }
+    });
+
+    callback(null, res);
   }
 }
