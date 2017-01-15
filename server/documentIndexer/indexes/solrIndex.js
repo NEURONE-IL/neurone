@@ -43,7 +43,7 @@ export default class SolrIndex {
         title_t: doc.title || '',
         searchSnippet_t: doc.searchSnippet || '',
         indexedBody_t: this.escapeString(doc.indexedBody) || '',
-        keywords_s: doc.keywords || []
+        keywords_t: doc.keywords || []
       };
 
       idxDocs.push(newDoc);
@@ -71,7 +71,9 @@ export default class SolrIndex {
   static searchDocuments(queryText, callback) {
     check(queryText, String);
 
-    var q1 = 'q=' + 'title_t:' + queryText + ' OR ' + 'indexedBody_t:' + queryText,
+    var queryFix = encodeURIComponent(queryText);
+
+    var q1 = 'q=' + 'title_t:' + queryFix + ' OR ' + 'indexedBody_t:' + queryFix + ' OR ' + 'keywords_t:' + queryFix,
         q2 = 'df=indexedBody_t',
         q3 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
         q4 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',

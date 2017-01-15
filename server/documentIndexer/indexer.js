@@ -11,40 +11,46 @@ import { Documents } from '../../imports/api/documents/index';
 
 export default class Indexer {
   static generateDocumentCollection(assetPath) {
-    console.log('Generating Document Collection!');
+    try {
+      console.log('Generating Document Collection!');
 
-    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
-    var total = documentList.length;
+      var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
+      var total = documentList.length;
 
-    documentList.forEach((doc, idx) => {
-      var fn = path.basename(doc.route);
-      console.log('Indexing documents...', fn, (idx+1) + ' of ' + total);
+      documentList.forEach((doc, idx) => {
+        var fn = path.basename(doc.route);
+        console.log('Indexing documents...', fn, (idx+1) + ' of ' + total);
 
-      var docRoute = path.join(assetPath, doc.route);
+        var docRoute = path.join(assetPath, doc.route);
 
-      DocumentParser.cleanDocument(docRoute);
+        DocumentParser.cleanDocument(docRoute);
 
-      var docObj = {};
-      var parsedObj = DocumentParser.parseDocument(docRoute);
-      //var jsonObj = documentList.find(o => o.route === doc.route);
+        var docObj = {};
+        var parsedObj = DocumentParser.parseDocument(docRoute);
+        //var jsonObj = documentList.find(o => o.route === doc.route);
 
-      // dgacitua: http://stackoverflow.com/a/171256
-      for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
-      for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
-      
-      docObj.route = path.join(docObj.route);
+        // dgacitua: http://stackoverflow.com/a/171256
+        for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+        for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
+        
+        docObj.route = path.join(docObj.route);
 
-      Documents.upsert({ route: docObj.route }, docObj, (err, res) => {
-        //if (!err) console.log('Document indexed!', (idx+1) + ' of ' + total);
+        Documents.upsert({ route: docObj.route }, docObj, (err, res) => {
+          //if (!err) console.log('Document indexed!', (idx+1) + ' of ' + total);
+        });
       });
-    });
 
-    if (process.env.NEURONE_SOLR_HOST) {
-      SolrIndex.generate();
+      if (process.env.NEURONE_SOLR_HOST) {
+        SolrIndex.generate();
+      }
+      else {
+        LunrIndex.generate();
+      }  
     }
-    else {
-      LunrIndex.generate();
+    catch (err) {
+      throw new Meteor.Error('DocumentIndexingError', 'Cannot index document!', err);
     }
+    
 
     // TODO Remove all documents
 

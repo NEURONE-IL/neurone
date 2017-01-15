@@ -147,6 +147,20 @@ export default class DocumentParser {
         $(elem).attr('disabled', 'true');
       });
 
+      // dgacitua: Disable submit
+      $('input[type="submit"]').each((i, elem) => {
+        $(elem).removeAttr('type');
+      });
+
+      $('button[type="submit"]').each((i, elem) => {
+        $(elem).removeAttr('type');
+      });
+
+      // dgacitua: Disable form action
+      $('form').each((i, elem) => {
+        $(elem).removeAttr('action');
+      });
+
       // dgacitua: Remove iframe elements
       $('iframe').each((i, elem) => {
         $(elem).remove();

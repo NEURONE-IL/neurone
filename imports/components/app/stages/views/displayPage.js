@@ -43,8 +43,6 @@ class DisplayPage {
           console.error('Error while loading Stage!', err);
         } 
       });
-
-      
     });
 
     $reactive(this).attach($scope);
