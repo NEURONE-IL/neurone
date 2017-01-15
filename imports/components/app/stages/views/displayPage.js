@@ -13,31 +13,50 @@ class DisplayPage {
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
-    
+       
     $scope.$on('$stateChangeStart', (event) => {
-      //this.$rootScope.$broadcast('updateBookmarkList', false);
-      this.uds.setSession({ bookmarkButton: false });
-      this.uds.setSession({ unbookmarkButton: false });
-      this.uds.setSession({ bookmarkList: false });
-      this.uds.setSession({ readyButton: false });
-      //this.uds.setSession({ stageHome: '/home' });
+      Session.set('lockButtons', true);
+
+      this.uds.setSession({
+        bookmarkButton: false,
+        unbookmarkButton: false,
+        bookmarkList: false,
+        backButton: false,
+        readyButton: false
+      });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      //this.$rootScope.$broadcast('updateBookmarkList', true);
       var limit = this.uds.getConfigs().minBookmarks;
       var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
 
-      this.uds.setSession({ bookmarkList: true });
-      //this.uds.setSession({ stageNumber: 1 });
-      this.uds.setSession({ readyButton: setReady });
-      //this.uds.setSession({ stageHome: '/search' });
+      this.uds.setSession({
+        bookmarkList: true,
+        backButton: true,
+        readyButton: setReady
+      }, (err, res) => {
+        if (!err) {
+          this.$rootScope.$broadcast('updateNavigation');
+          this.$rootScope.$broadcast('updateBookmarkButton');
+        }
+        else {
+          console.error('Error while loading Stage!', err);
+        } 
+      });
 
-      this.$rootScope.$broadcast('updateNavigation');
-      this.$rootScope.$broadcast('updateBookmarkButton');
+      
     });
 
     $reactive(this).attach($scope);
+
+    this.$rootScope.$on('goBack', (event, data) => {
+      this.goToPreviousState();
+    });
+  }
+
+  goToPreviousState() {
+    console.log(this.previousState);
+    this.$state.go(this.previousState.name, this.previousState.params);
   }
 }
 
@@ -53,7 +72,10 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: DisplayPage
+  controller: DisplayPage,
+  bindings: {
+    previousState: '='
+  }
 })
 .config(config);
 
@@ -62,7 +84,7 @@ function config($stateProvider) {
 
   $stateProvider.state('displayPage', {
     url: '/page/:docName',
-    template: '<display-page></display-page>',
+    template: '<display-page previous-state="$resolve.previousState"></display-page>',
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
@@ -72,13 +94,16 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
-      user($auth) {
-        return $auth.awaitUser();
-      }/*,
-      userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      }*/
+      // dgacitua: http://stackoverflow.com/a/25945003
+      previousState($state, currentUser) {
+        var currentStateData = {
+          name: $state.current.name,
+          params: $state.params,
+          url: $state.href($state.current.name, $state.params)
+        };
+
+        return currentStateData;
+      }
     }
   });
 };

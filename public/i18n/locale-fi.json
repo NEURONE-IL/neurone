@@ -21,6 +21,7 @@
     "tipsButton": "Vihjeet",
     "taskButton": "Tehtävä",
     "readyButton": "Valmis",
+    "backButton": "Takaisin hakuun",
     "bookmarkList": "Valittujen sivujen lista",
     "selectedPages": "Valittuja sivuja: {{bookmarks}}",
     "snippetCount": "Olet valinnut {{words}} sanaa",

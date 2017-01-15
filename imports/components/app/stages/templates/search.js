@@ -57,7 +57,7 @@ class Search {
           console.log('Search loaded!');
         }
         else {
-          console.error('Error while loading Stage!', err);
+          console.error('Error while loading Search!', err);
         }
       });
     });

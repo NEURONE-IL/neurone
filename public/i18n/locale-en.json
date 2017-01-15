@@ -21,6 +21,7 @@
     "tipsButton": "Tips",
     "taskButton": "Task",
     "readyButton": "Ready!",
+    "backButton": "Back to search",
     "bookmarkList": "Bookmark List",
     "selectedPages": "You have selected {{bookmarks}} page(s)",
     "snippetCount": "You have selected {{words}} word(s)",
@@ -161,6 +162,8 @@
       "i2": "Remember to answer the questions for every page!",
       "i3": "Select some text from the page and click the Save Snippet button to save a relevant piece of text",
       "i4": "You can revisit or delete your snippet if you want",
+      "ex_2a": "How credible is this page?",
+      "ex_2b": "Why do you think so?",
       "ex_4a": "I'm a snippet! Click me!"
     },
     "stage3": {

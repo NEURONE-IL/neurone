@@ -153,6 +153,9 @@ class Navigation {
         enableReady: () => {
           return this.uds.getSession().readyButton;
         },
+        enableBack: () => {
+          return this.uds.getSession().backButton;
+        },
         stageHome: () => {
           return this.uds.getSession().stageHome;
         },
@@ -503,6 +506,10 @@ class Navigation {
     });    
   }
   */
+
+  backAction() {
+    this.$rootScope.$broadcast('goBack');
+  }
 
   readyAction(stage) {
     var stageNumber = this.uds.getSession().currentStageNumber, 
