@@ -18,35 +18,35 @@
 <script type="text/ng-template" id="criticalEval/snippetbar.html">
   <div ui-view>
     <div class="interaction-bar">
-      <uib-tabset active="active">
-        <uib-tab index="$index + 1" ng-repeat="page in snippetbar.pages track by $index" heading="{{'snippet.page' | translate: { pageNum: $index+1 } }}" ng-click="snippetbar.changePage($index)">
-          <div class="interaction-bar">
-            <h4>{{page.title}}</h4>
-            <hr>
-            <form name="snippetbar.evaluationForm">
-              <ng-form name="formQuestion" ng-repeat="question in snippetbar.forms[$index].questions">
-                <question data="question"></question>
+      <form name="snippetbar.evaluationForm" novalidate>
+        <uib-tabset active="active">
+          <uib-tab index="$index + 1" ng-repeat="page in snippetbar.pages track by $index" heading="{{'snippet.page' | translate: { pageNum: $index+1 } }}" ng-click="snippetbar.changePage($index)">
+            <div class="interaction-bar">
+              <h4>{{page.title}}</h4>
+              <hr>
+                <ng-form name="{{snippetbar.forms.index}}" ng-repeat="question in snippetbar.forms[$index].questions">
+                  <question data="question"></question>
                 <br>
               </ng-form>
-            </form>
-          </div>
-          <!--
-          <hr>
-          <div>
-            <div uib-alert class="snippet-box" ng-repeat="snippet in snippetbar.snippetListPerPage track by snippet._id">
-              <div class="snippet-element">
-                <div class="snippet-text">
-                  <a href="javascript:void(0)" ng-click="snippetbar.viewSnippet(snippet.snippedText)">{{snippet.snippedText | words: 25}}</a>
-                </div>
-                <div class="snippet-delete">
-                  <i type="button" class="fa fa-trash fa-lg" ng-click="snippetbar.deleteSnippet(snippet.snippetId)"></i>
+            </div>
+            <!--
+            <hr>
+            <div>
+              <div uib-alert class="snippet-box" ng-repeat="snippet in snippetbar.snippetListPerPage track by snippet._id">
+                <div class="snippet-element">
+                  <div class="snippet-text">
+                    <a href="javascript:void(0)" ng-click="snippetbar.viewSnippet(snippet.snippedText)">{{snippet.snippedText | words: 25}}</a>
+                  </div>
+                  <div class="snippet-delete">
+                    <i type="button" class="fa fa-trash fa-lg" ng-click="snippetbar.deleteSnippet(snippet.snippetId)"></i>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          -->
-        </uib-tab>
-      </uib-tabset>
+            -->
+          </uib-tab>
+        </uib-tabset>
+      </form>
     </div>
   </div>
 </script>

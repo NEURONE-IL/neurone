@@ -198,7 +198,11 @@ class Synthesis {
 
   getQuestion() {
     if (!!Meteor.userId()) {
-      this.call('getSynthQuestion', Utils.parseStringAsInteger(this.questionId), (err, res) => {
+      var stageNumber = this.uds.getSession().currentStageNumber,
+         currentStage = this.uds.getConfigs().stages[stageNumber],
+                 form = currentStage.form;
+
+      this.call('getSynthQuestion', form, (err, res) => {
         if (!err) {
           this.question = res.question;
         }

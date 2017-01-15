@@ -152,8 +152,12 @@ class CriticalEvalSB {
   }
 
   loadForms() {
+    var stageNumber = this.uds.getSession().currentStageNumber,
+       currentStage = this.uds.getConfigs().stages[stageNumber],
+               form = currentStage.form;
+
     this.pages.forEach((page, idx) => {
-      this.call('getForm', 'criticalEval-fi', (err, res) => { // TODO change hardcoded value
+      this.call('getForm', form, (err, res) => { // TODO change hardcoded value
         if (!err) {
           var pageForm = {
             index: idx,
@@ -242,16 +246,12 @@ class CriticalEvalSB {
     this.url = this.pages[index] ? this.pages[index].url : '/error';
     this.currentDocId = this.pages[index] ? this.pages[index].docId : '';
     this.$rootScope.docId = this.currentDocId;
-    //this.$rootScope.docId = this.url2docName(this.url);
-    //this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
-    //this.currentDocId = this.$rootScope.docId;
-
+    
     this.uds.setSession({ docId: this.currentDocId });
     Session.set('docId', this.currentDocId);
     console.log('ChangePage', this.url, this.currentDocId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
-    this.$rootScope.$broadcast('updateSnippetButton');
   }
 }
 
