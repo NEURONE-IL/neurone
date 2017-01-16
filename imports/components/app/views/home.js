@@ -10,12 +10,12 @@ class Home {
     'ngInject';
 
     $scope.$on('$stateChangeStart', (event) => {
+      Session.set('lockButtons', true);
       this.uds.setSession({ standbyMode: false });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({ standbyMode: true });
-
       this.$rootScope.$broadcast('updateNavigation');
     });
 
@@ -41,10 +41,10 @@ function config($stateProvider) {
     url: '/home',
     template: '<home></home>',
     resolve: {
-      /*userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      }*/
+      dataReady(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      }
     }
   });
 };

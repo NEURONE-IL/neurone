@@ -196,7 +196,7 @@ class Navigation {
       this.bms.isBookmarked((err, res) => {
         if (!err) {
           //console.log('checkBookmarkStatus', res, this.$rootScope._counters.bookmarks, limit);
-          if (this._counters.get('bookmarks') > limit) {
+          if (this._counters.get('bookmarks') > limit || this.$state.current.name !== 'displayPage') {
             this.uds.setSession({ bookmarkButton: false });
             this.uds.setSession({ unbookmarkButton: false });
           }
@@ -292,6 +292,7 @@ class Navigation {
   removeNonRelevantBookmarks() {
     if (!!Meteor.userId()) {
       var docs = UserBookmarks.find({ relevant: false }).fetch();
+      console.log('NonRelevant', docs);
 
       this.bms.removeNonRelevantBookmarks(docs, (err, res) => {
         if (!err) this.checkBookmarkStatus();

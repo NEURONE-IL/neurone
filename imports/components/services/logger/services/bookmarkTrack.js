@@ -105,13 +105,18 @@ export default class BookmarkTrackService {
   customBookmark(bookmarkObject, params, callback) {
     if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
       
-      bookmarkObject.action = params.type
+      delete bookmarkObject._id;
+      bookmarkObject.username = Meteor.user().username || Meteor.user().emails[0].address;
+      bookmarkObject.action = params.type;
+      bookmarkObject.localTimestamp = Utils.getTimestamp();
+      bookmarkObject.rating = 0;
+      bookmarkObject.reason = '';
 
       var navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
          consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
 
 
-      //console.log('Bookmark', bookmarkObject);
+      //console.log('CustomBookmark', bookmarkObject);
 
       Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
         if (!err) {
@@ -167,15 +172,18 @@ export default class BookmarkTrackService {
     var params = {
       type: 'Unbookmark'
     }
+
+    var proc = 0;
     
-    bookmarkArray.forEach((bkm) => {
-      if (bkm.relevant === true) {
+    bookmarkArray.forEach((bkm, idx, arr) => {
+      //console.log(bkm);
+      if (bkm.relevant === false) {
         this.customBookmark(bkm, params, (err, res) => {
+          proc++;
           if (err) callback(err);
+          if (proc === arr.length) callback(null, true);
         });
       }
     });
-
-    callback(null, res);
   }
 }

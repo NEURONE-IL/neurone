@@ -84,7 +84,11 @@ function config($stateProvider) {
     url: '/page/:docName',
     template: '<display-page previous-state="$resolve.previousState"></display-page>',
     resolve: {
-      currentUser($q) {
+      dataReady(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
+      currentUser($q, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }

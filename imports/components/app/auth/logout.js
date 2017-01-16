@@ -5,7 +5,7 @@ import template from './logout.html';
 import { name as Register } from './register';
 
 class Logout {
-  constructor($scope, $rootScope, $reactive, $state, $timeout, AuthService) {
+  constructor($scope, $rootScope, $reactive, $state, $timeout, AuthService, UserDataService) {
     'ngInject';
 
     this.$scope = $scope;
@@ -13,11 +13,21 @@ class Logout {
     this.$rootScope = $rootScope;
     this.auth = AuthService;
 
+    $scope.$on('$stateChangeStart', (event) => {
+      Session.set('lockButtons', true);
+      this.uds.setSession({ standbyMode: false });
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.uds.setSession({ standbyMode: true });
+      this.$rootScope.$broadcast('updateNavigation');
+    });
+
     $reactive(this).attach($scope);
 
     $timeout(() => {
       this.logout();
-    }, 1000);
+    }, 1500);
   }
 
   logout() {
@@ -48,7 +58,11 @@ function config($stateProvider) {
     url: '/logout',
     template: '<logout></logout>',
     resolve: {
-      currentUser($q) {
+      dataReady(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
+      currentUser($q, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
