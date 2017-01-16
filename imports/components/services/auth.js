@@ -33,14 +33,16 @@ class AuthService {
 
   logout(callback) {
     this.sts.saveLogout();
-    if (Configs.flowEnabled) this.fs.stopFlow();
-
+    
     Accounts.logout((err) => {
       if (err) {
         console.error('Logout error!', err);
         callback(err);
       }
       else {
+        if (Configs.flowEnabled) this.fs.stopFlow();
+        this.uds.flush();
+
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);
       }

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../lib/utils';
 
+import { Documents } from '../../imports/api/documents/index';
 import { Snippets } from '../../imports/api/snippets/index';
 import { Queries } from '../../imports/api/queries/index';
 import { Bookmarks } from '../../imports/api/bookmarks/index';
@@ -46,6 +47,23 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not read Bookmark Status from Database!', err);
     }
+  },
+  getRelevantDocuments: function() {
+    try {
+      if (this.userId) {
+        var user = UserData.findOne({ userId: this.userId }),
+           limit = user.configs.maxBookmarks,
+            docs = Documents.findOne({ relevant: true }, { limit: limit }).fetch();
+
+        return docs;
+      }
+      else {
+        return Documents.findOne({ relevant: true }).fetch();
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error('DatabaseError', 'Could not get Relevant Documents from Database!', err);
+    }
   }
 });
 
@@ -74,19 +92,19 @@ Meteor.publish({
       // dgacitua: http://stackoverflow.com/a/40266075
       var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
          limit = user.configs.maxSnippetsPerPage,
-               pipe = [
-                        { $match: { userId: this.userId }},
-                        { $sort: { serverTimestamp: -1 }},
-                        { $group: { _id: '$snippetId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, snippedText: {$first: '$snippedText'}, url: {$first: '$url'}, docId: {$first: '$docId' }, serverTimestamp: { $first: '$serverTimestamp' }}},
-                        { $project: { _id: '$originalId', snippetId: '$_id', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }},
-                        { $sort: { serverTimestamp: -1 }},
-                        { $match: { action: 'Snippet' }},
-                        { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', snippetId: '$snippetId', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }}}},
-                        { $project: { snippets: { $slice: ['$doc', limit] }}},
-                        { $unwind: { path: '$snippets' }},
-                        { $project: { _id: '$snippets.originalId', docId: '$_id', userId: '$snippets.userId', snippetId: '$snippets.snippetId', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action', url: '$snippets.url', serverTimestamp: '$snippets.serverTimestamp' }},
-                        { $sort: { serverTimestamp: 1 }}
-                      ];
+          pipe = [
+                  { $match: { userId: this.userId }},
+                  { $sort: { serverTimestamp: -1 }},
+                  { $group: { _id: '$snippetId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, snippedText: {$first: '$snippedText'}, url: {$first: '$url'}, docId: {$first: '$docId' }, serverTimestamp: { $first: '$serverTimestamp' }}},
+                  { $project: { _id: '$originalId', snippetId: '$_id', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }},
+                  { $sort: { serverTimestamp: -1 }},
+                  { $match: { action: 'Snippet' }},
+                  { $group: { _id: '$docId', doc: { $push: { originalId: '$_id', snippetId: '$snippetId', userId: '$userId', title: '$title', action: '$action', snippedText: '$snippedText', url: '$url', docId: '$docId', serverTimestamp: '$serverTimestamp' }}}},
+                  { $project: { snippets: { $slice: ['$doc', limit] }}},
+                  { $unwind: { path: '$snippets' }},
+                  { $project: { _id: '$snippets.originalId', docId: '$_id', userId: '$snippets.userId', snippetId: '$snippets.snippetId', snippedText: '$snippets.snippedText', title: '$snippets.title', action: '$snippets.action', url: '$snippets.url', serverTimestamp: '$snippets.serverTimestamp' }},
+                  { $sort: { serverTimestamp: 1 }}
+                ];
 
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }

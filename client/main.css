@@ -138,6 +138,10 @@ img.logo-home {
   color: gray;
 }
 
+.btn-back {
+  color: lightgray;
+}
+
 em.hl {
   font-style: normal !important;
   font-weight: bold !important;

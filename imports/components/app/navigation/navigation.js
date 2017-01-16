@@ -514,6 +514,60 @@ class Navigation {
   }
   */
 
+  timeoutModal() {
+    // TODO
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
+
+    if (currentState === 'search') {
+      var maximumStars = 3,
+         userBookmarks = UserBookmarks.find().fetch(),
+              goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+                 stars = goodDocs,    // TODO Make score formula
+           timeWarning = false,       // TODO Enable time warning
+          minBookmarks = this.uds.getConfigs().minBookmarks;
+
+      console.log(userBookmarks);
+
+      var modalObject = {
+        title: this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_stage1.html',
+        buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
+        fields: {
+          stars: stars,
+          maxStars: maximumStars,
+          goodPages: goodDocs,
+          timeWarning: timeWarning,
+          bookmarks: userBookmarks,
+          keepSearching: (goodDocs < minBookmarks)
+        }
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok' && goodDocs >= minBookmarks) {
+            this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+          else {
+            this.removeNonRelevantBookmarks();
+          }
+        }
+      });
+    }
+    else {
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_stage2.html',
+        buttonType: 'nextstage',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+  }
+
+
   backAction() {
     this.$rootScope.$broadcast('goBack');
   }

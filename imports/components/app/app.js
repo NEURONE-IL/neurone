@@ -148,8 +148,8 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 
   Accounts.onLogout(() => {
-    if (Configs.flowEnabled) fs.stopFlow();
-    uds.flush();
+    //if (Configs.flowEnabled) fs.stopFlow();
+    //uds.flush();
   });
 };
 
