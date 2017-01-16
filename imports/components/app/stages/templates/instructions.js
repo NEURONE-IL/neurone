@@ -4,13 +4,14 @@ import Configs from '../../../globalConfigs';
 import template from './instructions.html';
 
 class Instructions {
-  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
+  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService, AuthService) {
     'ngInject';
 
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
+    this.auth = AuthService;
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -60,6 +61,16 @@ class Instructions {
     this.$timeout(() => {
       if (stageName !== 'end') this.uds.setSession({ readyButton: true });
     }, Configs.instructionTimeout);
+
+    this.$timeout(() => {
+      if (stageName === 'end') {
+        this.auth.logout((err, res) => {
+          if (!err) {
+            this.$state.go('home');
+          }
+        });
+      }
+    }, Configs.autoLogout);
   }
 }
 

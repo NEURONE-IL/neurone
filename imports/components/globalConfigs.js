@@ -5,5 +5,6 @@ export default ClientConfigs = {
   idleOnBlur: true,
   iframeId: 'pageContainer',
   flowEnabled: (Meteor.isProduction ? true : false),
-  instructionTimeout: 3000
+  instructionTimeout: 3000,
+  autoLogout: 15000
 }

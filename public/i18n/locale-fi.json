@@ -17,10 +17,10 @@
     "documentList": "Document List"
   },
   "nav": {
-    "tutorialButton": "Ohje",
-    "tipsButton": "Vihjeet",
+    "tutorialButton": "Tutoriaali",
+    "tipsButton": "Mitä piti tehdä?",
     "taskButton": "Tehtävä",
-    "readyButton": "Valmis",
+    "readyButton": "Jatka",
     "backButton": "Takaisin hakuun",
     "bookmarkList": "Valittujen sivujen lista",
     "selectedPages": "Valittuja sivuja: {{bookmarks}}",
