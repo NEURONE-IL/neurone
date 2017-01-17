@@ -1,7 +1,19 @@
-<div class="container-fluid container-wrapper">
-  <br>
-  <h1 class="text-center">Questionnaire placeholder</h1>
+<div class="container">
   <div class="row">
-    <ng-include src="taskQuestions.page"></ng-include>
+    <div class="col-md-offset-2 col-md-8">
+      <div>
+        <h1>{{"form.title" | translate}}</h1>
+        <p>{{taskQuestions.form.instructions}}<br>
+        <b class="form-asterisk">*</b> {{"form.requiredAnswer" | translate}}</p>
+      </div>
+      <hr>
+      <form name="taskQuestions.taskForm" ng-submit="taskQuestions.submit()">
+        <div ng-repeat="question in taskQuestions.form.questions track by $index">
+          <question data="question"></question>
+          <br>
+        </div>
+      </form>
+      <br>
+    </div>
   </div>
 </div>

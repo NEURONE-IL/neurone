@@ -427,38 +427,6 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    /*
-    else if (currentState === 'search') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tutorialButton'),
-        templateAsset: 'modals/tutorial_stage1.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    else if (currentState === 'collection') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tutorialButton'),
-        templateAsset: 'modals/tutorial_stage2.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    else if (currentState === 'synthesis') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tutorialButton'),
-        templateAsset: 'modals/tutorial_stage3.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    */
     else if (currentState === 'search' || currentState === 'collection' || currentState === 'criticalEval' || currentState === 'synthesis') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
@@ -659,6 +627,23 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyStage3');
+            this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+        }
+      });
+    }
+    else if (currentState === 'taskQuestions') {
+      var modalObject = {
+        title: this.$translate.instant('nav.bookmarkButton'),
+        templateAsset: 'modals/ready_confirm.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyTaskQuestions');
             this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }

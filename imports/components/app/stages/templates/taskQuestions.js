@@ -7,6 +7,7 @@ class TaskQuestions {
   constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
 
@@ -55,11 +56,71 @@ class TaskQuestions {
     var stageName = this.uds.getSession().currentStageName,
       stageNumber = this.uds.getSession().currentStageNumber;
 
-    this.page = this.uds.getConfigs().stages[stageNumber].page;
+    this.form = {};
+    this.questionnaire = this.uds.getConfigs().stages[stageNumber].questionnaire;
 
-    this.$timeout(() => {
-      this.uds.setSession({ readyButton: true });
-    }, Configs.instructionTimeout);
+     Meteor.call('getForm', Utils.parseStringAsInteger(this.questionnaire), (err, result) => {
+      if (!err) {
+        this.form = result;
+        this.$scope.$apply();
+      }
+      else {
+        console.error('Unknown Error', err);
+      }
+    });
+
+    this.$rootScope.$on('readyTaskQuestions', (event, data) => {
+      this.submit();
+    });
+
+    $timeout(() => {
+      $scope.$watch(() => this.taskForm.$valid, (newVal, oldVal) => {
+        if (newVal) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
+  }
+
+  submit() {
+    this.answers = '';
+    this.answerArray = [];
+
+    this.form.questions.forEach((question) => {
+      var response = {
+        type: question.type,
+        questionId: question.questionId,
+        title: question.title,
+        answer: question.answer || ''
+      };
+
+      if (question.otherAnswer) {
+        response.otherAnswer = question.otherAnswer;
+      }
+
+      this.answerArray.push(response);
+      this.answers += question.title + ': ' + (question.answer || '') + '\n';
+    });
+
+    if (!!Meteor.userId()) {
+      var formAnswer = {
+        userId: Meteor.userId(),
+        username: Meteor.user().username || Meteor.user().emails[0].address,
+        formId: this.form.formId,
+        answers: this.answerArray,
+        localTimestamp: Utils.getTimestamp()
+      }
+
+      Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
+        if (!err) {
+          console.log('Answer registered!', formAnswer.userId, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.localTimestamp);
+          this.submitted = true;
+        }
+        else {
+          console.error('Error while saving form answers', err);
+          this.submittedError = true;
+        }
+      });
+    }
   }
 }
 

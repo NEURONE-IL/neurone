@@ -22,6 +22,8 @@ class QuestionCtrl {
     this.$timeout = $timeout;
 
     this.$timeout(() => {
+      if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+
       this.$element.html(this.getTemplate(this.data.type)).show();
       this.$compile(this.$element.contents())(this.$scope);
     }, 0);

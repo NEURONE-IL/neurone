@@ -139,7 +139,19 @@ img.logo-home {
 }
 
 .btn-back {
-  color: lightgray;
+  background: lightgray;
+  color: black;
+}
+ 
+.btn-back:hover, .btn-back:focus, .btn-back:active, .btn-back.active, .open > .dropdown-toggle.btn-back {
+  background: darkgray;
+  color: white;
+}
+ 
+.btn-back:active, .btn-back.active {
+  background: gray;
+  color: white;
+  box-shadow: none;
 }
 
 em.hl {
