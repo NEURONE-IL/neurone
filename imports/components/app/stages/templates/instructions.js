@@ -4,9 +4,10 @@ import Configs from '../../../globalConfigs';
 import template from './instructions.html';
 
 class Instructions {
-  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService, AuthService) {
+  constructor($scope, $rootScope, $reactive, $translate, $timeout, $state, UserDataService, AuthService) {
     'ngInject';
 
+    this.$state = $state;
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
 

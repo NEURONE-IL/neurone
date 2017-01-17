@@ -64,6 +64,20 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error('DatabaseError', 'Could not get Relevant Documents from Database!', err);
     }
+  },
+  getBookmarkScore: function() {
+    try {
+      if (this.userId) {
+        var score = 0;
+        return score;
+      }
+      else {
+        return 0;
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error('DatabaseError', 'Could not get Bookmark Score from Database!', err);
+    }
   }
 });
 

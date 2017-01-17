@@ -90,7 +90,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
   // uiRouter settings
   $locationProvider.html5Mode(true);
   //$urlRouterProvider.deferIntercept();
-  $urlRouterProvider.otherwise('/start');
+  $urlRouterProvider.otherwise('/home');
 
   // angularTranslate settings
   $translateProvider.useStaticFilesLoader({
