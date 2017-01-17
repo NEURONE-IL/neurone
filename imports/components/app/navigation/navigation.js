@@ -297,6 +297,14 @@ class Navigation {
     } 
   }
 
+  replaceWithRelevantBookmarks() {
+    if (!!Meteor.userId() && !!this.uds.getConfigs().replaceWithRelevantDocuments) {
+      this.bms.replaceWithRelevantBookmarks(UserBookmarks.find().fetch(), (err, res) => {
+        if (!err) this.checkBookmarkStatus();
+      });
+    } 
+  }
+
   logout() {
     var modalObject = {
       title: this.$translate.instant('modal.logout.title'),
@@ -476,8 +484,8 @@ class Navigation {
       };
 
       this.modal.openModal(modalObject, (err, res) => {
-        if (!err) {
-          this.removeNonRelevantBookmarks();
+        if (!err && case !== 1) {
+          this.replaceWithRelevantBookmarks();
         }
       });
     }

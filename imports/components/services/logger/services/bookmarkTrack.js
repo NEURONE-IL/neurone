@@ -186,4 +186,63 @@ export default class BookmarkTrackService {
       }
     });
   }
+
+  removeAllBookmarks(bookmarkArray, callback) {
+    var proc = 0;
+        
+    bookmarkArray.forEach((bkm, idx, arr) => {
+      var params = { type: 'Unbookmark' };
+
+      this.customBookmark(bkm, params, (err, res) => {
+        proc++;
+        if (err) callback(err);
+        if (proc === arr.length) callback(null, true);
+      });
+    })    
+  }
+
+  replaceWithRelevantBookmarks(bookmarkArray, callback) {
+    Meteor.call('getRelevantDocuments', (err, res) => {
+      if (!err) {
+        var relevantDocs = res;
+
+        this.removeAllBookmarks(bookmarkArray, (err, res) => {
+          if (!err) {
+            var proc = 0;
+
+            relevantDocs.forEach((doc, idx, arr) => {
+              var params = { type: 'Bookmark' };
+
+              var bkm = {
+                userId: Meteor.userId(),
+                username: Meteor.user().username || Meteor.user().emails[0].address,
+                action: doc.type,
+                title: doc.title,
+                url: '/page/' + doc._id,
+                docId: doc._id,
+                relevant: doc.relevant;
+                rating: 0,
+                reason: '',
+                localTimestamp: Utils.getTimestamp()
+              };
+
+              this.customBookmark(bkm, params, (err, res) => {
+                proc++;
+                if (err) callback(err);
+                if (proc === arr.length) callback(null, true);
+              });
+            });
+          }
+          else {
+            callback(err);
+          }
+        });
+      }
+      else {
+        var msg = this.$translate.instant('alerts.bookmarkError');
+        console.error('Error saving bookmark!', err);
+        callback(msg);
+      }
+    });
+  }
 }

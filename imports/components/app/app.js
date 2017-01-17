@@ -90,7 +90,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
   // uiRouter settings
   $locationProvider.html5Mode(true);
   //$urlRouterProvider.deferIntercept();
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/start');
 
   // angularTranslate settings
   $translateProvider.useStaticFilesLoader({
@@ -109,7 +109,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     console.log(event, toState, toParams, error);
-    if (error === 'AUTH_REQUIRED') $state.go('login');
+    if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
   });
 
