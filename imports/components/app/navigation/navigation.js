@@ -484,7 +484,7 @@ class Navigation {
       };
 
       this.modal.openModal(modalObject, (err, res) => {
-        if (!err && case !== 1) {
+        if (!err && goodDocs < minBookmarks) {
           this.replaceWithRelevantBookmarks();
         }
       });

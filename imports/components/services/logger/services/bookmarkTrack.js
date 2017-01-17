@@ -220,7 +220,7 @@ export default class BookmarkTrackService {
                 title: doc.title,
                 url: '/page/' + doc._id,
                 docId: doc._id,
-                relevant: doc.relevant;
+                relevant: doc.relevant,
                 rating: 0,
                 reason: '',
                 localTimestamp: Utils.getTimestamp()
