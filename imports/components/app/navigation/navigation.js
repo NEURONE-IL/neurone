@@ -116,6 +116,17 @@ class Navigation {
         this.timeoutModal();
       });
 
+      this.$rootScope.$on('remainderAlert', (event, data) => {
+        var stageNumber = this.uds.getSession().currentStageNumber, 
+           currentStage = this.uds.getSession().currentStageName,
+           currentState = this.uds.getSession().currentStageState,
+              stageData = this.uds.getConfigs().stages[stageNumber];
+
+        this.uds.setSession({ statusMessage: this.$translate.instant('timeout.alert', { time: stageData.reminderAlert }) });
+        Utils.notificationFadeout(this.navbarMessageId, 10);
+        this.$scope.$apply();
+      });
+
       this.helpers({
         isLoggedIn: () => {
           return !!Meteor.userId();

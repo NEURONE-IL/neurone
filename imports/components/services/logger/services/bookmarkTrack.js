@@ -202,6 +202,8 @@ export default class BookmarkTrackService {
   }
 
   replaceWithRelevantBookmarks(bookmarkArray, callback) {
+    console.log('Replacing!');
+
     Meteor.call('getRelevantDocuments', (err, res) => {
       if (!err) {
         var relevantDocs = res;

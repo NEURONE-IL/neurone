@@ -140,7 +140,8 @@ class FlowService {
 
       var stageName = this.uds.getSession().currentStageName,
         stageNumber = this.uds.getSession().currentStageNumber,
-         stageTotal = this.uds.getConfigs().stages[stageNumber].time;
+         stageTotal = this.uds.getConfigs().stages[stageNumber].time,
+      reminderAlert = this.uds.getConfigs().stages[stageNumber].reminderAlert || 0;
 
       this.currentStage = stageNumber; //cs;
       this.stageTotal = (stageTotal >= 0) ? (stageTotal*60) : -1; //(st >= 0) ? (st*60) : -1;
@@ -157,6 +158,9 @@ class FlowService {
       }
       else {
         //console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
+        if ((this.stageTotal-(this.stageTime-reminderAlert*60))>=1) {
+          this.$rootScope.$broadcast('reminderAlert');
+        }
       }
     }
   }
