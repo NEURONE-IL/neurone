@@ -113,10 +113,7 @@ class Navigation {
       });
 
       this.$rootScope.$on('timeoutModal', (event, data) => {
-        var currentStage = this.uds.getSession().currentStageName,
-             stageNumber = this.uds.getSession().currentStageNumber;
-
-        Utils.notificationHide(this.navbarMessageId);Utils.notificationHide(this.navbarMessageId);
+        this.timeoutModal();
       });
 
       this.helpers({
@@ -480,12 +477,7 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
-          if (res.message === 'ok' && goodDocs >= minBookmarks) {
-            this.$rootScope.$broadcast('endStage', stageNumber);
-          }
-          else {
-            this.removeNonRelevantBookmarks();
-          }
+          this.removeNonRelevantBookmarks();
         }
       });
     }
