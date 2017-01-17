@@ -188,17 +188,22 @@ export default class BookmarkTrackService {
   }
 
   removeAllBookmarks(bookmarkArray, callback) {
-    var proc = 0;
-        
-    bookmarkArray.forEach((bkm, idx, arr) => {
-      var params = { type: 'Unbookmark' };
+    if (bookmarkArray.length > 0) {
+      var proc = 0;
+      
+      bookmarkArray.forEach((bkm, idx, arr) => {
+        var params = { type: 'Unbookmark' };
 
-      this.customBookmark(bkm, params, (err, res) => {
-        proc++;
-        if (err) callback(err);
-        if (proc === arr.length) callback(null, true);
-      });
-    })    
+        this.customBookmark(bkm, params, (err, res) => {
+          proc++;
+          if (err) callback(err);
+          if (proc === arr.length) callback(null, true);
+        });
+      })  
+    }
+    else {
+      callback(null, true);
+    }  
   }
 
   replaceWithRelevantBookmarks(bookmarkArray, callback) {
