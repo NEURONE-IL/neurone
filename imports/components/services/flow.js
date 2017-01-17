@@ -159,7 +159,7 @@ class FlowService {
       else {
         //console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
         if ((this.stageTime-(this.stageTotal-reminderAlert*60))<=1) {
-          this.$rootScope.$broadcast('reminderAlert');
+          //this.$rootScope.$broadcast('reminderAlert');
         }
       }
     }
