@@ -79,6 +79,20 @@ class Synthesis {
 
     this.getQuestion();
     this.autosaveService();
+    this.startTime = Utils.getTimestamp();
+
+    var stageNumber = this.uds.getSession().currentStageNumber,
+       currentStage = this.uds.getConfigs().stages[stageNumber],
+               form = currentStage.form;
+
+    this.call('getSynthesisAnswer', form, (err, res) => {
+      if (!err && res.startTime) {
+        this.startTime = res.startTime;
+        this.answer = res.answer;
+        console.log('Answer loaded!', res);
+      }
+    });
+
 
     this.$rootScope.$on('readySynthesis', (event, data) => {
       this.submit();
@@ -161,7 +175,7 @@ class Synthesis {
           }
         });
 
-        if (!Utils.isEmpty(this.answer)) this.uds.setSession({ readyButton: true });
+        if (!Utils.isEmpty(this.removeHtml(this.answer))) this.uds.setSession({ readyButton: true });
       }
     }, interval);
   }
@@ -212,6 +226,10 @@ class Synthesis {
         }
       });
     }
+  }
+
+  removeHtml(text) {
+    return text ? String(text).replace(/<[^>]+>/gm, '') : '';
   }
 }
 

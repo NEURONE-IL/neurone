@@ -68,6 +68,7 @@ Meteor.methods({
   getBookmarkScore: function() {
     try {
       if (this.userId) {
+        // TODO complete function
         var score = 0;
         return score;
       }

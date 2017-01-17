@@ -115,7 +115,7 @@
     "cancelButton": "Peruuta",
     "nextButton": "Seuraava",
     "goodDocument": "Mainio valinta!",
-    "badDocument": "Huono valinta?",
+    "badDocument": "Hyödytön sivu",
     "documentsFound": "Valitsit {{goodPages}} erinomaista sivua!",
     "currentScore": "Onistuit valitsemaan {{stars}} tähtisivua!",
     "nextStageInstructions": "Nyt voit jatkaa seuraavaan osatehtävään",
@@ -134,7 +134,7 @@
     "logout": {
       "title": "Poistu",
       "confirm": "Olet kirjautumassa ulos. Oletko varma?",
-      "action": "Logging out of NEURONE"
+      "action": "NEURONE sulkeutuu"
     }
   },
   "hints": {
@@ -179,5 +179,11 @@
   "end": {
     "t1": "Olet suorittanut tehtävän",
     "t2": "Kiitos"
+  },
+  "timeout": {
+    "search1": "Hienoa! Löysit kaikki kolme sivua, jotka auttavat sinua ratkaisemaan tehtävän. Sait täydet {{stars}} tähteä. Nyt voit siirtyä tehtävässä eteenpäin.",
+    "search2": "Teit hyvää työtä, mutta et löytänyt kaikkia sivuja, joita tarvitset tehtävässä. Siksi sait vain {{stars}} tähteä. Sinulla on vielä aikaa jäljellä joten jatka hakemista. Minä autan sinua poistamalla listalta sivut, joista ei ole hyötyä tehtävässä.",
+    "search3": "Aika sivujen etsimiseen loppui. Valitettavasti et löytänyt kaikkia tarvittavia sivuja joten sait tähtiä vain {{stars}}. Älä välitä, sillä annan ne sinulle sitten kun tarvitset niitä.",
+    "general": "Aika loppui. Nyt voit siirtyä tehtävässä eteenpäin."
   }
 }

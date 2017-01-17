@@ -357,38 +357,6 @@ class Navigation {
 
       this.modal.openModal(modalObject, (err, res) => {});
     }
-    /*
-    else if (currentState === 'search') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tipsButton'),
-        templateAsset: 'modals/tips_stage1.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    else if (currentState === 'stage2') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tipsButton'),
-        templateAsset: 'modals/tips_stage2.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    else if (currentState === 'stage3') {
-      // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var modalObject = {
-        title: this.$translate.instant('nav.tipsButton'),
-        templateAsset: 'modals/tips_stage3.html',
-        fields: {}
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {});
-    }
-    */
     else if (currentState === 'search' || currentState === 'collection' || currentState === 'criticalEval' || currentState === 'synthesis') {
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
@@ -489,11 +457,10 @@ class Navigation {
        currentState = this.uds.getSession().currentStageState;
 
     if (currentState === 'search') {
-      var maximumStars = 3,
+      var maximumStars = 5,
          userBookmarks = UserBookmarks.find().fetch(),
               goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
                  stars = goodDocs,    // TODO Make score formula
-           timeWarning = false,       // TODO Enable time warning
           minBookmarks = this.uds.getConfigs().minBookmarks;
 
       console.log(userBookmarks);
@@ -501,14 +468,13 @@ class Navigation {
       var modalObject = {
         title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage1.html',
-        buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
+        buttonType: 'nextstage',
         fields: {
           stars: stars,
           maxStars: maximumStars,
           goodPages: goodDocs,
-          timeWarning: timeWarning,
           bookmarks: userBookmarks,
-          keepSearching: (goodDocs < minBookmarks)
+          case: (goodDocs >= minBookmarks ? 1 : 3)
         }
       };
 
@@ -525,7 +491,7 @@ class Navigation {
     }
     else {
       var modalObject = {
-        title: this.$translate.instant('nav.bookmarkButton'),
+        title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage2.html',
         buttonType: 'nextstage',
         fields: {}
@@ -547,7 +513,7 @@ class Navigation {
 
     if (currentState === 'stage0') {
       var modalObject = {
-        title: this.$translate.instant('nav.bookmarkButton'),
+        title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage0.html',
         buttonType: 'okcancel',
         fields: {}
@@ -564,11 +530,10 @@ class Navigation {
     }
     else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var maximumStars = 3,
+      var maximumStars = 5,
          userBookmarks = UserBookmarks.find().fetch(),
               goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
                  stars = goodDocs,    // TODO Make score formula
-           timeWarning = false,       // TODO Enable time warning
           minBookmarks = this.uds.getConfigs().minBookmarks;
 
       console.log(userBookmarks);
@@ -581,9 +546,8 @@ class Navigation {
           stars: stars,
           maxStars: maximumStars,
           goodPages: goodDocs,
-          timeWarning: timeWarning,
           bookmarks: userBookmarks,
-          keepSearching: (goodDocs < minBookmarks)
+          case: (goodDocs >= minBookmarks ? 1 : 2)
         }
       };
 
@@ -600,7 +564,7 @@ class Navigation {
     }
     else if (currentState === 'collection' || currentState === 'criticalEval') {
       var modalObject = {
-        title: this.$translate.instant('nav.bookmarkButton'),
+        title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage2.html',
         buttonType: 'okcancel',
         fields: {}
@@ -617,7 +581,7 @@ class Navigation {
     }
     else if (currentState === 'synthesis') {
       var modalObject = {
-        title: this.$translate.instant('nav.bookmarkButton'),
+        title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage3.html',
         buttonType: 'okcancel',
         fields: {}
@@ -634,7 +598,7 @@ class Navigation {
     }
     else if (currentState === 'taskQuestions') {
       var modalObject = {
-        title: this.$translate.instant('nav.bookmarkButton'),
+        title: this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_confirm.html',
         buttonType: 'okcancel',
         fields: {}
