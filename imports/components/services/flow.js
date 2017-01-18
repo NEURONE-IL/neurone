@@ -135,33 +135,33 @@ class FlowService {
 
   tick() {
     if (!!Meteor.userId()) {
-      //var cs = this.uds.getSession().stageNumber,
-      //    st = this.uds.getConfigs().stages[cs].time;
-
       var stageName = this.uds.getSession().currentStageName,
         stageNumber = this.uds.getSession().currentStageNumber,
          stageTotal = this.uds.getConfigs().stages[stageNumber].time,
-      reminderAlert = this.uds.getConfigs().stages[stageNumber].reminderAlert || 0;
+      reminderAlert = this.uds.getConfigs().stages[stageNumber].reminderAlert;
 
       this.currentStage = stageNumber; //cs;
-      this.stageTotal = (stageTotal >= 0) ? (stageTotal*60) : -1; //(st >= 0) ? (st*60) : -1;
+      this.stageTotal = (stageTotal >= 0) ? (stageTotal*60) : -1;
+      this.reminderAlert = (reminderAlert >= 0) ? (reminderAlert*60) : -1;
 
       this.globalTime += this.timerInterval;
       this.stageTime += this.timerInterval;
-      this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime });
-      
-      if (this.stageTotal >= 0 && this.stageTime >= this.stageTotal) {
-        this.$rootScope.$broadcast('endStageTime', this.currentStage);
-      }
-      else if (this.globalTotal >= 0 && this.globalTime >= this.globalTotal) {
-        this.$rootScope.$broadcast('endGlobalTime', true);
-      }
-      else {
-        //console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
-        if ((this.stageTime-(this.stageTotal-reminderAlert*60))<=1) {
-          //this.$rootScope.$broadcast('reminderAlert');
+
+      this.uds.setSession({ totalTimer: this.globalTime, stageTimer: this.stageTime }, (err, res) => {
+        if (this.stageTotal >= 0 && this.stageTime >= this.stageTotal) {
+          this.$rootScope.$broadcast('endStageTime', this.currentStage);
         }
-      }
+        else if (this.globalTotal >= 0 && this.globalTime >= this.globalTotal) {
+          this.$rootScope.$broadcast('endGlobalTime', true);
+        }
+        else {
+          //console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
+
+          if ((this.stageTotal >= 0 && this.reminderAlert >= 0) && (Math.abs(this.stageTime-(this.stageTotal-this.reminderAlert)) <= 15)) {
+            this.$rootScope.$broadcast('reminderAlert');
+          }
+        }
+      });
     }
   }
 }
