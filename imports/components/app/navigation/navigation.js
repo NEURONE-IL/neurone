@@ -472,31 +472,39 @@ class Navigation {
        currentState = this.uds.getSession().currentStageState;
 
     if (currentState === 'search') {
-      var maximumStars = 5,
-         userBookmarks = UserBookmarks.find().fetch(),
-              goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                 stars = goodDocs,    // TODO Make score formula
-          minBookmarks = this.uds.getConfigs().minBookmarks;
+      var score = 0;
 
-      console.log(userBookmarks);
-
-      var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage1.html',
-        buttonType: 'nextstage',
-        fields: {
-          stars: stars,
-          maxStars: maximumStars,
-          goodPages: goodDocs,
-          bookmarks: userBookmarks,
-          case: (goodDocs >= minBookmarks ? 1 : 3)
+      this.call('getBookmarkScore', (err, res) => {
+        if (!err) {
+          score = res;
         }
-      };
 
-      this.modal.openModal(modalObject, (err, res) => {
-        if (!err && goodDocs < minBookmarks) {
-          this.replaceWithRelevantBookmarks();
-        }
+        var maximumStars = this.uds.getConfigs().maxStars,
+           userBookmarks = UserBookmarks.find().fetch(),
+                goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+                   stars = score,
+            minBookmarks = this.uds.getConfigs().minBookmarks;
+
+        console.log(userBookmarks);
+
+        var modalObject = {
+          title: this.$translate.instant('nav.taskResults'),
+          templateAsset: 'modals/ready_stage1.html',
+          buttonType: 'nextstage',
+          fields: {
+            stars: stars,
+            maxStars: maximumStars,
+            goodPages: goodDocs,
+            bookmarks: userBookmarks,
+            case: (goodDocs >= minBookmarks ? 1 : 3)
+          }
+        };
+
+        this.modal.openModal(modalObject, (err2, res2) => {
+          if (!err2 && goodDocs < minBookmarks) {
+            this.replaceWithRelevantBookmarks();
+          }
+        });
       });
     }
     else {

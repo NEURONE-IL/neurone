@@ -44,3 +44,4 @@ jcbernack:reactive-aggregate
 konecty:multiple-instances-status
 konecty:user-presence
 xamfoo:reactive-obj
+meteorhacks:aggregate

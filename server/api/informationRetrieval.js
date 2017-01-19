@@ -68,8 +68,31 @@ Meteor.methods({
   getBookmarkScore: function() {
     try {
       if (this.userId) {
-        // TODO complete function
-        var score = 0;
+        var user = UserData.findOne({userId: this.userId}),
+           limit = user.configs.maxBookmarks,
+        maxStars = user.configs.maxStars;
+
+        var pipe1 = [
+                      { $match: { userId: this.userId }},
+                      { $sort: { serverTimestamp: -1 }},
+                      { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}}},
+                      { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url'}},
+                      { $match: { action: 'Bookmark', relevant: true, userMade: true }}
+                    ];
+
+        var pipe2 = [
+                      { $match: { userId: this.userId }},
+                      { $sort: { serverTimestamp: -1 }},
+                      { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}}},
+                      { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url'}},
+                      { $match: { action: 'Bookmark', userMade: true }},
+                      { $limit: limit }
+                    ];
+
+        var relevantCollectedPages = Bookmarks.aggregate(pipe1).length,
+           totalCollectedBookmarks = Bookmarks.aggregate(pipe2).length,
+                             score = Math.round((relevantCollectedPages/totalCollectedBookmarks)*maxStars);
+
         return score;
       }
       else {
@@ -85,7 +108,7 @@ Meteor.methods({
 Meteor.publish({
   userBookmarks: function() {
     if (this.userId) {
-      var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
+      var user = UserData.findOne({userId: this.userId}),
          limit = user.configs.maxBookmarks,
           pipe = [
                   { $match: { userId: this.userId }},
