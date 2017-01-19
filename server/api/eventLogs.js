@@ -13,7 +13,7 @@ import { FormAnswers } from '../../imports/api/formAnswers/index';
 import { Counters } from './serverCollections';
 
 const queryPattern = { userId: String, username: String, query: String, title: String, url: String, localTimestamp: Number };
-const bookmarkPattern = { userId: String, username: String, action: String, title: String, url: String, docId: String, relevant: Boolean, rating: Number, reason: String, localTimestamp: Number };
+const bookmarkPattern = { userId: String, username: String, action: String, title: String, url: String, docId: String, relevant: Boolean, rating: Number, reason: String, userMade: Boolean, localTimestamp: Number };
 const snippetPattern = { userId: String, username: String, action: String, snippetId: Number, snippedText: String, title: String, url: String, docId: String, localTimestamp: Number };
 const linkPattern = { userId: String, username: String, state: String, title: String, url: String, localTimestamp: Number };
 const sessionPattern = { userId: String, username: String, state: String, localTimestamp: Number };

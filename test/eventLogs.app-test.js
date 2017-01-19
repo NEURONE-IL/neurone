@@ -47,6 +47,7 @@ describe('NEURONE API', function() {
           title: 'NEURONE',
           url: '/home',
           docId: 'L9R4iubjCgkQDywSh',
+          userMade: true,
           rating: 5,
           reason: 'It\'s good',
           relevant: false,

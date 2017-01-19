@@ -71,6 +71,7 @@ export default class BookmarkTrackService {
         url: (pageUrl ? pageUrl : window.location.href),
         docId: (docId ? docId : ''),
         relevant: (relevant ? relevant : false),
+        userMade: params.userMade,
         rating: (params.rating ? params.rating : 0),
         reason: (params.reason ? params.reason : ''),
         localTimestamp: Utils.getTimestamp()
@@ -108,6 +109,7 @@ export default class BookmarkTrackService {
       delete bookmarkObject._id;
       bookmarkObject.username = Meteor.user().username || Meteor.user().emails[0].address;
       bookmarkObject.action = params.type;
+      bookmarkObject.userMade = params.userMade;
       bookmarkObject.localTimestamp = Utils.getTimestamp();
       bookmarkObject.rating = 0;
       bookmarkObject.reason = '';
@@ -140,7 +142,8 @@ export default class BookmarkTrackService {
 
   saveBookmark(callback) {
     var params = {
-      type: 'Bookmark'
+      type: 'Bookmark',
+      userMade: true
     }
 
     this.makeBookmark(params, (err, res) => {
@@ -155,7 +158,8 @@ export default class BookmarkTrackService {
 
   removeBookmark(callback) {
     var params = {
-      type: 'Unbookmark'
+      type: 'Unbookmark',
+      userMade: true
     }
     
     this.makeBookmark(params, (err, res) => {
@@ -170,7 +174,8 @@ export default class BookmarkTrackService {
 
   removeNonRelevantBookmarks(bookmarkArray, callback) {
     var params = {
-      type: 'Unbookmark'
+      type: 'Unbookmark',
+      userMade: false
     }
 
     var proc = 0;
@@ -192,7 +197,10 @@ export default class BookmarkTrackService {
       var proc = 0;
       
       bookmarkArray.forEach((bkm, idx, arr) => {
-        var params = { type: 'Unbookmark' };
+        var params = {
+          type: 'Unbookmark',
+          userMade: false
+        };
 
         this.customBookmark(bkm, params, (err, res) => {
           proc++;
@@ -218,7 +226,10 @@ export default class BookmarkTrackService {
             var proc = 0;
 
             relevantDocs.forEach((doc, idx, arr) => {
-              var params = { type: 'Bookmark' };
+              var params = {
+                type: 'Bookmark',
+                userMade: false
+              };
 
               var bkm = {
                 userId: Meteor.userId(),

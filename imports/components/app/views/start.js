@@ -82,9 +82,6 @@ function config($stateProvider) {
         else {
           return $q.resolve();
         }
-      },
-      user($auth) {
-        return $auth.awaitUser();
       }
     }
   });
