@@ -1,22 +1,22 @@
 <div class="form-group">
-  <label for="rangeAnswer">
+  <label for="scaleAnswer">
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
   <div id="scaleAnswer">
-    <table class="table table-borderless">
+    <table class="table table-borderless table-condensed table-nonfluid">
       <tbody>
         <tr>
-          <th></th>
-          <th ng-repeat="option in $ctrl.scaleArray track by $index">{{option}}</th>
-          <th></th>
+          <td></td>
+          <td class="text-center scale-option" ng-repeat="option in $ctrl.scaleArray track by $index">{{option}}</td>
+          <td></td>
         </tr>
         <tr>
-          <th>{{$ctrl.data.minLabel}}</th>
-          <th ng-repeat="option in $ctrl.scaleArray track by $index">
+          <td class="text-right">{{$ctrl.data.minLabel}}</td>
+          <td class="text-center scale-choice" ng-repeat="option in $ctrl.scaleArray track by $index">
             <input type="radio" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required && !$ctrl.data.isOtherAnswer">
-          </th>
-          <th>{{$ctrl.data.maxLabel}}</th>
+          </td>
+          <td class="text-left">{{$ctrl.data.maxLabel}}</td>
         </tr>
       </tbody>
     </table>

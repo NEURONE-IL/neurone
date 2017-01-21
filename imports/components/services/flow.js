@@ -155,7 +155,7 @@ class FlowService {
           this.$rootScope.$broadcast('endGlobalTime', true);
         }
         else {
-          //console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
+          console.log('Timer Tick!', 'CurrentStage: ' + stageNumber + '-' + stageName, 'StageTime: ' + this.stageTime, 'GlobalTime: ' + this.globalTime, 'StageTotal: ' + this.stageTotal, 'GlobalTotal: ' + this.globalTotal);
 
           if ((this.stageTotal >= 0 && this.reminderAlert >= 0) && (Math.abs(this.stageTime-(this.stageTotal-this.reminderAlert)) <= 15)) {
             this.$rootScope.$broadcast('reminderAlert');

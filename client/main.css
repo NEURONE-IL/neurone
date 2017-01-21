@@ -173,6 +173,26 @@ mark.highlightSnippet {
   color: black !important;
 }
 
+.table-nonfluid {
+  width: auto !important;
+}
+
+.scale-choice {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.tutorial-background {
+  background: black;
+  height: 550px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.tutorial-image {
+  height: 500px;
+}
+
 .container-wrapper {
   overflow: auto;
   height: 100%;
@@ -185,6 +205,13 @@ mark.highlightSnippet {
   padding: 0 0 0 0 !important;
   margin: 0 0 0 0 !important;
 }
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
 
 /*
 /* Created by Filipe Pina
