@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import iconv from 'iconv';
+import charset from 'charset';
+import jschardet from 'jschardet';
 import md5File from 'md5-file';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
@@ -11,8 +14,9 @@ import Utils from '../lib/utils';
 export default class DocumentParser {
   static getHtmlAsText(documentPath) {
     try {
-      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
-         htmlFile = fs.readFileSync(relPath);
+      var relPath = documentPath,
+         htmlFile = this.readFile(relPath),
+       htmlString = htmlFile.toString();
 
       /*
       var site = unfluff.lazy(htmlFile),
@@ -35,7 +39,7 @@ export default class DocumentParser {
       return htmlToText.fromString(htmlFile, options) || '';
       */
 
-      var $ = cheerio.load(htmlFile.toString());
+      var $ = cheerio.load(htmlString);
       
       $('script').remove();
       $('noscript').remove();
@@ -50,8 +54,8 @@ export default class DocumentParser {
 
   static getHtmlTitle(documentPath, callback) {
     try {
-      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
-         htmlFile = fs.readFileSync(relPath),
+      var relPath = documentPath,
+         htmlFile = this.readFile(relPath),
        htmlString = htmlFile.toString(),
                 $ = cheerio.load(htmlString),
             title = $('head > title').text() || $('title').text() || $('h1').first().text() || 'Untitled Document';
@@ -67,7 +71,7 @@ export default class DocumentParser {
 
   static getHtmlDocname(documentPath) {
     try {
-      var relPath = documentPath,   //Meteor.absolutePath + documentPath,
+      var relPath = documentPath,
           fileExt = path.extname(relPath),
          fileName = path.basename(relPath, fileExt),
             route = uppercamelcase(fileName);
@@ -83,7 +87,7 @@ export default class DocumentParser {
 
   static getHtmlRoute(documentPath) {
     try {
-      var relPath = documentPath,   //Meteor.absolutePath + documentPath,
+      var relPath = documentPath,
          fileName = path.basename(relPath);
 
       //console.log(relPath, fileName);
@@ -107,15 +111,15 @@ export default class DocumentParser {
 
   static cleanDocument(documentPath) {
     try {
-      var relPath = documentPath,   //Meteor.absolutePath + documentPath;
+      var relPath = documentPath,
           fileDir = path.dirname(relPath),
           fileExt = path.extname(relPath),
          fileName = path.basename(relPath, fileExt),
       newFilename = fileName + fileExt;
 
-      var htmlFile = fs.readFileSync(relPath),
+      var htmlFile = this.readFile(relPath),
         htmlString = htmlFile.toString(),
-                 $ = cheerio.load(htmlString);
+                 $ = cheerio.load(htmlFile);
 
       // dgacitua: Remove all anchor tags with links
       /*
@@ -168,7 +172,7 @@ export default class DocumentParser {
 
       htmlString = $.html();
 
-      fs.writeFileSync(path.join(fileDir, newFilename), htmlString);
+      fs.writeFileSync(path.join(fileDir, newFilename), htmlString, 'utf8');
       //console.log('Document Cleaned!', newFilename);
 
       return true;
@@ -176,6 +180,24 @@ export default class DocumentParser {
     catch (e) {
       console.error(e);
       return false;
+    }
+  }
+
+  static readFile(path) {
+    // dgacitua: http://stackoverflow.com/a/18711982
+    var htmlBuffer = fs.readFileSync(path),
+        htmlString = htmlBuffer.toString(),
+          encoding = charset([], htmlString);   // || jschardet.detect(htmlString).encoding.toLowerCase();
+
+    if (encoding === 'utf-8' || encoding === 'utf8' || !encoding) {
+      return htmlString;
+    }
+    else {
+      var ic = new iconv.Iconv(encoding, 'UTF-8//TRANSLIT//IGNORE'),
+         buf = ic.convert(htmlBuffer),
+         str = buf.toString('utf-8');
+
+      return str;
     }
   }
 
