@@ -105,7 +105,8 @@
     "page": "Sivu {{pageNum}}",
     "snippet": "Merkkaus {{snipNum}} - Sivu {{pageNum}}",
     "snippetAll": "Merkkaus {{snipNum}}",
-    "allTitle": "Kaikki sivut"
+    "allTitle": "Kaikki sivut",
+    "wordCount": "You have written {{words}} word(s)"
   },
   "modal": {
     "closeButton": "Sulje",
@@ -185,6 +186,6 @@
     "search2": "Teit hyvää työtä, mutta et löytänyt kaikkia sivuja, joita tarvitset tehtävässä. Siksi sait vain {{stars}} tähteä. Sinulla on vielä aikaa jäljellä joten jatka hakemista. Minä autan sinua poistamalla listalta sivut, joista ei ole hyötyä tehtävässä.",
     "search3": "Aika sivujen etsimiseen loppui. Valitettavasti et löytänyt kaikkia tarvittavia sivuja joten sait tähtiä vain {{stars}}. Älä välitä, sillä annan ne sinulle sitten kun tarvitset niitä.",
     "general": "Aika loppui. Nyt voit siirtyä tehtävässä eteenpäin.",
-    "alert": "Aikaa jäljellä {{time}} minuuttia"
+    "alert": "{{time}} minuuttia jäljellä"
   }
 }

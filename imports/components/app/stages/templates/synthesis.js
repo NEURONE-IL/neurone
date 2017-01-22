@@ -19,7 +19,7 @@ import template from './synthesis.html';
 const name = 'synthesis';
 
 class Synthesis {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, $translate, $interval, $uibModal, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $q, $timeout, $translate, $interval, $uibModal, UserDataService) {
     'ngInject';
 
     this.$state = $state;
@@ -77,6 +77,8 @@ class Synthesis {
 
     this.startTime = Utils.getTimestamp();
 
+    this.wordCount = 0;
+
     this.getQuestion();
     this.autosaveService();
     this.startTime = Utils.getTimestamp();
@@ -93,6 +95,14 @@ class Synthesis {
       }
     });
 
+    $timeout(() => {
+      $scope.$watch(() => this.wordCount, (newVal, oldVal) => {
+        var minWordCount = this.uds.getConfigs().minSynthesisWordLength || 50;
+
+        if (newVal >= minWordCount) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
 
     this.$rootScope.$on('readySynthesis', (event, data) => {
       this.submit();
@@ -174,8 +184,6 @@ class Synthesis {
             Utils.notificationFadeout(this.messageId);
           }
         });
-
-        if (!Utils.isEmpty(this.removeHtml(this.answer))) this.uds.setSession({ readyButton: true });
       }
     }, interval);
   }
@@ -228,8 +236,11 @@ class Synthesis {
     }
   }
 
-  removeHtml(text) {
-    return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+  updateWordCounter() {
+    var text = this.answer ? String(this.answer).replace(/<[^>]+>/gm, ' ') : '',  // dgacitua: Delete HTML markup
+       count = text.match(/\S+/g).length;                                        // dgacitua: Count words
+
+    this.wordCount = count;
   }
 }
 

@@ -4,8 +4,10 @@
       <br>
       <p><b>{{synthesis.question}}</b></p>
       <form ng-submit="synthesis.submit()">
-        <ng-wig ng-model="synthesis.answer" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
-        <br>
+        <ng-wig ng-model="synthesis.answer" ng-change="synthesis.updateWordCounter()" buttons="formats, bold, italic, underline, list1, list2"></ng-wig>
+        <div id="synthesisCounter" class="text-right">
+          {{"synthesis.wordCount" | translate: {words: synthesis.wordCount} }}
+        </div>
         <div id="synthesisMessage" class="text-center">
           <i>{{synthesis.synthesisMessage}}</i>
         </div>
