@@ -10,14 +10,14 @@ import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
 import { Settings } from '../../imports/api/settings/index';
 
 export default class ContentLoader {
-  static loadQuestions(assetPath) {
+  static loadQuestions(assetPath, callback) {
     glob(path.join(assetPath, 'questions', '*.json'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
         var total = files.length;
 
-        files.forEach((file, idx) => {
+        files.forEach((file, idx, arr) => {
           var fn = path.basename(file);
-          console.log('Reading question file!', fn, (idx+1) + ' of ' + total);
+          console.log('Reading question file!', '[' + (idx+1) + '/' + total + ']', fn);
 
           var questionFile = fs.readFileSync(file),
            loadedQuestions = JSON.parse(questionFile);          
@@ -37,22 +37,25 @@ export default class ContentLoader {
               console.warn('Wrong question format detected in object');
             }
           });
+
+          if (idx === arr.length-1) callback(null, true);
         });
       }
       else {
         console.error('Error while loading questions!', err);
+        callback(err);
       }
     }));
   }
 
-  static loadSettings(assetPath) {
+  static loadSettings(assetPath, callback) {
     glob(path.join(assetPath, 'userSettings.json'), Meteor.bindEnvironment((err, files) => {
       if (!err) {
         var total = files.length;
 
-        files.forEach((file, idx) => {
+        files.forEach((file, idx, arr) => {
           var fn = path.basename(file);
-          console.log('Reading settings file!', fn, (idx+1) + ' of ' + total);
+          console.log('Reading settings file!', '[' + (idx+1) + '/' + total + ']', fn);
 
           var settingsFile = fs.readFileSync(file),
             loadedSettings = JSON.parse(settingsFile);          
@@ -69,10 +72,13 @@ export default class ContentLoader {
               console.warn('Wrong settings format detected in object');
             }
           });
+
+          if (idx === arr.length-1) callback(null, true);
         });
       }
       else {
         console.error('Error while loading settings!', err);
+        callback(err);
       }
     }));
   }

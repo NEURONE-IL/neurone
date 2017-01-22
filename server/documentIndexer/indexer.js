@@ -10,176 +10,92 @@ import DocumentParser from './documentParser';
 import { Documents } from '../../imports/api/documents/index';
 
 export default class Indexer {
-  static generateDocumentCollection(assetPath) {
+  static generateDocumentCollection(assetPath, callback) {
     try {
       console.log('Generating Document Collection!');
 
+      var syncedList = [];
       var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
       var total = documentList.length;
 
-      documentList.forEach((doc, idx) => {
+      documentList.forEach((doc, idx, arr) => {
         var fn = path.basename(doc.route);
-        console.log('Indexing documents...', fn, (idx+1) + ' of ' + total);
+        //console.log('Indexing documents...', fn, (idx+1) + ' of ' + total);
 
         var docRoute = path.join(assetPath, doc.route);
 
-        DocumentParser.cleanDocument(docRoute);
+        var check = DocumentParser.cleanDocument(docRoute);
 
         var docObj = {};
         var parsedObj = DocumentParser.parseDocument(docRoute);
-        //var jsonObj = documentList.find(o => o.route === doc.route);
 
         // dgacitua: http://stackoverflow.com/a/171256
         for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
         for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
-        
-        docObj.route = path.join(docObj.route);
 
         Documents.upsert({ route: docObj.route }, docObj, (err, res) => {
-          //if (!err) console.log('Document indexed!', (idx+1) + ' of ' + total);
-        });
-      });
-
-      if (process.env.NEURONE_SOLR_HOST) {
-        SolrIndex.generate();
-      }
-      else {
-        LunrIndex.generate();
-      }  
-    }
-    catch (err) {
-      throw new Meteor.Error('DocumentIndexingError', 'Cannot index document!', err);
-    }
-    
-
-    // TODO Remove all documents
-
-    /*
-    glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
-      if (!err) {
-        var total = files.length;
-
-        files.forEach((file, idx) => {
-          console.log('Indexing documents...', (idx+1) + ' of ' + total);
-
-          DocumentParser.cleanDocument(file);
-
-          var docObj = {};
-          var parsedObj = DocumentParser.parseDocument(file);
-          var jsonObj = documentList.find(o => o.url === path.basename(file));
-
-          // dgacitua: http://stackoverflow.com/a/171256
-          for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
-          for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; } 
-
-          docObj.id = incrementCounter('counters', 'documents');
-
-          Documents.insert(docObj);
-        });
-
-        InvertedIndex.generate();
-        InvertedIndex.save();
-
-        return true;
-      }
-      else {
-        console.error(err);
-        return false;
-      }
-    }));
-    */
-  }
-
-  static updateDocumentCollection(assetPath) {
-    console.log('Updating Document Collection!');
-
-    // TODO: Fix to use JSON documentList
-
-    var syncedList = [];
-    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
-    var total = documentList.length;
-
-    /*
-    var syncedList = [];
-    var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
-    
-    glob(path.join(assetPath, '*.html'), Meteor.bindEnvironment((err, files) => {
-      if (!err) {
-        var total = files.length;
-
-        files.forEach((file, idx) => {
-          console.log('Verifying existing documents...', (idx+1) + ' of ' + total);
-          var docRoute = DocumentParser.getHtmlRoute(file),
-               docData = Documents.findOne({ route: docRoute });
-
-          if (!docData) {
-            // dgacitua: Generate record for HTML files not in database
-            DocumentParser.cleanDocument(file);
-
-            var docObj = {};
-            var parsedObj = DocumentParser.parseDocument(file);
-            var jsonObj = documentList.find(o => o.url === path.basename(file));
-
-            // dgacitua: http://stackoverflow.com/a/171256
-            for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
-            for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; }
-            
-            docObj.id = incrementCounter('counters', 'documents');
-
-            Documents.insert(docObj);
+          if (!err)  {
+            syncedList.push(docObj.route);
+            console.log('Document indexed!', '[' + (idx+1) + '/' + total + ']', fn);
           }
           else {
-            // dgacitua: Check if file has been modified (through MD5 Hash) and update if needed
-            var currHash = DocumentParser.getMD5(file);
-
-            if (docData.md5Hash !== currHash) {
-              DocumentParser.cleanDocument(file);
-
-              var docObj = {};
-              var parsedObj = DocumentParser.parseDocument(file);
-              var jsonObj = documentList.find(o => o.url === path.basename(file));
-
-              // dgacitua: http://stackoverflow.com/a/171256
-              for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
-              for (var attrname in jsonObj) { docObj[attrname] = jsonObj[attrname]; }
-
-              docObj.id = docData.id
-
-              Documents.update({ _id: docData._id}, docObj);
-            }
+            console.error('Document errored!', '[' + (idx+1) + '/' + total + ']', fn, err);
+            callback(err);
           }
-
-          syncedList.push(docData.route);
         });
 
-        console.log('Removing documents without HTML file from database...');
-        Documents.remove({ route: { $nin: syncedList }});
-
-        InvertedIndex.generate();
-        //InvertedIndex.save();
-
-        return true;
-      }
-      else {
-        console.error(err);
-        return false;
-      }
-    }));
-    */
+        if (idx === arr.length-1) callback(null, true);
+      });
+    }
+    catch (err) {
+      throw new Meteor.Error('DocumentIndexingError', 'Cannot index documents!', err);
+    }
   }
 
-  static loadInvertedIndex() {
+  static deleteOrphanDocuments(assetPath, callback) {
+    try {
+      console.log('Removing listed documents without HTML file from database...');
+
+      var documentList = JSON.parse(fs.readFileSync(path.join(assetPath, 'documents.json')));
+      var syncedList = documentList.map((doc) => { return doc.route });
+
+      Documents.remove({ route: { $nin: syncedList }}, (err, res) => {
+        if (!err) {
+          callback(null, true);
+        }
+        else {
+          callback(err);
+        }
+      });
+    }
+    catch (err) {
+      throw new Meteor.Error('DocumentIndexingError', 'Cannot delete orphan documents!', err);
+    }
+  }
+
+  static loadInvertedIndex(callback) {
     if (process.env.NEURONE_SOLR_HOST) {
-      SolrIndex.load();
-      return true;  
+      SolrIndex.load((err, res) => {
+        if (!err) callback(null, true);
+        else callback(err);
+      });
     }
     else {
       LunrIndex.load();
-      return true;
+      callback(null, true);
     }
   }
 
-  static getDocumentCount() {
-    return Documents.find().count();
+  static generateInvertedIndex(callback) {
+    if (process.env.NEURONE_SOLR_HOST) {
+      SolrIndex.generate((err, res) => {
+        if (!err) callback(null, true);
+        else callback(err);
+      });
+    }
+    else {
+      LunrIndex.generate();
+      callback(null, true);
+    }  
   }
 }

@@ -19,26 +19,36 @@ Meteor.startup(() => {
     UserPresenceMonitor.start();
     UserPresence.start();
 
-    // dgacitua: Aux variables
-    let docStatus;
-
-    console.log('Loading Settings and Profiles...');
-    ContentLoader.loadSettings(assetPath);
+    // dgacitua: Preloading of Form and Synthesis questions
+    if (ServerConfigs.reloadProfilesOnDeploy) {
+      console.log('Loading Settings and Profiles...');
+      let fn = Meteor.wrapAsync(ContentLoader.loadSettings),
+        step = fn(assetPath);
+    }
 
     // dgacitua: Preloading of Form and Synthesis questions
-    console.log('Loading Questions...');
     if (ServerConfigs.reloadQuestionsOnDeploy) {
-      ContentLoader.loadQuestions(assetPath);
+      console.log('Loading Questions...');
+      let fn = Meteor.wrapAsync(ContentLoader.loadQuestions),
+        step = fn(assetPath);
     }  
 
     // dgacitua: Load HTML documents, parse them and index them
     if (ServerConfigs.reloadDocCollectionOnDeploy) {
       console.log('Generating Document Collection...');
-      docStatus = Indexer.generateDocumentCollection(assetPath);
+
+      let fn1 = Meteor.wrapAsync(Indexer.generateDocumentCollection),
+          fn2 = Meteor.wrapAsync(Indexer.deleteOrphanDocuments),
+          fn3 = Meteor.wrapAsync(Indexer.generateInvertedIndex);
+
+      let step1 = fn1(assetPath),
+          step2 = fn2(assetPath),
+          step3 = fn3();
     }
     else {
-      docStatus = Indexer.loadInvertedIndex();
-    }  
+      let fn = Meteor.wrapAsync(Indexer.loadInvertedIndex),
+        step = fn();
+    }
   }
   
   console.log('NEURONE Server Platform is ready!');

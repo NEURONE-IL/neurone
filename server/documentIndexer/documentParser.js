@@ -170,9 +170,12 @@ export default class DocumentParser {
 
       fs.writeFileSync(path.join(fileDir, newFilename), htmlString);
       //console.log('Document Cleaned!', newFilename);
+
+      return true;
     }
     catch (e) {
       console.error(e);
+      return false;
     }
   }
 

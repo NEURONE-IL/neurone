@@ -8,7 +8,7 @@ import { Documents } from '../../../imports/api/documents/index';
 let searchIndex;
 
 export default class SolrIndex {
-  static load() {
+  static load(callback) {
     var options = {
       host: process.env.NEURONE_SOLR_HOST || 'localhost',
       port: process.env.NEURONE_SOLR_PORT || '8983',
@@ -21,63 +21,82 @@ export default class SolrIndex {
     searchIndex.ping((err, res) => {
       if (!err) {
         console.log('Solr index loaded successfully');
+        callback(null, true);
+      }
+      else {
+        callback(err);
       }
     });
   }
 
-  static generate() {
-    this.load();
-
-    var docs = Documents.find().fetch(),
-     idxDocs = [];
-      idxCnt = 0,
-      idxErr = 0;
-
-    
-    docs.forEach((doc, idx) => {
-      var newDoc = {
-        id: doc._id,
-        docId_s: doc._id,
-        locale_s: doc.locale,
-        relevant_b: doc.relevant || false,
-        title_t: doc.title || '',
-        searchSnippet_t: doc.searchSnippet || '',
-        indexedBody_t: this.escapeString(doc.indexedBody) || '',
-        keywords_t: doc.keywords || []
-      };
-
-      idxDocs.push(newDoc);
-    });
-
-    // dgacitua: Deleting old documents
-    searchIndex.delete({ '*':'*' }, (err, res) => {
+  static generate(callback) {
+    this.load(Meteor.bindEnvironment((err, res) => {
       if (!err) {
-        // dgacitua: Adding new documents
-        searchIndex._requestPost('update?commit=true', idxDocs, {}, (err2, res2) => {
+        var docs = Documents.find().fetch(),
+         idxDocs = [];
+          idxCnt = 0,
+          idxErr = 0;
+        
+        docs.forEach((doc, idx) => {
+          var newDoc = {
+            id: doc._id,
+            docId_s: doc._id,
+            locale_s: doc.locale,
+            relevant_b: doc.relevant || false,
+            title_t: doc.title || '',
+            searchSnippet_t: doc.searchSnippet || '',
+            indexedBody_t: this.escapeString(doc.indexedBody) || '',
+            keywords_t: doc.keywords || [],
+            test_s: doc.test || [],
+            topic_s: doc.topic || []
+          };
+
+          idxDocs.push(newDoc);
+        });
+
+        // dgacitua: Deleting old documents
+        searchIndex.delete({ '*':'*' }, (err2, res2) => {
           if (!err2) {
-            console.log('Documents added to Solr Index!');
+            // dgacitua: Adding new documents
+            searchIndex._requestPost('update?commit=true', idxDocs, {}, (err3, res3) => {
+              if (!err3) {
+                console.log('Documents added to Solr Index!');
+                callback(null, true);
+              }
+              else {
+                console.error('Error while adding documents to Solr Index', err2);
+                callback(err);
+              }
+            });
           }
           else {
-            console.error('Error while adding documents to Solr Index', err2);
+            console.error('Error while removing old documents from Solr Index', err);
+            callback(err);
           }
         });
       }
       else {
-        console.error('Error while removing old documents from Solr Index', err);
+        callback(err);
       }
-    });
+    }));
   }
 
-  static searchDocuments(queryText, callback) {
-    check(queryText, String);
+  static searchDocuments(queryObject, callback) {
+    check(queryObject, Object);
 
-    var queryFix = encodeURIComponent(queryText);
+    var queryString = encodeURIComponent(queryObject.query),
+        queryLocale = queryObject.locale ? encodeURIComponent(queryObject.locale) : null,
+          queryTest = queryObject.test ? encodeURIComponent(queryObject.test) : null,
+         queryTopic = queryObject.topic ? encodeURIComponent(queryObject.topic) : null;
 
-    var q1 = 'q=' + 'title_t:' + queryFix + ' OR ' + 'indexedBody_t:' + queryFix + ' OR ' + 'keywords_t:' + queryFix,
-        q2 = 'df=indexedBody_t',
-        q3 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
-        q4 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
-     query = q1 + '&' + q2 + '&' + q3 + '&' + q4;
+    var q1 = 'q=' + '(' + 'title_t:' + queryString + ' OR ' + 'indexedBody_t:' + queryString + ' OR ' + 'keywords_t:' + queryString + ')',
+        q2 = queryLocale ? ' AND locale_s:' + queryLocale : '',
+        q3 = queryTest ? ' AND test_s:' + queryTest : '',
+        q4 = queryTopic ? ' AND topic_s:' + queryTopic : '',
+        q5 = 'df=indexedBody_t',
+        q6 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
+        q7 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
+     query = q1 + q2 + q3 + q4 + '&' + q5 + '&' + q6 + '&' + q7;
 
     var respDocs = [];
 
