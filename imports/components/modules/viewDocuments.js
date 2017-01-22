@@ -88,7 +88,7 @@ function config($stateProvider) {
           return $q.resolve();
         }
       },
-      documentSub(currentUser) {
+      documentSub($promiser, currentUser) {
         return $promiser.subscribe('documents');
       }
     }
