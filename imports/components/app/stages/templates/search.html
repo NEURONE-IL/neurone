@@ -48,7 +48,7 @@
     </div>
     <div ng-if="search.resultsReady">
       <div ng-repeat="doc in search.documents.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage)) track by doc._id">
-        <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })">{{doc.title}}</a>
+        <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">{{doc.title}}</a>
         <div class="search-result-url">{{doc.url}}</div>
         <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
         <br>

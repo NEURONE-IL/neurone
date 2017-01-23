@@ -9,7 +9,7 @@ import Configs from '../../../globalConfigs';
 import template from './search.html';
 
 class Search {
-  constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, $sanitize, UserDataService, QueryTrackService) {
+  constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, $sanitize, UserDataService, QueryTrackService, EventTrackService) {
     'ngInject';
 
     this.$scope = $scope;
@@ -20,6 +20,7 @@ class Search {
 
     this.uds = UserDataService;
     this.qts = QueryTrackService;
+    this.ets = EventTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -28,6 +29,7 @@ class Search {
         bookmarkButton: false,
         unbookmarkButton: false,
         bookmarkList: false,
+        backButton: false,
         readyButton: false,
         statusMessage: ''
       });
@@ -38,6 +40,7 @@ class Search {
         bookmarkButton: false,
         unbookmarkButton: false,
         bookmarkList: true,
+        backButton: false,
         stageHome: '/search',
         statusMessage: ''
       }, (err, res) => {
@@ -128,6 +131,10 @@ class Search {
     // dgacitua: Mark new results
     markInstance.mark(qt, { className: 'highlightSearch' });
     this.$scope.$apply();
+  }
+
+  storeEvent(action, params) {
+    this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
 }
 

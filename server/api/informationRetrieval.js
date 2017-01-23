@@ -89,13 +89,17 @@ Meteor.methods({
                       { $limit: limit }
                     ];
 
-        var relevantCollectedPages = Bookmarks.aggregate(pipe1).length,
-           totalCollectedBookmarks = Bookmarks.aggregate(pipe2).length,
+        // dgacitua: From 'meteorhacks:aggregate' Meteor package
+        var relevantCollectedPages = Bookmarks.aggregate(pipe1).count(),
+           totalCollectedBookmarks = (Bookmarks.aggregate(pipe2).count() > 0) ? Bookmarks.aggregate(pipe2).count() : 1,
                              score = Math.round((relevantCollectedPages/totalCollectedBookmarks)*maxStars);
+
+        console.log(this.userId, score, relevantCollectedPages, totalCollectedBookmarks, maxStars);
 
         return score;
       }
       else {
+        console.log('nep!');
         return 0;
       }
     }
@@ -119,6 +123,7 @@ Meteor.publish({
                   { $limit: limit }
                 ];
 
+      // dgacitua: From 'jcbernack:reactive-aggregate' Meteor package
       ReactiveAggregate(this, Bookmarks, pipe, { clientCollection: 'UserBookmarks' });
     }
     else {

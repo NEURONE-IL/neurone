@@ -30,7 +30,7 @@ import Utils from '../../globalUtils';
 const name = 'navigation';
 
 class Navigation {
-  constructor($scope, $rootScope, $window, $auth, $reactive, $state, $translate, $filter, $q, $timeout, $promiser, AuthService, UserDataService, BookmarkTrackService, SnippetTrackService, SessionTrackService, FlowService, ModalService) {
+  constructor($scope, $rootScope, $window, $auth, $reactive, $state, $translate, $filter, $q, $timeout, $promiser, AuthService, UserDataService, BookmarkTrackService, SnippetTrackService, SessionTrackService, EventTrackService, FlowService, ModalService) {
     'ngInject';
 
     this.$state = $state;
@@ -46,6 +46,7 @@ class Navigation {
     this.bms = BookmarkTrackService;
     this.ses = SessionTrackService;
     this.uds = UserDataService;
+    this.ets = EventTrackService;
     this.auth = AuthService;
     this.modal = ModalService;
 
@@ -337,6 +338,12 @@ class Navigation {
   }
 
   taskModal() {
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
+
+    this.storeEvent('TaskSelected', { state: currentState, flowStep: stageNumber });
+
     var locale = this.uds.getConfigs().locale,
       template = '';
 
@@ -361,6 +368,8 @@ class Navigation {
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState,
           stageData = this.uds.getConfigs().stages[stageNumber];
+
+    this.storeEvent('TipsSelected', { state: currentState, flowStep: stageNumber });
 
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -399,6 +408,8 @@ class Navigation {
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState,
           stageData = this.uds.getConfigs().stages[stageNumber];
+
+    this.storeEvent('TutorialSelected', { state: currentState, flowStep: stageNumber });
 
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
@@ -466,16 +477,18 @@ class Navigation {
   */
 
   timeoutModal() {
-    // TODO
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState;
 
+    this.storeEvent('TimeoutTriggered', { state: currentState, flowStep: stageNumber });
+
     if (currentState === 'search') {
-      var score = 0;
+      let score = 0;
 
       this.call('getBookmarkScore', (err, res) => {
         if (!err) {
+          console.log(res);
           score = res;
         }
 
@@ -519,8 +532,12 @@ class Navigation {
     }
   }
 
-
   backAction() {
+    var stageNumber = this.uds.getSession().currentStageNumber, 
+       currentStage = this.uds.getSession().currentStageName,
+       currentState = this.uds.getSession().currentStageState;
+
+    this.storeEvent('BackButtonSelected', { state: currentState, flowStep: stageNumber });
     this.$rootScope.$broadcast('goBack');
   }
 
@@ -528,6 +545,8 @@ class Navigation {
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState;
+
+    this.storeEvent('ReadyButtonSelected', { state: currentState, flowStep: stageNumber });
 
     if (currentState === 'stage0') {
       var modalObject = {
@@ -548,36 +567,45 @@ class Navigation {
     }
     else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      var maximumStars = 5,
-         userBookmarks = UserBookmarks.find().fetch(),
-              goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                 stars = goodDocs,    // TODO Make score formula
-          minBookmarks = this.uds.getConfigs().minBookmarks;
+      let score = 0;
 
-      console.log(userBookmarks);
-
-      var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage1.html',
-        buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
-        fields: {
-          stars: stars,
-          maxStars: maximumStars,
-          goodPages: goodDocs,
-          bookmarks: userBookmarks,
-          case: (goodDocs >= minBookmarks ? 1 : 2)
-        }
-      };
-
-      this.modal.openModal(modalObject, (err, res) => {
+      this.call('getBookmarkScore', (err, res) => {
         if (!err) {
-          if (res.message === 'ok' && goodDocs >= minBookmarks) {
-            this.$rootScope.$broadcast('endStage', stageNumber);
-          }
-          else {
-            this.removeNonRelevantBookmarks();
-          }
+          console.log(res);
+          score = res;
         }
+        
+        var maximumStars = 5,
+           userBookmarks = UserBookmarks.find().fetch(),
+                goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+                   stars = score,    // TODO Make score formula
+            minBookmarks = this.uds.getConfigs().minBookmarks;
+
+        console.log(userBookmarks);
+
+        var modalObject = {
+          title: this.$translate.instant('nav.taskResults'),
+          templateAsset: 'modals/ready_stage1.html',
+          buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
+          fields: {
+            stars: stars,
+            maxStars: maximumStars,
+            goodPages: goodDocs,
+            bookmarks: userBookmarks,
+            case: (goodDocs >= minBookmarks ? 1 : 2)
+          }
+        };
+
+        this.modal.openModal(modalObject, (err2, res2) => {
+          if (!err2) {
+            if (res2.message === 'ok' && goodDocs >= minBookmarks) {
+              this.$rootScope.$broadcast('endStage', stageNumber);
+            }
+            else {
+              this.removeNonRelevantBookmarks();
+            }
+          }
+        });
       });
     }
     else if (currentState === 'collection' || currentState === 'criticalEval') {
@@ -634,6 +662,10 @@ class Navigation {
     else {
       this.$rootScope.$broadcast('endStage', stageNumber);
     }
+  }
+
+  storeEvent(action, params) {
+    this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
 }
 

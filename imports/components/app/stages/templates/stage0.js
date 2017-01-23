@@ -16,6 +16,7 @@ class Stage0 {
 
       this.uds.setSession({
         readyButton: false,
+        backButton: false,
         statusMessage: ''
       });
     });
@@ -24,6 +25,7 @@ class Stage0 {
       console.log('Stage0 Success');
       this.uds.setSession({
         readyButton: false,
+        backButton: false,
         stageHome: '/stage0'
       }, (err, res) => {
         if (!err) {

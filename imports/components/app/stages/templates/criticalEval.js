@@ -98,7 +98,7 @@ class CriticalEvalPV {
 }
 
 class CriticalEvalSB {
-  constructor($scope, $rootScope, $state, $reactive, $timeout, $q, $promiser, SnippetTrackService, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $timeout, $q, $promiser, SnippetTrackService, EventTrackService, UserDataService) {
     'ngInject';
 
     this.$state = $state;
@@ -107,6 +107,7 @@ class CriticalEvalSB {
 
     this.uds = UserDataService;
     this.sts = SnippetTrackService;
+    this.ets = EventTrackService;
 
     $rootScope.$on('readyCriticalEval', (event, data) => {
       this.sendForms();
@@ -252,6 +253,12 @@ class CriticalEvalSB {
     console.log('ChangePage', this.url, this.currentDocId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
+
+    this.storeEvent('ChangePageTab', { docId: this.currentDocId, pageIndex: index });
+  }
+
+  storeEvent(action, params) {
+    this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
 }
 

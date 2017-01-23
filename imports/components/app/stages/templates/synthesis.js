@@ -19,7 +19,7 @@ import template from './synthesis.html';
 const name = 'synthesis';
 
 class Synthesis {
-  constructor($scope, $rootScope, $state, $reactive, $q, $timeout, $translate, $interval, $uibModal, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $q, $timeout, $translate, $interval, $uibModal, UserDataService, EventTrackService) {
     'ngInject';
 
     this.$state = $state;
@@ -30,6 +30,7 @@ class Synthesis {
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
+    this.ets = EventTrackService;
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -78,6 +79,7 @@ class Synthesis {
     this.startTime = Utils.getTimestamp();
 
     this.wordCount = 0;
+    this.charCount = 0;
 
     this.getQuestion();
     this.autosaveService();
@@ -96,10 +98,11 @@ class Synthesis {
     });
 
     $timeout(() => {
-      $scope.$watch(() => this.wordCount, (newVal, oldVal) => {
-        var minWordCount = this.uds.getConfigs().minSynthesisWordLength || 50;
+      $scope.$watch(() => this.charCount, (newVal, oldVal) => {
+        var minWordCount = this.uds.getConfigs().minSynthesisWordLength || 50,
+            minCharCount = this.uds.getConfigs().minSynthesisCharLength || 425;
 
-        if (newVal >= minWordCount) this.uds.setSession({ readyButton: true });
+        if (newVal >= minCharCount || this.wordCount >= minWordCount) this.uds.setSession({ readyButton: true });
         else this.uds.setSession({ readyButton: false });
       });
     }, 0);
@@ -135,10 +138,14 @@ class Synthesis {
     this.pageIndex = index;
 
     console.log('changePage', this.docId, this.pageIndex);
+
+    this.storeEvent('ChangePageTab', { docId: this.docId, pageIndex: this.pageIndex });
   }
 
   launchPageModal(snippet) {
     console.log('pageModal', snippet.docId, snippet.snippedText);
+
+    this.storeEvent('OpenPageModal', { docId: snippet.docId, snippet: snippet.snippedText });
 
     var modalInstance = this.$uibModal.open({
       animation: true,
@@ -227,6 +234,7 @@ class Synthesis {
       this.call('getSynthQuestion', form, (err, res) => {
         if (!err) {
           this.question = res.question;
+          // TODO get latest valid answer
         }
         else {
           console.error('Error while loading question', err);
@@ -237,13 +245,18 @@ class Synthesis {
   }
 
   updateWordCounter() {
-    var text = this.answer ? String(this.answer).replace(/<[^>]+>/gm, ' ') : '',  // dgacitua: Delete HTML markup
-       count = text.match(/\S+/g).length;                                        // dgacitua: Count words
+    var reducedText = this.answer ? String(this.answer).replace(/<[^>]+>/gm, ' ') : '',  // dgacitua: Delete HTML markup
+          wordCount = reducedText.match(/\S+/g).length,           // dgacitua: Count words
+          charCount = reducedText.length;                         // dgacitua: Count chars
 
-    this.wordCount = count;
+    this.wordCount = wordCount;
+    this.charCount = charCount;
+  }
+
+  storeEvent(action, params) {
+    this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
 }
-
 // create a module
 export default angular.module(name, [
   'truncate',

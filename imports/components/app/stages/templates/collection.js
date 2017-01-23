@@ -98,7 +98,7 @@ class CollectionPV {
 }
 
 class CollectionSB {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
+  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, EventTrackService, UserDataService) {
     'ngInject';
 
     this.$state = $state;
@@ -107,6 +107,7 @@ class CollectionSB {
 
     this.uds = UserDataService;
     this.sts = SnippetTrackService;
+    this.ets = EventTrackService;
 
     $rootScope.$on('readyCollection', (event, data) => {
       this.sendForms();
@@ -245,6 +246,12 @@ class CollectionSB {
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
     this.$rootScope.$broadcast('updateSnippetButton');
+
+    this.storeEvent('ChangePageTab', { docId: this.currentDocId, pageIndex: index });
+  }
+
+  storeEvent(action, params) {
+    this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
 }
 
