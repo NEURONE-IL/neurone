@@ -72,7 +72,7 @@ class Stage0 {
 
     $timeout(() => {
       $scope.$watch(() => this.queryIdeasForm.$valid, (newVal, oldVal) => {
-        if (newVal) this.uds.setSession({ readyButton: true });
+        if (newVal === true) this.uds.setSession({ readyButton: true });
         else this.uds.setSession({ readyButton: false });
       });
     }, 0);

@@ -91,6 +91,8 @@ class Search {
         topic: this.uds.getConfigs().topic
       }
 
+      console.log(queryObj);
+
       this.call('searchDocuments', queryObj, function(err, res) {
         if (!err) {
           this.documents = res;

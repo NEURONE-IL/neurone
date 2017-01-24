@@ -98,6 +98,8 @@ export default class SolrIndex {
         q7 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
      query = q1 + q2 + q3 + q4 + '&' + q5 + '&' + q6 + '&' + q7;
 
+    //console.log('SearchQuery', query);
+
     var respDocs = [];
 
     searchIndex.search(query, Meteor.bindEnvironment((err, res) => {
