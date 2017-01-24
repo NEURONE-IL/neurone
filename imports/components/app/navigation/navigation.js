@@ -491,6 +491,9 @@ class Navigation {
           console.log(res);
           score = res;
         }
+        else {
+          console.error(err);
+        }
 
         var maximumStars = this.uds.getConfigs().maxStars,
            userBookmarks = UserBookmarks.find().fetch(),
@@ -574,6 +577,9 @@ class Navigation {
           console.log(res);
           score = res;
         }
+        else {
+          console.error(err);
+        }
         
         var maximumStars = 5,
            userBookmarks = UserBookmarks.find().fetch(),
@@ -619,7 +625,7 @@ class Navigation {
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
           if (res.message === 'ok') {
-            this.$rootScope.$broadcast('readyStage2');
+            if (currentState === 'criticalEval') this.$rootScope.$broadcast('readyCriticalEval');
             this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
@@ -636,7 +642,7 @@ class Navigation {
       this.modal.openModal(modalObject, (err, res) => {
         if (!err) {
           if (res.message === 'ok') {
-            this.$rootScope.$broadcast('readyStage3');
+            this.$rootScope.$broadcast('readySynthesis');
             this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }
@@ -654,6 +660,23 @@ class Navigation {
         if (!err) {
           if (res.message === 'ok') {
             this.$rootScope.$broadcast('readyTaskQuestions');
+            this.$rootScope.$broadcast('endStage', stageNumber);
+          }
+        }
+      });
+    }
+    else if (currentState === 'affective') {
+      var modalObject = {
+        title: this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_confirm.html',
+        buttonType: 'okcancel',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {
+        if (!err) {
+          if (res.message === 'ok') {
+            this.$rootScope.$broadcast('readyAffective');
             this.$rootScope.$broadcast('endStage', stageNumber);
           }
         }

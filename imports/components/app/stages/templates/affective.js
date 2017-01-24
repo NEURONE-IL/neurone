@@ -4,11 +4,12 @@ import Configs from '../../../globalConfigs';
 import template from './affective.html';
 
 class Affective {
-  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService, EventTrackService) {
+  constructor($scope, $stateParams, $rootScope, $reactive, $translate, $timeout, UserDataService, EventTrackService) {
     'ngInject';
 
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
+    this.$stateParams = $stateParams;
 
     this.uds = UserDataService;
     this.ets = EventTrackService;
@@ -94,7 +95,27 @@ class Affective {
       calmness: this.scale2response
     }
 
-    console.log(answers);
+    var response = {
+      userId: Meteor.userId(),
+      username: Meteor.user().username || Meteor.user().emails[0].address,
+      action: 'AnsweredSAM',
+      localTimestamp: Utils.getTimestamp(),
+      extras: {
+        stage: this.$stateParams.stage,
+        answers: answers
+      }
+    };
+
+    console.log(response);
+
+    this.call('storeCustomEvent', response, (err,res) => {
+      if (!err) {
+        console.log('Success!');
+      }
+      else {
+        console.error('Error while saving Stage0 answers', err);
+      }
+    });
   }
 }
 
@@ -119,15 +140,16 @@ function config($stateProvider) {
       dataReady(UserDataService) {
         var uds = UserDataService;
         return uds.ready();
-      }/*,
+      },
       stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          var uds = UserDataService;
+          var uds = UserDataService,
+              dfr = uds.ready();
 
-          dataReady.then((res) => {
+          dfr.then((res) => {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
@@ -137,7 +159,7 @@ function config($stateProvider) {
             else return $q.resolve();
           });
         }
-      }*/
+      }
     }
   });
 };

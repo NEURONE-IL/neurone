@@ -52,6 +52,17 @@ class Enrollment {
   }
 
   generateCredentials() {
+    let tempClasification = {
+      test: false,    // [Boolean] Is a test account
+      university: 0,  // [one-digit Integer] University Code
+      school: 0,      // [two-digit Integer] School Code
+      domain: '',     // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
+      task: '',       // [Char] Task type (for iFuCo: [E]Email, [A]Article)
+      studyStage: 0,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
+      order: 0,       // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
+      userId: 0       // [four-digit Integer] User Id
+    };
+
     let tempCredentials = {
       username: '',
       password: '',

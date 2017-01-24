@@ -109,10 +109,12 @@ class CollectionSB {
     this.sts = SnippetTrackService;
     this.ets = EventTrackService;
 
+    /*
     $rootScope.$on('readyCollection', (event, data) => {
       this.sendForms();
     });
-
+    */
+    
     $reactive(this).attach($scope);
 
     this.currentDocId = '';
