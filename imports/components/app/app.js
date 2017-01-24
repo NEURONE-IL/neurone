@@ -34,6 +34,7 @@ import { name as Logger } from '../services/logger/logger';
 import { name as Stages } from './stages/stages';
 
 import { name as ViewDocuments } from '../modules/viewDocuments';
+import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
 
@@ -73,7 +74,8 @@ export default angular.module(name, [
   // iFuCo Simulation
   Stages,
   // Other modules
-  ViewDocuments
+  ViewDocuments,
+  Enrollment
 ])
 .component(name, {
   template,

@@ -64,8 +64,8 @@ class Affective {
     this.msg4 = false;
     this.msg5 = false;
     
-    this.$timeout(() => { this.msg1 = true; }, 500);
-    this.$timeout(() => { this.msg2 = true; }, 750);
+    this.$timeout(() => { this.msg1 = true; }, 1000);
+    this.$timeout(() => { this.msg2 = true; }, 1250);
 
     this.$timeout(() => {
       $scope.$watch(() => this.scale1.$valid, (newVal, oldVal) => {
@@ -85,7 +85,7 @@ class Affective {
           }, 1000);
         }
       });
-    }, 1000);
+    }, 1500);
   }
 
   submit() {
@@ -120,11 +120,13 @@ function config($stateProvider) {
         var uds = UserDataService;
         return uds.ready();
       }/*,
-      stageLock($q, dataReady) {
+      stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
+          var uds = UserDataService;
+
           dataReady.then((res) => {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
