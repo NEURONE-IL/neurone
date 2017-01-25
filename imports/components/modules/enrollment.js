@@ -1,4 +1,6 @@
+import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
+import angularCSV from 'ng-csv';
 import RandomString from 'randomstring';
 
 import Utils from '../globalUtils';
@@ -16,6 +18,7 @@ class Enrollment {
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
+    this.auth = AuthService;
 
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({
@@ -51,26 +54,63 @@ class Enrollment {
     this.userList = [];
   }
 
-  generateCredentials() {
-    let tempClasification = {
-      test: false,    // [Boolean] Is a test account
-      university: 0,  // [one-digit Integer] University Code
-      school: 0,      // [two-digit Integer] School Code
-      domain: '',     // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
-      task: '',       // [Char] Task type (for iFuCo: [E]Email, [A]Article)
-      studyStage: 0,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
-      order: 0,       // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
-      userId: 0       // [four-digit Integer] User Id
-    };
+  generateUsers() {
+    if (this.form.$valid) {
+      this.userList = [];
 
-    let tempCredentials = {
-      username: '',
-      password: '',
-      role: 'student',
-      configs: {},
-      session: {},
-      profile: {}
-    };
+      let start = this.idStart,
+            end = this.idEnd;
+
+      for (var id = start; id <= end; id++) {
+        let tempUser = {
+          test: this.testAct,           // [Boolean] Is a test account
+          university: this.university,  // [one-digit Integer] University Code
+          school: this.school,          // [two-digit Integer] School Code
+          domain: this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
+          task: this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
+          studyStage: this.studyStage,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
+          studyOrder: this.studyOrder,  // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
+          userId: id,                   // [four-digit Integer] User Id
+          status: 'NotChecked'
+        };
+
+        tempUser.password = RandomString.generate({ length: 4, readable: true, charset: 'numeric' });
+
+        tempUser.username = (tempUser.test === 'true' ? 't' : '') +
+                            tempUser.university +
+                            this.zeroPad(2, tempUser.school, true) +
+                            tempUser.domain + 
+                            tempUser.task + 
+                            tempUser.studyStage +
+                            tempUser.studyOrder +
+                            this.zeroPad(4, tempUser.userId, true);
+
+        this.userList.push(tempUser);
+      }
+    }
+  }
+
+  registerUsers() {
+    console.log('Calling mass user register!', this.userList.length);
+
+    this.call('registerUsers', this.userList, (err, res) => {
+      if (!err) {
+        this.userList = res;
+      }
+      else {
+        console.log(err);
+      }
+    });
+  }
+
+  // dgacitua: Modified from http://stackoverflow.com/a/24398129
+  zeroPad(amount, str, padLeft) {
+    var pad = Array(amount+1).join('0');
+
+    if (typeof str === 'undefined') return pad;
+
+    if (padLeft) return (pad + str).slice(-pad.length);
+    else return (str + pad).substring(0, pad.length);
   }
 }
 
@@ -78,7 +118,9 @@ const name = 'enrollment';
 
 // create a module
 export default angular.module(name, [
-  'truncate'
+  'ngSanitize',
+  'truncate',
+  'ngCsv'
 ])
 .component(name, {
   template,
@@ -98,12 +140,18 @@ function config($stateProvider) {
         var uds = UserDataService;
         return uds.ready();
       },
-      currentUser($q, userData) {
-        if (Meteor.userId() === null && Meteor.user().role !== 'researcher') {
+      currentUser($q, UserDataService, userData) {
+        if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          return $q.resolve();
+          var uds = UserDataService,
+              dfr = uds.ready();
+
+          return dfr.then((res) => {
+            if (uds.getRole() !== 'researcher') return $q.reject('WRONG_STAGE');
+            else return $q.resolve();
+          });
         }
       }
     }

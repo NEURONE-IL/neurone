@@ -13,6 +13,7 @@ class UserDataService {
     // dgacitua: https://github.com/xamfoo/reactive-obj
     this.userSession = new ReactiveObj();
     this.userConfigs = new ReactiveObj();
+    this.role = '';
 
     Meteor.autorun(() => {
       this.userId = Meteor.userId();
@@ -30,9 +31,10 @@ class UserDataService {
     if (!!userId) {
       console.log('UserData AUTORUN!', userId);
       var p1 = this.fetchConfigs(),
-          p2 = this.fetchSession();
+          p2 = this.fetchSession(),
+          p3 = this.fetchRole();
 
-      this.$q.all([p1, p2]).then((res) => {
+      this.$q.all([p1, p2, p3]).then((res) => {
         this.udsp.resolve('USER_LOGGED');
       });
     }
@@ -79,6 +81,23 @@ class UserDataService {
     return dfr.promise;
   }
 
+  fetchRole() {
+    var dfr = this.$q.defer();
+
+    Meteor.call('userRole', (err, res) => {
+      if (!err) {
+        this.role = res;
+        dfr.resolve();
+      }
+      else {
+        console.error(err);
+        dfr.reject();
+      }
+    });
+
+    return dfr.promise;
+  }
+
   getSession() {
     return this.userSession.get();
   }
@@ -87,11 +106,16 @@ class UserDataService {
     return this.userConfigs.get();
   }
 
+  getRole() {
+    return this.role;
+  }
+
   flush() {
     var dfr = this.$q.defer();
 
     this.userSession.set([], {});
     this.userConfigs.set([], {});
+    this.role = '';
 
     return dfr.resolve();
   }

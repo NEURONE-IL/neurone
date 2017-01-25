@@ -1,7 +1,61 @@
 <div class="container">
   <div class="row">
     <h1>NEURONE <small>{{"app.enrollment" | translate}}</small></h1>
-    <form name="enrollment" class="">
+    <form name="enrollment.form">
+      <div class="col-md-9">
+        <div class="form-inline">
+          <select class="form-control" ng-model="enrollment.testAct" ng-required="true">
+            <option value="">-- AccountType --</option>
+            <option value="true">TestAccount</option>
+            <option value="false">RealAccount</option>
+          </select>
+          <select class="form-control" ng-model="enrollment.domain" ng-required="true">
+            <option value="">-- SearchDomain --</option>
+            <option value="SS">SocialScience</option>
+            <option value="SC">Science</option>
+            <option value="PL">Pilot</option>
+          </select>
+          <select class="form-control" ng-model="enrollment.task" ng-required="true">
+            <option value="">-- TaskType --</option>
+            <option value="E">Email</option>
+            <option value="A">Article</option>
+            <option value="P">Pilot</option>
+          </select>
+          <select class="form-control" ng-model="enrollment.studyStage" ng-required="true">
+            <option value="">-- StudyStage --</option>
+            <option value="1">Pretest</option>
+            <option value="2">Posttest</option>
+          </select>
+          <select class="form-control" ng-model="enrollment.studyOrder" ng-required="true">
+            <option value="">-- StudyOrder --</option>
+            <option value="1">First</option>
+            <option value="2">Second</option>
+          </select>
+        </div>
+        <div class="form-inline">
+          <label class="control-label">
+            UniversityCode
+            <input class="form-control" type="number" min="0" ng-min="0" max="9" ng-max="9" ng-model="enrollment.university" ng-required="true">
+          </label>
+          <label class="control-label">
+            SchoolCode
+            <input class="form-control" type="number" min="0" ng-min="0" max="99" ng-max="99" ng-model="enrollment.school" ng-required="true">
+          </label>
+          <label>
+            StartingUserId
+            <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">
+          </label>
+          <label>
+            EndingUserId
+            <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idEnd" ng-required="true">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-info" ng-click="enrollment.generateUsers()">Generate Users</button>
+        <button type="button" class="btn btn-success" ng-click="enrollment.registerUsers()">Register Users</button>
+        <button type="button" class="btn btn-warning" ng-csv="enrollment.userList" filename="neuroneUsers.csv">Export as CSV</button>
+      </div>
     </form>
   </div>
   <hr>
@@ -34,7 +88,7 @@
             Task
           </th>
           <th>
-            StudyStage
+            Stage
           </th>
           <th>
             Order
@@ -42,42 +96,48 @@
           <th>
             UserId
           </th>
+          <th>
+            Status
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr ng-repeat="user in enrollment.userList track by $index">
           <td>
-            [CONTENT]
+            {{$index+1}}
           </td>
           <td>
-            [CONTENT]
+            {{user.username}}
           </td>
           <td>
-            [CONTENT]
+            {{user.password}}
           </td>
           <td>
-            [CONTENT]
+            {{user.test}}
           </td>
           <td>
-            [CONTENT]
+            {{user.university}}
           </td>
           <td>
-            [CONTENT]
+            {{user.school}}
           </td>
           <td>
-            [CONTENT]
+            {{user.domain}}
           </td>
           <td>
-            [CONTENT]
+            {{user.task}}
           </td>
           <td>
-            [CONTENT]
+            {{user.studyStage}}
           </td>
           <td>
-            [CONTENT]
+            {{user.studyOrder}}
           </td>
           <td>
-            [CONTENT]
+            {{user.userId}}
+          </td>
+          <td>
+            <b>{{user.status}}</b>
           </td>
         </tr>
       </tbody>

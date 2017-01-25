@@ -149,7 +149,7 @@ function config($stateProvider) {
           var uds = UserDataService,
               dfr = uds.ready();
 
-          dfr.then((res) => {
+          return dfr.then((res) => {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
