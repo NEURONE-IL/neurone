@@ -66,50 +66,46 @@ Meteor.methods({
     }
   },
   getBookmarkScore: function() {
-    //try {
+    try {
       if (this.userId) {
         var user = UserData.findOne({userId: this.userId}),
            limit = user.configs.maxBookmarks,
         maxStars = user.configs.maxStars;
 
-        console.log('nep4!');
+        var pipe1 = [
+                      { $match: { userId: this.userId }},
+                      { $sort: { serverTimestamp: -1 }},
+                      { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
+                      { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
+                      { $match: { action: 'Bookmark', relevant: true, userMade: true }},
+                      { $limit: limit }
+                    ];
 
-        var pipe1 = {
-                      $match: { userId: this.userId },
-                      $sort: { serverTimestamp: -1 },
-                      $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}},
-                      $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url'},
-                      $match: { action: 'Bookmark', relevant: true, userMade: true }
-                    };
-
-        var pipe2 = {
-                      $match: { userId: this.userId },
-                      $sort: { serverTimestamp: -1 },
-                      $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}},
-                      $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url'},
-                      $match: { action: 'Bookmark', userMade: true },
-                      $limit: limit
-                    };
-
-        console.log(this.userId, Bookmarks.aggregate(pipe1));
+        var pipe2 = [
+                      { $match: { userId: this.userId }},
+                      { $sort: { serverTimestamp: -1 }},
+                      //{ $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
+                      //{ $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
+                      { $match: { action: 'Bookmark', userMade: true }}
+                    ];
 
         // dgacitua: From 'meteorhacks:aggregate' Meteor package
-        var relevantCollectedPages = parseFloat(Bookmarks.aggregate(pipe1).count()),
-           totalCollectedBookmarks = Bookmarks.aggregate(pipe2).count() > 0 ? parseFloat(Bookmarks.aggregate(pipe2).count()) : 1.0,
-                             score = Math.round((relevantCollectedPages/totalCollectedBookmarks)*maxStars);
+        var relevantCollectedPages = parseFloat(Bookmarks.aggregate(pipe1).length)
+           totalCollectedBookmarks = Bookmarks.aggregate(pipe2).length > 0 ? parseFloat(Bookmarks.aggregate(pipe2).length) : 1.0,
+                             score = (relevantCollectedPages/totalCollectedBookmarks)*maxStars;
 
-        console.log(this.userId, relevantCollectedPages, totalCollectedBookmarks, maxStars);
+        //console.log(this.userId, relevantCollectedPages, totalCollectedBookmarks, maxStars, score);
 
-        return score;
+        return Math.round(score);
       }
       else {
-        console.log('nep!');
         return 0;
       }
-    //}
-    //catch (err) {
-    //  throw new Meteor.Error('DatabaseError', 'Could not get Bookmark Score from Database!', err);
-    //}
+    }
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error('DatabaseError', 'Could not get Bookmark Score from Database!', err);
+    }
   }
 });
 

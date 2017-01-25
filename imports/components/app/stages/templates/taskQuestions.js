@@ -59,7 +59,7 @@ class TaskQuestions {
     this.form = {};
     this.questionnaire = this.uds.getConfigs().stages[stageNumber].questionnaire;
 
-     Meteor.call('getForm', Utils.parseStringAsInteger(this.questionnaire), (err, result) => {
+    this.call('getForm', Utils.parseStringAsInteger(this.questionnaire), (err, result) => {
       if (!err) {
         this.form = result;
         this.$scope.$apply();
