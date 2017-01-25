@@ -17,8 +17,8 @@
       <div class="nav pull-left" ng-if="false">
         <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
-      <div class="nav pull-left btn-group horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
-        <button type="button" class="btn btn-success navbar-btn" ui-sref="register"><i class="fa fa-user-plus" aria-hidden="true"></i> {{"auth.registerButton" | translate}}</button>
+      <div class="nav pull-left horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
+        <button type="button" class="btn btn-success navbar-btn" ui-sref="register" ng-if="false"><i class="fa fa-user-plus" aria-hidden="true"></i> {{"auth.registerButton" | translate}}</button>
         <button type="button" class="btn btn-primary navbar-btn" ui-sref="login"><i class="fa fa-sign-in" aria-hidden="true"></i> {{"auth.loginButton" | translate}}</button>
       </div>
       <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle" ng-if="navigation.isLoggedIn">

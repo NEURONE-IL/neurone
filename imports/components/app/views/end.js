@@ -12,22 +12,25 @@ class End {
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({ standbyMode: false });
-      //this.uds.setSession({ stageHome: '/home' });
-      this.uds.setSession({ statusMessage: '' });
+      if (!!Meteor.userId()) {
+        this.uds.setSession({ standbyMode: false });
+      }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({ standbyMode: true });
-      this.uds.setSession({ stageHome: '/end' });
-      this.uds.setSession({ stageNumber: 4 });
-      this.uds.setSession({ finished: true });
-      this.uds.setSession({ totalTimer: 0, stageTimer: 0 });
-
-      this.$rootScope.$broadcast('updateNavigation');
+      if (!!Meteor.userId()) {
+        this.uds.setSession({ standbyMode: true });
+        this.$rootScope.$broadcast('updateNavigation');  
+      }
     });
 
     $reactive(this).attach($scope);
+
+
+    var stageName = this.uds.getSession().currentStageName,
+      stageNumber = this.uds.getSession().currentStageNumber;
+
+    this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
   }
 }
 
@@ -46,14 +49,6 @@ function config($stateProvider) {
   $stateProvider.state('end', {
     url: '/end',
     template: '<end></end>',
-    resolve: {
-      user($auth) {
-        return $auth.awaitUser();
-      },
-      /*userDataSub(UserDataService) {
-        const uds = UserDataService;
-        return uds.check();
-      }*/
-    }
+    resolve: {}
   });
 };
