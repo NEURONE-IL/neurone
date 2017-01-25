@@ -103,7 +103,6 @@ Meteor.methods({
       }
     }
     catch (err) {
-      console.error(err);
       throw new Meteor.Error('DatabaseError', 'Could not get Bookmark Score from Database!', err);
     }
   }

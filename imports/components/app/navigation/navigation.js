@@ -123,8 +123,8 @@ class Navigation {
            currentState = this.uds.getSession().currentStageState,
               stageData = this.uds.getConfigs().stages[stageNumber];
 
-        //this.uds.setSession({ statusMessage: this.$translate.instant('timeout.alert', { time: stageData.reminderAlert }) });
-        //Utils.notificationFadeout(this.navbarMessageId, 10);
+        this.uds.setSession({ statusMessage: this.$translate.instant('timeout.alert', { time: stageData.reminderAlert }) });
+        Utils.notificationFadeout(this.navbarMessageId, 10);
       });
 
       this.helpers({

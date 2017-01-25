@@ -212,6 +212,11 @@ mark.highlightSnippet {
   float: none;
 }
 
+.navbar-message {
+  font-weight: bold !important;
+  color: yellow !important;
+}
+
 
 /*
 /* Created by Filipe Pina

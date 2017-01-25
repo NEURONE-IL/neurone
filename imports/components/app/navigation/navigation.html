@@ -6,7 +6,7 @@
 
     <div class="navbar-header pull-right">
       <div class="nav pull-left" ng-if="navigation.isLoggedIn && !navigation.standbyMode">
-        <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin">{{navigation.statusMessage}}</div>
+        <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin navbar-message">{{navigation.statusMessage}}</div>
         <button type="button" class="btn btn-back navbar-btn horizontal-button-margin" ng-if="navigation.enableBack" ng-disabled="navigation.lockButtons" ng-click="navigation.backAction()"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{"nav.backButton" | translate}}</button>
         <button type="button" class="btn btn-info navbar-btn horizontal-button-margin" ng-if="navigation.enableSnippetCounter && navigation.enableSnippet" ng-disabled="navigation.lockButtons" ng-click="navigation.saveSnippet()"><i class="fa fa-i-cursor" aria-hidden="true"></i> {{"nav.snippetButton" | translate}}</button>
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark" ng-disabled="navigation.lockButtons" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
