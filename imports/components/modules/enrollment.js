@@ -6,8 +6,6 @@ import RandomString from 'randomstring';
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
-import { Documents } from '../../api/documents/index';
-
 import template from './enrollment.html';
 
 class Enrollment {

@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import template from './documentAdd.html';
 
-import { Documents } from '../../../api/documents/index';
+import { Documents } from '../../../database/documents/index';
 
 class DocumentAdd {
   constructor() {

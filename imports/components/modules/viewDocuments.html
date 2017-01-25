@@ -9,7 +9,7 @@
     <div id="results" class="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1">
       <div ng-repeat="doc in viewDocuments.documents.slice(((viewDocuments.currentPage-1)*viewDocuments.resultsPerPage), ((viewDocuments.currentPage)*viewDocuments.resultsPerPage)) track by doc._id">
         <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })">{{doc.title}}</a>
-        <div><span class="search-result-url">{{doc.url}}</span> | Relevant: {{ !!(doc.relevant) }}</div>
+        <div><span class="search-result-url">{{doc.url}}</span> - <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Domain:</b> {{ doc.topic[0] }} | <b>Task:</b> {{ doc.test[0] }}</div>
         <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
         <br>
       </div>

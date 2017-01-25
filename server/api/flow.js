@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import Utils from '../lib/utils';
 
-import { FlowLogs } from '../../imports/api/flowLogs/index';
-import { FlowSessions } from '../../imports/api/flowSessions/index';
+import { FlowLogs } from '../../imports/database/flowLogs/index';
+import { FlowSessions } from '../../imports/database/flowSessions/index';
 
 Meteor.methods({
   syncFlowTimer: function(currentTimer) {

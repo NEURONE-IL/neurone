@@ -1,4 +1,4 @@
-import { UserData } from '../imports/api/userData/index';
+import { UserData } from '../imports/database/userData/index';
 
 Accounts.onCreateUser((options, user) => {
   // TODO validate arguments with check()

@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import template from './visitedLinksList.html';
 
-import { VisitedLinks } from '../../../api/visitedLinks/index';
+import { VisitedLinks } from '../../../database/visitedLinks/index';
 
 class VisitedLinksList {
   constructor($scope, $reactive) {

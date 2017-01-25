@@ -37,17 +37,12 @@ Meteor.startup(() => {
     if (ServerConfigs.reloadDocCollectionOnDeploy) {
       console.log('Generating Document Collection...');
 
-      let fn1 = Meteor.wrapAsync(Indexer.generateDocumentCollection),
-          fn2 = Meteor.wrapAsync(Indexer.deleteOrphanDocuments),
-          fn3 = Meteor.wrapAsync(Indexer.generateInvertedIndex);
-
-      let step1 = fn1(assetPath),
-          step2 = fn2(assetPath),
-          step3 = fn3();
+      let step1 = Indexer.generateDocumentCollection(assetPath),
+          step2 = Indexer.deleteOrphanDocuments(assetPath),
+          step3 = Indexer.generateInvertedIndex();
     }
     else {
-      let fn = Meteor.wrapAsync(Indexer.loadInvertedIndex),
-        step = fn();
+      let step = Indexer.loadInvertedIndex();
     }
   }
   

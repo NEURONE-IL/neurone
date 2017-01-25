@@ -3,7 +3,7 @@ import angularTruncate from 'angular-truncate-2';
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
-import { Documents } from '../../api/documents/index';
+import { Documents } from '../../database/documents/index';
 
 import template from './viewDocuments.html';
 

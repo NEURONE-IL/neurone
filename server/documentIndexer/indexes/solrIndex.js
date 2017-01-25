@@ -3,7 +3,7 @@ import SolrNode from 'solr-node';
 import Utils from '../../lib/utils';
 import RemoveDiacritics from '../../lib/removeDiacritics';
 
-import { Documents } from '../../../imports/api/documents/index';
+import { Documents } from '../../../imports/database/documents/index';
 
 let searchIndex;
 

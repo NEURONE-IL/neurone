@@ -4,7 +4,7 @@ import uiRouter from 'angular-ui-router';
 
 import template from './documentsList.html';
 
-import { Documents } from '../../../api/documents/index';
+import { Documents } from '../../../database/documents/index';
 
 import { name as DocumentAdd } from './documentAdd';
 import { name as DocumentRemove } from './documentRemove';

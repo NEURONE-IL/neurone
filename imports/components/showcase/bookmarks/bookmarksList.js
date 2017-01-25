@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import template from './bookmarksList.html';
 
-import { Bookmarks } from '../../../api/bookmarks/index';
+import { Bookmarks } from '../../../database/bookmarks/index';
 
 class BookmarksList {
   constructor($scope, $reactive) {

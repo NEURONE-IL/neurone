@@ -5,8 +5,8 @@ import 'array.prototype.move';
 
 import Utils from '../../lib/utils';
 
-import { Documents } from '../../../imports/api/documents/index';
-import { Indexes } from '../../../imports/api/indexes/index';
+import { Documents } from '../../../imports/database/documents/index';
+import { Indexes } from '../../../imports/database/indexes/index';
 
 var searchIndex = {};
 

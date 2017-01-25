@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../lib/utils';
 
-import { UserData } from '../../imports/api/userData/index';
-import { Settings } from '../../imports/api/settings/index';
+import { UserData } from '../../imports/database/userData/index';
+import { Settings } from '../../imports/database/settings/index';
 
 Meteor.methods({
   userDataFromId: function(userId) {

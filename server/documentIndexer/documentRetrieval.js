@@ -3,7 +3,7 @@ import LunrIndex from './indexes/lunrIndex';
 
 import 'array.prototype.move';
 
-import { Documents } from '../../imports/api/documents/index';
+import { Documents } from '../../imports/database/documents/index';
 
 export default class DocumentRetrieval {
   static getDocument(documentName, callback) {
@@ -111,6 +111,7 @@ export default class DocumentRetrieval {
         array.push(undefined);
       }
     }
+    
     array.splice(new_index, 0, array.splice(old_index, 1)[0]);
 
     return array;

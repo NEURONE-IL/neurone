@@ -4,10 +4,10 @@ import glob from 'glob';
 
 import Utils from '../lib/utils';
 
-import { FormQuestions } from '../../imports/api/formQuestions/index';
-import { FormQuestionnaires } from '../../imports/api/formQuestionnaires/index';
-import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
-import { Settings } from '../../imports/api/settings/index';
+import { FormQuestions } from '../../imports/database/formQuestions/index';
+import { FormQuestionnaires } from '../../imports/database/formQuestionnaires/index';
+import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/index';
+import { Settings } from '../../imports/database/settings/index';
 
 export default class ContentLoader {
   static loadQuestions(assetPath, callback) {

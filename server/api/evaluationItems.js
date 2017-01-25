@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../lib/utils';
 
-import { EventLogs } from '../../imports/api/eventLogs/index';
+import { EventLogs } from '../../imports/database/eventLogs/index';
 
-import { FormAnswers } from '../../imports/api/formAnswers/index';
-import { FormQuestions } from '../../imports/api/formQuestions/index';
-import { FormQuestionnaires } from '../../imports/api/formQuestionnaires/index';
-import { SynthesisQuestions } from '../../imports/api/synthesisQuestions/index';
-import { SynthesisAnswers } from '../../imports/api/synthesisAnswers/index';
+import { FormAnswers } from '../../imports/database/formAnswers/index';
+import { FormQuestions } from '../../imports/database/formQuestions/index';
+import { FormQuestionnaires } from '../../imports/database/formQuestionnaires/index';
+import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/index';
+import { SynthesisAnswers } from '../../imports/database/synthesisAnswers/index';
 
 const synthesisAnswerPattern = { userId: String, username: String, startTime: Number, questionId: Match.OneOf(Number, String), question: String, answer: String, completeAnswer: Boolean, localTimestamp: Number };
 Meteor.methods({

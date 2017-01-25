@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 
 import template from './snippetsList.html';
 
-import { Snippets } from '../../../api/snippets/index';
+import { Snippets } from '../../../database/snippets/index';
 
 class SnippetsList {
   constructor($scope, $reactive) {

@@ -3,13 +3,13 @@ import UserAgent from 'useragent';
 
 import Utils from '../lib/utils';
 
-import { Snippets } from '../../imports/api/snippets/index';
-import { Queries } from '../../imports/api/queries/index';
-import { Bookmarks } from '../../imports/api/bookmarks/index';
-import { VisitedLinks } from '../../imports/api/visitedLinks/index';
-import { SessionLogs } from '../../imports/api/sessionLogs/index';
-import { EventLogs } from '../../imports/api/eventLogs/index';
-import { FormAnswers } from '../../imports/api/formAnswers/index';
+import { Snippets } from '../../imports/database/snippets/index';
+import { Queries } from '../../imports/database/queries/index';
+import { Bookmarks } from '../../imports/database/bookmarks/index';
+import { VisitedLinks } from '../../imports/database/visitedLinks/index';
+import { SessionLogs } from '../../imports/database/sessionLogs/index';
+import { EventLogs } from '../../imports/database/eventLogs/index';
+import { FormAnswers } from '../../imports/database/formAnswers/index';
 import { Counters } from './serverCollections';
 
 const queryPattern = { userId: String, username: String, query: String, title: String, url: String, localTimestamp: Number };

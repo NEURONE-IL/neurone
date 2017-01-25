@@ -6,7 +6,7 @@ import uiRouter from 'angular-ui-router';
 
 import template from './documentDetails.html';
 
-import { Documents } from '../../../api/documents/index';
+import { Documents } from '../../../database/documents/index';
 
 class DocumentDetails {
   constructor($scope, $reactive, $stateParams) {

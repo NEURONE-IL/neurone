@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../lib/utils';
 
-import { Documents } from '../../imports/api/documents/index';
-import { Snippets } from '../../imports/api/snippets/index';
-import { Queries } from '../../imports/api/queries/index';
-import { Bookmarks } from '../../imports/api/bookmarks/index';
-import { UserData } from '../../imports/api/userData/index';
+import { Documents } from '../../imports/database/documents/index';
+import { Snippets } from '../../imports/database/snippets/index';
+import { Queries } from '../../imports/database/queries/index';
+import { Bookmarks } from '../../imports/database/bookmarks/index';
+import { UserData } from '../../imports/database/userData/index';
 
 Meteor.methods({
   getSnippets: function(limit) {
