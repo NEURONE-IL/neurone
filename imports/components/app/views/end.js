@@ -25,12 +25,6 @@ class End {
     });
 
     $reactive(this).attach($scope);
-
-
-    var stageName = this.uds.getSession().currentStageName,
-      stageNumber = this.uds.getSession().currentStageNumber;
-
-    this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
   }
 }
 
@@ -49,6 +43,43 @@ function config($stateProvider) {
   $stateProvider.state('end', {
     url: '/end',
     template: '<end></end>',
-    resolve: {}
+    resolve: {
+      dataReady(UserDataService) {
+        var uds = UserDataService;
+        return uds.ready();
+      },
+      stageLock($q, UserDataService, dataReady) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        }
+        else {
+          var uds = UserDataService,
+              dfr = uds.ready();
+
+          return dfr.then((res) => {
+            var cstn = uds.getSession().currentStageNumber,
+                csst = uds.getConfigs().stages[cstn].state,
+                cstp = uds.getConfigs().stages[cstn].urlParams,
+                stst = 'end';
+
+            if (csst !== stst) return $q.reject('WRONG_STAGE');
+            else return $q.resolve();
+          });
+        }
+      },
+      logout($q, AuthService, stageLock) {
+        if (Meteor.userId() === null) {
+          return $q.resolve();
+        }
+        else {
+          const auth = AuthService;
+
+          return auth.logout((err, res) => {
+            if (!err) return $q.resolve();
+            else return $q.reject('WRONG_STAGE');
+          })
+        }
+      }
+    }
   });
 };

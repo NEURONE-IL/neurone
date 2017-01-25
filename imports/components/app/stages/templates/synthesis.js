@@ -294,7 +294,7 @@ function config($stateProvider) {
             var cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
-                stst = 'collection';
+                stst = 'synthesis';
 
             if (csst !== stst) return $q.reject('WRONG_STAGE');
             else return $q.resolve();
