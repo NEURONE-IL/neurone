@@ -73,19 +73,19 @@ Meteor.methods({
         maxStars = user.configs.maxStars;
 
         var pipe1 = [
-                      { $match: { userId: this.userId }},
+                      { $match: { userId: this.userId, userMade: true }},
                       { $sort: { serverTimestamp: -1 }},
                       { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
                       { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
-                      { $match: { action: 'Bookmark', relevant: true, userMade: true }}
+                      { $match: { action: 'Bookmark', relevant: true }}
                     ];
 
         var pipe2 = [
-                      { $match: { userId: this.userId }},
+                      { $match: { userId: this.userId, userMade: true }},
                       { $sort: { serverTimestamp: -1 }},
                       { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
                       { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
-                      { $match: { action: 'Bookmark', userMade: true }}
+                      { $match: { action: 'Bookmark'}}
                     ];
 
         // dgacitua: From 'meteorhacks:aggregate' Meteor package
