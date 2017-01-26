@@ -77,29 +77,30 @@ Meteor.methods({
                       { $sort: { serverTimestamp: -1 }},
                       { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
                       { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
-                      { $match: { action: 'Bookmark', relevant: true, userMade: true }},
-                      { $limit: limit }
+                      { $match: { action: 'Bookmark', relevant: true, userMade: true }}
                     ];
 
         var pipe2 = [
                       { $match: { userId: this.userId }},
                       { $sort: { serverTimestamp: -1 }},
-                      //{ $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
-                      //{ $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
+                      { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
+                      { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
                       { $match: { action: 'Bookmark', userMade: true }}
                     ];
 
         // dgacitua: From 'meteorhacks:aggregate' Meteor package
         var relevantCollectedPages = parseFloat(Bookmarks.aggregate(pipe1).length)
            totalCollectedBookmarks = Bookmarks.aggregate(pipe2).length > 0 ? parseFloat(Bookmarks.aggregate(pipe2).length) : 1.0,
-                             score = (relevantCollectedPages/totalCollectedBookmarks)*maxStars;
+                             score = relevantCollectedPages/totalCollectedBookmarks,
+                          stdScore = score*maxStars,
+                          rndScore = Math.round(stdScore);
 
         //console.log(this.userId, relevantCollectedPages, totalCollectedBookmarks, maxStars, score);
 
-        return Math.round(score);
+        return { score: score, stdScore: stdScore, rndScore: rndScore };
       }
       else {
-        return 0;
+        return null;
       }
     }
     catch (err) {

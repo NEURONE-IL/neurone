@@ -487,7 +487,7 @@ class Navigation {
       this.call('getBookmarkScore', (err, res) => {
         if (!err) {
           console.log(res);
-          score = res;
+          score = res.score;
         }
         else {
           console.error(err);
@@ -496,7 +496,7 @@ class Navigation {
         var maximumStars = this.uds.getConfigs().maxStars,
            userBookmarks = UserBookmarks.find().fetch(),
                 goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                   stars = score,
+                   stars = goodDocs,
             minBookmarks = this.uds.getConfigs().minBookmarks;
 
         console.log(userBookmarks);
@@ -516,6 +516,7 @@ class Navigation {
 
         this.modal.openModal(modalObject, (err2, res2) => {
           if (!err2 && goodDocs < minBookmarks) {
+            this.storeEvent('BookmarkScore', { score: score, final: true });
             this.replaceWithRelevantBookmarks();
           }
         });
@@ -573,16 +574,16 @@ class Navigation {
       this.call('getBookmarkScore', (err, res) => {
         if (!err) {
           console.log(res);
-          score = res;
+          score = res.score;
         }
         else {
           console.error(err);
         }
         
-        var maximumStars = 5,
+        var maximumStars = this.uds.getConfigs().maxStars,
            userBookmarks = UserBookmarks.find().fetch(),
                 goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                   stars = score,    // TODO Make score formula
+                   stars = goodDocs,    // TODO Make score formula
             minBookmarks = this.uds.getConfigs().minBookmarks;
 
         console.log(userBookmarks);
@@ -603,9 +604,11 @@ class Navigation {
         this.modal.openModal(modalObject, (err2, res2) => {
           if (!err2) {
             if (res2.message === 'ok' && goodDocs >= minBookmarks) {
+              this.storeEvent('BookmarkScore', { score: score, final: true });
               this.$rootScope.$broadcast('endStage', stageNumber);
             }
             else {
+              this.storeEvent('BookmarkScore', { score: score, final: false });
               this.removeNonRelevantBookmarks();
             }
           }
