@@ -7,13 +7,23 @@
         </div>
     </div> 
     <div class="main-login main-center">
-      <form class="form-horizontal">
+      <form class="form-horizontal" ng-submit="login.login()">
+        <div class="form-group">
+          <label for="identity" class="cols-sm-2 control-label login">{{"auth.identity" | translate}}</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-address-card-o fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="identity" id="identity"  placeholder="{{'auth.identityPlaceholder' | translate}}" ng-model="login.identity" required />
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="username" id="username" ng-model="login.credentials.username" placeholder="{{'auth.usernamePlaceholder' | translate}}" required/>
+              <input type="text" class="form-control" name="username" id="username" ng-model="login.credentials.username" placeholder="{{'auth.usernamePlaceholder' | translate}}" required autofocus/>
             </div>
           </div>
         </div>
@@ -43,11 +53,13 @@
         <div class="text-center">{{login.error.message}}</div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-lg btn-block login-button" ng-click="login.login()">{{"auth.loginButton" | translate}}</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block login-button">{{"auth.loginButton" | translate}}</button>
         </div>
+        <!--
         <div class="login-register">
-          <a href="/register">{{"auth.registerButton" | translate}}</a><!-- or <a href="reset_password.php">reset password</a>-->
-       </div>
+          <a href="/register">{{"auth.registerButton" | translate}}</a><
+        </div>
+        -->
       </form>
     </div>
   </div>

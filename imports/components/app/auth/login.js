@@ -24,6 +24,7 @@ class Login {
       password: ''
     };
 
+    this.identity = '';
     this.error = '';
   }
 
@@ -31,7 +32,16 @@ class Login {
     this.auth.login(this.credentials.username, this.credentials.password, (err, res) => {
       if (!err) {
         this.error = res;
-        this.$state.go('start');
+
+        this.call('registerIdentity', this.identity, (err2, res2) => {
+          if (!err2) {
+            console.log('User identity registered', res2.userId, res2.username, res2.identity);
+            this.$state.go('start');
+          }
+          else {
+            this.error = err2;
+          }
+        });
       }
       else {
         this.error = err;

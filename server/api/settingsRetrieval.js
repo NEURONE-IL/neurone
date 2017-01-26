@@ -4,6 +4,7 @@ import Utils from '../lib/utils';
 
 import { UserData } from '../../imports/database/userData/index';
 import { Settings } from '../../imports/database/settings/index';
+import { Identities } from '../../imports/database/identities/index';
 
 Meteor.methods({
   userDataFromId: function(userId) {
@@ -106,49 +107,70 @@ Meteor.methods({
     }
   },
   registerUsers: function(userList) {
-    try {
-      userList.forEach((user, idx, arr) => {
-        let tempCredentials = {
-          username: user.username,
-          password: user.password,
-          role: 'student',
-          configs: {},
-          session: {},
-          profile: {}
-        };
+    check(userList, Array);
 
-        let topic, test, userSettings;
+    userList.forEach((user, idx, arr) => {
+      let tempCredentials = {
+        username: user.username,
+        password: user.password,
+        role: 'student',
+        configs: {},
+        session: {},
+        profile: {}
+      };
 
-        if (user.domain === 'SS') topic = 'social';
-        else if (user.domain === 'SC') topic = 'science';
-        else topic = 'pilot';
+      let topic, test, userSettings;
 
-        if (user.task === 'E') test = 'email';
-        else if (user.task === 'A') test = 'article';
-        else test = 'pilot';
+      if (user.domain === 'SS') topic = 'social';
+      else if (user.domain === 'SC') topic = 'science';
+      else topic = 'pilot';
 
-        userSettings = Settings.findOne({ test: test, topic: topic });
+      if (user.task === 'E') test = 'email';
+      else if (user.task === 'A') test = 'article';
+      else test = 'pilot';
 
-        if (!(!!userSettings)) {
-          arr[idx].status = 'ConfigError';
+      userSettings = Settings.findOne({ test: test, topic: topic });
+
+      if (!(!!userSettings)) {
+        arr[idx].status = 'ConfigError';
+      }
+      else {
+        tempCredentials.configs = userSettings;
+
+        let id = Accounts.createUser(tempCredentials);
+
+        if (!(!!id)) {
+          arr[idx].status = 'RegisterError';
         }
         else {
-          tempCredentials.configs = userSettings;
-
-          let id = Accounts.createUser(tempCredentials);
-
-          if (!(!!id)) {
-            arr[idx].status = 'RegisterError';
-          }
-          else {
-            arr[idx].status = 'Registered';
-          }
+          arr[idx].status = 'Registered';
         }
+      }
+    });
 
-        //if (idx === arr.length-1) return arr;
-      });
+    return userList;
+  },
+  registerIdentity: function(id) {
+    try {
+      check(id, String);
 
-      return userList;
+      if (this.userId) {
+        var time = Utils.getTimestamp();
+
+        var identity = {
+          userId: this.userId,
+          username: Meteor.user().username,
+          identity: id,
+          serverDate: Utils.timestamp2date(time),
+          serverTime: Utils.timestamp2time(time),
+          serverTimestamp: time
+        };
+
+        var result = Identities.insert(identity);
+       
+        if (!!result) return identity;
+        else return false;
+      }
     }
     catch (err) {
       console.error(err);

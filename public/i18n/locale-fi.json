@@ -40,10 +40,12 @@
     "email": "Sähköposti",
     "username": "Käyttäjätunnus",
     "password": "Salasana",
+    "identity": "Nimi",
     "required": "Vaadittu tieto",
     "emailPlaceholder": "Anna sähköpostiosoitteesi",
     "usernamePlaceholder": "Anna käyttäjätunnuksesi",
     "passwordPlaceholder": "Anna salasanasi",
+    "identityPlaceholder": "",
     "studentRole": "Oppilas",
     "experimenterRole": "Opettaja"
   },

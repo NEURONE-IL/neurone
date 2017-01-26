@@ -4,13 +4,13 @@ import { DDP } from 'meteor/ddp-client';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 // dgacitua: Database definitions
-import { Snippets } from '../imports/api/snippets/index';
-import { Queries } from '../imports/api/queries/index';
-import { Bookmarks } from '../imports/api/bookmarks/index';
-import { VisitedLinks } from '../imports/api/visitedLinks/index';
-import { SessionLogs } from '../imports/api/sessionLogs/index';
-import { FormAnswers } from '../imports/api/formAnswers/index';
-import { EventLogs } from '../imports/api/eventLogs/index';
+import { Snippets } from '../imports/database/snippets/index';
+import { Queries } from '../imports/database/queries/index';
+import { Bookmarks } from '../imports/database/bookmarks/index';
+import { VisitedLinks } from '../imports/database/visitedLinks/index';
+import { SessionLogs } from '../imports/database/sessionLogs/index';
+import { FormAnswers } from '../imports/database/formAnswers/index';
+import { EventLogs } from '../imports/database/eventLogs/index';
 
 describe('NEURONE API', function() {
   if (Meteor.isClient) {

@@ -40,10 +40,12 @@
     "email": "Email",
     "username": "Username",
     "password": "Password",
+    "identity": "Full name",
     "required": "Required field",
     "emailPlaceholder": "Enter your email",
     "usernamePlaceholder": "Enter your username",
     "passwordPlaceholder": "Enter your password",
+    "identityPlaceholder": "",
     "studentRole": "Student",
     "experimenterRole": "Teacher"
   },
