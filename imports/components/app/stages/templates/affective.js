@@ -57,7 +57,10 @@ class Affective {
       this.submit();
     });
 
-    var stageNumber = this.uds.getSession().currentStageNumber;
+    var stageNumber = this.uds.getSession().currentStageNumber,
+       currentStage = this.uds.getConfigs().stages[stageNumber];
+
+    this.avatar = currentStage.avatar || 'userAvatar';
 
     this.msg1 = true;
     this.msg2 = true;

@@ -6,11 +6,11 @@
         <div class="panel-body">
           <ul class="chat">
             <li class="left clearfix" ng-if="affective.msg1"><span class="chat-img pull-left">
-              <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+              <img ng-src="images/sam/{{affective.avatar}}.png" alt="User Avatar" class="img-circle chat-image" />
             </span>
               <div class="chat-body clearfix">
                 <div class="header">
-                  <strong class="primary-font">Niina</strong> <small class=" pull-right text-muted"></small>
+                  <strong class="primary-font">{{affective.avatar}}</strong> <small class=" pull-right text-muted"></small>
                 </div>
                 <p>
                   Hi there! Welcome and thanks for your time. My name is Niina. How do you feel now?
@@ -21,7 +21,7 @@
               </div>
             </li>
             <li class="right clearfix" ng-if="affective.msg2"><span class="chat-img pull-right">
-              <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+              <img src="images/sam/userAvatar.png" alt="User Avatar" class="img-circle chat-image" />
             </span>
               <div class="chat-body clearfix">
                 <div class="header">
@@ -34,15 +34,15 @@
                       <tbody>
                         <tr>
                           <td></td>
-                          <td class="text-center scale-option">I1</td>
+                          <td class="text-center scale-option"><img src="images/sam/happy1.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I2</td>
+                          <td class="text-center scale-option"><img src="images/sam/happy2.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I3</td>
+                          <td class="text-center scale-option"><img src="images/sam/happy3.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I4</td>
+                          <td class="text-center scale-option"><img src="images/sam/happy4.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I5</td>
+                          <td class="text-center scale-option"><img src="images/sam/happy5.png" class="chat-image" /></td>
                           <td></td>
                         </tr>
                         <tr>
@@ -83,11 +83,11 @@
               </div>
             </li>
             <li class="left clearfix" ng-if="affective.msg3"><span class="chat-img pull-left">
-              <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+              <img ng-src="images/sam/{{affective.avatar}}.png" alt="User Avatar" class="img-circle chat-image" />
             </span>
               <div class="chat-body clearfix">
                 <div class="header">
-                  <strong class="primary-font">Niina</strong> <small class="pull-right text-muted"></small>
+                  <strong class="primary-font">{{affective.avatar}}</strong> <small class="pull-right text-muted"></small>
                 </div>
                 <p>
                   I see. And how calm or anxious would you say you are in this moment?
@@ -98,7 +98,7 @@
               </div>
             </li>
             <li class="right clearfix" ng-if="affective.msg4"><span class="chat-img pull-right">
-              <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+              <img src="images/sam/userAvatar.png" alt="User Avatar" class="img-circle chat-image" />
             </span>
               <div class="chat-body clearfix">
                 <div class="header">
@@ -111,15 +111,15 @@
                       <tbody>
                         <tr>
                           <td></td>
-                          <td class="text-center scale-option">I1</td>
+                          <td class="text-center scale-option"><img src="images/sam/calm1.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I2</td>
+                          <td class="text-center scale-option"><img src="images/sam/calm2.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I3</td>
+                          <td class="text-center scale-option"><img src="images/sam/calm3.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I4</td>
+                          <td class="text-center scale-option"><img src="images/sam/calm4.png" class="chat-image" /></td>
                           <td class="text-center scale-option"></td>
-                          <td class="text-center scale-option">I5</td>
+                          <td class="text-center scale-option"><img src="images/sam/calm5.png" class="chat-image" /></td>
                           <td></td>
                         </tr>
                         <tr>
@@ -160,11 +160,11 @@
               </div>
             </li>
             <li class="left clearfix" ng-if="affective.msg5"><span class="chat-img pull-left">
-              <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+              <img ng-src="images/sam/{{affective.avatar}}.png" alt="User Avatar" class="img-circle chat-image" />
             </span>
               <div class="chat-body clearfix">
                 <div class="header">
-                  <strong class="primary-font">Niina</strong> <small class="pull-right text-muted"></small>
+                  <strong class="primary-font">{{affective.avatar}}</strong> <small class="pull-right text-muted"></small>
                 </div>
                 <p>
                   Ok! We are all set to start. Please click on the "Next" button to continue!
@@ -177,56 +177,3 @@
     </div>
   </form>
 </div>
-
-<!--
-<div id="scaleAnswer">
-  <table class="table table-borderless table-condensed table-nonfluid">
-    <tbody>
-      <tr>
-        <td></td>
-        <td class="text-center scale-option">I1</td>
-        <td class="text-center scale-option"></td>
-        <td class="text-center scale-option">I2</td>
-        <td class="text-center scale-option"></td>
-        <td class="text-center scale-option">I3</td>
-        <td class="text-center scale-option"></td>
-        <td class="text-center scale-option">I4</td>
-        <td class="text-center scale-option"></td>
-        <td class="text-center scale-option">I5</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="text-right">Very Unhappy</td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="1" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="2" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="3" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="4" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="5" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="6" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="7" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="8" ng-required="true">
-        </td>
-        <td class="text-center scale-choice">
-          <input type="radio" ng-model="affective.scale1response" ng-value="9" ng-required="true">
-        </td>
-        <td class="text-left">Very Happy</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
--->
