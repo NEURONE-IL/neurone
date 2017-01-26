@@ -91,7 +91,6 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
  
   // uiRouter settings
   $locationProvider.html5Mode(true);
-  //$urlRouterProvider.deferIntercept();
   $urlRouterProvider.otherwise('/start');
 
   // angularTranslate settings
@@ -110,43 +109,24 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   uds = UserDataService;
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
-    console.log(event, toState, toParams, error);
+    //console.log(event, toState, toParams, error);
     if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
   });
 
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams, error) => {
-    console.log(event, toState, toParams);
+    //console.log(event, toState, toParams);
   });
-
-  // dgacitua: http://stackoverflow.com/a/29943256
-  $rootScope.$on('$locationChangeSuccess', (event) => {
-    //event.preventDefault();
-    //$urlRouter.sync();
-  });
-
-  //$urlRouter.listen();
 
   angular.element($window).on('beforeunload', () => {
     if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
-    localstorage.clear();
+    $window.localstorage.clear();
   });
 
   Accounts.onLogin(() => {
     var locale = uds.getConfigs().locale;
     $translate.use(locale);
-        
-    /*
-    if (!!Meteor.userId()) {
-      if ($state.is('viewDocuments')) {
-        $state.go('viewDocuments');
-      }
-      else {
-        $state.go('start');
-      }
-    }
-    */
   });
 
   Accounts.onLogout(() => {
