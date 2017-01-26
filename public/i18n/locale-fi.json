@@ -125,7 +125,7 @@
     "nextStageInstructions": "Nyt voit jatkaa seuraavaan osatehtävään",
     "goBackInstructions": "Palaa ja yritä löytää parempia sivuja!",
     "timeWarning": "Aika kuluu, jatka pian seuraavaan osatehtävään!",
-    "confirmChanges": "Oletko valmis jatkamaan seuraavaan osatehtävään?",
+    "confirmChanges": "Oletko valmis jatkamaan tehtävän seuraavaan vaiheeseen?",
     "keepSearching": "Koeta löytää parempia sivuja!",
     "timeup": {
       "title": "Aika on lopussa!",
@@ -178,6 +178,16 @@
     },
     "general": {
       "i1": "Hei. Ohje on saatavissa vain silloin, kun olet tekemässä tehtävää. Kokeile sitä myöhemmin, jos sinulle tulee tarvetta."
+    },
+    "email": {
+      "title": "Sähköpostini",
+      "inbox": "Saapuneet",
+      "drafts": "Luonnokset",
+      "sent": "Lähetetyt",
+      "allMail": "Kaikki postini",
+      "from": "Lähettäjä",
+      "to": "Vastaanottaja",
+      "subject": "Aihe"
     }
   },
   "end": {
@@ -187,7 +197,7 @@
   "timeout": {
     "search1": "Hienoa! Löysit kaikki kolme sivua, jotka auttavat sinua ratkaisemaan tehtävän. Sait täydet {{stars}} tähteä. Nyt voit siirtyä tehtävässä eteenpäin.",
     "search2": "Teit hyvää työtä, mutta et löytänyt kaikkia sivuja, joita tarvitset tehtävässä. Siksi sait vain {{stars}} tähteä. Sinulla on vielä aikaa jäljellä joten jatka hakemista. Minä autan sinua poistamalla listalta sivut, joista ei ole hyötyä tehtävässä.",
-    "search3": "Aika sivujen etsimiseen loppui. Valitettavasti et löytänyt kaikkia tarvittavia sivuja joten sait tähtiä vain {{stars}}. Älä välitä, sillä annan ne sinulle sitten kun tarvitset niitä.",
+    "search3": "Aika sivujen etsimiseen loppui, mutta ei hätää. Vinkkaan sinulle sopivat sivut.",
     "general": "Aika loppui. Nyt voit siirtyä tehtävässä eteenpäin.",
     "alert": "{{time}} minuuttia jäljellä"
   }

@@ -85,7 +85,7 @@ Meteor.methods({
                       { $sort: { serverTimestamp: -1 }},
                       { $group: { _id: '$docId', originalId: {$first: '$_id'}, userId: {$first: '$userId'}, title: {$first: '$title'}, action: {$first: '$action'}, relevant: {$first: '$relevant'}, url: {$first: '$url'}, userMade: {$first: '$userMade'}}},
                       { $project: { _id: '$originalId', docId: '$_id', userId: '$userId', title: '$title', action: '$action', relevant: '$relevant', url: '$url', userMade: '$userMade'}},
-                      { $match: { action: 'Bookmark'}}
+                      { $match: { action: 'Bookmark' }}
                     ];
 
         // dgacitua: From 'meteorhacks:aggregate' Meteor package
@@ -97,7 +97,13 @@ Meteor.methods({
 
         //console.log(this.userId, relevantCollectedPages, totalCollectedBookmarks, maxStars, score);
 
-        return { score: score, stdScore: stdScore, rndScore: rndScore };
+        return {
+          score: score,
+          stdScore: stdScore,
+          rndScore: rndScore,
+          relevantBookmarks: relevantCollectedPages,
+          totalBookmarks: totalCollectedBookmarks
+        };
       }
       else {
         return null;

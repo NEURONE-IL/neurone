@@ -178,6 +178,16 @@
     },
     "general": {
       "i1": "Hi. Tutorial will be available only while performing the task. Try it later if you need it."
+    },
+    "email": {
+      "title": "My Email",
+      "inbox": "Inbox",
+      "drafts": "Drafts",
+      "sent": "Sent",
+      "allMail": "All mail",
+      "from": "From",
+      "to": "To",
+      "subject": "Subject"
     }
   },
   "end": {

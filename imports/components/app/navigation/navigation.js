@@ -502,7 +502,7 @@ class Navigation {
         console.log(userBookmarks);
 
         var modalObject = {
-          title: this.$translate.instant('nav.taskResults'),
+          title: '', //this.$translate.instant('nav.taskResults'),
           templateAsset: 'modals/ready_stage1.html',
           buttonType: 'nextstage',
           fields: {
@@ -524,7 +524,7 @@ class Navigation {
     }
     else {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage2.html',
         buttonType: 'nextstage',
         fields: {}
@@ -552,7 +552,7 @@ class Navigation {
 
     if (currentState === 'stage0') {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage0.html',
         buttonType: 'okcancel',
         fields: {}
@@ -589,7 +589,7 @@ class Navigation {
         console.log(userBookmarks);
 
         var modalObject = {
-          title: this.$translate.instant('nav.taskResults'),
+          title: '', //this.$translate.instant('nav.taskResults'),
           templateAsset: 'modals/ready_stage1.html',
           buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
           fields: {
@@ -617,7 +617,7 @@ class Navigation {
     }
     else if (currentState === 'collection' || currentState === 'criticalEval') {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage2.html',
         buttonType: 'okcancel',
         fields: {}
@@ -634,7 +634,7 @@ class Navigation {
     }
     else if (currentState === 'synthesis') {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_stage3.html',
         buttonType: 'okcancel',
         fields: {}
@@ -651,7 +651,7 @@ class Navigation {
     }
     else if (currentState === 'taskQuestions') {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_confirm.html',
         buttonType: 'okcancel',
         fields: {}
@@ -668,7 +668,7 @@ class Navigation {
     }
     else if (currentState === 'affective') {
       var modalObject = {
-        title: this.$translate.instant('nav.taskResults'),
+        title: '', //this.$translate.instant('nav.taskResults'),
         templateAsset: 'modals/ready_confirm.html',
         buttonType: 'okcancel',
         fields: {}
