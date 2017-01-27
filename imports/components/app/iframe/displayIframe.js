@@ -41,11 +41,12 @@ class DisplayIframe {
 
 		this.iframeDoc = document.getElementById('pageContainer');
 
-		this.pageUrl = this.$stateParams.docName || this.$rootScope.docId;
+		this.pageUrl = this.page || this.$stateParams.docName || this.$rootScope.docId;
+    this.snippet = this.snip || '';
 		this.routeUrl = '';
 		this.documentTitle = '';
 
-		this.loadPage(this.pageUrl);
+		this.loadPage(this.pageUrl, this.snippet);
 	}
 
 	loadPage(pageUrl, snippet='') {
@@ -67,18 +68,19 @@ class DisplayIframe {
 					console.log('Loading iframe trackers...');
 					this.abis.service();
 					this.kmtis.service();
+
+          if (snippet) {
+            console.log('Highlighting text!', snippet);
+            this.highlightSnippet(snippet); 
+          }
 				});
 
-				// dgacitua: Execute on iframe end
+        // dgacitua: Execute on iframe end
 				angular.element(this.iframeDoc.contentWindow).on('unload', () => {
 					console.log('Unloading iframe trackers...');
 					this.kmtis.antiService();
 					this.abis.antiService();
 				});
-
-				this.$timeout(() => {
-					if (snippet) this.highlightSnippet(snippet);
-				}, 0);
 			}
 			else {
 				console.error('Error while loading document', pageUrl, err);
@@ -90,7 +92,7 @@ class DisplayIframe {
 	highlightSnippet(snippet) {
     var snip = snippet || '';
     
-    var searchables = this.$document.find('.highlight').toArray();//document.getElementById('pageContainer').contentDocument;
+    var searchables = document.getElementById('pageContainer').contentDocument;   //this.$document.find('.highlight').toArray();
     var markInstance = new Mark(searchables);
 
     markInstance.unmark({ iframes: true, done: () => {
@@ -115,7 +117,11 @@ export default angular.module(name, [
 .component(name, {
 	template,
 	controllerAs: name,
-	controller: DisplayIframe
+	controller: DisplayIframe,
+  bindings: {
+    page: '=',
+    snip: '='
+  }
 })
 .directive('pageFrame', customIframe)
 .directive('ngOnload', ngOnload)
@@ -128,9 +134,6 @@ function config($stateProvider) {
 		.state('displayIframe', {
 			url: '/iframe/:docName',
 			template: '<display-iframe></display-iframe>',
-			bindings: {
-				page: '='
-			},
 			resolve: {
 				currentUser($q) {
 					if (Meteor.userId() === null) {

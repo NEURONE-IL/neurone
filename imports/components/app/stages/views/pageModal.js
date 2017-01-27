@@ -21,8 +21,8 @@ class PageModal {
 
       //console.log('PageModal', this.docId, this.snippet);
     
-      this.highlightSnippet(this.snippet);
-      this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
+      //this.highlightSnippet(this.snippet);
+      //this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
     }, 0);
   }
 
