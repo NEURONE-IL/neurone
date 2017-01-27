@@ -367,7 +367,7 @@ class Navigation {
        currentState = this.uds.getSession().currentStageState,
           stageData = this.uds.getConfigs().stages[stageNumber];
 
-    this.storeEvent('TipsSelected', { state: currentState, flowStep: stageNumber });
+    this.storeEvent('SubtaskSelected', { state: currentState, flowStep: stageNumber });
 
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path

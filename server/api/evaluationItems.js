@@ -49,22 +49,24 @@ Meteor.methods({
     return SynthesisQuestions.findOne({ synthesisId: synthId });
   },
   getSynthesisAnswer: function(synthId) {
-    check(synthId, Match.OneOf(Number, String));
-    
-    /*
-    var mock = {
-      userId: 'rpcvcnxGJDLqLrsut',
-      username: 'asdf@asdf.com',
-      startTime: 1479061295951,
-      questionId: 'syn1',
-      question: 'Is this a question?',
-      answer: '<b>No</b>',
-      completeAnswer: false,
-      localTimestamp: 1479061296951
-    };
-    */
+    try {
+      check(synthId, Match.OneOf(Number, String));
+      
+      var pipeline = [
+                      { $match: { userId: this.userId, questionId: synthId, completeAnswer: false }},
+                      { $sort: { serverTimestamp: -1 }},
+                      { $limit: 1 }
+                    ];
 
-    return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
+      var docList = SynthesisAnswers.aggregate(pipeline),
+           answer = docList.length > 0 ? docList[0] : { answer: '', startTime: Utils.getTimestamp() };
+
+      return answer;
+      //return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
+    }
+    catch (err) {
+      throw new Meteor.Error('DatabaseError', 'Could not load Synthesis Answer in Database!', err);
+    }
   },
   storeSynthesisAnswer: function(jsonObject) {
     try {

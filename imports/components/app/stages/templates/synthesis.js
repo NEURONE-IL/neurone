@@ -65,13 +65,17 @@ class Synthesis {
     });
 
     $reactive(this).attach($scope);
+
+    let stageNumber = this.uds.getSession().currentStageNumber,
+       currentStage = this.uds.getConfigs().stages[stageNumber],
+               form = currentStage.form;
     
     this.synthesisMessage = '';
     this.messageId = 'synthesisMessage';
 
-    this.questionId = 'syn-blank'; // TODO remove hardcoded value
+    this.questionId = form;
+
     this.question = '';
-    this.answer = '';
     this.docId = '';
     this.pageIndex = 0;
     this.autosave = {};
@@ -85,15 +89,14 @@ class Synthesis {
     this.autosaveService();
     this.startTime = Utils.getTimestamp();
 
-    var stageNumber = this.uds.getSession().currentStageNumber,
-       currentStage = this.uds.getConfigs().stages[stageNumber],
-               form = currentStage.form;
-
-    this.call('getSynthesisAnswer', form, (err, res) => {
-      if (!err && res.startTime) {
+    this.call('getSynthesisAnswer', this.questionId, (err, res) => {
+      if (!err) {
         this.startTime = res.startTime;
         this.answer = res.answer;
         console.log('Answer loaded!', res);
+      }
+      else {
+        this.answer = '';
       }
     });
 
@@ -227,11 +230,7 @@ class Synthesis {
 
   getQuestion() {
     if (!!Meteor.userId()) {
-      var stageNumber = this.uds.getSession().currentStageNumber,
-         currentStage = this.uds.getConfigs().stages[stageNumber],
-                 form = currentStage.form;
-
-      this.call('getSynthQuestion', form, (err, res) => {
+      this.call('getSynthQuestion', this.questionId, (err, res) => {
         if (!err) {
           this.question = res.question;
           // TODO get latest valid answer
