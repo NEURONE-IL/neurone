@@ -80,12 +80,18 @@ function config($stateProvider) {
         var uds = UserDataService;
         return uds.ready();
       },
-      currentUser($q, userData) {
+      currentUser($q, UserDataService, userData) {
         if (Meteor.userId() === null) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          return $q.resolve();
+          var uds = UserDataService,
+              dfr = uds.ready();
+
+          return dfr.then((res) => {
+            if (uds.getRole() !== 'researcher') return $q.reject('WRONG_STAGE');
+            else return $q.resolve();
+          });
         }
       },
       documentSub($promiser, currentUser) {
