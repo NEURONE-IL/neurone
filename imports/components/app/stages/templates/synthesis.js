@@ -69,6 +69,8 @@ class Synthesis {
     let stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber],
                form = currentStage.form;
+
+    this.avatar = this.uds.getConfigs().avatar;
     
     this.synthesisMessage = '';
     this.messageId = 'synthesisMessage';

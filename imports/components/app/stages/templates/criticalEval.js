@@ -64,6 +64,8 @@ class CriticalEval {
         }
       });
     });
+
+    this.avatar = this.uds.getConfigs().avatar;
   }
 }
 

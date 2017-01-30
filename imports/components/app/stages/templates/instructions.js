@@ -57,6 +57,7 @@ class Instructions {
     var stageName = this.uds.getSession().currentStageName,
       stageNumber = this.uds.getSession().currentStageNumber;
 
+    this.avatar = this.uds.getConfigs().avatar;
     this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
 
     this.$timeout(() => {

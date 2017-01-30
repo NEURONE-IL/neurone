@@ -64,6 +64,8 @@ class Collection {
         }
       });
     });
+
+    this.avatar = this.uds.getConfigs().avatar;
   }
 }
 

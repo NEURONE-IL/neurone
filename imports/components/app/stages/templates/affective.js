@@ -60,7 +60,7 @@ class Affective {
     var stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber];
 
-    this.avatar = currentStage.avatar || 'userAvatar';
+    this.avatar = this.uds.getConfigs().avatar;
 
     this.msg1 = true;
     this.msg2 = true;

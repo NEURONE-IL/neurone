@@ -67,6 +67,8 @@ class Search {
 
     $reactive(this).attach($scope);
 
+    this.avatar = this.uds.getConfigs().avatar;
+
     this.searchText = this.$stateParams.query || '';
     this.firstSearch = false;
     this.resultsReady = false;

@@ -56,6 +56,8 @@ class TaskQuestions {
     var stageName = this.uds.getSession().currentStageName,
       stageNumber = this.uds.getSession().currentStageNumber;
 
+    this.avatar = this.uds.getConfigs().avatar;
+
     this.form = {};
     this.questionnaire = this.uds.getConfigs().stages[stageNumber].questionnaire;
 

@@ -345,12 +345,11 @@ class Navigation {
     var locale = this.uds.getConfigs().locale,
       template = '';
 
-    if (locale === 'fi') template = 'modals/taskAssignment_fi.html';
-    else template = 'modals/taskAssignment_en.html';
+    template = this.uds.getConfigs().instructionsPage || '';
 
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
-      title: 'My Email',
+      title: this.$translate.instant('nav.tipsButton'),
       templateAsset: template,
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
@@ -372,7 +371,7 @@ class Navigation {
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
-        title: this.$translate.instant('nav.tipsButton'),
+        title: '',
         templateAsset: 'modals/tips_stage0.html',
         fields: {}
       };

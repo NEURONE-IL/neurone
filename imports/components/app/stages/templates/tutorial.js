@@ -52,6 +52,8 @@ class Tutorial {
     $reactive(this).attach($scope);
 
     var stageNumber = this.uds.getSession().currentStageNumber;
+
+    this.avatar = this.uds.getConfigs().avatar;
     
     // this.page = this.uds.getConfigs().stages[stageNumber].page;
     this.slides = this.uds.getConfigs().stages[stageNumber].slides;
