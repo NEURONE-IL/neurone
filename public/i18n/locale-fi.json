@@ -200,5 +200,18 @@
     "search3": "Aika sivujen etsimiseen loppui, mutta ei hätää. Vinkkaan sinulle sopivat sivut.",
     "general": "Aika loppui. Nyt voit siirtyä tehtävässä eteenpäin.",
     "alert": "{{time}} minuuttia jäljellä"
+  },
+  "sam": {
+    "avatar_d1": "Hei! Minun nimeni on {{avatar}}. Haluaisin tietää, miltä sinusta tuntuu juuri nyt.",
+    "avatar_d2": "Selvä. Entä kuinka tyyne?",
+    "avatar_d3": "OK! Nyt olemme valmiita aloittamaan. Paina \"Jatka\" -painiketta siirtyäksesi eteenpäin.",
+    "user_d1": "Tuntuu",
+    "user_d2": "Olen",
+    "instructions1": "Alla on hymiöitä, jotka kuvaavat negatiivisia tai positiivisia tunteita. Ääripäissä olevat hymiöt kuvaavat hyvin voimakkaita tunteita. Valitse alla olevista vaihtoehdoista se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
+    "instructions2": "Valitse se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
+    "positive_less": "",
+    "positive_more": "",
+    "calm_less": "Hermostunut",
+    "calm_more": "Rauhallinen"
   }
 }

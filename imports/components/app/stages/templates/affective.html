@@ -1,4 +1,4 @@
-<div class="container container-wrapper">
+<div class="container">
   <br>
   <form name="affective.form">
     <div class="row">
@@ -13,10 +13,10 @@
                   <strong class="primary-font">{{affective.avatar}}</strong> <small class=" pull-right text-muted"></small>
                 </div>
                 <p>
-                  Hi there! Welcome and thanks for your time. My name is Niina. How do you feel now?
+                  {{ "sam.avatar_d1" | translate: { avatar: affective.avatar } }}
                 </p>
                 <p>
-                  <i>Below you will find a list of smileys representing positive and negative feelings. The extreme left and extreme right indicates very strong feelings. Please choose the one that better express how you feel now.</i>
+                  <i>{{ "sam.instructions1" | translate }}</i>
                 </p>
               </div>
             </li>
@@ -28,6 +28,9 @@
                   <small class=" text-muted"></small>
                   <strong class="pull-right primary-font">User</strong>
                 </div>
+                <p>
+                  {{ "sam.user_d1" | translate }}
+                </p>
                 <div id="scaleAnswer1">
                   <ng-form name="affective.scale1">
                     <table class="table table-borderless table-condensed table-nonfluid">
@@ -46,7 +49,7 @@
                           <td></td>
                         </tr>
                         <tr>
-                          <td class="text-right">Very Unhappy</td>
+                          <td class="text-right">{{ "sam.positive_less" | translate }}</td>
                           <td class="text-center scale-choice">
                             <input type="radio" ng-model="affective.scale1response" ng-value="-4" ng-required="true">
                           </td>
@@ -74,7 +77,7 @@
                           <td class="text-center scale-choice">
                             <input type="radio" ng-model="affective.scale1response" ng-value="4" ng-required="true">
                           </td>
-                          <td class="text-left">Very Happy</td>
+                          <td class="text-left">{{ "sam.positive_more" | translate }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -90,10 +93,10 @@
                   <strong class="primary-font">{{affective.avatar}}</strong> <small class="pull-right text-muted"></small>
                 </div>
                 <p>
-                  I see. And how calm or anxious would you say you are in this moment?
+                  {{ "sam.avatar_d2" | translate }}
                 </p>
                 <p>
-                  <i>Below you will find a list of smileys representing levels of anxiety and calmness. The extreme left and extreme right indicates very strong feelings. Please choose the one that better express how you feel now.</i>
+                  <i>{{ "sam.instructions2" | translate }}</i>
                 </p>
               </div>
             </li>
@@ -105,6 +108,9 @@
                   <small class="text-muted"></small>
                   <strong class="pull-right primary-font">User</strong>
                 </div>
+                <p>
+                  {{ "sam.user_d2" | translate }}
+                </p>
                 <div id="scaleAnswer2">
                   <ng-form name="affective.scale2">
                     <table class="table table-borderless table-condensed table-nonfluid">
@@ -123,7 +129,7 @@
                           <td></td>
                         </tr>
                         <tr>
-                          <td class="text-right">Very Anxious</td>
+                          <td class="text-right">{{ "sam.calm_less" | translate }}</td>
                           <td class="text-center scale-choice">
                             <input type="radio" ng-model="affective.scale2response" ng-value="-4" ng-required="true">
                           </td>
@@ -151,7 +157,7 @@
                           <td class="text-center scale-choice">
                             <input type="radio" ng-model="affective.scale2response" ng-value="4" ng-required="true">
                           </td>
-                          <td class="text-left">Very Calm</td>
+                          <td class="text-left">{{ "sam.calm_more" | translate }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -167,7 +173,7 @@
                   <strong class="primary-font">{{affective.avatar}}</strong> <small class="pull-right text-muted"></small>
                 </div>
                 <p>
-                  Ok! We are all set to start. Please click on the "Next" button to continue!
+                  {{ "sam.avatar_d3" | translate }}
                 </p>
               </div>
             </li>
