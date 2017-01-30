@@ -50,6 +50,7 @@ class Enrollment {
     $reactive(this).attach($scope);
 
     this.userList = [];
+    this.allUppercaseRegex = /^[A-Z]*$/;
   }
 
   generateUsers() {
@@ -64,6 +65,7 @@ class Enrollment {
           test: this.testAct,           // [Boolean] Is a test account
           university: this.university,  // [one-digit Integer] University Code
           school: this.school,          // [two-digit Integer] School Code
+          class: this.class,              // [Char] Class number code
           domain: this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
           task: this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
           studyStage: this.studyStage,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
@@ -77,6 +79,7 @@ class Enrollment {
         tempUser.username = (tempUser.test === 'true' ? 't' : '') +
                             tempUser.university +
                             this.zeroPad(2, tempUser.school, true) +
+                            tempUser.class +
                             tempUser.domain + 
                             tempUser.task + 
                             tempUser.studyStage +

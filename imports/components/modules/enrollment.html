@@ -41,11 +41,15 @@
             SchoolCode
             <input class="form-control" type="number" min="0" ng-min="0" max="99" ng-max="99" ng-model="enrollment.school" ng-required="true">
           </label>
-          <label>
+          <label class="control-label">
+            ClassCode
+            <input class="form-control" type="text" ng-minlength="1" ng-maxlength="1" ng-pattern="enrollment.allUppercaseRegex" ng-model="enrollment.class" ng-required="true">
+          </label>
+          <label class="control-label">
             StartingUserId
             <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">
           </label>
-          <label>
+          <label class="control-label">
             EndingUserId
             <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idEnd" ng-required="true">
           </label>
@@ -80,6 +84,9 @@
           </th>
           <th>
             School
+          </th>
+          <th>
+            Class
           </th>
           <th>
             Domain
@@ -120,6 +127,9 @@
           </td>
           <td>
             {{user.school}}
+          </td>
+          <td>
+            {{user.class}}
           </td>
           <td>
             {{user.domain}}
