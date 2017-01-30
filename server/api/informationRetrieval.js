@@ -53,7 +53,9 @@ Meteor.methods({
       if (this.userId) {
         var user = UserData.findOne({ userId: this.userId }),
            limit = user.configs.maxBookmarks,
-            docs = Documents.find({ relevant: true }, { limit: limit }).fetch();
+           topic = user.configs.topic,
+            test = user.configs.test,
+            docs = Documents.find({ topic: topic, test: test, relevant: true }, { limit: limit }).fetch();
 
         return docs;
       }
