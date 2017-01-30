@@ -343,13 +343,11 @@ class Navigation {
     this.storeEvent('TaskSelected', { state: currentState, flowStep: stageNumber });
 
     var locale = this.uds.getConfigs().locale,
-      template = '';
-
-    template = this.uds.getConfigs().instructionsPage || '';
+      template = this.uds.getConfigs().taskPage || '';
 
     // dgacitua: Modal template location is relative to NEURONE's Asset Path
     var modalObject = {
-      title: this.$translate.instant('nav.tipsButton'),
+      title: '',
       templateAsset: template,
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
@@ -371,7 +369,7 @@ class Navigation {
     if (currentState === 'stage0') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
-        title: '',
+        title: this.$translate.instant('nav.tipsButton'),
         templateAsset: 'modals/tips_stage0.html',
         fields: {}
       };
