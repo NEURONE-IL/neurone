@@ -351,7 +351,8 @@ class Navigation {
       templateAsset: template,
       fields: {
         to: (Meteor.user() ? (Meteor.user().username || Meteor.user().emails[0].address) : 'you'),
-        subject: ''
+        subject: '',
+        avatar: this.uds.getConfigs().avatar || ''
       }
     };
 
@@ -371,7 +372,9 @@ class Navigation {
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
         templateAsset: 'modals/tips_stage0.html',
-        fields: {}
+        fields: {
+          avatar: this.uds.getConfigs().avatar || ''
+        }
       };
 
       this.modal.openModal(modalObject, (err, res) => {});
@@ -380,7 +383,9 @@ class Navigation {
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
         templateAsset: stageData.tips,
-        fields: {}
+        fields: {
+          avatar: this.uds.getConfigs().avatar || ''
+        }
       };
 
       this.modal.openModal(modalObject, (err, res) => {});
@@ -391,7 +396,9 @@ class Navigation {
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
         templateAsset: 'modals/tips_general.html',
-        fields: {}
+        fields: {
+          avatar: this.uds.getConfigs().avatar || ''
+        }
       };
 
       this.modal.openModal(modalObject, (err, res) => {});
