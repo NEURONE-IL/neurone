@@ -26,23 +26,27 @@ export default class Indexer {
 
         documentList.forEach((doc, idx2, arr2) => {
           if (doc.route && doc.title && doc.test && doc.topic && doc.locale) {
+            var docRoute = path.join(assetPath, doc.route);
             var fn = path.basename(doc.route);
 
-            var docRoute = path.join(assetPath, doc.route);
+            if (fs.existsSync(docRoute)) {
+              var check = DocumentParser.cleanDocument(docRoute);
 
-            var check = DocumentParser.cleanDocument(docRoute);
+              var docObj = {};
+              var parsedObj = DocumentParser.parseDocument(docRoute);
 
-            var docObj = {};
-            var parsedObj = DocumentParser.parseDocument(docRoute);
+              // dgacitua: http://stackoverflow.com/a/171256
+              for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+              for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
 
-            // dgacitua: http://stackoverflow.com/a/171256
-            for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
-            for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
-
-            var result = Documents.upsert({ route: docObj.route }, docObj);
-              
-            if (result.numberAffected > 0) console.log('Document indexed!', '[' + (idx2+1) + '/' + total2 + ']', fn);
-            else console.error('Document errored!', '[' + (id2x+1) + '/' + total2 + ']', fn);
+              var result = Documents.upsert({ route: docObj.route }, docObj);
+                
+              if (result.numberAffected > 0) console.log('Document indexed!', '[' + (idx2+1) + '/' + total2 + ']', fn);
+              else console.error('Document errored!', '[' + (id2x+1) + '/' + total2 + ']', fn);
+            }
+            else {
+              console.warn('File doesn\'t exist! Skipping!', fn);
+            }
           }
           else {
             console.warn('Wrong document format detected in list');
