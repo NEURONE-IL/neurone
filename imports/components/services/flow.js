@@ -14,7 +14,7 @@ class FlowService {
 
     this.timerInterval = 5;
 
-    this.timer = {};
+    this.timer = false;
     this.globalTime = 0;
     this.stageTime = 0;
     
@@ -102,35 +102,50 @@ class FlowService {
   startFlow() {
     if (!!Meteor.userId()) {
       if (!this.uds.getSession().finished) {
-        var gt = this.uds.getConfigs().maxGlobalTime,
-            tt = this.uds.getSession().totalTimer,
-            st = this.uds.getSession().stageTimer;
+        this.uds.setSession({ timerActive: true }, (err, res) => {
+          if (!err) {
+            var gt = this.uds.getConfigs().maxGlobalTime,
+              tt = this.uds.getSession().totalTimer,
+              st = this.uds.getSession().stageTimer;
 
-        this.stages = this.uds.getConfigs().stages;
-        this.globalTotal = (gt >= 0) ? (gt*60) : -1;
+            this.stages = this.uds.getConfigs().stages;
+            this.globalTotal = (gt >= 0) ? (gt*60) : -1;
 
-        if (tt && st) {
-          this.globalTime = tt;
-          this.stageTime = st;
-          console.log('Resume Timer!', 'StageTime:' + this.stageTime, 'GlobalTime:' + this.globalTime, 'StageTotal:' + this.stageTotal, 'GlobalTotal:' + this.globalTotal);
-          this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));
-        }
-        else {
-          console.log('Start Timer!', 'StageTime:' + this.stageTime, 'GlobalTime:' + this.globalTime, 'StageTotal:' + this.stageTotal, 'GlobalTotal:' + this.globalTotal);
-          this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));
-        }
+            if (tt && st) {
+              this.globalTime = tt;
+              this.stageTime = st;
+              if (this.timer===false) {
+                console.log('Resume Timer!', 'StageTime:' + this.stageTime, 'GlobalTime:' + this.globalTime, 'StageTotal:' + this.stageTotal, 'GlobalTotal:' + this.globalTotal);
+                this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));  
+              }
+            }
+            else {
+              if (this.timer===false) {
+                console.log('Start Timer!', 'StageTime:' + this.stageTime, 'GlobalTime:' + this.globalTime, 'StageTotal:' + this.stageTotal, 'GlobalTotal:' + this.globalTotal);
+                this.timer = this.$interval(() => { this.tick() }, Utils.sec2millis(this.timerInterval));
+              }
+            }
+          }
+        });
       }        
     }
   }
 
   stopFlow() {
-    if (!!Meteor.userId()) this.$interval.cancel(this.timer);
-
-    this.globalTime = 0;
-    this.stageTime = 0;
-    
-    this.globalTotal = 0;
-    this.stageTotal = 0;
+    if (!!Meteor.userId()) {
+      this.uds.setSession({ timerActive: false }, (err,res) => {
+        if (!err) {
+          this.$interval.cancel(this.timer);
+          this.timer = false;
+        
+          this.globalTime = 0;
+          this.stageTime = 0;
+        
+          this.globalTotal = 0;
+          this.stageTotal = 0;
+        }
+      });
+    }
   }
 
   tick() {
@@ -163,6 +178,18 @@ class FlowService {
         }
       });
     }
+  }
+
+  service() {
+    //console.log('FlowService Check!');
+    if (!!Meteor.userId() && this.uds.getSession().timerActive && this.timer===false) {
+      console.log('Restoring timer!');
+      this.startFlow();
+    }
+  }
+
+  antiService() {
+    // TODO: Maybe not necessary
   }
 }
 

@@ -35,7 +35,7 @@ class Login {
 
         this.call('registerIdentity', this.identity, (err2, res2) => {
           if (!err2) {
-            console.log('User identity registered', res2.userId, res2.username, res2.identity);
+            console.log('UserID registered', res2.userId, res2.username, res2.identity);
             this.$state.go('start');
           }
           else {

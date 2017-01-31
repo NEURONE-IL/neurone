@@ -119,7 +119,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 
   angular.element($window).on('beforeunload', () => {
-    if (Configs.flowEnabled) fs.stopFlow();
+    //if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
     $window.localstorage.clear();
   });
@@ -135,9 +135,10 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 };
 
-function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlockerService) {
+function setTrackers($rootScope, FlowService, KMTrackService, LinkTrackService, ActionBlockerService) {
   'ngInject';
 
+  fs = FlowService;
   lts = LinkTrackService;
   kmts = KMTrackService;
   abs = ActionBlockerService;
@@ -148,6 +149,9 @@ function setTrackers($rootScope, KMTrackService, LinkTrackService, ActionBlocker
       lts.saveEnterPage();
       kmts.service();
       abs.service();
+
+      // TODO: displayPage in viewDocuments
+      if (Configs.flowEnabled && toState.name !== 'start' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') fs.service();
     }
     else {
       kmts.antiService();
