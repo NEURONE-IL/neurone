@@ -204,14 +204,14 @@
   "sam": {
     "user": "Sinä",
     "avatar_d1": "Hei! Minun nimeni on {{avatar}}. Haluaisin tietää, miltä sinusta tuntuu juuri nyt.",
-    "avatar_d2": "Selvä. Entä kuinka tyyne?",
+    "avatar_d2": "Selvä. Entä kuinka tyyneksi tai hermostuneeksi tunnet itsesi?",
     "avatar_d3": "OK! Nyt olemme valmiita aloittamaan. Paina \"Jatka\" -painiketta siirtyäksesi eteenpäin.",
-    "user_d1": "Tuntuu",
+    "user_d1": "Oloni tuntuu nyt",
     "user_d2": "Olen",
-    "instructions1": "Alla on hymiöitä, jotka kuvaavat negatiivisia tai positiivisia tunteita. Ääripäissä olevat hymiöt kuvaavat hyvin voimakkaita tunteita. Valitse alla olevista vaihtoehdoista se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
-    "instructions2": "Valitse se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
-    "positive_less": "",
-    "positive_more": "",
+    "instructions1": "Alla on hymiöitä, jotka kuvaavat negatiivisia (option: ikäviä) tai positiivisia (option: mukavia) tunteita. Ääripäissä olevat hymiöt kuvaavat hyvin voimakkaita tunteita. Valitse alla olevista vaihtoehdoista se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
+    "instructions2": "Alla on taas hymiötä, jotka kuvaavat mielialaasi.  (Ääripäissä olevat hymiöt kuvaavat hyvin voimakkaita tunteita.) Valitse hymiöistä se, joka kuvaa parhaiten sitä, miltä sinusta tuntuu juuri nyt.",
+    "positive_less": "Ikävältä",
+    "positive_more": "Mukavalta",
     "calm_less": "Hermostunut",
     "calm_more": "Rauhallinen"
   }
