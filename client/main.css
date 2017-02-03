@@ -206,6 +206,14 @@ mark.highlightSnippet {
   margin: 0 0 0 0 !important;
 }
 
+.hide-hor-scrollbar {
+  overflow-x: hidden;
+}
+
+.hide-ver-scrollbar {
+  overflow-y: hidden;
+}
+
 .vcenter {
   display: inline-block;
   vertical-align: middle;
@@ -340,6 +348,12 @@ input::-webkit-input-placeholder {
     height: 80%;
 }
 
+img.chat-image {
+  width: 50px;
+  height: 50px;
+}
+
+/*
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     background-color: #F5F5F5;
@@ -354,8 +368,4 @@ input::-webkit-input-placeholder {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #555;
 }
-
-img.chat-image {
-  width: 50px;
-  height: 50px;
-}
+*/

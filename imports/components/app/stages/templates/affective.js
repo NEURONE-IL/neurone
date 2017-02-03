@@ -7,6 +7,7 @@ class Affective {
   constructor($scope, $stateParams, $rootScope, $reactive, $translate, $timeout, UserDataService, EventTrackService) {
     'ngInject';
 
+    this.$scope = $scope;
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
     this.$stateParams = $stateParams;
@@ -60,8 +61,12 @@ class Affective {
     var stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber];
 
+    this.type = currentStage.type;
+    this.samTemplate = currentStage.template;
     this.avatar = this.uds.getConfigs().avatar;
+  }
 
+  samChat() {
     this.msg1 = true;
     this.msg2 = true;
     this.msg3 = false;
@@ -72,13 +77,13 @@ class Affective {
     this.$timeout(() => { this.msg2 = true; }, 1250);
 
     this.$timeout(() => {
-      $scope.$watch(() => this.scale1.$valid, (newVal, oldVal) => {
+      this.$scope.$watch(() => this.scale1.$valid, (newVal, oldVal) => {
         if (newVal === true) {
           this.$timeout(() => { this.msg3 = true; }, 500);
           this.$timeout(() => { this.msg4 = true; }, 750);
 
           this.$timeout(() => {
-            $scope.$watch(() => this.scale2.$valid, (newVal, oldVal) => {
+            this.$scope.$watch(() => this.scale2.$valid, (newVal, oldVal) => {
               if (newVal === true) {
                 this.$timeout(() => {
                   this.msg5 = true;
@@ -93,30 +98,32 @@ class Affective {
   }
 
   submit() {
-    var answers = {
-      positiveness: this.scale1response,
-      calmness: this.scale2response
-    }
+    var answers = [
+      { 
+        type: 'positiveness',
+        answer: this.scale1response
+      },
+      {
+        type: 'calmness',
+        answer: this.scale2response
+      }
+    ];
 
     var response = {
       userId: Meteor.userId(),
       username: Meteor.user().username || Meteor.user().emails[0].address,
       action: 'AnsweredSAM',
-      localTimestamp: Utils.getTimestamp(),
-      extras: {
-        stage: this.$stateParams.stage,
-        answers: answers
-      }
-    };
+      reason: this.type,
+      answer: answers,
+      localTimestamp: Utils.getTimestamp()
+    }
 
-    console.log(response);
-
-    this.call('storeCustomEvent', response, (err,res) => {
+    this.call('storeFormResponse', response, (err, res) => {
       if (!err) {
-        console.log('Success!');
+        console.log('Answers sent to server!', response);
       }
       else {
-        console.error('Error while saving Stage0 answers', err);
+        console.error('Error while sending answers', err);
       }
     });
   }

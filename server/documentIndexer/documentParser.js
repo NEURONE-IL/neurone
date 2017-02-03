@@ -170,9 +170,9 @@ export default class DocumentParser {
         $(elem).remove();
       });
 
-      htmlString = $.html();
+      var cleanedHtml = $.html();
 
-      fs.writeFileSync(path.join(fileDir, newFilename), htmlString, 'utf8');
+      fs.writeFileSync(path.join(fileDir, newFilename), cleanedHtml);
       //console.log('Document Cleaned!', newFilename);
 
       return true;
@@ -211,7 +211,7 @@ export default class DocumentParser {
       route: this.getHtmlRoute(documentPath),
       id: 0,
       md5Hash: this.getMD5(documentPath)
-    }
+    };
 
     //console.log('Document Parsed!', obj.route);
     return obj;

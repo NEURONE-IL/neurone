@@ -104,21 +104,22 @@ class TaskQuestions {
     });
 
     if (!!Meteor.userId()) {
-      var formAnswer = {
+      var response = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
-        formId: this.form.formId,
-        answers: this.answerArray,
+        action: 'FormResponse',
+        reason: this.form.formId,
+        answer: this.answerArray,
         localTimestamp: Utils.getTimestamp()
       }
 
-      Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
+      this.call('storeFormResponse', response, (err, res) => {
         if (!err) {
-          console.log('Answer registered!', formAnswer.userId, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.localTimestamp);
+          console.log('Answers sent to server!', response);
           this.submitted = true;
         }
         else {
-          console.error('Error while saving form answers', err);
+          console.error('Error while sending answers', err);
           this.submittedError = true;
         }
       });
