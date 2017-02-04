@@ -109,7 +109,7 @@
     "snippet": "Merkkaus {{snipNum}} - Sivu {{pageNum}}",
     "snippetAll": "Merkkaus {{snipNum}}",
     "allTitle": "Kaikki sivut",
-    "wordCount": "You have written {{words}} word(s)"
+    "wordCount": "Tekstisi on nyt {{words}} sanaa pitkä."
   },
   "modal": {
     "closeButton": "Sulje",

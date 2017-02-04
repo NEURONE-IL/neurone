@@ -362,7 +362,8 @@ class Navigation {
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState,
-          stageData = this.uds.getConfigs().stages[stageNumber];
+          stageData = this.uds.getConfigs().stages[stageNumber],
+             locale = this.uds.getConfigs().locale;
 
     this.storeEvent('SubtaskSelected', { state: currentState, flowStep: stageNumber });
 
@@ -391,10 +392,15 @@ class Navigation {
     }
 
     else {
+      var modalTemplate = '';
+
+      if (locale === 'fi') modalTemplate = 'modals/tips_fi_general.html';
+      else modalTemplate = 'modals/tips_general.html';
+
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
-        templateAsset: 'modals/tips_general.html',
+        templateAsset: modalTemplate,
         fields: {
           avatar: this.uds.getConfigs().avatar || ''
         }
@@ -408,7 +414,8 @@ class Navigation {
     var stageNumber = this.uds.getSession().currentStageNumber, 
        currentStage = this.uds.getSession().currentStageName,
        currentState = this.uds.getSession().currentStageState,
-          stageData = this.uds.getConfigs().stages[stageNumber];
+          stageData = this.uds.getConfigs().stages[stageNumber],
+             locale = this.uds.getConfigs().locale;
 
     this.storeEvent('TutorialSelected', { state: currentState, flowStep: stageNumber });
 
@@ -435,10 +442,15 @@ class Navigation {
       this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
+      var modalTemplate = '';
+
+      if (locale === 'fi') modalTemplate = 'modals/tutorial_fi_general.html';
+      else modalTemplate = 'modals/tutorial_general.html';
+
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
-        templateAsset: 'modals/tutorial_general.html',
+        templateAsset: modalTemplate,
         fields: {}
       };
 
