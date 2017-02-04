@@ -29,6 +29,16 @@ export default class DocumentParser {
       */
       
       /*
+      // dgacitua: http://stackoverflow.com/a/31543727
+      var $ = cheerio.load(htmlFile);
+      
+      var text = $('body *').contents().map(() => {
+                  return (this.type === 'text') ? $(this).text()+' ' : '';
+                }).get().join('');
+      
+      return text;
+      */
+      
       var options = {
         wordwrap: false,
         uppercaseHeadings: false,
@@ -37,14 +47,6 @@ export default class DocumentParser {
       };
 
       return htmlToText.fromString(htmlFile, options) || '';
-      */
-
-      var $ = cheerio.load(htmlString);
-      
-      $('script').remove();
-      $('noscript').remove();
-      
-      return $('body').text().toString().replace(/\s{2,9999}/g, ' ');
     }
     catch (e) {
       console.error(e);
@@ -212,10 +214,8 @@ export default class DocumentParser {
       title: this.getHtmlTitle(documentPath),
       indexedBody: this.getHtmlAsText(documentPath),
       date: Utils.getDate(),
-      topics: [],
       docName: this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
-      id: 0,
       md5Hash: this.getMD5(documentPath)
     };
 
