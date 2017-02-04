@@ -125,6 +125,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 
   Accounts.onLogin(() => {
+    /*
     uds.ready().then((status) => {
       if (status === 'USER_LOGGED') {
         var locale = uds.getConfigs().locale;
@@ -145,6 +146,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
         });
       }
     });
+    */
   });
 
   Accounts.onLogout(() => {
