@@ -42,7 +42,7 @@ class DisplayIframe {
 		this.iframeDoc = document.getElementById('pageContainer');
 
 		this.pageUrl = this.page || this.$stateParams.docName || this.$rootScope.docId;
-    this.snippet = this.snip || '';
+    this.snippet = this.snip || this.$rootScope.snippet || '';
 		this.routeUrl = '';
 		this.documentTitle = '';
 

@@ -17,9 +17,10 @@ class PageModal {
       this.snippet = this.resolve.snippet;
       
       this.$rootScope.docId = this.docId;
+      this.$rootScope.snippet = this.snippet;
       this.iframeReady = true;
 
-      //console.log('PageModal', this.docId, this.snippet);
+      console.log('PageModal', this.$rootScope.docId, this.$rootScope.snippet);
     
       //this.highlightSnippet(this.snippet);
       //this.$rootScope.$broadcast('iframeSnippet', { docId: this.docId, snippet: this.snippet });
@@ -28,6 +29,7 @@ class PageModal {
 
   closeModal() {
     delete this.$rootScope.docId;
+    delete this.$rootScope.snippet;
     this.close();
   }
 
