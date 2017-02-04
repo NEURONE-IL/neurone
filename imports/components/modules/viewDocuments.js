@@ -48,8 +48,8 @@ class ViewDocuments {
     $reactive(this).attach($scope);
 
     // dgacitua: Pagination
-    this.documents = Documents.find({}).fetch();
-    this.totalResults = Documents.find({}).count();
+    this.documents = Documents.find({ $or: [ { test: { $ne: 'pilot' }}, { topic: { $ne: 'pilot' }} ] }).fetch();
+    this.totalResults = this.documents.length;
     this.currentPage = 1;
     this.resultsPerPage = 10;
     this.paginationMaxSize = 5;
