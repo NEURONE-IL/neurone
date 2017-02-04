@@ -99,7 +99,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage('fi');
+  $translateProvider.preferredLanguage(Configs.defaultLocale);
 };
 
 function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {

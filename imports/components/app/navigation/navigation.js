@@ -89,23 +89,22 @@ class Navigation {
         Utils.notificationHide(this.navbarMessageId);
 
         if (currentState === 'stage0') {
-          // TODO
+          // PLACEHOLDER
         }
         else if (currentState === 'search') {
-          //this._counters.set('bookmarks', (this.uds.getSession().bookmarkCount || 0));
           this._counters.set('bookmarks', (UserBookmarks.find().count() || 0));
         }
         else if (currentState === 'collection') {
           this.checkSnippetStatus();
         }
         else if (currentState === 'criticalEval') {
-          // TODO
+          // PLACEHOLDER
         }
         else if (currentState === 'synthesis') {
-          // TODO
+          // PLACEHOLDER
         }
         else {
-          // TODO
+          // PLACEHOLDER
         }
 
         Session.set('lockButtons', false);
@@ -525,6 +524,18 @@ class Navigation {
           }
         });
       });
+    }
+    else if (currentState === 'criticalEval') {
+      this.$rootScope.$broadcast('readyCriticalEval');
+
+      var modalObject = {
+        title: '', //this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_stage2.html',
+        buttonType: 'nextstage',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
       var modalObject = {

@@ -184,20 +184,26 @@ export default class DocumentParser {
   }
 
   static readFile(path) {
-    // dgacitua: http://stackoverflow.com/a/18711982
-    var htmlBuffer = fs.readFileSync(path),
-        htmlString = htmlBuffer.toString(),
-          encoding = charset([], htmlString);   // || jschardet.detect(htmlString).encoding.toLowerCase();
+    try {
+      // dgacitua: http://stackoverflow.com/a/18711982
+      var htmlBuffer = fs.readFileSync(path),
+          htmlString = htmlBuffer.toString(),
+            encoding = charset([], htmlString);   // || jschardet.detect(htmlString).encoding.toLowerCase();
 
-    if (encoding === 'utf-8' || encoding === 'utf8' || !encoding) {
-      return htmlString;
+      if (encoding === 'utf-8' || encoding === 'utf8' || !encoding) {
+        return htmlString;
+      }
+      else {
+        var ic = new iconv.Iconv(encoding, 'UTF-8//TRANSLIT//IGNORE'),
+           buf = ic.convert(htmlBuffer),
+           str = buf.toString('utf-8');
+
+        return str;
+      }
     }
-    else {
-      var ic = new iconv.Iconv(encoding, 'UTF-8//TRANSLIT//IGNORE'),
-         buf = ic.convert(htmlBuffer),
-         str = buf.toString('utf-8');
-
-      return str;
+    catch (e) {
+      console.error(e);
+      return '';
     }
   }
 
