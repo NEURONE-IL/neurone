@@ -9,13 +9,16 @@ import template from './login.html';
 import { name as Register } from './register';
 
 class Login {
-  constructor($scope, $rootScope, $reactive, $state, AuthService) {
+  constructor($scope, $rootScope, $reactive, $state, $translate, AuthService, UserDataService) {
     'ngInject';
 
     this.$scope = $scope;
     this.$state = $state;
     this.$rootScope = $rootScope;
+    this.$translate = $translate;
+
     this.auth = AuthService;
+    this.uds = UserDataService;
 
     $reactive(this).attach($scope);
 
@@ -37,6 +40,16 @@ class Login {
           if (!err2) {
             console.log('UserID registered', res2.userId, res2.username, res2.identity);
             this.$state.go('start');
+
+            /*
+            this.uds.ready().then(() => {
+              var locale = this.uds.getConfigs().locale;
+
+              this.$translate.use(locale).then(() => {
+                this.$state.go('start');    
+              });
+            });
+            */
           }
           else {
             this.error = err2;

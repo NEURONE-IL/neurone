@@ -9,11 +9,14 @@ import template from './register.html';
 import Settings from '../../../sharedSettings';
 
 class Register {
-  constructor($scope, $reactive, $state, AuthService) {
+  constructor($scope, $reactive, $state, $translate, AuthService, UserDataService) {
     'ngInject';
 
     this.$state = $state;
+    this.$translate = $translate;
+
     this.auth = AuthService;
+    this.uds = UserDataService;
 
     $reactive(this).attach($scope);
 
@@ -40,6 +43,16 @@ class Register {
           if (!err2) {
             this.error = res2;
             this.$state.go('start');
+
+            /*
+            this.uds.ready().then(() => {
+              var locale = this.uds.getConfigs().locale;
+
+              this.$translate.use(locale).then(() => {
+                this.$state.go('start');  
+              });
+            });
+            */
           }
           else {
             this.error = err2;

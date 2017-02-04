@@ -6,5 +6,6 @@ export default ClientConfigs = {
   iframeId: 'pageContainer',
   flowEnabled: (Meteor.isProduction ? true : true),
   instructionTimeout: 3000,
-  autoLogout: 15000
+  autoLogout: 15000,
+  defaultLocale: 'fi'
 }

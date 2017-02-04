@@ -125,13 +125,30 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 
   Accounts.onLogin(() => {
-    var locale = uds.getConfigs().locale;
-    $translate.use(locale);
+    uds.ready().then((status) => {
+      if (status === 'USER_LOGGED') {
+        var locale = uds.getConfigs().locale;
+        
+        console.log('CustomLocale', locale);
+
+        $translate.use(locale).then(() => {
+          console.log('Meteor onLogin READY!');
+        });
+      }
+      else {
+        var locale = Configs.defaultLocale;
+        
+        console.log('DefaultLocale', locale);
+
+        $translate.use(locale).then(() => {
+          console.log('Meteor onLogin READY!');
+        });
+      }
+    });
   });
 
   Accounts.onLogout(() => {
-    //if (Configs.flowEnabled) fs.stopFlow();
-    //uds.flush();
+    // PLACEHOLDER
   });
 };
 
