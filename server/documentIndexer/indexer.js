@@ -71,8 +71,14 @@ export default class Indexer {
 
       files.forEach((file, idx, arr) => {
         var documentList = JSON.parse(fs.readFileSync(file));
-        var tempList = documentList.map((doc) => { return doc.route });
-        syncedList.push(...tempList);
+
+        documentList.forEach((doc, idx2, arr2) => {
+          var docRoute = path.join(assetPath, doc.route);
+          if (fs.existsSync(docRoute)) syncedList.push(doc.route);
+        });
+
+        //var tempList = documentList.map((doc) => { return doc.route });
+        //syncedList.push(...tempList);
       });
 
       Documents.remove({ route: { $nin: syncedList }});

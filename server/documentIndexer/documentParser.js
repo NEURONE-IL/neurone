@@ -141,6 +141,10 @@ export default class DocumentParser {
         $(elem).removeAttr('onclick');
       });
 
+      $('select').each((i, elem) => {
+        $(elem).removeAttr('onchange');
+      });
+
       // dgacitua: Remove javascript
       $('script').each((i, elem) => {
         $(elem).removeAttr('src');
@@ -154,6 +158,11 @@ export default class DocumentParser {
 
       // dgacitua: Disable input elements
       $('input').each((i, elem) => {
+        $(elem).attr('disabled', 'true');
+      });
+
+      // dgacitua: Disable button elements
+      $('button').each((i, elem) => {
         $(elem).attr('disabled', 'true');
       });
 
@@ -174,6 +183,11 @@ export default class DocumentParser {
 
       // dgacitua: Remove iframe elements
       $('iframe').each((i, elem) => {
+        $(elem).remove();
+      });
+
+      // dgacitua: Remove object elements
+      $('object').each((i, elem) => {
         $(elem).remove();
       });
 
