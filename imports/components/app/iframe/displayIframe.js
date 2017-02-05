@@ -56,7 +56,8 @@ class DisplayIframe {
 		// dgacitua: https://github.com/meteor/meteor/issues/7189
 		this.call('getDocument', pageUrl, (err, res) => {
 			if (!err) {
-				this.routeUrl = res.routeUrl;
+        // dgacitua: http://stackoverflow.com/a/3608791
+				this.routeUrl = encodeURI(res.routeUrl);    //res.routeUrl;
 				this.documentTitle = res.title;
 				this.$rootScope.docId = res._id;
 				this.$rootScope.documentTitle = res.title;

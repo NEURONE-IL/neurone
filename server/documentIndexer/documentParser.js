@@ -137,6 +137,10 @@ export default class DocumentParser {
         $(elem).removeAttr('onclick');
       });
 
+      $('div').each((i, elem) => {
+        $(elem).removeAttr('onclick');
+      });
+
       // dgacitua: Remove javascript
       $('script').each((i, elem) => {
         $(elem).removeAttr('src');
@@ -165,6 +169,7 @@ export default class DocumentParser {
       // dgacitua: Disable form action
       $('form').each((i, elem) => {
         $(elem).removeAttr('action');
+        $(elem).removeAttr('method');
       });
 
       // dgacitua: Remove iframe elements
