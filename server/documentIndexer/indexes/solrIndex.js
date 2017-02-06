@@ -93,10 +93,11 @@ export default class SolrIndex {
         q2 = queryLocale ? ' AND locale_s:' + queryLocale : '',
         q3 = queryTest ? ' AND test_s:' + queryTest : '',
         q4 = queryTopic ? ' AND topic_s:' + queryTopic : '',
-        q5 = 'df=indexedBody_t',
-        q6 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
-        q7 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
-     query = q1 + q2 + q3 + q4 + '&' + q5 + '&' + q6 + '&' + q7;
+        q5 = 'start=0&rows=100',
+        q6 = 'df=indexedBody_t',
+        q7 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',
+        q8 = 'hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300&wt=json',
+     query = q1 + q2 + q3 + q4 + '&' + q5 + '&' + q6 + '&' + q7 + '&' + q8;
 
     //console.log('SearchQuery', query);
 
