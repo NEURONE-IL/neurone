@@ -139,9 +139,21 @@ export default class DocumentParser {
 
       $('div').each((i, elem) => {
         $(elem).removeAttr('onclick');
+
+        // dgacitua: Highly specific filter for ads
+        if ($(elem).hasClass('widget_ad') || $(elem).hasClass('fb-social-plugin') || $(elem).hasClass('leikiwidget')) {
+          $(elem).remove();
+        }
+      });
+
+      $('p script').each((i, elem) => {
+        if ($(elem).attr('type') === 'text/javascript') {
+          $(elem).remove();
+        }
       });
 
       $('select').each((i, elem) => {
+        $(elem).removeAttr('id');
         $(elem).removeAttr('onchange');
       });
 
@@ -158,11 +170,13 @@ export default class DocumentParser {
 
       // dgacitua: Disable input elements
       $('input').each((i, elem) => {
+        $(elem).removeAttr('id');
         $(elem).attr('disabled', 'true');
       });
 
       // dgacitua: Disable button elements
       $('button').each((i, elem) => {
+        $(elem).removeAttr('id');
         $(elem).attr('disabled', 'true');
       });
 
