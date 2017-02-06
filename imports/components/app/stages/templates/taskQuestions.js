@@ -71,9 +71,13 @@ class TaskQuestions {
       }
     });
 
-    this.$rootScope.$on('readyTaskQuestions', (event, data) => {
+    this.readyEvent = this.$rootScope.$on('readyTaskQuestions', (event, data) => {
       this.submit();
     });
+
+    this.$onDestroy = () => {
+      this.$scope.$on('$destroy', this.readyEvent);
+    };
 
     $timeout(() => {
       $scope.$watch(() => this.taskForm.$valid, (newVal, oldVal) => {

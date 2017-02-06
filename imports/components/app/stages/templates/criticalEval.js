@@ -111,11 +111,15 @@ class CriticalEvalSB {
     this.sts = SnippetTrackService;
     this.ets = EventTrackService;
 
-    $rootScope.$on('readyCriticalEval', (event, data) => {
+    $reactive(this).attach($scope);
+
+    this.readyEvent = this.$rootScope.$on('readyCriticalEval', (event, data) => {
       this.sendForms();
     });
 
-    $reactive(this).attach($scope);
+    this.$onDestroy = () => {
+      this.$scope.$on('$destroy', this.readyEvent);
+    };
 
     this.currentDocId = '';
     this.pages = [];

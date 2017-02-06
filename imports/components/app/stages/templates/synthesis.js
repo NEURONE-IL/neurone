@@ -112,12 +112,13 @@ class Synthesis {
       });
     }, 0);
 
-    this.$rootScope.$on('readySynthesis', (event, data) => {
+    this.readyEvent = this.$rootScope.$on('readySynthesis', (event, data) => {
       this.submit();
     });
 
     this.$onDestroy = () => {
       this.$interval.cancel(this.autosave);
+      this.$scope.$on('$destroy', this.readyEvent);
     };
 
     this.helpers({

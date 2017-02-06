@@ -54,9 +54,13 @@ class Affective {
 
     $reactive(this).attach($scope);
 
-    $rootScope.$on('readyAffective', (event, data) => {
+    this.readyEvent = this.$rootScope.$on('readyAffective', (event, data) => {
       this.submit();
     });
+
+    this.$onDestroy = () => {
+      this.$scope.$on('$destroy', this.readyEvent);
+    };
 
     var stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber];
