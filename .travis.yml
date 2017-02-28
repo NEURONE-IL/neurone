@@ -28,9 +28,9 @@ script:
   - meteor npm run test
   - meteor npm run apptest
 
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: /bin/sh fullDeploy.sh
-  on:
-    branch: master
+# deploy:
+#   skip_cleanup: true
+#   provider: script
+#   script: /bin/sh fullDeploy.sh
+#   on:
+#     branch: master
