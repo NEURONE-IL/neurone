@@ -1,0 +1,33 @@
+version: '2.0'
+
+services:
+  search:
+    image: solr
+    restart: unless-stopped
+    ports:
+      - 8983:8983
+    volumes:
+      - search:/opt/solr/server/solr/mycores
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - neurone
+  database:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - database:/data/db
+  neurone-ws:
+    build: .
+    restart: unless-stopped
+    ports:
+     - 5000:5000
+    volumes:
+     - assets:/assets
+
+volumes:
+  search:
+  database:
+  assets:
