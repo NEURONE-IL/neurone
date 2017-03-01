@@ -53,7 +53,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Query in Database!', err);
+      throw new Meteor.Error(551, 'Could not save Query in Database!', err);
     }
   },
   storeBookmark: function(jsonObject) {
@@ -86,7 +86,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Bookmark in Database!', err);
+      throw new Meteor.Error(552, 'Could not save Bookmark in Database!', err);
     }
   },
   storeSnippet: function(jsonObject) {
@@ -120,7 +120,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Snippet in Database!', err);
+      throw new Meteor.Error(553, 'Could not save Snippet in Database!', err);
     }
   },
   storeVisitedLink: function(jsonObject) {
@@ -153,7 +153,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Visited Link in Database!', err);
+      throw new Meteor.Error(554, 'Could not save Visited Link in Database!', err);
     }
   },
   storeSessionLog: function(jsonObject) {
@@ -201,7 +201,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Session Log in Database!', err);
+      throw new Meteor.Error(555, 'Could not save Session Log in Database!', err);
     }
   },
   storeFormResponse: function(jsonObject) {
@@ -234,7 +234,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Form Response in Database!', err);
+      throw new Meteor.Error(556, 'Could not save Form Response in Database!', err);
     }
   },
   storeCustomEvent: function(jsonObject) {
@@ -262,7 +262,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Custom Event in Database!', err);
+      throw new Meteor.Error(557, 'Could not save Custom Event in Database!', err);
     }
   },
   storeTrackingStatus: function(trackingStatus) {
@@ -287,7 +287,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch(err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Tracking Status in Database!', err);
+      throw new Meteor.Error(558, 'Could not save Tracking Status in Database!', err);
     }
   },
   ping: function() {

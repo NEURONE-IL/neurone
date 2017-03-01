@@ -11,42 +11,58 @@ import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/in
 import { SynthesisAnswers } from '../../imports/database/synthesisAnswers/index';
 
 const synthesisAnswerPattern = { userId: String, username: String, startTime: Number, questionId: Match.OneOf(Number, String), question: String, answer: String, completeAnswer: Boolean, localTimestamp: Number };
+
 Meteor.methods({
   getForm: function(formId) {
-    check(formId, Match.OneOf(Number, String));
+    try {
+      check(formId, Match.OneOf(Number, String));
 
-    var questionnaire = FormQuestionnaires.findOne({ questionnaireId: formId }),
-                 form = {};
+      var questionnaire = FormQuestionnaires.findOne({ questionnaireId: formId }),
+                   form = {};
 
-    if (questionnaire) {
-      form.formId = questionnaire.questionnaireId;
-      form.instructions = questionnaire.instructions;
-      form.questions = [];
+      if (questionnaire) {
+        form.formId = questionnaire.questionnaireId;
+        form.instructions = questionnaire.instructions;
+        form.questions = [];
 
-      questionnaire.questions.forEach((q) => {
-        var question = FormQuestions.findOne({ questionId: q });
-        if (question) form.questions.push(question);
-      });
+        questionnaire.questions.forEach((q) => {
+          var question = FormQuestions.findOne({ questionId: q });
+          if (question) form.questions.push(question);
+        });
+      }
+
+      return form;
     }
-
-    return form;
+    catch (err) {
+      throw new Meteor.Error(561, 'Could not load Synthesis Answer in Database!', err);
+    }
   },
   storeFormAnswer: function(jsonObject) {
-    check(jsonObject, Object);
+    try {
+      check(jsonObject, Object);
 
-    var time = Utils.getTimestamp();
-    jsonObject.serverTimestamp = time;
+      var time = Utils.getTimestamp();
+      jsonObject.serverTimestamp = time;
 
-    FormAnswers.insert(jsonObject);
-    //console.log('Form Answer Stored!', page, time);
-    return jsonObject;
+      FormAnswers.insert(jsonObject);
+      //console.log('Form Answer Stored!', page, time);
+      return jsonObject;
+    }
+    catch (err) {
+      throw new Meteor.Error(562, 'Could not load Synthesis Answer in Database!', err);
+    }
   },
   getSynthQuestion: function(synthId) {
-    check(synthId, Match.OneOf(Number, String));
-    
-    //var mock = { synthesisId: 'syn1', question: 'Is this a question?' };
+    try {
+      check(synthId, Match.OneOf(Number, String));
+      
+      //var mock = { synthesisId: 'syn1', question: 'Is this a question?' };
 
-    return SynthesisQuestions.findOne({ synthesisId: synthId });
+      return SynthesisQuestions.findOne({ synthesisId: synthId });
+    }
+    catch (err) {
+      throw new Meteor.Error(563, 'Could not load Synthesis Answer in Database!', err);
+    }
   },
   getSynthesisAnswer: function(synthId) {
     try {
@@ -65,7 +81,7 @@ Meteor.methods({
       //return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not load Synthesis Answer in Database!', err);
+      throw new Meteor.Error(564, 'Could not load Synthesis Answer in Database!', err);
     }
   },
   storeSynthesisAnswer: function(jsonObject) {
@@ -100,7 +116,7 @@ Meteor.methods({
       return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not save Synthesis Answer in Database!', err);
+      throw new Meteor.Error(565, 'Could not save Synthesis Answer in Database!', err);
     }
   }
 });

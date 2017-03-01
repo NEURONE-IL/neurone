@@ -18,7 +18,7 @@ Meteor.methods({
       else return undefined;
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not get User Data from userId!', err);
+      throw new Meteor.Error(531, 'Could not get User Data from userId!', err);
     }
   },
   userRole: function() {
@@ -31,7 +31,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not read user session!', err);
+      throw new Meteor.Error(532, 'Could not read user session!', err);
     }
   },
   userSession: function() {
@@ -48,7 +48,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not read user session!', err);
+      throw new Meteor.Error(533, 'Could not read user session!', err);
     }
   },
   userConfigs: function() {
@@ -65,7 +65,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not read user configs!', err);
+      throw new Meteor.Error(534, 'Could not read user configs!', err);
     }
   },
   setSession: function(property) {
@@ -83,7 +83,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not update user session!', err);
+      throw new Meteor.Error(535, 'Could not update user session!', err);
     }
   },
   initialConfigs: function(topic, test) {
@@ -103,7 +103,7 @@ Meteor.methods({
       return userSettings;
     }
     catch (err) {
-      throw new Meteor.Error('UserDataError', 'Could not read initial user configs!', err);
+      throw new Meteor.Error(536, 'Could not read initial user configs!', err);
     }
   },
   defaultLocale: function() {
@@ -111,7 +111,7 @@ Meteor.methods({
       return process.env.NEURONE_LOCALE || 'en';
     }
     catch (err) {
-      throw new Meteor.Error('LocaleError', 'Could not get default locale', err);
+      throw new Meteor.Error(537, 'Could not get default locale', err);
     }
   },
   registerUsers: function(userList) {
@@ -182,7 +182,7 @@ Meteor.methods({
     }
     catch (err) {
       console.error(err);
-      throw new Meteor.Error('UserRegisterError', 'Could not register new user!', err);
+      throw new Meteor.Error(538, 'Could not register new user!', err);
     }
   }
 });

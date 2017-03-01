@@ -16,7 +16,7 @@ Meteor.methods({
       return Snippets.find({ userId: this.userId, action: 'Snippet' }, selector).fetch();
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not read Snippets from Database!', err);
+      throw new Meteor.Error(541, 'Could not read Snippets from Database!', err);
     }
   },
   getBookmarks: function(limit) {
@@ -32,7 +32,7 @@ Meteor.methods({
       else return bms;
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not read Bookmarks from Database!', err);
+      throw new Meteor.Error(542, 'Could not read Bookmarks from Database!', err);
     }
   },
   isBookmark: function(currentUrl) {
@@ -45,7 +45,7 @@ Meteor.methods({
       else return false;
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not read Bookmark Status from Database!', err);
+      throw new Meteor.Error(543, 'Could not read Bookmark Status from Database!', err);
     }
   },
   getRelevantDocuments: function() {
@@ -64,7 +64,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not get Relevant Documents from Database!', err);
+      throw new Meteor.Error(544, 'Could not get Relevant Documents from Database!', err);
     }
   },
   getBookmarkScore: function() {
@@ -112,7 +112,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('DatabaseError', 'Could not get Bookmark Score from Database!', err);
+      throw new Meteor.Error(545, 'Could not get Bookmark Score from Database!', err);
     }
   }
 });

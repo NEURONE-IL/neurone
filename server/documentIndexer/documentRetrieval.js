@@ -141,7 +141,7 @@ Meteor.methods({
       }
     }
     catch (err) {
-      throw new Meteor.Error('DocumentRetrievalError', 'Cannot search documents from query', err);
+      throw new Meteor.Error(571, 'Cannot search documents from query', err);
     }
   },
   getDocument: function(documentName) {
@@ -152,7 +152,7 @@ Meteor.methods({
       return doc;
     }
     catch (err) {
-      throw new Meteor.Error('DocumentRetrievalError', 'Cannot get document for display', err);
+      throw new Meteor.Error(572, 'Cannot get document for display', err);
     }
   }
 });
