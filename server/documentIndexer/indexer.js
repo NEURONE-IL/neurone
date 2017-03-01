@@ -58,7 +58,7 @@ export default class Indexer {
     }
     catch (err) {
       console.error(err);
-      throw new Meteor.Error('DocumentIndexingError', 'Cannot index documents!', err);
+      throw new Meteor.Error(523, 'Cannot index documents!', err);
     }
   }
 
@@ -87,33 +87,45 @@ export default class Indexer {
     }
     catch (err) {
       console.error(err);
-      throw new Meteor.Error('DocumentIndexingError', 'Cannot delete orphan documents!', err);
+      throw new Meteor.Error(524, 'Cannot delete orphan documents!', err);
     }
   }
 
   static loadInvertedIndex() {
-    if (process.env.NEURONE_SOLR_HOST) {
-      let fn = Meteor.wrapAsync(SolrIndex.load),
-         res = fn();
+    try {
+      if (process.env.NEURONE_SOLR_HOST) {
+        let fn = Meteor.wrapAsync(SolrIndex.load),
+           res = fn();
 
-      return true;
+        return true;
+      }
+      else {
+        LunrIndex.load();
+        return true;
+      }
     }
-    else {
-      LunrIndex.load();
-      return true;
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(525, 'Cannot load document index!', err);
     }
   }
 
   static generateInvertedIndex() {
-    if (process.env.NEURONE_SOLR_HOST) {
-      let fn = Meteor.wrapAsync(SolrIndex.generate),
-         res = fn();
+    try {
+      if (process.env.NEURONE_SOLR_HOST) {
+        let fn = Meteor.wrapAsync(SolrIndex.generate),
+           res = fn();
 
-      return true;
+        return true;
+      }
+      else {
+        LunrIndex.generate();
+        return true;
+      }
     }
-    else {
-      LunrIndex.generate();
-      return true;
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(526, 'Cannot generate document index!', err);
     }
   }
 }

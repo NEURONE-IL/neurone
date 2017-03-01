@@ -1,0 +1,43 @@
+[
+  {
+    "envSettingsId": "default",
+    "locale": "en",
+    "availableLocales": [ "fi", "en", "es" ],
+    "availableTests": [ "pilot" ],
+    "availableTopics": [ "pilot" ],
+    "userSettings": "default"
+  },
+  {
+    "userSettingsId": "default",
+    "locale": "en",
+    "test": "pilot",
+    "topic": "pilot",
+    "queryIdeas": 2,
+    "maxStars": 3,
+    "minBookmarks": 3,
+    "maxBookmarks": 3,
+    "minSnippetsPerPage": 2,
+    "maxSnippetsPerPage": 2,
+    "minSnippetWordLength": 5,
+    "maxSnippetWordLength": 20,
+    "snippetWordTruncateThreshold": 25,
+    "minSynthesisWordLength": 50,
+    "minSynthesisCharLength": 425,
+    "syhtesisAutosaveInterval": 30,
+    "maxGlobalTime": -1,
+    "replaceWithRelevantDocuments": true,
+    "avatar": "Mikko",
+    "taskPage": "modals/init-pilot1-fi.html",
+    "stages": [
+      {
+        "id": "stageSearch", "time": -1, "reminderAlert": -1, "state": "search",
+        "urlParams": {},
+        "tips": "instructions/instructions_search_pilot1_fi.html",
+        "tutorial": [{ "id": 0, "image": "tutorials/01_Search.png" }, { "id": 1, "image": "tutorials/02_Search.png" }, { "id": 2, "image": "tutorials/00_Navbar_All.png" }]
+      },
+      {
+        "id": "end", "time": -1, "state": "end"
+      }
+    ]
+  }
+]

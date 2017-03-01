@@ -71,15 +71,21 @@ export default class ServerUtils {
       if (process.env.NEURONE_ASSET_PATH) {
         return process.env.NEURONE_ASSET_PATH;
       }
-      else if (Meteor.isProduction) {
+      else if (Meteor.isProduction || Meteor.isDevelopment) {
         return path.join(Meteor.rootPath, '../web.browser/app/');
-      }
-      else if (Meteor.isDevelopment) {
-        return path.join(Meteor.absolutePath, '/public/');
       }
       else {
         return path.join(Meteor.rootPath);
-      } 
+      }
+    }
+  }
+
+  static getPublicFolder() {
+    if (Meteor.isProduction || Meteor.isDevelopment) {
+      return path.join(Meteor.rootPath, '../web.browser/app/');
+    }
+    else {
+      return path.join(Meteor.rootPath);
     }
   }
 }

@@ -11,89 +11,108 @@ import { Settings } from '../../imports/database/settings/index';
 
 export default class ContentLoader {
   static loadQuestions(assetPath) {
-    let fullPath = path.join(assetPath, 'questions', '*.json');
+    try {
+      let fullPath = path.join(assetPath, 'questions', '*.json');
 
-    if (fs.existsSync(fullPath)) {
-      glob(fullPath, Meteor.bindEnvironment((err, files) => {
-        if (!err) {
-          var total = files.length;
+      if (fs.existsSync(fullPath)) {
+        let files = glob.sync(fullPath),
+            total = files.length;
 
-          files.forEach((file, idx, arr) => {
-            var fn = path.basename(file);
-            console.log('Reading question file!', '[' + (idx+1) + '/' + total + ']', fn);
+        files.forEach((file, idx, arr) => {
+          var fn = path.basename(file);
+          console.log('Reading question file!', '[' + (idx+1) + '/' + total + ']', fn);
 
-            var questionFile = fs.readFileSync(file),
-             loadedQuestions = JSON.parse(questionFile);          
+          var questionFile = fs.readFileSync(file),
+           loadedQuestions = JSON.parse(questionFile);          
 
-            loadedQuestions.forEach((q) => {
-              // TODO Question syntax checker
-              if (q.questionId) {
-                FormQuestions.upsert({ questionId: q.questionId }, q);
-              }
-              else if (q.questionnaireId) {
-                FormQuestionnaires.upsert({ questionnaireId: q.questionnaireId }, q);
-              }
-              else if (q.synthesisId) {
-                SynthesisQuestions.upsert({ synthesisId: q.synthesisId }, q);
-              }
-              else {
-                console.warn('Wrong question format detected in object');
-              }
-            });
-
-            if (idx === arr.length-1) return true;
+          loadedQuestions.forEach((q) => {
+            // TODO Question syntax checker
+            if (q.questionId) {
+              FormQuestions.upsert({ questionId: q.questionId }, q);
+            }
+            else if (q.questionnaireId) {
+              FormQuestionnaires.upsert({ questionnaireId: q.questionnaireId }, q);
+            }
+            else if (q.synthesisId) {
+              SynthesisQuestions.upsert({ synthesisId: q.synthesisId }, q);
+            }
+            else {
+              console.warn('Wrong question format detected in object');
+            }
           });
-        }
-        else {
-          console.error('Error while loading questions!', err);
-          return false;
-        }
-      }));
-    }
-    else {
+        });
+      }
+
       return true;
+    }
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(521, 'Cannot load questions from file!', err);
     }
   }
 
   static loadSettings(assetPath) {
-    let fullPath = path.join(assetPath, 'userSettings.json');
+    try {
+      let defaultFile = path.join(Utils.getPublicFolder(), 'default', 'userSettings.json'),
+           fullPath = path.join(assetPath, 'userSettings.json');
 
-    if (fs.existsSync(fullPath)) {
-      glob(fullPath, Meteor.bindEnvironment((err, files) => {
-        if (!err) {
-          var total = files.length;
+      if (fs.existsSync(defaultFile)) {
+        console.log('Reading default settings!');
 
-          files.forEach((file, idx, arr) => {
-            var fn = path.basename(file);
-            console.log('Reading settings file!', '[' + (idx+1) + '/' + total + ']', fn);
+        var settingsFile = fs.readFileSync(defaultFile),
+          loadedSettings = JSON.parse(settingsFile);
 
-            var settingsFile = fs.readFileSync(file),
-              loadedSettings = JSON.parse(settingsFile);          
+        loadedSettings.forEach((s) => {
+          // TODO Config syntax checker
+          if (s.userSettingsId) {
+            Settings.upsert({ userSettingsId: s.userSettingsId }, s);
+          }
+          else if (s.envSettingsId) {
+            Settings.upsert({ envSettingsId: s.envSettingsId }, s);
+          }
+          else {
+            console.warn('Wrong settings format detected in object');
+          }
+        });
+      }
+      else {
+        console.warn('Could not read default settings!');
+      }
 
-            loadedSettings.forEach((s) => {
-              // TODO Config syntax checker
-              if (s.userSettingsId) {
-                Settings.upsert({ userSettingsId: s.userSettingsId }, s);
-              }
-              else if (s.envSettingsId) {
-                Settings.upsert({ envSettingsId: s.envSettingsId }, s);
-              }
-              else {
-                console.warn('Wrong settings format detected in object');
-              }
-            });
+      if (fs.existsSync(fullPath)) {
+        let files = glob.sync(fullPath),
+            total = files.length;
 
-            if (idx === arr.length-1) return true;
+        files.forEach((file, idx, arr) => {
+          var fn = path.basename(file);
+          console.log('Reading settings file!', '[' + (idx+1) + '/' + total + ']', fn);
+
+          var settingsFile = fs.readFileSync(file),
+            loadedSettings = JSON.parse(settingsFile);
+
+          loadedSettings.forEach((s) => {
+            // TODO Config syntax checker
+            if (s.userSettingsId) {
+              Settings.upsert({ userSettingsId: s.userSettingsId }, s);
+            }
+            else if (s.envSettingsId) {
+              Settings.upsert({ envSettingsId: s.envSettingsId }, s);
+            }
+            else {
+              console.warn('Wrong settings format detected in object');
+            }
           });
-        }
-        else {
-          console.error('Error while loading settings!', err);
-          return false;
-        }
-      }));
+        });
+
+        return true;
+      }
+      else {
+        return true;
+      }
     }
-    else {
-      return true;
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(522, 'Cannot load settings from file!', err);
     }
   }
 }
