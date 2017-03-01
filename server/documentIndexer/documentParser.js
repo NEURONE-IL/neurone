@@ -3,7 +3,7 @@ import path from 'path';
 import iconv from 'iconv';
 import charset from 'charset';
 import jschardet from 'jschardet';
-import md5File from 'md5-file';
+import sha from 'sha';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 import unfluff from 'unfluff';
@@ -101,9 +101,9 @@ export default class DocumentParser {
     }
   }
 
-  static getMD5(documentPath) {
+  static getHash(documentPath) {
     try {
-      return md5File.sync(documentPath);
+      return sha.getSync(documentPath, { algorithm: 'sha256' });
     }
     catch (e) {
       console.error(e);
@@ -249,7 +249,7 @@ export default class DocumentParser {
       date: Utils.getDate(),
       docName: this.getHtmlDocname(documentPath),
       route: this.getHtmlRoute(documentPath),
-      md5Hash: this.getMD5(documentPath)
+      hash: this.getHash(documentPath)
     };
 
     //console.log('Document Parsed!', obj.route);
