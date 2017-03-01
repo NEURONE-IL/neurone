@@ -93,10 +93,10 @@ export default class Indexer {
 
   static loadInvertedIndex() {
     if (process.env.NEURONE_SOLR_HOST) {
-      SolrIndex.load((err, res) => {
-        if (!err) return true;
-        else return false;
-      });
+      let fn = Meteor.wrapAsync(SolrIndex.load),
+         res = fn();
+
+      return true;
     }
     else {
       LunrIndex.load();
@@ -104,16 +104,16 @@ export default class Indexer {
     }
   }
 
-  static generateInvertedIndex(callback) {
+  static generateInvertedIndex() {
     if (process.env.NEURONE_SOLR_HOST) {
-      SolrIndex.generate((err, res) => {
-        if (!err) return true;
-        else return false;
-      });
+      let fn = Meteor.wrapAsync(SolrIndex.generate),
+         res = fn();
+
+      return true;
     }
     else {
       LunrIndex.generate();
       return true;
-    }  
+    }
   }
 }

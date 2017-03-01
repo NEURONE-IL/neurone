@@ -30,7 +30,7 @@ export default class SolrIndex {
   }
 
   static generate(callback) {
-    this.load(Meteor.bindEnvironment((err, res) => {
+    SolrIndex.load(Meteor.bindEnvironment((err, res) => {
       if (!err) {
         var docs = Documents.find().fetch(),
          idxDocs = [];

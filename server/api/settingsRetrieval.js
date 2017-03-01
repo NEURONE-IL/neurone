@@ -106,6 +106,14 @@ Meteor.methods({
       throw new Meteor.Error('UserDataError', 'Could not read initial user configs!', err);
     }
   },
+  defaultLocale: function() {
+    try {
+      return process.env.NEURONE_LOCALE || 'en';
+    }
+    catch (err) {
+      throw new Meteor.Error('LocaleError', 'Could not get default locale', err);
+    }
+  },
   registerUsers: function(userList) {
     check(userList, Array);
 

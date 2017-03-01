@@ -22,15 +22,13 @@ Meteor.startup(() => {
     // dgacitua: Preloading of Form and Synthesis questions
     if (ServerConfigs.reloadProfilesOnDeploy) {
       console.log('Loading Settings and Profiles...');
-      let fn = Meteor.wrapAsync(ContentLoader.loadSettings),
-        step = fn(assetPath);
+      let step = ContentLoader.loadSettings(assetPath);
     }
 
     // dgacitua: Preloading of Form and Synthesis questions
     if (ServerConfigs.reloadQuestionsOnDeploy) {
       console.log('Loading Questions...');
-      let fn = Meteor.wrapAsync(ContentLoader.loadQuestions),
-        step = fn(assetPath);
+      let step = ContentLoader.loadQuestions(assetPath);
     }  
 
     // dgacitua: Load HTML documents, parse them and index them
