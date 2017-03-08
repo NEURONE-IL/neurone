@@ -1,7 +1,7 @@
 {
   "name": "neurone",
   "description": "oNlinE inqUiry expeRimentatiON systEm",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Daniel Gacitua <daniel.gacitua@usach.cl>",
   "private": true,
   "scripts": {
