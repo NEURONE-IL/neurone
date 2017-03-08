@@ -6,7 +6,6 @@ import jschardet from 'jschardet';
 import sha from 'sha';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
-import unfluff from 'unfluff';
 import uppercamelcase from 'uppercamelcase';
 
 import Utils from '../lib/utils';
@@ -18,27 +17,6 @@ export default class DocumentParser {
          htmlFile = this.readFile(relPath),
        htmlString = htmlFile.toString();
 
-      /*
-      var site = unfluff.lazy(htmlFile),
-          lang = site.lang(),
-         title = site.title(),
-           url = site.canonicalLink(),
-          text = site.text();
-
-      return text || '';
-      */
-      
-      /*
-      // dgacitua: http://stackoverflow.com/a/31543727
-      var $ = cheerio.load(htmlFile);
-      
-      var text = $('body *').contents().map(() => {
-                  return (this.type === 'text') ? $(this).text()+' ' : '';
-                }).get().join('');
-      
-      return text;
-      */
-      
       var options = {
         wordwrap: false,
         uppercaseHeadings: false,
