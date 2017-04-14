@@ -26,7 +26,7 @@ export default class ContentLoader {
            loadedQuestions = JSON.parse(questionFile);          
 
           loadedQuestions.forEach((q) => {
-            // TODO Question syntax checker
+            // TODO Question format parser and validator
             if (q.questionId) {
               FormQuestions.upsert({ questionId: q.questionId }, q);
             }
@@ -63,9 +63,12 @@ export default class ContentLoader {
           loadedSettings = JSON.parse(settingsFile);
 
         loadedSettings.forEach((s) => {
-          // TODO Config syntax checker
-          if (s.userSettingsId) {
-            Settings.upsert({ userSettingsId: s.userSettingsId }, s);
+          // TODO Config format parser and validator
+          if (s.flowSettingsId) {
+            Settings.upsert({ flowSettingsId: s.flowSettingsId }, s);
+          }
+          else if (s.clientSettingsId) {
+            Settings.upsert({ clientSettingsId: s.clientSettingsId }, s);
           }
           else if (s.envSettingsId) {
             Settings.upsert({ envSettingsId: s.envSettingsId }, s);
@@ -92,8 +95,8 @@ export default class ContentLoader {
 
           loadedSettings.forEach((s) => {
             // TODO Config syntax checker
-            if (s.userSettingsId) {
-              Settings.upsert({ userSettingsId: s.userSettingsId }, s);
+            if (s.flowSettingsId) {
+              Settings.upsert({ flowSettingsId: s.flowSettingsId }, s);
             }
             else if (s.envSettingsId) {
               Settings.upsert({ envSettingsId: s.envSettingsId }, s);

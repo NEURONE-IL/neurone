@@ -38,7 +38,21 @@ import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
 
-class App {}
+class App {
+  constructor($scope, $translate) {
+    'ngInject';
+
+    // dgacitua: Get client settings and base language
+    Meteor.call('clientSettings', (err, res) => {
+      if (!err) {
+        Session.set('locale', res.locale);
+        $translate.use(Session.get('locale')).then(() => {
+          console.log('Using Client Locale', Session.get('locale'));
+        });
+      }
+    });
+  }
+}
 
 const name = 'app';
 
@@ -99,7 +113,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage(Configs.defaultLocale);
+  $translateProvider.preferredLanguage('fi');
 };
 
 function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {
@@ -129,16 +143,16 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
       if (status === 'USER_LOGGED') {
         var locale = uds.getConfigs().locale;
         
-        console.log('CustomLocale', locale);
+        console.log('Using Flow Locale', locale);
 
         $translate.use(locale).then(() => {
           console.log('Meteor onLogin READY!');
         });
       }
       else {
-        var locale = Configs.defaultLocale;
+        var locale = Session.get('locale');
         
-        console.log('DefaultLocale', locale);
+        console.log('Using Client Locale', locale);
 
         $translate.use(locale).then(() => {
           console.log('Meteor onLogin READY!');
@@ -148,7 +162,11 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   });
 
   Accounts.onLogout(() => {
-    // PLACEHOLDER
+    var locale = Session.get('locale');
+        
+    $translate.use(locale).then(() => {
+      console.log('Meteor onLogout READY!');
+    });
   });
 };
 

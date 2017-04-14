@@ -1,17 +1,38 @@
 [
   {
     "envSettingsId": "default",
-    "locale": "en",
-    "availableLocales": [ "fi", "en", "es" ],
-    "availableTests": [ "pilot" ],
-    "availableTopics": [ "pilot" ],
-    "userSettings": "default"
+    "locale": "fi",
+    "availableRoles": [ "researcher", "student" ],
+    "availableLocales": [ "fi", "en", "es-CL" ],
+    "availableTasks": [
+      { "code": "P", "name": "pilot" },
+      { "code": "E", "name": "email" },
+      { "code": "A", "name": "article" }
+    ],
+    "availableDomains": [
+      { "code": "PI", "name": "pilot" },
+      { "code": "SC", "name": "science" },
+      { "code": "SS", "name": "social" }
+    ],
+    "clientSettings": "clientDefault",
+    "flowSettings": "pilot"
   },
   {
-    "userSettingsId": "default",
+    "clientSettingsId": "clientDefault",
+    "idleThreshold": 30,
+    "idleCheckInterval": 1,
+    "idleOnBlur": true,
+    "iframeId": "pageContainer",
+    "flowEnabled": false,
+    "instructionTimeout": 3,
+    "autoLogout": 15,
+    "locale": "en"
+  },
+  {
+    "flowSettingsId": "pilot",
     "locale": "en",
-    "test": "pilot",
-    "topic": "pilot",
+    "task": "pilot",
+    "domain": "pilot",
     "queryIdeas": 2,
     "maxStars": 3,
     "minBookmarks": 3,

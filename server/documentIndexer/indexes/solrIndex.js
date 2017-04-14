@@ -45,7 +45,7 @@ export default class SolrIndex {
             relevant_b: doc.relevant || false,
             title_t: doc.title || '',
             searchSnippet_t: doc.searchSnippet || '',
-            indexedBody_t: this.escapeString(doc.indexedBody) || '',
+            indexedBody_t: SolrIndex.escapeString(doc.indexedBody) || '',
             keywords_t: doc.keywords || [],
             test_s: doc.test || [],
             topic_s: doc.topic || []

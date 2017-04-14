@@ -7,6 +7,7 @@ import { Settings } from '../../imports/database/settings/index';
 import { Identities } from '../../imports/database/identities/index';
 
 Meteor.methods({
+  // dgacitua: Get user data from its userId
   userDataFromId: function(userId) {
     // dgacitua: Server-only method
     // https://github.com/themeteorchef/server-only-methods
@@ -21,6 +22,7 @@ Meteor.methods({
       throw new Meteor.Error(531, 'Could not get User Data from userId!', err);
     }
   },
+  // dgacitua: Get user role from logged client
   userRole: function() {
     try {
       if (this.userId) {
@@ -34,13 +36,10 @@ Meteor.methods({
       throw new Meteor.Error(532, 'Could not read user session!', err);
     }
   },
+  // dgacitua: Get user session (temporal state variables) from logged client
   userSession: function() {
     try {
       if (this.userId) {
-        //var met = Meteor.wrapAsync(UserData.findOne),
-        //   call = met({ userId: this.userId });
-
-        //return call.session;
         return UserData.findOne({ userId: this.userId }).session;
       }
       else {
@@ -51,13 +50,10 @@ Meteor.methods({
       throw new Meteor.Error(533, 'Could not read user session!', err);
     }
   },
+  // dgacitua: Get user configs (flow execution data) from logged client
   userConfigs: function() {
     try {
       if (this.userId) {
-        //var met = Meteor.wrapAsync(UserData.findOne),
-        //   call = met({ userId: this.userId });
-
-        //return call.configs;
         return UserData.findOne({ userId: this.userId }).configs;
       }
       else {
@@ -68,6 +64,7 @@ Meteor.methods({
       throw new Meteor.Error(534, 'Could not read user configs!', err);
     }
   },
+  // dgacitua: Set user session (temporal state variables) from logged client and return them
   setSession: function(property) {
     try {
       if (this.userId) {
@@ -86,34 +83,42 @@ Meteor.methods({
       throw new Meteor.Error(535, 'Could not update user session!', err);
     }
   },
-  initialConfigs: function(topic, test) {
+  // dgacitua: Get initial user configs for new created user from client
+  initialConfigs: function(domain, task) {
     try {
       var envSettings = Settings.findOne({ envSettingsId: 'default' }),
-         userSettings = null;
+         flowSettings = null;
 
-      if (!!test && !!topic) {
-        userSettings = Settings.findOne({ test: test, topic: topic });
+      if (!!task && !!domain) {
+        flowSettings = Settings.findOne({ task: task, domain: domain });
       }
       else {
-        userSettings = Settings.findOne({ userSettingsId: envSettings.userSettings }); 
+        flowSettings = Settings.findOne({ flowSettingsId: envSettings.flowSettings }); 
       }
 
-      delete userSettings._id;
+      delete flowSettings._id;
 
-      return userSettings;
+      return flowSettings;
     }
     catch (err) {
       throw new Meteor.Error(536, 'Could not read initial user configs!', err);
     }
   },
-  defaultLocale: function() {
+  // dgacitua: Get client settings (basic configs for NEURONE simulation) from client
+  clientSettings: function() {
     try {
-      return process.env.NEURONE_LOCALE || 'en';
+      var envSettings = Settings.findOne({ envSettingsId: 'default' }),
+       clientSettings = Settings.findOne({ clientSettingsId: envSettings.clientSettings });
+
+      delete clientSettings._id;
+
+      return clientSettings;
     }
     catch (err) {
-      throw new Meteor.Error(537, 'Could not get default locale', err);
+      throw new Meteor.Error(537, 'Could not read NEURONE client configs!', err);
     }
   },
+  // dgacitua: Massive enrollment method for creating multiple user accounts
   registerUsers: function(userList) {
     check(userList, Array);
 
@@ -127,23 +132,24 @@ Meteor.methods({
         profile: {}
       };
 
-      let topic, test, userSettings;
+      // TODO Undo hardcode of domain and tasks
+      let domain, task, flowSettings;
 
-      if (user.domain === 'SS') topic = 'social';
-      else if (user.domain === 'SC') topic = 'science';
-      else topic = 'pilot';
+      if (user.domain === 'SS') domain = 'social';
+      else if (user.domain === 'SC') domain = 'science';
+      else domain = 'pilot';
 
-      if (user.task === 'E') test = 'email';
-      else if (user.task === 'A') test = 'article';
-      else test = 'pilot';
+      if (user.task === 'E') task = 'email';
+      else if (user.task === 'A') task = 'article';
+      else task = 'pilot';
 
-      userSettings = Settings.findOne({ test: test, topic: topic });
+      flowSettings = Settings.findOne({ task: task, domain: domain });
 
-      if (!(!!userSettings)) {
+      if (!(!!flowSettings)) {
         arr[idx].status = 'ConfigError';
       }
       else {
-        tempCredentials.configs = userSettings;
+        tempCredentials.configs = flowSettings;
 
         let id = Accounts.createUser(tempCredentials);
 

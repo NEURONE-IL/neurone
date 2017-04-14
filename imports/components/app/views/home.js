@@ -10,13 +10,17 @@ class Home {
     'ngInject';
 
     $scope.$on('$stateChangeStart', (event) => {
-      Session.set('lockButtons', true);
-      this.uds.setSession({ standbyMode: false });
+      if (!!Meteor.userId()) {
+        Session.set('lockButtons', true);
+        this.uds.setSession({ standbyMode: false });
+      }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({ standbyMode: true });
-      this.$rootScope.$broadcast('updateNavigation');
+      if (!!Meteor.userId()) {
+        this.uds.setSession({ standbyMode: true });
+        this.$rootScope.$broadcast('updateNavigation');
+      }
     });
 
     $reactive(this).attach($scope);
