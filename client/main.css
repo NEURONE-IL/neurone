@@ -237,6 +237,10 @@ mark.highlightSnippet {
   color: yellow !important;
 }
 
+div.admin-tab-content {
+  margin: 5px 5px 5px 5px;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component

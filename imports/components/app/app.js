@@ -33,8 +33,9 @@ import { name as Logger } from '../services/logger/logger';
 
 import { name as Stages } from './stages/stages';
 
+import { name as Admin } from '../modules/admin';
 import { name as ViewDocuments } from '../modules/viewDocuments';
-import { name as Enrollment } from '../modules/enrollment';
+//import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
 
@@ -88,8 +89,9 @@ export default angular.module(name, [
   // iFuCo Simulation
   Stages,
   // Other modules
-  ViewDocuments,
-  Enrollment
+  Admin,
+  ViewDocuments
+  //Enrollment
 ])
 .component(name, {
   template,
@@ -182,11 +184,16 @@ function setTrackers($rootScope, FlowService, KMTrackService, LinkTrackService, 
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
       lts.saveEnterPage();
-      kmts.service();
-      abs.service();
+      //kmts.service();
+      //abs.service();
 
-      // TODO: displayPage in viewDocuments
-      if (Configs.flowEnabled && toState.name !== 'start' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') fs.service();
+      if (toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') {
+        kmts.service();
+        abs.service();
+
+        // TODO: Disable fs.service() on displayPage in viewDocuments
+        if (Configs.flowEnabled) fs.service();
+      }
     }
     else {
       kmts.antiService();
@@ -197,8 +204,13 @@ function setTrackers($rootScope, FlowService, KMTrackService, LinkTrackService, 
   $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
       lts.saveExitPage();
-      kmts.service();
-      abs.service();
+      //kmts.service();
+      //abs.service();
+      
+      if (toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') {
+        kmts.service();
+        abs.service();
+      }
     }
     else {
       kmts.antiService();

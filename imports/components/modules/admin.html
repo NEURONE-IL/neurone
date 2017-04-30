@@ -8,27 +8,33 @@
         <uib-tab-heading>
           <i class="fa fa-home" aria-hidden="true"></i> Home
         </uib-tab-heading>
-        Main
+        Server statistics goes here
       </uib-tab>
       <uib-tab index="1">
         <uib-tab-heading>
           <i class="fa fa-users" aria-hidden="true"></i> User Enrollment
         </uib-tab-heading>
-        User enrollment options
+        <div ui-view="enrollment" class="admin-tab-content"></div>
       </uib-tab>
       <uib-tab index="2">
         <uib-tab-heading>
-          <i class="fa fa-archive" aria-hidden="true"></i> Flow Creator
+          <i class="fa fa-magic" aria-hidden="true"></i> Flow Wizard
         </uib-tab-heading>
-        Flows
+        Flow Wizard goes here
       </uib-tab>
       <uib-tab index="3">
+        <uib-tab-heading>
+          <i class="fa fa-archive" aria-hidden="true"></i> Flow Manager
+        </uib-tab-heading>
+        <div ui-view="flowManager" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="4">
         <uib-tab-heading>
           <i class="fa fa-eye" aria-hidden="true"></i> Document Viewer
         </uib-tab-heading>
         Docs
       </uib-tab>
-      <uib-tab index="4">
+      <uib-tab index="5">
         <uib-tab-heading>
           <i class="fa fa-file-text-o" aria-hidden="true"></i> Document Generator
         </uib-tab-heading>

@@ -1,12 +1,16 @@
 import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
 import angularCSV from 'ng-csv';
+import angularFileUpload from 'angular-file-upload';
 import RandomString from 'randomstring';
 
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
-import template from './enrollment.html';
+import { name as Enrollment } from './admin/enrollment';
+import { name as FlowManager } from './admin/flowManager';
+
+import template from './admin.html';
 
 class Admin {
   constructor($scope, $rootScope, $reactive, $translate, $timeout, $promiser, UserDataService, AuthService) {
@@ -27,12 +31,15 @@ const name = 'admin';
 export default angular.module(name, [
   'ngSanitize',
   'truncate',
-  'ngCsv'
+  'ngCsv',
+  'angularFileUpload',
+  Enrollment,
+  FlowManager
 ])
 .component(name, {
   template,
   controllerAs: name,
-  controller: Enrollment
+  controller: Admin
 })
 .config(config);
 
@@ -41,7 +48,17 @@ function config($stateProvider) {
 
   $stateProvider.state('admin', {
     url: '/neuroneAdmin',
-    template: '<admin></admin>',
+    views: {
+      '@': {
+        template: '<admin></admin>'
+      },
+      'enrollment@admin': {
+        template: '<enrollment></enrollment>'
+      },
+      'flowManager@admin': {
+        template: '<flow-manager></flow-manager>'
+      }
+    },
     resolve: {
       userData(UserDataService) {
         var uds = UserDataService;
