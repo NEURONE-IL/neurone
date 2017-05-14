@@ -16,14 +16,14 @@
     "angular-meteor": "^1.3.11",
     "angular-meteor-auth": "^1.1.1",
     "angular-meteor-promiser": "^1.1.0",
-    "angular-sanitize": "^1.5.8",
+    "angular-sanitize": "1.5.9",
     "angular-translate": "^2.12.1",
     "angular-translate-loader-static-files": "^2.12.1",
     "angular-translate-storage-local": "^2.12.1",
     "angular-truncate-2": "^0.4.2",
     "angular-ui-bootstrap": "^2.2.0",
     "angular-ui-router": "^0.3.2",
-    "array.prototype.move": "0.0.3",
+    "array.prototype.move": "^0.0.3",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "charset": "^1.0.0",
@@ -48,7 +48,7 @@
     "unfluff": "^1.1.0",
     "uppercamelcase": "^1.1.0",
     "useragent": "^2.1.9",
-    "yamlparser": "0.0.2"
+    "yamlparser": "^0.0.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.8",

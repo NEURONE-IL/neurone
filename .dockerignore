@@ -3,12 +3,13 @@
 .keys/
 .neuroneAssets/
 .neuroneBuild/
+build/
 node_modules/
-
-neuroneimage.tar
-neuroneapp.tar.gz
-npm-debug.log
 
 .deploy/remoteDeployMUP.sh
 .deploy/neurone2-ws/
 .deploy/neurone2-ajax/
+
+neuroneimage.tar
+neuroneapp.tar.gz
+npm-debug.log
