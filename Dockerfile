@@ -13,31 +13,45 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 
 # Set work directory
 RUN mkdir -p /home/app
+ENV HOME /home/app
 WORKDIR /home/app
+
+# Add all files
 ADD . ./src
+RUN chown -R app:app ./src
 
 # Do basic updates
-RUN apt-get update -q && apt-get clean
+RUN apt-get -qq update && apt-get clean
 
-# Install curl & Meteor
-RUN apt-get install -y curl && (curl https://install.meteor.com/ | sh)
+# Install curl & wget
+RUN apt-get -qq install curl wget
+
+# Install gosu
+# RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" && chmod +x /usr/local/bin/gosu
+
+# Run as 'app' user
+USER app
+
+# Install Meteor
+RUN curl https://install.meteor.com/ | sh
+ENV PATH $PATH:$HOME/.meteor
 
 # Build Meteor app
-RUN (cd /home/app/src && meteor build ../neurone --directory)
+RUN cd /home/app/src && meteor build ../neurone --directory
 
 # Install NPM packages
-RUN (cd /home/app/neurone/bundle/programs/server && npm install --quiet)
+RUN cd /home/app/neurone/bundle/programs/server && npm install --quiet
 
 # Remove Meteor
-RUN rm /usr/local/bin/meteor && rm -rf ~/.meteor
+RUN rm -rf $HOME/.meteor && rm /usr/local/bin/meteor
 
-# Remove curl
-RUN apt-get autoremove -y --purge curl
+# Run as 'root'
+USER root
 
 # Create NEURONE assets folder
-RUN mkdir -p /assets
-RUN chown -R app:app /assets
-RUN chmod -R +rw /assets
+RUN mkdir -p /assets \
+    && chown -R app:app /assets \
+    && chmod -R +rw /assets
 
 # Set internal Meteor environment variables
 ENV NEURONE_ASSET_PATH /assets
