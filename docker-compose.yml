@@ -1,64 +1,44 @@
-version: '2.0'
+version: '2.1'
 
 services:
-  neurone-search:
+  database:
+    build: ./.deploy/mongo
+    image: dgacitua/mongo
+    restart: on-failure
+    ports:
+      - 1313:27017
+    volumes:
+      - ${NEURONE_MONGO_PATH:-~/neuroneDatabase}:/data/db
+    environment:
+      - MONGODB_ADMIN_USER=${NEURONE_ADMIN_DB_USER:-admin}
+      - MONGODB_ADMIN_PASS=${NEURONE_ADMIN_DB_PASS:-neurone2017}
+      - MONGODB_APPLICATION_DATABASE=${NEURONE_DB:-neurone}
+      - MONGODB_APPLICATION_USER=${NEURONE_DB_USER:-neurone}
+      - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone}
+  search:
     image: solr:6.5
-    restart: unless-stopped
+    restart: on-failure
     ports:
       - 1314:8983
-    volumes:
-      - search-db:/opt/solr/server/solr/mycores
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
       - neurone
-  neurone-database:
-    image: mongo:3.4
-    restart: unless-stopped
-    ports:
-      - 1313:27017
-    volumes:
-      - database:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${NEURONE_DB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${NEURONE_DB_PASS}
-      - MONGO_INITDB_DATABASE=neurone
-  neurone-app-wbsk:
+  app:
     build: .
-    restart: unless-stopped
+    image: dgacitua/neurone
+    restart: on-failure
     ports:
      - 80:80
     volumes:
-     - assets:/assets
+     - ${NEURONE_ASSET_PATH:-~/neuroneAssets}:/assets
     links:
-     - neurone-search
-     - neurone-database
+     - database
+     - search
     environment:
-     - ROOT_URL="http://${HOST}"
-     - MONGO_URL="mongodb://${NEURONE_DB_USER}:${NEURONE_DB_PASS}@neurone-database:1313/neurone"
-     - NEURONE_SOLR_HOST=neurone-search
-     - NEURONE_SOLR_PORT=1314
+     - ROOT_URL=http://${NEURONE_HOST:-localhost}
+     - MONGO_URL=mongodb://${NEURONE_DB_USER:-neurone}:${NEURONE_DB_PASS:-neurone}@database:27017/${NEURONE_DB:-neurone}
+     - NEURONE_SOLR_HOST=search
+     - NEURONE_SOLR_PORT=8983
      - NEURONE_SOLR_CORE=neurone
      - DISABLE_WEBSOCKETS=0
-  #neurone-app-ajax:
-  #  build: .
-  #  restart: unless-stopped
-  # ports:
-  #   - 81:80
-  #  volumes:
-  #   - assets:/assets
-  # links:
-  #   - neurone-search
-  #   - neurone-database
-  #  environment:
-  #   - ROOT_URL="http://${HOST}"
-  #   - MONGO_URL="mongodb://${NEURONE_DB_USER}:${NEURONE_DB_PASS}@neurone-database:1313/neurone"
-  #   - NEURONE_SOLR_HOST=neurone-search
-  #   - NEURONE_SOLR_PORT=1314
-  #   - NEURONE_SOLR_CORE=neurone
-  #   - DISABLE_WEBSOCKETS=1
-
-volumes:
-  search-db: ${NEURONE_SOLR_PATH}
-  database: ${NEURONE_MONGO_PATH}
-  assets: ${NEURONE_ASSET_PATH}

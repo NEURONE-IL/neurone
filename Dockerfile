@@ -20,30 +20,38 @@ WORKDIR /home/app
 ADD . ./src
 RUN chown -R app:app ./src
 
-# Do basic updates
-RUN apt-get -qq update && apt-get clean
+# Install basic dependencies
+RUN apt-get -qq update \
+    && apt-get clean \
+    && apt-get -qq install curl wget unzip
 
-# Install curl & wget
-RUN apt-get -qq install curl wget
-
-# Install gosu
-# RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" && chmod +x /usr/local/bin/gosu
+# Copy Nginx config files
+RUN cp /home/app/src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
+    && cp /home/app/src/.deploy/docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
 
 # Run as 'app' user
 USER app
 
 # Install Meteor
-RUN curl https://install.meteor.com/ | sh
 ENV PATH $PATH:$HOME/.meteor
+RUN curl https://install.meteor.com/ | sh \
 
 # Build Meteor app
-RUN cd /home/app/src && meteor build ../neurone --directory
+    && cd /home/app/src \
+    && meteor npm install --quiet \
+    && meteor build ../neurone --directory --server-only \
 
 # Install NPM packages
-RUN cd /home/app/neurone/bundle/programs/server && npm install --quiet
+    && cp -r /home/app/neurone/bundle/. /home/app/neurone \
+    && rm -rf /home/app/neurone/bundle \
+    && cd /home/app/neurone/programs/server \
+    && npm install --quiet \
+
+# Remove sources
+    && rm -rf /home/app/src \
 
 # Remove Meteor
-RUN rm -rf $HOME/.meteor && rm /usr/local/bin/meteor
+    && rm -rf $HOME/.meteor
 
 # Run as 'root'
 USER root
@@ -57,15 +65,9 @@ RUN mkdir -p /assets \
 ENV NEURONE_ASSET_PATH /assets
 ENV HTTP_FORWARDED_COUNT 1
 
-# Copy Nginx config files
-RUN cp /home/app/src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf
-RUN cp /home/app/src/.deploy/docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
-
-# Remove default nginx host to make the app listen on all domain names
-RUN rm /etc/nginx/sites-enabled/default
-
 # Enable Nginx and Passenger
-RUN rm -f /etc/service/nginx/down
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && rm -f /etc/service/nginx/down
 
 # Set ports, data volumes and commands
 EXPOSE 80
