@@ -1,6 +1,7 @@
 .keys/
 .neuroneAssets/
 .neuroneBuild/
+build/
 node_modules/
 
 .deploy/remoteDeployMUP.sh

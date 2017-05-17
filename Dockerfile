@@ -1,5 +1,8 @@
 # NEURONE Dockerfile
-# Instructions from https://medium.com/@isohaze/how-to-dockerize-a-meteor-1-4-app-120a34089ddb
+
+# https://medium.com/@isohaze/how-to-dockerize-a-meteor-1-4-app-120a34089ddb
+# https://projectricochet.com/blog/production-meteor-and-node-using-docker-part-i
+
 FROM phusion/passenger-nodejs:0.9.19
 
 # Contact the maintainer in case of problems
@@ -8,34 +11,63 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 # Update Passenger Phusion
 # RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 
-# Set correct environment variables
-ENV HOME /root
+# Set work directory
+RUN mkdir -p /home/app
+ENV HOME /home/app
+WORKDIR /home/app
 
-# Create app directory
-RUN mkdir -p /home/app/neurone
+# Add all files
+ADD . ./src
+RUN chown -R app:app ./src
+
+# Install basic dependencies
+RUN apt-get -qq update \
+    && apt-get clean \
+    && apt-get -qq install curl wget unzip
+
+# Copy Nginx config files
+RUN cp /home/app/src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
+    && cp /home/app/src/.deploy/docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
+
+# Run as 'app' user
+USER app
+
+# Install Meteor
+ENV PATH $PATH:$HOME/.meteor
+RUN curl https://install.meteor.com/ | sh \
+
+# Build Meteor app
+    && cd /home/app/src \
+    && meteor npm install --quiet \
+    && meteor build ../neurone --directory --server-only \
+
+# Install NPM packages
+    && cp -r /home/app/neurone/bundle/. /home/app/neurone \
+    && rm -rf /home/app/neurone/bundle \
+    && cd /home/app/neurone/programs/server \
+    && npm install --quiet \
+
+# Remove sources
+    && rm -rf /home/app/src \
+
+# Remove Meteor
+    && rm -rf $HOME/.meteor
+
+# Run as 'root'
+USER root
 
 # Create NEURONE assets folder
-RUN mkdir -p /assets
-RUN chown -R app:app /assets
-RUN chmod -R +rw /assets
+RUN mkdir -p /assets \
+    && chown -R app:app /assets \
+    && chmod -R +rw /assets
 
 # Set internal Meteor environment variables
 ENV NEURONE_ASSET_PATH /assets
 ENV HTTP_FORWARDED_COUNT 1
 
-# Copy bundle contents to directory
-COPY . /home/app/neurone
-COPY neurone.conf /etc/nginx/sites-enabled/neurone.conf
-COPY meteor-env.conf /etc/nginx/main.d/meteor-env.conf
-
-# Install NPM packages
-RUN (cd /home/app/neurone/programs/server && npm install --quiet)
-
-# Remove default nginx host to make the app listen on all domain names
-RUN rm /etc/nginx/sites-enabled/default
-
 # Enable Nginx and Passenger
-RUN rm -f /etc/service/nginx/down
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && rm -f /etc/service/nginx/down
 
 # Set ports, data volumes and commands
 EXPOSE 80
