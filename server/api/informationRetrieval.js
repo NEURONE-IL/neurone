@@ -8,26 +8,34 @@ import { Queries } from '../../imports/database/queries/index';
 import { Bookmarks } from '../../imports/database/bookmarks/index';
 import { UserData } from '../../imports/database/userData/index';
 
+// NEURONE API: Information Retrieval
+// Methods for getting information on document, bookmark and snippet status for the user
+
 Meteor.methods({
+  // dgacitua: Get latest snippets from user
+  //           PARAMS: limit (OPTIONAL: Number of snippets)
+  //           RETURNS: Snippet JSON array
   getSnippets: function(limit) {
     try {
       var selector = { sort: { serverTimestamp: -1 }};
       if (limit) selector.limit = limit;
+
       return Snippets.find({ userId: this.userId, action: 'Snippet' }, selector).fetch();
     }
     catch (err) {
       throw new Meteor.Error(541, 'Could not read Snippets from Database!', err);
     }
   },
+  // dgacitua: Get latest bookmarks from user
+  //           PARAMS: limit (OPTIONAL: Number of snippets)
+  //           RETURNS: Bookmark JSON array
   getBookmarks: function(limit) {
     try {
       var selector = { sort: { serverTimestamp: -1 }};
 
       // dgacitua: https://coderwall.com/p/o9np9q/get-unique-values-from-a-collection-in-meteor
-      // var docs = Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch();
-      
-      // dgacitua: Imported from https://github.com/monbro/meteor-mongodb-mapreduce-aggregation/
       var bms = _.uniq(Bookmarks.find({ userId: this.userId, action: 'Bookmark' }, selector).fetch(), (x) => { return x.url });
+
       if (limit) return bms.slice(-(limit));
       else return bms;
     }
@@ -35,6 +43,9 @@ Meteor.methods({
       throw new Meteor.Error(542, 'Could not read Bookmarks from Database!', err);
     }
   },
+  // dgacitua: Check if current viewed document is bookmarked by user
+  //           PARAMS: currentUrl (URL string)
+  //           RETURNS: <boolean>
   isBookmark: function(currentUrl) {
     check(currentUrl, String);
 
@@ -48,6 +59,9 @@ Meteor.methods({
       throw new Meteor.Error(543, 'Could not read Bookmark Status from Database!', err);
     }
   },
+  // dgacitua: Get documents marked as relevant for a user session
+  //           PARAMS: <none>
+  //           RETURNS: Document JSON array
   getRelevantDocuments: function() {
     try {
       if (this.userId) {
@@ -67,6 +81,9 @@ Meteor.methods({
       throw new Meteor.Error(544, 'Could not get Relevant Documents from Database!', err);
     }
   },
+  // dgacitua: Get bookmark score based on iFuCo's Performance Formula
+  //           PARAMS: <none>
+  //           RETURNS: Score object
   getBookmarkScore: function() {
     try {
       if (this.userId) {
@@ -97,7 +114,7 @@ Meteor.methods({
                           stdScore = score*maxStars,
                           rndScore = Math.round(stdScore);
 
-        //console.log(this.userId, relevantCollectedPages, totalCollectedBookmarks, maxStars, score);
+        // TODO: Update score formula from iFuCo Research Team
 
         return {
           score: score,
@@ -118,9 +135,10 @@ Meteor.methods({
 });
 
 Meteor.publish({
+  // dgacitua: Get user bookmarks as a Meteor reactive source
   userBookmarks: function() {
     if (this.userId) {
-      var user = UserData.findOne({userId: this.userId}),
+      var user = UserData.findOne({ userId: this.userId }),
          limit = user.configs.maxBookmarks,
           pipe = [
                   { $match: { userId: this.userId }},
@@ -138,10 +156,11 @@ Meteor.publish({
       this.ready();
     }
   },
+  // dgacitua: Get user snippets as a Meteor reactive source
   userSnippets: function() {
     if (this.userId) {
       // dgacitua: http://stackoverflow.com/a/40266075
-      var user = UserData.findOne({userId: this.userId}),//Meteor.users.findOne(this.userId),
+      var user = UserData.findOne({ userId: this.userId }),
          limit = user.configs.maxSnippetsPerPage,
           pipe = [
                   { $match: { userId: this.userId }},
@@ -157,6 +176,7 @@ Meteor.publish({
                   { $sort: { serverTimestamp: 1 }}
                 ];
 
+      // dgacitua: From 'jcbernack:reactive-aggregate' Meteor package
       ReactiveAggregate(this, Snippets, pipe, { clientCollection: 'UserSnippets' });
     }
     else {

@@ -10,9 +10,15 @@ import { FormQuestionnaires } from '../../imports/database/formQuestionnaires/in
 import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/index';
 import { SynthesisAnswers } from '../../imports/database/synthesisAnswers/index';
 
+// NEURONE API: Evaluation Items
+// Methods for saving and loading forms, synthesis and answers are described here
+
 const synthesisAnswerPattern = { userId: String, username: String, startTime: Number, questionId: Match.OneOf(Number, String), question: String, answer: String, completeAnswer: Boolean, localTimestamp: Number };
 
 Meteor.methods({
+  // dgacitua: Method for getting a dynamic form from questions and questionnaires
+  //           PARAMS: formId (ID in database for the questionnaire)
+  //           RETURNS: form (NEURONE form with the questions from database, in JSON format)
   getForm: function(formId) {
     try {
       check(formId, Match.OneOf(Number, String));
@@ -37,33 +43,39 @@ Meteor.methods({
       throw new Meteor.Error(561, 'Could not load Synthesis Answer in Database!', err);
     }
   },
-  storeFormAnswer: function(jsonObject) {
+  // dgacitua: Method for saving answers from NEURONE forms
+  //           PARAMS: formAnswer (answer in JSON format)
+  //           RETURNS: 'success' status object
+  storeFormAnswer: function(formAnswer) {
     try {
-      check(jsonObject, Object);
+      check(formAnswer, Object);
 
       var time = Utils.getTimestamp();
-      jsonObject.serverTimestamp = time;
+      formAnswer.serverTimestamp = time;
 
-      FormAnswers.insert(jsonObject);
-      //console.log('Form Answer Stored!', page, time);
-      return jsonObject;
+      FormAnswers.insert(formAnswer);
+      return { status: 'success' };
     }
     catch (err) {
-      throw new Meteor.Error(562, 'Could not load Synthesis Answer in Database!', err);
+      throw new Meteor.Error(562, 'Could not save Form Answer in Database!', err);
     }
   },
+  // dgacitua: Method for getting synthesis question
+  //           PARAMS: synthId (Synthesis ID in database)
+  //           RETURNS: Synthesis question in JSON format
   getSynthQuestion: function(synthId) {
     try {
       check(synthId, Match.OneOf(Number, String));
-      
-      //var mock = { synthesisId: 'syn1', question: 'Is this a question?' };
 
       return SynthesisQuestions.findOne({ synthesisId: synthId });
     }
     catch (err) {
-      throw new Meteor.Error(563, 'Could not load Synthesis Answer in Database!', err);
+      throw new Meteor.Error(563, 'Could not load Synthesis Question in Database!', err);
     }
   },
+  // dgacitua: Load latest saved synthesis question for a user
+  //           PARAMS: synthId (Synthesis ID in database)
+  //           RETURNS: Synthesis answer in JSON format
   getSynthesisAnswer: function(synthId) {
     try {
       check(synthId, Match.OneOf(Number, String));
@@ -78,30 +90,32 @@ Meteor.methods({
            answer = docList.length > 0 ? docList[0] : { answer: '', startTime: Utils.getTimestamp() };
 
       return answer;
-      //return SynthesisAnswers.findOne({ userId: this.userId, questionId: synthId, completeAnswer: false });
     }
     catch (err) {
       throw new Meteor.Error(564, 'Could not load Synthesis Answer in Database!', err);
     }
   },
-  storeSynthesisAnswer: function(jsonObject) {
+  // dgacitua: Save synthesis answer in database, and creates a EventLogs record if it was the final (complete) answer
+  //           PARAMS: synthAnswer (Synthesis answer in JSON format)
+  //           RETURNS: 'success' status object
+  storeSynthesisAnswer: function(synthAnswer) {
     try {
-      check(jsonObject, synthesisAnswerPattern);
+      check(synthAnswer, synthesisAnswerPattern);
 
       var time = Utils.getTimestamp();
-      jsonObject.serverTimestamp = time;
+      synthAnswer.serverTimestamp = time;
 
-      var answerId = SynthesisAnswers.insert(jsonObject);
+      var answerId = SynthesisAnswers.insert(synthAnswer);
 
-      if (jsonObject.completeAnswer) {
+      if (synthAnswer.completeAnswer) {
         var action = {
-          userId: jsonObject.userId,
-          username: jsonObject.username,
+          userId: synthAnswer.userId,
+          username: synthAnswer.username,
           action: 'SynthesisAnswer',
           actionId: answerId,
-          clientDate: Utils.timestamp2date(jsonObject.localTimestamp),
-          clientTime: Utils.timestamp2time(jsonObject.localTimestamp),
-          clientTimestamp: jsonObject.localTimestamp,
+          clientDate: Utils.timestamp2date(synthAnswer.localTimestamp),
+          clientTime: Utils.timestamp2time(synthAnswer.localTimestamp),
+          clientTimestamp: synthAnswer.localTimestamp,
           serverDate: Utils.timestamp2date(time),
           serverTime: Utils.timestamp2time(time),
           serverTimestamp: time,

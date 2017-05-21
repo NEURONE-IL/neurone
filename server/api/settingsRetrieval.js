@@ -6,8 +6,13 @@ import { UserData } from '../../imports/database/userData/index';
 import { Settings } from '../../imports/database/settings/index';
 import { Identities } from '../../imports/database/identities/index';
 
+// NEURONE API: Settings Retrieval
+// Methods for getting settings for users from the server
+
 Meteor.methods({
   // dgacitua: Get user data from its userId
+  //           PARAMS: userId (ID in database for the questionnaire)
+  //           RETURNS: Meteor User data
   userDataFromId: function(userId) {
     // dgacitua: Server-only method
     // https://github.com/themeteorchef/server-only-methods
@@ -23,6 +28,8 @@ Meteor.methods({
     }
   },
   // dgacitua: Get user role from logged client
+  //           PARAMS: <none>
+  //           RETURNS: <String>
   userRole: function() {
     try {
       if (this.userId) {
@@ -36,7 +43,9 @@ Meteor.methods({
       throw new Meteor.Error(532, 'Could not read user session!', err);
     }
   },
-  // dgacitua: Get user session (temporal state variables) from logged client
+  // dgacitua: Get user session (temporal state variables) from logged user
+  //           PARAMS: <none>
+  //           RETURNS: Session JSON object
   userSession: function() {
     try {
       if (this.userId) {
@@ -50,7 +59,9 @@ Meteor.methods({
       throw new Meteor.Error(533, 'Could not read user session!', err);
     }
   },
-  // dgacitua: Get user configs (flow execution data) from logged client
+  // dgacitua: Get user configs (flow execution data) from logged user
+  //           PARAMS: <none>
+  //           RETURNS: Configs JSON object
   userConfigs: function() {
     try {
       if (this.userId) {
@@ -65,13 +76,15 @@ Meteor.methods({
     }
   },
   // dgacitua: Set user session (temporal state variables) from logged client and return them
-  setSession: function(property) {
+  //           PARAMS: properties (JSON key-value object with session variables)
+  //           RETURNS: Session JSON object
+  setSession: function(properties) {
     try {
       if (this.userId) {
         var setObj = {};
 
-        for (var key in property) {
-          setObj['session.' + key] = property[key];
+        for (var key in properties) {
+          setObj['session.' + key] = properties[key];
         }
         
         UserData.update({ userId: this.userId }, { $set: setObj });
@@ -84,6 +97,8 @@ Meteor.methods({
     }
   },
   // dgacitua: Get initial user configs for new created user from client
+  //           PARAMS: domain (flow domain as String) & task (flow task as String)
+  //           RETURNS: Flow Settings JSON object
   initialConfigs: function(domain, task) {
     try {
       var envSettings = Settings.findOne({ envSettingsId: 'default' }),
@@ -105,6 +120,8 @@ Meteor.methods({
     }
   },
   // dgacitua: Get client settings (basic configs for NEURONE simulation) from client
+  //           PARAMS: <none>
+  //           RETURNS: Client Settings JSON object
   clientSettings: function() {
     try {
       var envSettings = Settings.findOne({ envSettingsId: 'default' }),
@@ -119,6 +136,8 @@ Meteor.methods({
     }
   },
   // dgacitua: Massive enrollment method for creating multiple user accounts
+  //           PARAMS: userList (JSON array of user credentials)
+  //           RETURNS: Updated userList with registration status
   registerUsers: function(userList) {
     check(userList, Array);
 
@@ -164,6 +183,9 @@ Meteor.methods({
 
     return userList;
   },
+  // dgacitua: Save user's real name obtained from login (this data is just for reference purposes)
+  //           PARAMS: id (user's real name as String)
+  //           RETURNS: Identity JSON object
   registerIdentity: function(id) {
     try {
       check(id, String);

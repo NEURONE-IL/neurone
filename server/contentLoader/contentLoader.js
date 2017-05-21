@@ -10,6 +10,9 @@ import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/in
 import { Settings } from '../../imports/database/settings/index';
 
 export default class ContentLoader {
+  // dgacitua: This method will load all your questions, questionnaires and synthesis questions to NEURONE database
+  //           Files are read from neuroneAssets/questions/*.json
+  //           See the documentation for proper format for these elements
   static loadQuestions(assetPath) {
     try {
       let fullPath = path.join(assetPath, 'questions', '*.json');
@@ -51,6 +54,9 @@ export default class ContentLoader {
     }
   }
 
+  // dgacitua: This method will load all your environment settings, client settings and flow settings to NEURONE database
+  //           Files are read from public/default/userSettings.json and neuroneAssets/userSettings.json
+  //           See the documentation for proper format for these elements
   static loadSettings(assetPath) {
     try {
       let defaultFile = path.join(Utils.getPublicFolder(), 'default', 'userSettings.json'),
