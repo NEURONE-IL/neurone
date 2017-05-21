@@ -54,7 +54,7 @@ export default class ContentLoader {
   static loadSettings(assetPath) {
     try {
       let defaultFile = path.join(Utils.getPublicFolder(), 'default', 'userSettings.json'),
-           fullPath = path.join(assetPath, 'userSettings.json');
+             fullPath = path.join(assetPath, 'userSettings.json');
 
       if (fs.existsSync(defaultFile)) {
         console.log('Reading default settings!');
@@ -97,6 +97,9 @@ export default class ContentLoader {
             // TODO Config syntax checker
             if (s.flowSettingsId) {
               Settings.upsert({ flowSettingsId: s.flowSettingsId }, s);
+            }
+            else if (s.clientSettingsId) {
+              Settings.upsert({ clientSettingsId: s.clientSettingsId }, s);
             }
             else if (s.envSettingsId) {
               Settings.upsert({ envSettingsId: s.envSettingsId }, s);
