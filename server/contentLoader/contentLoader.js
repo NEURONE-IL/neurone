@@ -94,7 +94,7 @@ export default class ContentLoader {
             loadedSettings = JSON.parse(settingsFile);
 
           loadedSettings.forEach((s) => {
-            // TODO Config syntax checker
+            // TODO Config format parser and validator
             if (s.flowSettingsId) {
               Settings.upsert({ flowSettingsId: s.flowSettingsId }, s);
             }
