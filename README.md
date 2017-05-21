@@ -1,57 +1,89 @@
 # NEURONE: oNlinE inqUiry expeRimentatiON systEm [![Build Status](https://travis-ci.com/dgacitua/neurone.svg?token=bybFYGq2vZ5sYMfosTqM&branch=master)](https://travis-ci.com/dgacitua/neurone)
 
-Created by Daniel Gacitúa
+Created by Daniel Gacitua
 
 ## Install Instructions
 
 ### Development
 
-1. Install Node.js 4.5.0+, MongoDB 3.2+ and Meteor 1.4.2+
-2. Clone this repository
-3. Open a terminal in NEURONE's root directory, run `meteor npm install` and then run `meteor`
+**NOTE:** A Linux development machine is highly recommended.
+
+1. In your development machine: install Node.js 4.8.2+, MongoDB 3.4+, Solr 6.5+ and Meteor 1.4.4+
+2. Clone this repository (or download as ZIP)
+3. Open a terminal in NEURONE's source code directory, run `meteor npm install` and then run `./developmentDeploy.sh`
+4. Edit any files, the will be live-reloaded in your local web browser
+5. When you are done, just abort the terminal (i.e.`CTRL+C`)
 
 ### Production
 
 **NOTE:** A Linux Virtual Private Server (VPS) or a Linux local machine with SSH access is needed to run this project in production mode.
 
-#### Quick deploy (through Meteor Up)
+#### Quick deploy (through Docker and Docker Compose)
 
-1. Install Node.js 4.5.0+, MongoDB 3.2+ and Meteor 1.4.2+ on your development machine
-2. Install Meteor Up with `npm install -g mup` on your development machine
-3. Clone this repository
-4. Set the following environment variables in your development machine (replace values with the ones of your production machine)
+1. In your production machine, install Docker (the following instructions are for Ubuntu Server):
 
-        export MUP_SERVER_HOST='192.168.1.2'
-        export MUP_SERVER_USERNAME='root'
-        export MUP_SERVER_PASSWORD='password'
-        export MUP_ROOT_URL='http://192.168.1.2'
-        export MUP_MONGO_URL='mongodb://192.168.1.2/meteor'
+        $ sudo apt-get update
+        $ sudo apt-get install apt-transport-https ca-certificates curl software-properties-common unzip
+        $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        $ sudo apt-key fingerprint 0EBFCD88
+        $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        $ sudo apt-get update
+        $ sudo apt-get install docker-ce
 
-5. Open a terminal in NEURONE's root directory, run `cd .deploy`
-6. Run `mup setup`
-7. Run `mup deploy`
+2. Enable Docker for your current user (so you don't need `sudo` anymore):
 
-#### Advanced deploy (through Passenger and Nginx)
+        $ sudo usermod -aG docker $(whoami)
+        $ logout
 
-1. Install Node.js 4.5.0+, MongoDB 3.2+ and Meteor 1.4.2+ on your development machine
-2. Clone this repository
-3. Follow instructions available on [Deploying a Meteor app with Passenger to production](https://www.phusionpassenger.com/library/walkthroughs/deploy/meteor/). In that walkthrough, select **Nginx** as integration mode, **Open Source** as Passenger edition and Meteor version **>=1.4**.
-4. After your first successful deploy, you can use the automatic deployment scripts for Passenger available in this repo by setting the following environment variables (in your development machine):
+3. Install Docker Compose:
 
-        # Replace values with your server's SSH configuration
-        export PASSENGER_SERVER_HOST='192.168.1.2'
-        export PASSENGER_SERVER_USERNAME='root'
+        $ sudo curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+        $ sudo chmod +x /usr/local/bin/docker-compose
 
-5. For running an automatic deploy to your Passenger server, enter to NEURONE's root directory in your terminal and run `./passenger/init.sh`
+4. Copy NEURONE's source code into a folder on your home (for this example, `neurone-master` will be assumed as your source code folder)
 
-### Deploy with Docker
+5. You can set some of the following Environment Variables on your production machine to customize deployment, although NEURONE can run perfectly with its default values (take note of those values whether you use the default ones or not):
 
-#### Build image locally
+    | Env Variable Name     | Default Value       | Description                                                |
+    |-----------------------|---------------------|------------------------------------------------------------|
+    | NEURONE_ASSET_PATH    | `~/neuroneAssets`   | NEURONE asset folder location in your production machine   |
+    | NEURONE_MONGO_PATH    | `~/neuroneDatabase` | MongoDB raw data folder storage in your production machine |
+    | NEURONE_HOST          | `localhost`         | IP or DNS domain where NEURONE is hosted                   |
+    | NEURONE_ADMIN_DB_USER | `admin`             | MongoDB Admin username                                     |
+    | NEURONE_ADMIN_DB_PASS | `neurone2017`       | MongoDB Admin password                                     |
+    | NEURONE_DB            | `neurone`           | MongoDB database name                                      |
+    | NEURONE_DB_USER       | `neurone`           | MongoDB database username                                  |
+    | NEURONE_DB_PASS       | `neurone`           | MongoDB database password                                  |
+    
+    To set a temporal environment variable, use the following command (as an example):
+    
+        $ export NEURONE_HOST=123.45.67.89
 
-1. Install Docker in your development machine and add your current user to `docker` group
-2. Open a terminal and run `./dockerBuild.sh`
-3. You will get a local image to deploy
+6. Create your asset and raw data folder at the locations defined on Step 5, also copy your assets (example will assume `myAssets.zip` as source) to your NEURONE asset folder
 
-#### Run image locally
+        $ mkdir -p ~/neuroneAssets
+        $ mkdir -p ~/neuroneDatabase
+        $ unzip myAssets.zip -d ~/neuroneAssets
 
-TODO
+7. Run Docker Compose to deploy NEURONE:
+
+        $ cd ~/neurone-master
+        $ docker-compose build
+        $ docker-compose up -d
+
+    All required project dependencies will be downloaded automatically. Depending on internet connection, the build process could take between 15 and 30 minutes. To undeploy NEURONE, run the following commands:
+    
+        $ cd ~/neurone-master
+        $ docker-compose down
+
+8. You access your NEURONE simulation instance through a web browser by entering your IP or DNS address, use the following ports to access and configure NEURONE when deployed:
+ 
+    | Application | Port   | Description                                                                        |
+    |-------------|--------|------------------------------------------------------------------------------------|
+    | NEURONE     | `80`   | NEURONE Simulation Module (access through web browser)                             |
+    | MongoDB     | `1313` | NEURONE Database Module (access through a MongoDB client)                          |
+    | Solr        | `1314` | NEURONE Information Retrieval Module (access through web browser or REST requests) |
+
+## Contact
+
+In case you find a bug or have a suggestion, please send an Issue on this repo. Pull Requests are welcome.
