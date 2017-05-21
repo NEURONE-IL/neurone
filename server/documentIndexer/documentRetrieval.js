@@ -57,6 +57,8 @@ export default class DocumentRetrieval {
 
     return newArray;
 
+    // dgacitua: Old iFuCoSort algorithms are kept for reference
+
     // iFuCoSort v2
     /*
     var insertNum = documentArray.length < insertions ? documentArray.length : insertions,

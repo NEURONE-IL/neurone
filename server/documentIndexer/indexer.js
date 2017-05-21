@@ -76,9 +76,6 @@ export default class Indexer {
           var docRoute = path.join(assetPath, doc.route);
           if (fs.existsSync(docRoute)) syncedList.push(doc.route);
         });
-
-        //var tempList = documentList.map((doc) => { return doc.route });
-        //syncedList.push(...tempList);
       });
 
       Documents.remove({ route: { $nin: syncedList }});

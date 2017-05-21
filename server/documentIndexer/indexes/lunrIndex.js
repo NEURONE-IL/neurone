@@ -63,6 +63,8 @@ export default class LunrIndex {
 
       docObj.searchSnippet = this.snippetGenerator(docObj.indexedBody, query);
 
+      delete docObj.indexedBody;
+
       respDocs.push(docObj);
     });
 
