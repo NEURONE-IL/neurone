@@ -55,7 +55,7 @@ Created by Daniel Gacitua
     | NEURONE_DB_USER       | `neurone`           | MongoDB database username                                  |
     | NEURONE_DB_PASS       | `neurone`           | MongoDB database password                                  |
     
-    To set a temporal environment variable, use the following command (as an example):
+    To override a default value through an environment variable, use the following command as an example:
     
         $ export NEURONE_HOST=123.45.67.89
 
@@ -76,7 +76,7 @@ Created by Daniel Gacitua
         $ cd ~/neurone-master
         $ docker-compose down
 
-8. You access your NEURONE simulation instance through a web browser by entering your IP or DNS address, use the following ports to access and configure NEURONE when deployed:
+8. You can access your NEURONE simulation instance through a web browser by entering your IP or DNS address or use the following ports to access and configure NEURONE when deployed:
  
     | Application | Port   | Description                                                                        |
     |-------------|--------|------------------------------------------------------------------------------------|
