@@ -40,7 +40,7 @@ ENV PATH $PATH:$HOME/.meteor
 # Installation and packaging script
 RUN /home/app/meteorBuild.sh
 
-# Code deprecated due to install script
+## Code deprecated due to install script
 #RUN curl https://install.meteor.com/ | sh \
 #
 ## Build Meteor app
