@@ -1,6 +1,6 @@
 /*
 
-NEURONE: oNlinE inqUiry expeRimentatiON systEm
+NEURONE: oNlinE inqUiRy experimentatiON systEm
 Copyright (C) 2017  Daniel Gacitua
 
 This program is free software: you can redistribute it and/or modify
