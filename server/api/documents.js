@@ -1,6 +1,7 @@
 import SolrIndex from '../documentIndexer/indexes/solrIndex';
 import LunrIndex from '../documentIndexer/indexes/lunrIndex';
 import DocumentRetrieval from '../documentIndexer/documentRetrieval';
+import DocumentDownloader from '../documentIndexer/documentDownloader';
 
 Meteor.methods({
   searchDocuments: function(queryObj) {

@@ -1,7 +1,9 @@
+import Indexer from './documentIndexer/indexer';
+import DocumentDownloader from './documentIndexer/documentDownloader';
+import ContentLoader from './contentLoader/contentLoader';
+
 import ServerConfigs from './serverConfigs';
 import Utils from './lib/utils';
-import Indexer from './documentIndexer/indexer';
-import ContentLoader from './contentLoader/contentLoader';
 
 Meteor.startup(() => {
   console.log('Welcome to NEURONE Server Platform!');
@@ -18,6 +20,10 @@ Meteor.startup(() => {
 
     UserPresenceMonitor.start();
     UserPresence.start();
+
+    // dgacitua: Creating download documents folder
+    console.log('Creating download directory...');
+    DocumentDownloader.createDownloadDir();
 
     // dgacitua: Preloading of Form and Synthesis questions
     if (ServerConfigs.reloadProfilesOnDeploy) {
@@ -43,6 +49,6 @@ Meteor.startup(() => {
       let step = Indexer.loadInvertedIndex();
     }
   }
-  
+
   console.log('NEURONE Server Platform is ready!');
 });

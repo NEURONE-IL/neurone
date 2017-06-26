@@ -33,10 +33,10 @@ export default class Indexer {
               var check = DocumentParser.cleanDocument(docRoute);
 
               var docObj = {};
-              var parsedObj = DocumentParser.parseDocument(docRoute);
+              var docInfo = DocumentParser.getDocumentInfo(docRoute);
 
               // dgacitua: http://stackoverflow.com/a/171256
-              for (var attrname in parsedObj) { docObj[attrname] = parsedObj[attrname]; }
+              for (var attrname in docInfo) { docObj[attrname] = docInfo[attrname]; }
               for (var attrname in doc) { if(!Utils.isEmpty(doc[attrname])) docObj[attrname] = doc[attrname]; }
 
               var result = Documents.upsert({ route: docObj.route }, docObj);
@@ -88,9 +88,13 @@ export default class Indexer {
     }
   }
 
+  static checkSolrIndex() {
+    return (!!process.env.NEURONE_SOLR_HOST && !!process.env.NEURONE_SOLR_PORT && !!process.env.NEURONE_SOLR_CORE);
+  }
+
   static loadInvertedIndex() {
     try {
-      if (process.env.NEURONE_SOLR_HOST) {
+      if (Indexer.checkSolrIndex()) {
         let fn = Meteor.wrapAsync(SolrIndex.load),
            res = fn();
 
@@ -109,7 +113,7 @@ export default class Indexer {
 
   static generateInvertedIndex() {
     try {
-      if (process.env.NEURONE_SOLR_HOST) {
+      if (Indexer.checkSolrIndex()) {
         let fn = Meteor.wrapAsync(SolrIndex.generate),
            res = fn();
 
@@ -123,6 +127,23 @@ export default class Indexer {
     catch (err) {
       console.error(err);
       throw new Meteor.Error(526, 'Cannot generate document index!', err);
+    }
+  }
+
+  static indexDocumentAsync(docObj, callback) {
+    if (Indexer.checkSolrIndex()) {
+      SolrIndex.index(docObj, (err, res) => {
+        if (!err) {
+          callback(null, true);
+        }
+        else {
+          callback(err);
+        }
+      });
+    }
+    else {
+      LunrIndex.index(docObj);
+      callback(null, true);
     }
   }
 }

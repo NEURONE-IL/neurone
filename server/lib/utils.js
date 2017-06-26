@@ -59,6 +59,12 @@ export default class ServerUtils {
     return true;
   }
 
+  // dgacitua: Check if variable is a string
+  // http://stackoverflow.com/a/9436948
+  static isString(testStr) {
+    return (typeof testStr === 'string' || testStr instanceof String);
+  }
+
   static isTesting() {
     return Meteor.isTest || Meteor.isAppTest;
   }

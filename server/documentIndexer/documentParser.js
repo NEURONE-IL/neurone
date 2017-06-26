@@ -220,7 +220,7 @@ export default class DocumentParser {
     }
   }
 
-  static parseDocument(documentPath) {
+  static getDocumentInfo(documentPath) {
     var obj = {
       title: this.getHtmlTitle(documentPath),
       indexedBody: this.getHtmlAsText(documentPath),

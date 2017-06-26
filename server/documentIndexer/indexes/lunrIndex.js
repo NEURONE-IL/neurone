@@ -49,6 +49,12 @@ export default class LunrIndex {
     Indexes.upsert({ type: 'LunrIndex', version: 1 }, serializedIndex);
   }
 
+  static index(docObj) {
+    searchIndex.add(docObj);
+    var serializedIndex = { type: 'LunrIndex', version: 1, serverTimestamp: Utils.getTimestamp(),  index: JSON.stringify(searchIndex) };
+    Indexes.upsert({ type: 'LunrIndex', version: 1 }, serializedIndex);
+  }
+
   static searchDocuments(query) {
     check(query, String);
 

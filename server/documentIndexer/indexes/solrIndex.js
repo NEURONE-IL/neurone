@@ -64,14 +64,14 @@ export default class SolrIndex {
                 callback(null, true);
               }
               else {
-                console.error('Error while adding documents to Solr Index', err2);
-                callback(err);
+                console.error('Error while adding documents to Solr Index', err3);
+                callback(err3);
               }
             });
           }
           else {
-            console.error('Error while removing old documents from Solr Index', err);
-            callback(err);
+            console.error('Error while removing old documents from Solr Index', err2);
+            callback(err2);
           }
         });
       }
@@ -79,6 +79,32 @@ export default class SolrIndex {
         callback(err);
       }
     }));
+  }
+
+  static index(docObj, callback) {
+    let newDoc = {
+      id: docObj._id,
+      docId_s: docObj._id,
+      locale_s: docObj.locale,
+      relevant_b: docObj.relevant || false,
+      title_t: docObj.title || '',
+      searchSnippet_t: docObj.searchSnippet || '',
+      indexedBody_t: SolrIndex.escapeString(docObj.indexedBody) || '',
+      keywords_t: docObj.keywords || [],
+      test_s: docObj.test || [],
+      topic_s: docObj.topic || []
+    };
+
+    let arrDocs = [ newDoc ];
+
+    searchIndex._requestPost('update?commit=true', arrDocs, {}, (err, res) => {
+      if (!err) {
+        callback(null, true);
+      }
+      else {
+        callback(err);
+      }
+    });
   }
 
   static searchDocuments(queryObject, callback) {
