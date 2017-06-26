@@ -25,35 +25,42 @@ RUN apt-get -qq update \
     && apt-get clean \
     && apt-get -qq install curl wget unzip
 
-# Copy Nginx config files
+# Copy config files
 RUN cp /home/app/src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
-    && cp /home/app/src/.deploy/docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf
+    && cp /home/app/src/.deploy/docker/meteor-env.conf /etc/nginx/main.d/meteor-env.conf \
+    && cp /home/app/src/.deploy/docker/meteorBuild.sh /home/app/meteorBuild.sh \
+    && chmod +x /home/app/meteorBuild.sh
 
 # Run as 'app' user
 USER app
 
-# Install Meteor
+# Set Meteor Framework location as environment variable
 ENV PATH $PATH:$HOME/.meteor
-RUN curl https://install.meteor.com/ | sh \
 
-# Build Meteor app
-    && cd /home/app/src \
-    && meteor npm install --quiet \
-    && meteor build ../neurone --directory --server-only \
+# Installation and packaging script
+RUN /home/app/meteorBuild.sh
 
-# Install NPM packages
-    && cp -r /home/app/neurone/bundle/. /home/app/neurone \
-    && rm -rf /home/app/neurone/bundle \
-    && cd /home/app/neurone/programs/server \
-    && npm install --quiet \
+# Code deprecated due to install script
+#RUN curl https://install.meteor.com/ | sh \
+#
+## Build Meteor app
+#    && cd /home/app/src \
+#    && meteor npm install --quiet \
+#    && meteor build ../neurone --directory --server-only \
+#
+## Install NPM packages
+#    && cp -r /home/app/neurone/bundle/. /home/app/neurone \
+#    && rm -rf /home/app/neurone/bundle \
+#    && cd /home/app/neurone/programs/server \
+#    && npm install --quiet \
+#
+## Remove sources
+#    && rm -rf /home/app/src \
+#
+## Remove Meteor
+#    && rm -rf $HOME/.meteor
 
-# Remove sources
-    && rm -rf /home/app/src \
-
-# Remove Meteor
-    && rm -rf $HOME/.meteor
-
-# Run as 'root'
+# Run as 'root' user
 USER root
 
 # Create NEURONE assets folder
