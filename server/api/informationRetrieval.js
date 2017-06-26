@@ -17,12 +17,14 @@ Meteor.methods({
   //           RETURNS: Snippet JSON array
   getSnippets: function(limit) {
     try {
-      var selector = { sort: { serverTimestamp: -1 }};
-      if (limit) selector.limit = limit;
-
+      var selector = { sort: { serverTimestamp: -1 }};  // Build a sort selector for MongoDB
+      if (limit) selector.limit = limit;                // Apply limit, if it exists
+        
+      // Search all snippets for the userId making the request, using the selector
       return Snippets.find({ userId: this.userId, action: 'Snippet' }, selector).fetch();
     }
     catch (err) {
+      // Return a Meteor Error if something fails
       throw new Meteor.Error(541, 'Could not read Snippets from Database!', err);
     }
   },
