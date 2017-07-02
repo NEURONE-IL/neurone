@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <h1>NEURONE <small>{{"app.admin.title" | translate}}</small></h1>
   </div>
@@ -38,7 +38,7 @@
         <uib-tab-heading>
           <i class="fa fa-file-text-o" aria-hidden="true"></i> Document Generator
         </uib-tab-heading>
-        Docs
+        <div ui-view="docGenerator" class="admin-tab-content"></div>
       </uib-tab>
     </uib-tabset>
   </div>

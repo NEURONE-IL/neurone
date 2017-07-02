@@ -59,6 +59,27 @@ export default class ServerUtils {
     return true;
   }
 
+  // dgacitua: Move element in array from one position to another
+  // http://stackoverflow.com/a/5306832
+  static moveInArray(array, old_index, new_index) {
+    while (old_index < 0) {
+      old_index += array.length;
+    }
+    while (new_index < 0) {
+      new_index += array.length;
+    }
+    if (new_index >= array.length) {
+      var k = new_index - array.length;
+      while ((k--) + 1) {
+        array.push(undefined);
+      }
+    }
+    
+    array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+
+    return array;
+  }
+
   // dgacitua: Check if variable is a string
   // http://stackoverflow.com/a/9436948
   static isString(testStr) {

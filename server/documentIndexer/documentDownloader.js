@@ -71,7 +71,7 @@ export default class DocumentDownloader {
       test: docObj.test || [ 'pilot' ],
       topic: docObj.topic || [ 'pilot' ],
       keywords: docObj.keywords || [],
-      date: docObj.date || '',
+      date: docObj.date || Utils.getDate(),
       url: docObj.url,
       searchSnippet: docObj.searchSnippet || 'This is the first paragraph of the new NEURONE Document',
       indexedBody: ''
@@ -93,7 +93,7 @@ export default class DocumentDownloader {
 
           Indexer.indexDocumentAsync(doc, (err2, res2) => {
             if (!err2) {
-              callback(null, true);  
+              callback(null, doc);  
             }
             else {
               console.error('Error while indexing document', docObj.url, err2);
@@ -121,7 +121,7 @@ export default class DocumentDownloader {
       DocumentDownloader.index(docObj, Meteor.bindEnvironment((err, res) => {
         if (!err) {
           console.log('Document downloaded and indexed successfully!', docObj.url);
-          callback(null, true);
+          callback(null, res);
         }
         else {
           callback(errorObj);

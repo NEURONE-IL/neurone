@@ -1,3 +1,5 @@
+import Utils from '../../globalUtils';
+
 export default LoggerConfigs = {
   consoleLogging: false, //(Meteor.isDevelopment ? true : false),
   keyboardLogging: true,

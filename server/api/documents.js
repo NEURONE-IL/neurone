@@ -1,5 +1,3 @@
-import SolrIndex from '../documentIndexer/indexes/solrIndex';
-import LunrIndex from '../documentIndexer/indexes/lunrIndex';
 import DocumentRetrieval from '../documentIndexer/documentRetrieval';
 import DocumentDownloader from '../documentIndexer/documentDownloader';
 
@@ -7,23 +5,7 @@ Meteor.methods({
   searchDocuments: function(queryObj) {
     try {
       check(queryObj, Object);
-
-      if (process.env.NEURONE_SOLR_HOST) {
-        var qo = queryObj,
-          call = Meteor.wrapAsync(SolrIndex.searchDocuments),
-           res = call(qo);
-
-        if (res.length >= 1) return DocumentRetrieval.iFuCoSort(res, 3, 2);
-        else return res;
-      }
-      else {
-        var qo = queryObj,
-          res1 = LunrIndex.searchDocuments(qo.query),
-          res2 = res1.filter((d) => { return d.locale === qo.locale && d.test.indexOf(qo.test) !== -1 && d.topic.indexOf(qo.topic) !== -1 });
-
-        if (res2.length >= 1) return DocumentRetrieval.iFuCoSort(res2, 3, 2);
-        else return res2;
-      }
+      return DocumentRetrieval.searchDocument(queryObj);
     }
     catch (err) {
       throw new Meteor.Error(571, 'Cannot search documents from query', err);
@@ -31,6 +13,8 @@ Meteor.methods({
   },
   getDocument: function(documentName) {
     try {
+      check(documentName, String);
+
       var asyncCall = Meteor.wrapAsync(DocumentRetrieval.getDocument),
                 doc = asyncCall(documentName);
 
@@ -38,6 +22,36 @@ Meteor.methods({
     }
     catch (err) {
       throw new Meteor.Error(572, 'Cannot get document for display', err);
+    }
+  },
+  fetchDocument: function(documentObj) {
+    try {
+      check(documentObj, Object);
+
+      let asyncCall = Meteor.wrapAsync(DocumentDownloader.fetch),
+              fetch = asyncCall(documentObj);
+
+      return fetch;
+    }
+    catch (err) {
+      throw new Meteor.Error(573, 'The server cannot fetch document from web', err);
+    }
+  },
+  listAllDocuments: function() {
+    try {
+      return DocumentRetrieval.listAllDocuments();
+    }
+    catch (err) {
+      throw new Meteor.Error(574, 'Cannot list all documents', err);
+    }
+  },
+  deleteDocument: function(docId) {
+    try {
+      check(docId, String);
+      return DocumentRetrieval.deleteDocument(docId);
+    }
+    catch (err) {
+      throw new Meteor.Error(575, 'Cannot delete document', err);
     }
   }
 });

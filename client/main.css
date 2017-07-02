@@ -232,6 +232,17 @@ mark.highlightSnippet {
   transform: translate(-50%, -50%);
 }
 
+.row-equal-height {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flexbox-center-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .navbar-message {
   font-weight: bold !important;
   color: yellow !important;
@@ -239,6 +250,32 @@ mark.highlightSnippet {
 
 div.admin-tab-content {
   margin: 5px 5px 5px 5px;
+}
+
+div.admin-row-spacing {
+  padding: 5px 5px 5px 5px;
+}
+
+.iframe-parent {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.iframe-scale {
+  -ms-zoom: 0.75;
+  -moz-transform: scale(0.75);
+  -moz-transform-origin: 0 0;
+  -o-transform: scale(0.75);
+  -o-transform-origin: 0 0;
+  -webkit-transform: scale(0.75);
+  -webkit-transform-origin: 0 0;
+}
+
+.iframe-child {
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /*

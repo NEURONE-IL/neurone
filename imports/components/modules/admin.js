@@ -9,6 +9,7 @@ import Configs from '../globalConfigs';
 
 import { name as Enrollment } from './admin/enrollment';
 import { name as FlowManager } from './admin/flowManager';
+import { name as DocumentGenerator } from './admin/documentGenerator';
 
 import template from './admin.html';
 
@@ -34,7 +35,8 @@ export default angular.module(name, [
   'ngCsv',
   'angularFileUpload',
   Enrollment,
-  FlowManager
+  FlowManager,
+  DocumentGenerator
 ])
 .component(name, {
   template,
@@ -57,6 +59,9 @@ function config($stateProvider) {
       },
       'flowManager@admin': {
         template: '<flow-manager></flow-manager>'
+      },
+      'docGenerator@admin': {
+        template: '<document-generator></document-generator>'
       }
     },
     resolve: {

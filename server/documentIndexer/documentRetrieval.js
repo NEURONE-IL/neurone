@@ -1,9 +1,13 @@
+import SolrIndex from './indexes/solrIndex';
+import LunrIndex from './indexes/lunrIndex';
+import Indexer from './indexer';
+
+import Utils from '../lib/utils';
+
 import { Documents } from '../../imports/database/documents/index';
 
 export default class DocumentRetrieval {
   static getDocument(documentName, callback) {
-    check(documentName, String);
-
     var doc = Documents.findOne({ _id: documentName });
 
     if (doc && doc._id && doc.route) {
@@ -33,7 +37,7 @@ export default class DocumentRetrieval {
     if (newArray.length >= 2 && newArray[0].relevant) {
       for (var k=0; k<newArray.length; k++) {
         if (!newArray[k].relevant) {
-          newArray = this.moveInArray(newArray, k, 0);
+          newArray = Utils.moveInArray(newArray, k, 0);
           break;
         }
       }        
@@ -45,7 +49,7 @@ export default class DocumentRetrieval {
 
     for (var j=0; j<newArray.length; j++) {
       if (newArray[j].relevant) {
-        newArray = this.moveInArray(newArray, j, offsetPos-1);
+        newArray = Utils.moveInArray(newArray, j, offsetPos-1);
         return newArray;  
       }
     }
@@ -94,23 +98,46 @@ export default class DocumentRetrieval {
     */
   }
 
-  // dgacitua: http://stackoverflow.com/a/5306832
-  static moveInArray(array, old_index, new_index) {
-    while (old_index < 0) {
-      old_index += array.length;
-    }
-    while (new_index < 0) {
-      new_index += array.length;
-    }
-    if (new_index >= array.length) {
-      var k = new_index - array.length;
-      while ((k--) + 1) {
-        array.push(undefined);
-      }
-    }
-    
-    array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+  // dgacitua: Search the current query object in one of the indexes available
+  static searchDocument(queryObj) {
+    if (Indexer.checkSolrIndex()) {
+      var qo = queryObj,
+        call = Meteor.wrapAsync(SolrIndex.searchDocuments),
+         res = call(qo);
 
-    return array;
+      if (res.length >= 1) return DocumentRetrieval.iFuCoSort(res, 3, 2);
+      else return res;
+    }
+    else {
+      var qo = queryObj,
+        res1 = LunrIndex.searchDocuments(qo.query),
+        res2 = res1.filter((d) => { return d.locale === qo.locale && d.test.indexOf(qo.test) !== -1 && d.topic.indexOf(qo.topic) !== -1 });
+
+      if (res2.length >= 1) return DocumentRetrieval.iFuCoSort(res2, 3, 2);
+      else return res2;
+    }
+  }
+
+  // dgacitua: List all documents on database
+  static listAllDocuments() {
+    return Documents.find().fetch();
+  }
+
+  // dgacitua: Delete document on database and index
+  static deleteDocument(docId) {
+    if (Indexer.checkSolrIndex()) {
+      Documents.remove(docId);
+
+      let asyncCall = Meteor.wrapAsync(SolrIndex.generate),
+              fetch = asyncCall();
+
+      return true;
+    }
+    else {
+      Documents.remove(docId);
+      LunrIndex.generate();
+
+      return true;
+    }
   }
 }

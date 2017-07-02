@@ -102,4 +102,28 @@ export default class Utils {
   static countWords(string) {
     return string.match(/\S+/g).length;
   }
+
+  // dgacitua: Check if user is logged in
+  static isUserLoggedIn() {
+    return !!Meteor.userId();
+  }
+
+  // dgacitua: Check if user is Admin/Researcher
+  static isUserAdmin() {
+    if (!!Meteor.userId()) {
+      Meteor.call('userRole', (err, res) => {
+        if (!err) {
+          let result = (res === 'researcher');
+          console.log('Current user is Admin/Researcher?', result);
+          return result;
+        }
+        else {
+          return false;
+        }
+      });
+    }
+    else {
+      return false;
+    }
+  }
 }
