@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class QueryTrackService {
   constructor($state, $rootScope) {
@@ -27,10 +28,10 @@ export default class QueryTrackService {
 
       Meteor.call('storeQuery', queryObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Query Saved!', queryObject.query, queryObject.userId, queryObject.username, queryObject.localTimestamp);
+          LogUtils.logToConsole('Query Saved!', queryObject.query, queryObject.userId, queryObject.username, queryObject.localTimestamp);
         }
         else {
-          Utils.logToConsole('Error!', err);
+          LogUtils.logToConsole('Error!', err);
         }
       });
     }

@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class SessionTrackService {
   constructor() {}
@@ -16,10 +18,10 @@ export default class SessionTrackService {
 
       Meteor.call('storeSessionLog', sessionLog, (err, res) => {
         if (!err) {
-          Utils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.userId, sessionLog.username, sessionLog.localTimestamp);
+          LogUtils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.userId, sessionLog.username, sessionLog.localTimestamp);
         }
         else {
-          Utils.logToConsole('Unknown Error');
+          LogUtils.logToConsole('Unknown Error');
         }
       });
     }

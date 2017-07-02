@@ -1,4 +1,5 @@
-import LoggerConfigs from '../../../services/logger/loggerConfigs';
+import Utils from '../../../globalUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 class ActionBlockerIframeService {
   constructor($window) {

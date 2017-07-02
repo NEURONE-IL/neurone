@@ -1,25 +1,4 @@
-// TODO Define Global Utils
 export default class Utils {
-  // dgacitua: Convenience logging functions to Javascript Console
-  // http://stackoverflow.com/a/4116634
-  static logToConsole(...messages) {
-    if (LoggerConfigs.consoleLogging) {
-      console.log(...messages);
-    }
-  }
-
-  static warnToConsole(...messages) {
-    if (LoggerConfigs.consoleLogging) {
-      console.warn(...messages);
-    }
-  }
-
-  static errorToConsole(...messages) {
-    if (LoggerConfigs.consoleLogging) {
-      console.error(...messages);
-    }
-  }
-
   // dgacitua: Get Unix timestamp
   static getTimestamp() {
     return Date.now ? Date.now() : (new Date().getTime());

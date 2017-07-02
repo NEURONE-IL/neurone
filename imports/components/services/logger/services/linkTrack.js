@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class LinkTrackService {
   constructor($state, $rootScope) {
@@ -28,10 +29,10 @@ export default class LinkTrackService {
 
       Meteor.call('storeVisitedLink', linkObject, (err, result) => {
         if (!err) {
-          Utils.logToConsole('Page Saved!', linkObject.state, linkObject.userId, linkObject.username, linkObject.title, linkObject.url, linkObject.localTimestamp);
+          LogUtils.logToConsole('Page Saved!', linkObject.state, linkObject.userId, linkObject.username, linkObject.title, linkObject.url, linkObject.localTimestamp);
         }
         else {
-          Utils.logToConsole('Error!', err);
+          LogUtils.logToConsole('Error!', err);
         }
       });
     }

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class EventTrackService {
   constructor($state, $rootScope, $translate) {

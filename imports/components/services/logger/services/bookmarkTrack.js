@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class BookmarkTrackService {
   constructor($state, $rootScope, $translate) {
@@ -86,7 +87,7 @@ export default class BookmarkTrackService {
       Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
         if (!err) {
           var msg = this.$translate.instant(navbarMsg);
-          Utils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
+          LogUtils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
           callback(null, msg);
         }
         else {
@@ -123,7 +124,7 @@ export default class BookmarkTrackService {
       Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
         if (!err) {
           var msg = this.$translate.instant(navbarMsg);
-          Utils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
+          LogUtils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
           callback(null, msg);
         }
         else {

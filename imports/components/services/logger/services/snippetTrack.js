@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 export default class SnippetTrackService {
   constructor($state, $rootScope, $window, $document, $translate, UserDataService) {
@@ -25,7 +26,6 @@ export default class SnippetTrackService {
               wordCount = snippet ? snippet.match(/\S+/g).length : 0;
 
         //console.log('Snippet!', snippet, wordCount);
-        //this.$rootScope._counters.words = wordCount;
         this.uds.setSession({ wordCount : wordCount });
 
         if (!Utils.isEmpty(snippet)) {
@@ -51,12 +51,12 @@ export default class SnippetTrackService {
           Meteor.call('storeSnippet', snippetObject, (err, result) => {
             if (!err) {
               var msg = this.$translate.instant('alerts.snippetSaved');
-              Utils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
+              LogUtils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
               callback(null, msg);
             }
             else {
               var msg = this.$translate.instant('alerts.error');
-              Utils.logToConsole('Error!', err);
+              LogUtils.logToConsole('Error!', err);
               callback(msg);
             }
           });
@@ -82,12 +82,12 @@ export default class SnippetTrackService {
         Meteor.call('storeSnippet', snippetObject, (err, result) => {
           if (!err) {
             var msg = this.$translate.instant('alerts.snippetSaved');
-            Utils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
+            LogUtils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
             callback(null, msg);
           }
           else {
             var msg = this.$translate.instant('alerts.error');
-            Utils.logToConsole('Error!', err);
+            LogUtils.logToConsole('Error!', err);
             callback(msg);
           }
         });

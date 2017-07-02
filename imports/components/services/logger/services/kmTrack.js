@@ -2,8 +2,9 @@ import { Meteor } from 'meteor/meteor';
 
 import '../../../../lib/limit';
 
-import Utils from '../loggerUtils';
-import LoggerConfigs from '../loggerConfigs';
+import Utils from '../../../globalUtils';
+import LogUtils from '../../../logUtils';
+import LoggerConfigs from '../../../globalConfigs';
 
 /**
  * 
@@ -31,6 +32,7 @@ export default class KMTrackService {
 
     this.iframeSelected = false;
     this.isTracking = false;
+    this.isAdmin = false;
 
     this.mouseScroll = {
       winX: 0,
@@ -46,17 +48,17 @@ export default class KMTrackService {
 
   bindEvent(elem, evt, data, fn) {
     elem.on(evt, data, fn);
-    Utils.logToConsole('BIND!', 'Window', elem, evt);
+    LogUtils.logToConsole('BIND!', 'Window', elem, evt);
   }
 
   bindThrottledEvent(elem, evt, data, fn, delay) {
     elem.on(evt, data, fn.throttle(delay));
-    Utils.logToConsole('BIND THROTTLED!', 'Window', elem, evt, delay);
+    LogUtils.logToConsole('BIND THROTTLED!', 'Window', elem, evt, delay);
   }
 
   unbindEvent(elem, evt, fn) {
     elem.off(evt, fn);
-    Utils.logToConsole('UNBIND!', 'Window', elem, evt);
+    LogUtils.logToConsole('UNBIND!', 'Window', elem, evt);
   }
 
   mouseMoveListener(evt) {
@@ -110,7 +112,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      LogUtils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
     }
   }
@@ -168,7 +170,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      LogUtils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
     }
   }
@@ -208,7 +210,7 @@ export default class KMTrackService {
         localTimestamp: time
       };
 
-      Utils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
+      LogUtils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
       Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
     }
   }
@@ -239,7 +241,7 @@ export default class KMTrackService {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', keyOutput.source,
+      LogUtils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -282,7 +284,7 @@ export default class KMTrackService {
         url: src
       };
 
-      Utils.logToConsole('Key Pressed!', keyOutput.source,
+      LogUtils.logToConsole('Key Pressed!', keyOutput.source,
         'timestamp:' + t + 
         ' keyCode:' + kc + 
         ' which:' + w + 
@@ -300,9 +302,9 @@ export default class KMTrackService {
   }
 
   startTrack() {
-    var targetDoc = angular.element(this.$window);
+    let targetDoc = angular.element(this.$window);
 
-    var data = {
+    let data = {
       w: angular.element(window),
       d: angular.element(document),
       e: angular.element(document)[0].documentElement,
@@ -320,7 +322,7 @@ export default class KMTrackService {
   }
 
   stopTrack() {
-    var targetDoc = angular.element(this.$window);
+    let targetDoc = angular.element(this.$window);
     
     this.unbindEvent(targetDoc, 'mousemove', this.mouseMoveListener);
     this.unbindEvent(targetDoc, 'scroll', this.scrollListener);
