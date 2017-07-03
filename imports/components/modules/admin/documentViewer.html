@@ -1,7 +1,7 @@
 <div class="well well-sm" ng-repeat="doc in documentViewer.docs track by $index">
   <div class="row">
     <div class="col-md-10">
-      <b>Document Name:</b> {{doc.docName}}<p>
+      <b>Document Name:</b> {{doc.docName}}
     </div>
     <div class="col-md-2">
       <button type="button" class="btn btn-xs btn-danger pull-right" ng-click="documentViewer.deleteDocument(doc._id)"><i class="fa fa-trash-o"></i></button>
@@ -14,4 +14,4 @@
       <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
     </div>
   </div>
-</p>
+</div>

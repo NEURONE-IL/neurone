@@ -10,7 +10,7 @@ Created by Daniel Gacitua
 
 **NOTE:** A Linux development machine is highly recommended.
 
-1. In your development machine: install Node.js 4.8.2+, MongoDB 3.4+, Solr 6.5+ and Meteor 1.4.4+
+1. In your development machine: install Node.js 4.8.3+, MongoDB 3.4+, Solr 6.5+ and Meteor 1.5+
 2. In Solr, create a core (or collection) called `neurone`
 3. Clone this repository (or download as ZIP)
 4. Open a terminal in NEURONE's source code directory, run `meteor npm install` and then run `./developmentDeploy.sh`
