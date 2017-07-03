@@ -84,7 +84,7 @@ export default angular.module(name, [
   Question
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: FormCtrl
 })

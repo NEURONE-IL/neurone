@@ -45,7 +45,7 @@ const name = 'logout';
 export default angular.module(name, [
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Logout
 })

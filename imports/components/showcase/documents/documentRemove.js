@@ -19,7 +19,7 @@ const name = 'documentRemove';
 export default angular.module(name, [
   angularMeteor
 ]).component(name, {
-  template,
+  template: template.default,
   bindings: {
     doc: '<'
   },

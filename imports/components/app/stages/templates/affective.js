@@ -138,7 +138,7 @@ const name = 'affective';
 export default angular.module(name, [
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Affective
 })

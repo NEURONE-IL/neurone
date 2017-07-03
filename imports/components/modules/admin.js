@@ -41,7 +41,7 @@ export default angular.module(name, [
   DocumentGenerator
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Admin
 })

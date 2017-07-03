@@ -54,7 +54,7 @@ import { name as Logger } from '../services/logger/logger';
 import { name as Stages } from './stages/stages';
 
 import { name as Admin } from '../modules/admin';
-import { name as ViewDocuments } from '../modules/viewDocuments';
+//import { name as ViewDocuments } from '../modules/viewDocuments';
 //import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
@@ -78,7 +78,7 @@ class App {
 const name = 'app';
 
 export default angular.module(name, [
-  // Packages and dependencies
+  /* Packages and dependencies */
   angularMeteor,
   angularMeteorAuth,
   'angular-meteor-promiser',
@@ -86,35 +86,35 @@ export default angular.module(name, [
   uiBootstrap,
   angularTranslate,
   angularTranslateLoader,
-  // Custom-made services
+  /* Custom-made services */
   AuthService,
   UserDataService,
   Logger,
   ActionBlocker,
   Flow,
-  // Prototype components
+  /* Prototype components */
   SearchModule,
   SynthesisModule,
   FormsModule,
   ShowcaseModule,
-  // Modular Components
+  /* Modular Components */
   Navigation,
   Iframe,
-  // App views
+  /* App views */
   Auth,
   Home,
   Start,
   End,
   ErrorPage,
-  // iFuCo Simulation
+  /* iFuCo Simulation */
   Stages,
-  // Other modules
-  Admin,
-  ViewDocuments
+  /* Other modules */
+  Admin
+  //ViewDocuments
   //Enrollment
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: App
 })

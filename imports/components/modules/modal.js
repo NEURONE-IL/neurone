@@ -95,7 +95,7 @@ class ModalService {
     var modalSize = modalObject.size ? modalObject.size : 'lg';
 
     this.modal = this.$uibModal.open({
-      template,
+      template: template.default,
       animation: true,
       size: 'lg',
       controller: ModalCtrl,

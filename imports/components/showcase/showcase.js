@@ -29,7 +29,7 @@ export default angular.module(name, [
   Flow
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Showcase
 })

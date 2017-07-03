@@ -108,7 +108,7 @@ const name = 'stage0';
 export default angular.module(name, [
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Stage0
 })

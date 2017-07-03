@@ -1,4 +1,4 @@
-import '../../../lib/register.js';
+//import '../../../utils/register';
 
 import TextQuestion from '../templates/text';
 import ParagraphQuestion from '../templates/paragraph';

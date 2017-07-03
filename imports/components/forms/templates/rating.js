@@ -1,7 +1,7 @@
 import template from './rating.html';
 
 export default RatingQuestion = {
-  template,
+  template: template.default,
   require: {
     ngModel: '='
   },

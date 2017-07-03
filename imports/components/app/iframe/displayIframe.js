@@ -116,7 +116,7 @@ export default angular.module(name, [
 	ActionBlocker
 ])
 .component(name, {
-	template,
+	template: template.default,
 	controllerAs: name,
 	controller: DisplayIframe,
   bindings: {

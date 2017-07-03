@@ -124,7 +124,7 @@ export default angular.module(name, [
   'ngCsv'
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Enrollment
 })

@@ -1,4 +1,4 @@
-import '../../../../lib/limit'
+import '../../../../utils/limit'
 
 import Utils from '../../../globalUtils';
 import LogUtils from '../../../logUtils';

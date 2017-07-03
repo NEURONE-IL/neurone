@@ -2,11 +2,11 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
-import ngWig from '../../lib/ngWig/ng-wig';
-import '../../lib/ngWig/css/ng-wig.css';
-import '../../lib/ngWig/plugins/formats.ngWig';
-import '../../lib/ngWig/plugins/forecolor.ngWig';
-import '../../lib/ngWig/plugins/clear-styles.ngWig';
+import ngWig from '../../utils/ngWig/ng-wig';
+import '../../utils/ngWig/css/ng-wig.css';
+import '../../utils/ngWig/plugins/formats.ngWig';
+import '../../utils/ngWig/plugins/forecolor.ngWig';
+import '../../utils/ngWig/plugins/clear-styles.ngWig';
 
 import Utils from '../globalUtils.js';
 
@@ -203,7 +203,7 @@ export default angular.module(name, [
   BookmarkModal
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Synthesis
 })

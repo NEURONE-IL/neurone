@@ -1,11 +1,10 @@
 import angularTruncate from 'angular-truncate-2';
-//import ngWig from 'ng-wig';
 
-import ngWig from '../../../../lib/ngWig/ng-wig';
-import '../../../../lib/ngWig/css/ng-wig.css';
-import '../../../../lib/ngWig/plugins/formats.ngWig';
-import '../../../../lib/ngWig/plugins/forecolor.ngWig';
-import '../../../../lib/ngWig/plugins/clear-styles.ngWig';
+import ngWig from '../../../../utils/ngWig/ng-wig';
+import '../../../../utils/ngWig/css/ng-wig.css';
+import '../../../../utils/ngWig/plugins/formats.ngWig';
+import '../../../../utils/ngWig/plugins/forecolor.ngWig';
+import '../../../../utils/ngWig/plugins/clear-styles.ngWig';
 
 import Utils from '../../../globalUtils';
 import Configs from '../../../globalConfigs';
@@ -266,7 +265,7 @@ export default angular.module(name, [
   PageModal
 ])
 .component(name, {
-  template,
+  template: template.default,
   controllerAs: name,
   controller: Synthesis
 })
