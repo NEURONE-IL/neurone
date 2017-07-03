@@ -1,0 +1,17 @@
+<div class="well well-sm" ng-repeat="doc in documentViewer.docs track by $index">
+  <div class="row">
+    <div class="col-md-10">
+      <b>Document Name:</b> {{doc.docName}}<p>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-xs btn-danger pull-right" ng-click="documentViewer.deleteDocument(doc._id)"><i class="fa fa-trash-o"></i></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })">{{doc.title}}</a>
+      <div><span class="search-result-url">{{doc.url}}</span> - <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Domain:</b> {{ doc.topic[0] }} | <b>Task:</b> {{ doc.test[0] }}</div>
+      <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
+    </div>
+  </div>
+</p>
