@@ -6,7 +6,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import template from './register.html';
 
-import Settings from '../../../sharedSettings';
+//import Settings from '../../../sharedSettings';
 
 class Register {
   constructor($scope, $reactive, $state, $translate, AuthService, UserDataService) {
