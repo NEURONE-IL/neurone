@@ -29,7 +29,8 @@ class UserDataService {
     this.udsp = this.$q.defer();
 
     if (!!userId) {
-      console.log('UserData AUTORUN!', userId);
+      //console.log('UserData AUTORUN!', userId);
+      
       var p1 = this.fetchConfigs(),
           p2 = this.fetchSession(),
           p3 = this.fetchRole();
@@ -51,7 +52,7 @@ class UserDataService {
     Meteor.call('userSession', (err, res) => {
       if (!err) {
         Object.keys(res).map((p) => this.userSession.set(p, res[p]));
-        console.log('Session', this.userSession);
+        //console.log('Session', this.userSession);
         dfr.resolve();
       }
       else {
@@ -69,7 +70,7 @@ class UserDataService {
     Meteor.call('userConfigs', (err, res) => {
       if (!err) {
         Object.keys(res).map((p) => this.userConfigs.set(p, res[p]));
-        console.log('Configs', this.userConfigs);
+        //console.log('Configs', this.userConfigs);
         dfr.resolve();
       }
       else {

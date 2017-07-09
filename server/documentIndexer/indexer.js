@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 import SolrIndex from './indexes/solrIndex';
 import LunrIndex from './indexes/lunrIndex';
 import DocumentParser from './documentParser';

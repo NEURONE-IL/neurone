@@ -7,10 +7,10 @@
   "private": true,
   "scripts": {
     "start": "meteor",
-    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
-    "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs",
-    "apptest": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
-    "apptest:watch": "TEST_WATCH=1 meteor test --full-app --driver-package dispatch:mocha-phantomjs"
+    "test": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
+    "test:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
+    "apptest": "TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --once --driver-package dispatch:mocha",
+    "apptest:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --driver-package dispatch:mocha"
   },
   "dependencies": {
     "angular": "1.5.9",
@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "angular-mocks": "1.5.9",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "phantomjs-prebuilt": "^2.1.14"
   }
 }

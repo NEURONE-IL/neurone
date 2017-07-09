@@ -2,7 +2,7 @@ import SolrIndex from './indexes/solrIndex';
 import LunrIndex from './indexes/lunrIndex';
 import Indexer from './indexer';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
 

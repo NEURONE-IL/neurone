@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { FormQuestions } from '../../imports/database/formQuestions/index';
 import { FormQuestionnaires } from '../../imports/database/formQuestionnaires/index';

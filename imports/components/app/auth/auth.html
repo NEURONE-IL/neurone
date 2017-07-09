@@ -2,5 +2,4 @@
   <button ui-sref="login" ng-hide="auth.isLoggedIn">Login</button>
   <button ui-sref="register" ng-hide="auth.isLoggedIn">Sign up</button>
   <button ng-click="auth.logout()" ng-show="auth.isLoggedIn">Logout</button>
-  <div ng-show="auth.isLoggedIn">{{ auth.currentUser | displayNameFilter }}</div>
 </div>

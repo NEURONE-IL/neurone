@@ -26,12 +26,17 @@ Meteor.methods({
   },
   fetchDocument: function(documentObj) {
     try {
-      check(documentObj, Object);
+      if (this.userId) {
+        check(documentObj, Object);
 
-      let asyncCall = Meteor.wrapAsync(DocumentDownloader.fetch),
-              fetch = asyncCall(documentObj);
+        let asyncCall = Meteor.wrapAsync(DocumentDownloader.fetch),
+                fetch = asyncCall(documentObj);
 
-      return fetch;
+        return fetch;  
+      }
+      else {
+        throw new Meteor.Error(599, 'User is not logged in!');
+      }
     }
     catch (err) {
       throw new Meteor.Error(573, 'The server cannot fetch document from web', err);
@@ -39,7 +44,12 @@ Meteor.methods({
   },
   listAllDocuments: function() {
     try {
-      return DocumentRetrieval.listAllDocuments();
+      if (this.userId) {
+        return DocumentRetrieval.listAllDocuments();
+      }
+      else {
+        throw new Meteor.Error(599, 'User is not logged in!');  
+      }
     }
     catch (err) {
       throw new Meteor.Error(574, 'Cannot list all documents', err);

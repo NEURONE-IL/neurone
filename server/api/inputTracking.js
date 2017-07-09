@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { VisitedLinks } from '../../imports/database/visitedLinks/index';
 import { Keystrokes } from '../../imports/database/keystrokes/index';

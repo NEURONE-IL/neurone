@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import UserAgent from 'useragent';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { Snippets } from '../../imports/database/snippets/index';
 import { Queries } from '../../imports/database/queries/index';

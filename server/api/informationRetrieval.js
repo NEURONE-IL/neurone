@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
 import { Snippets } from '../../imports/database/snippets/index';

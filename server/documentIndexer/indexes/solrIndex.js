@@ -1,7 +1,7 @@
 import SolrNode from 'solr-node';
 
-import Utils from '../../lib/utils';
-import RemoveDiacritics from '../../lib/removeDiacritics';
+import Utils from '../../utils/serverUtils';
+import RemoveDiacritics from '../../utils/removeDiacritics';
 
 import { Documents } from '../../../imports/database/documents/index';
 

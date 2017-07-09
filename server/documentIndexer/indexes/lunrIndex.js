@@ -3,7 +3,7 @@ import sum from 'sum';
 
 import 'array.prototype.move';
 
-import Utils from '../../lib/utils';
+import Utils from '../../utils/serverUtils';
 
 import { Documents } from '../../../imports/database/documents/index';
 import { Indexes } from '../../../imports/database/indexes/index';

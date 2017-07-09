@@ -33,7 +33,6 @@ ostrio:meteor-root
 jalik:ufs
 jalik:ufs-local
 williamledoux:static-server
-dispatch:mocha-phantomjs
 mizzao:timesync
 konecty:mongo-counter
 random@1.0.10
@@ -46,3 +45,4 @@ konecty:user-presence
 xamfoo:reactive-obj
 meteorhacks:aggregate
 dynamic-import@0.1.0
+dispatch:mocha

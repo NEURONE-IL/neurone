@@ -6,7 +6,7 @@ import DocumentParser from './documentParser';
 import Indexer from './indexer';
 
 import ServerConfigs from '../serverConfigs';
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
 

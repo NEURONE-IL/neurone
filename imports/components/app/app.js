@@ -165,19 +165,19 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
       if (status === 'USER_LOGGED') {
         var locale = uds.getConfigs().locale;
         
-        console.log('Using Flow Locale', locale);
+        //console.log('Using Flow Locale', locale);
 
         $translate.use(locale).then(() => {
-          console.log('Meteor onLogin READY!');
+          //console.log('Meteor onLogin READY!');
         });
       }
       else {
         var locale = Session.get('locale');
         
-        console.log('Using Client Locale', locale);
+        //console.log('Using Client Locale', locale);
 
         $translate.use(locale).then(() => {
-          console.log('Meteor onLogin READY!');
+          //console.log('Meteor onLogin READY!');
         });
       }
     });

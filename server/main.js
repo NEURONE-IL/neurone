@@ -23,14 +23,14 @@ import DocumentDownloader from './documentIndexer/documentDownloader';
 import ContentLoader from './contentLoader/contentLoader';
 
 import ServerConfigs from './serverConfigs';
-import Utils from './lib/utils';
+import Utils from './utils/serverUtils';
 
-Meteor.startup(() => {
-  console.log('Welcome to NEURONE Server Platform!');
-  const assetPath = Utils.getAssetPath();
-  StaticServer.add('/', assetPath);
+if (!Utils.isTesting()) {
+  Meteor.startup(() => {
+    console.log('Welcome to NEURONE Server Platform!');
+    const assetPath = Utils.getAssetPath();
+    StaticServer.add('/', assetPath);
 
-  if (!Utils.isTesting()) {
     // dgacitua: Start user presence monitor
     InstanceStatus.events.on('registerInstance', (id, record) => {
       console.log('Registered new NEURONE instance!', 'PID: ' + id.pid);
@@ -68,7 +68,7 @@ Meteor.startup(() => {
     else {
       let step = Indexer.loadInvertedIndex();
     }
-  }
 
-  console.log('NEURONE Server Platform is ready!');
-});
+    console.log('NEURONE Server Platform is ready!');
+  });
+}

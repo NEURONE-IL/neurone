@@ -8,7 +8,7 @@ import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 import uppercamelcase from 'uppercamelcase';
 
-import Utils from '../lib/utils';
+import Utils from '../utils/serverUtils';
 
 export default class DocumentParser {
   static getHtmlAsText(documentPath) {

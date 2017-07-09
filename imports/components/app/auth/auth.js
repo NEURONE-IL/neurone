@@ -6,7 +6,6 @@ import { Accounts } from 'meteor/accounts-base';
 
 import template from './auth.html';
 
-import { name as DisplayNameFilter } from '../../../filters/displayNameFilter';
 import { name as Login } from './login';
 import { name as Logout } from './logout';
 import { name as Register } from './register';
@@ -45,7 +44,6 @@ class Auth {
 // create a module
 export default angular.module(name, [
   angularMeteor,
-  DisplayNameFilter,
   Login,
   Logout,
   Register,
