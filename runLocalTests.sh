@@ -5,8 +5,8 @@ set -e
 
 export LC_ALL=C.UTF-8
 
-#printf "\e[1;32m>>\e[31m Running NEURONE Unit Tests! \e[1;32m<<\e[0m"
-#meteor npm run test
+printf "\e[1;32m>>\e[31m Running NEURONE Unit Tests! \e[1;32m<<\e[0m"
+meteor npm run test
 
 printf "\e[1;32m>>\e[31m Running NEURONE Integration Tests! \e[1;32m<<\e[0m"
 meteor npm run apptest

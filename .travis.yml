@@ -32,6 +32,6 @@ script:
 #deploy:
 #  skip_cleanup: true
 #  provider: script
-#  script: /bin/sh fullDeploy.sh
+#  script: ./.deploy/customDeploy.sh
 #  on:
 #    branch: master

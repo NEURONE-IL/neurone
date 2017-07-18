@@ -85,11 +85,11 @@ ssh $USER@$HOST "docker exec -t $NEURONE_DB_NAME mongo $NEURONE_MONGO_DATABASE -
                 roles: [{ role: \\\"dbOwner\\\", db: \\\"$NEURONE_MONGO_DATABASE\\\" }]})\" || true"
 
 echo ">> Deploy Solr seach module in remote host... [11/13]"
-#ssh $USER@$HOST docker run -d \
-#                -p $NEURONE_SOLR_PORT:8983 \
-#                --name $NEURONE_SOLR_NAME \
-#                --restart=unless-stopped \
-#                solr solr-create -c $NEURONE_SOLR_CORE
+ssh $USER@$HOST docker run -d \
+                -p $NEURONE_SOLR_PORT:8983 \
+                --name $NEURONE_SOLR_NAME \
+                --restart=unless-stopped \
+                solr solr-create -c $NEURONE_SOLR_CORE
 
 echo ">> Deploy offline NEURONE image in remote host... [12/13]"
 ssh $USER@$HOST docker run -d \
@@ -124,5 +124,6 @@ ssh $USER@$HOST docker run -d \
 
 
 echo ">> Deploy to local server is ready! [13/13]"
+
 set +u
 set +e
