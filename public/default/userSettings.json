@@ -29,7 +29,7 @@
     "locale": "en"
   },
   {
-    "flowSettingsId": "pilot",
+    "flowSettingsId": "flowDefault",
     "locale": "en",
     "task": "pilot",
     "domain": "pilot",

@@ -6,7 +6,7 @@ import { UserData } from '../../imports/database/userData/index';
 import { Settings } from '../../imports/database/settings/index';
 import { Identities } from '../../imports/database/identities/index';
 
-// NEURONE API: Settings Retrieval
+// NEURONE API: Configs Getter
 // Methods for getting settings for users from the server
 
 Meteor.methods({
