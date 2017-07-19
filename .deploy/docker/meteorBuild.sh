@@ -9,7 +9,8 @@ curl https://install.meteor.com/ | sh
 
 printf "%b" "\e[1;31m>> Building Meteor app as Node.js app [2/7]\e[0m"
 
-(cd /home/app/src && meteor npm install --quiet && meteor build ../neurone --directory --server-only)
+(cd /home/app/src && meteor npm install --quiet)
+(cd /home/app/src && meteor build ../neurone --directory --server-only)
 
 printf "%b" "\e[1;31m>> Moving app to /home/app/neurone [3/7]\e[0m"
 
