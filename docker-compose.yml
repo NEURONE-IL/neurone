@@ -1,5 +1,8 @@
 version: '2.1'
 
+environment:
+  - COMPOSE_PROJECT_NAME=neurone
+
 services:
   database:
     build: ./.deploy/mongo
@@ -14,7 +17,7 @@ services:
       - MONGODB_ADMIN_PASS=${NEURONE_ADMIN_DB_PASS:-neurone2017}
       - MONGODB_APPLICATION_DATABASE=${NEURONE_DB:-neurone}
       - MONGODB_APPLICATION_USER=${NEURONE_DB_USER:-neurone}
-      - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone}
+      - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone2017}
   search:
     image: solr:6.5
     restart: on-failure
