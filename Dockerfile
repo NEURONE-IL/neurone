@@ -23,7 +23,7 @@ RUN chown -R app:app ./src
 # Install basic dependencies
 RUN apt-get -qq update \
     && apt-get clean \
-    && apt-get -qq install curl wget unzip
+    && apt-get -qq install curl wget unzip python
 
 # Copy config files
 RUN cp /home/app/src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
