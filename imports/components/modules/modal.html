@@ -23,5 +23,9 @@
     <div ng-if="$ctrl.buttonType==='button'">
       <button class="btn btn-primary" type="button" ng-click="$ctrl.button($ctrl.buttonName)">$ctrl.buttonName</button>
     </div>
+    <div ng-if="$ctrl.buttonType==='save'">
+      <button class="btn btn-danger" type="button" ng-click="$ctrl.cancel()">{{"modal.cancelButton" | translate}}</button>
+      <button class="btn btn-success" type="submit">{{"modal.saveButton" | translate}}</button>
+    </div>
   </div>
 </form>

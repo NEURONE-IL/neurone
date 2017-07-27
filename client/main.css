@@ -384,7 +384,7 @@ input::-webkit-input-placeholder {
 }
 
 .panel-body {
-    overflow-y: scroll;
+    overflow-y: auto;
     min-height: 80%;
     height: 80%;
 }

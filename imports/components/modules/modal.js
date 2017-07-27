@@ -11,7 +11,7 @@ import template from './modal.html';
 */
 
 class ModalCtrl {
-  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName) {
+  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName, submitFunction) {
     'ngInject';
 
     var $ctrl = this;
@@ -21,8 +21,9 @@ class ModalCtrl {
     $ctrl.fields = customFields;
     $ctrl.buttonType = buttonType;
     $ctrl.buttonName = buttonName;
+    $ctrl.submitFunction = submitFunction;
 
-    $ctrl.showFooter = ($ctrl.buttonType === 'okcancel' || $ctrl.buttonType === 'nextstage' || $ctrl.buttonType === 'next' || $ctrl.buttonType === 'back' || $ctrl.buttonType === 'button') ? true : false;
+    $ctrl.showFooter = ($ctrl.buttonType === 'okcancel' || $ctrl.buttonType === 'nextstage' || $ctrl.buttonType === 'next' || $ctrl.buttonType === 'back' || $ctrl.buttonType === 'button' || $ctrl.buttonType === 'save');
 
     $ctrl.response = {};
 
@@ -32,8 +33,12 @@ class ModalCtrl {
       if ($ctrl.fields.questions) {
         if ($ctrl.modalForm.$valid) {
           $ctrl.response.answers = $ctrl.parseAnswers($ctrl.fields.questions);
-          $uibModalInstance.close($ctrl.response);  
+          $uibModalInstance.close($ctrl.response);
         }
+      }
+      else if ($ctrl.submitFunction) {
+        $ctrl.submitFunction('testing');
+        $uibModalInstance.close($ctrl.response);
       }
       else {
         $uibModalInstance.close($ctrl.response);
@@ -87,12 +92,13 @@ class ModalService {
   }
 
   openModal(modalObject, callback) {
-    var contentTitle = modalObject.title ? modalObject.title : '';
-    var contentTemplate = modalObject.templateAsset ? modalObject.templateAsset : '';
-    var contentFields = modalObject.fields ? modalObject.fields : {};
-    var buttonType = modalObject.buttonType ? modalObject.buttonType : '';
-    var buttonName = modalObject.buttonName ? modalObject.buttonName : '';
-    var modalSize = modalObject.size ? modalObject.size : 'lg';
+    var contentTitle = modalObject.title || '';
+    var contentTemplate = modalObject.templateAsset || '';
+    var contentFields = modalObject.fields || {};
+    var buttonType = modalObject.buttonType || '';
+    var buttonName = modalObject.buttonName || '';
+    var modalSize = modalObject.size || 'lg';
+    var submitFunction = modalObject.submitFunction || null;
 
     this.modal = this.$uibModal.open({
       template: template.default,
@@ -115,6 +121,9 @@ class ModalService {
         },
         buttonName: () => {
           return buttonName;
+        },
+        submitFunction: () => {
+          return submitFunction;
         }
       }
     });

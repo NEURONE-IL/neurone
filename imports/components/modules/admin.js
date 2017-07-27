@@ -1,13 +1,14 @@
 import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
-import angularCSV from 'ng-csv';
-import angularFileUpload from 'angular-file-upload';
+import ngCSV from 'ng-csv';
+import ngFileUpload from 'ng-file-upload';
 import RandomString from 'randomstring';
 
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
 import { name as Enrollment } from './admin/enrollment';
+import { name as ContentCreator } from './admin/contentCreator';
 import { name as FlowManager } from './admin/flowManager';
 import { name as DocumentViewer } from './admin/documentViewer';
 import { name as DocumentGenerator } from './admin/documentGenerator';
@@ -34,8 +35,9 @@ export default angular.module(name, [
   'ngSanitize',
   'truncate',
   'ngCsv',
-  'angularFileUpload',
+  'ngFileUpload',
   Enrollment,
+  ContentCreator,
   FlowManager,
   DocumentViewer,
   DocumentGenerator
@@ -58,6 +60,9 @@ function config($stateProvider) {
       },
       'enrollment@admin': {
         template: '<enrollment></enrollment>'
+      },
+      'contentCreator@admin': {
+        template: '<content-creator></content-creator>'
       },
       'flowManager@admin': {
         template: '<flow-manager></flow-manager>'

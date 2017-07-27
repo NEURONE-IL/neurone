@@ -73,7 +73,7 @@ export default class DocumentDownloader {
       keywords: docObj.keywords || [],
       date: docObj.date || Utils.getDate(),
       url: docObj.url,
-      searchSnippet: docObj.searchSnippet || 'This is the first paragraph of the new NEURONE Document',
+      searchSnippet: docObj.searchSnippet || '',
       indexedBody: ''
     };
 
