@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import ip from 'ip';
+import UserAgent from 'useragent';
 
 import Utils from '../utils/serverUtils';
 
@@ -211,6 +213,38 @@ Meteor.methods({
     catch (err) {
       console.error(err);
       throw new Meteor.Error(538, 'Could not register new user!', err);
+    }
+  },
+  getServerStats: function(localTimestamp) {
+    try {
+      check(localTimestamp, Match.Maybe(Number));
+
+      let ipAddr = this.connection ? this.connection.clientAddress : '',
+             rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
+             oua = rua ? UserAgent.parse(rua) : '',               // object user agent
+         browser = oua ? oua.toAgent() : 'undefined',
+              os = oua ? oua.os.toString() : 'undefined',
+          device = oua ? oua.device.toString() : 'undefined';
+
+      let serverTimestamp = Utils.getTimestamp(),
+                pingValue = !!localTimestamp ? (serverTimestamp - localTimestamp) : null;
+
+      let response = {
+        serverTime: Utils.timestamp2date(serverTimestamp) + ' ' + Utils.timestamp2time(serverTimestamp),
+        serverIpAddr: ip.address(),
+        clientUserAgent: rua,
+        clientIpAddr: ipAddr,
+        clientBrowser: browser,
+        clientOperatingSystem: os,
+        clientDevice: device,
+        ping: pingValue
+      };
+
+      return response;
+    }
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(539, 'Could not get server statistics!', err);
     }
   }
 });

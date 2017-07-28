@@ -1,22 +1,22 @@
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
-import template from './flowManager.html';
+import template from './studyManager.html';
 
-class FlowManager {
+class StudyManager {
   constructor() {
     'ngInject';
 
-    console.log('FlowManager loaded!');
+    console.log('StudyManager loaded!');
   }
 }
 
-const name = 'flowManager';
+const name = 'studyManager';
 
 export default angular.module(name, [
 ])
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: FlowManager
+  controller: StudyManager
 });

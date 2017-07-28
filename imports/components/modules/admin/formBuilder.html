@@ -1,23 +1,20 @@
 <div class="container-fluid">
   <div class="row">
-    The NEURONE Content Creator must be used to build the parts involved in the simulation flow (Locales, Domains, Tasks and Stages) and link them to their respective assets (that can be uploaded here).
+    The NEURONE Form Builder must be used to build Questions, Questionnaires and Synthesis Activities (if needed by the study).
   </div>
   <br>
   <div class="row">
     <uib-accordion>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.locale">
+      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.question">
         <uib-accordion-heading>
-          Locales <small>Translation templates for simulation flow</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.locale, 'fa-chevron-right': !contentCreator.panel.locale}"></i>
+          Questions <small>Individual form elements to be answered</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.question, 'fa-chevron-right': !formBuilder.panel.question}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
-            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('locale')">
-              <i class="fa fa-plus-circle"></i> Add Locale
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addModal('question')">
+              <i class="fa fa-plus-circle"></i> Add Question
             </button>
-            <button class="btn btn-sm btn-primary" ng-click="contentCreator.uploadFile()">
-              <i class="fa fa-upload"></i> Upload
-            </button>            
           </div>
           <br>
           <div class="row">
@@ -25,23 +22,23 @@
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Question ID</th>
                   <th>Type</th>
-                  <th>Name</th>
                   <th>Properties</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in contentCreator.locales track by $index">
+                <tr ng-repeat="content in formBuilder.questions track by $index">
                   <td>{{ content._id }}</td>
+                  <td>{{ content.questionID }}</td>
                   <td>{{ content.type }}</td>
-                  <td>{{ content.name }}</td>
-                  <td><pre>{{ content.properties | json: 2 }}</pre></td>
+                  <td><pre>{{ content | json: 2 }}</pre></td>
                   <td>
-                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('locale', content)">
+                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('question', content)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
-                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                    <button class="btn btn-xs btn-danger" ng-click="formBuilder.removeModal(content)">
                       <i class="fa fa-trash-o"></i>
                     </button>
                   </td>
@@ -51,14 +48,15 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.domain">
+      <!--
+      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.domain">
         <uib-accordion-heading>
           Domains <small>Tags according to the flow theme or subject</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.domain, 'fa-chevron-right': !contentCreator.panel.domain}"></i>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.domain, 'fa-chevron-right': !formBuilder.panel.domain}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
-            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('domain')">
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addModal('domain')">
               <i class="fa fa-plus-circle"></i> Add Domain
             </button>
           </div>
@@ -75,16 +73,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in contentCreator.domains track by $index">
+                <tr ng-repeat="content in formBuilder.domains track by $index">
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
                   <td><pre>{{ content.properties | json: 2 }}</pre></td>
                   <td>
-                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('domain', content)">
+                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('domain', content)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
-                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                    <button class="btn btn-xs btn-danger" ng-click="formBuilder.removeModal(content)">
                       <i class="fa fa-trash-o"></i>
                     </button>
                   </td>
@@ -94,14 +92,14 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.task">
+      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.task">
         <uib-accordion-heading>
           Tasks <small>Tags according to the flow activity to complete</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.task, 'fa-chevron-right': !contentCreator.panel.task}"></i>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.task, 'fa-chevron-right': !formBuilder.panel.task}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
-            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('task')">
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addModal('task')">
               <i class="fa fa-plus-circle"></i> Add Task
             </button>
           </div>
@@ -118,16 +116,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in contentCreator.tasks track by $index">
+                <tr ng-repeat="content in formBuilder.tasks track by $index">
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
                   <td><pre>{{ content.properties | json: 2 }}</pre></td>
                   <td>
-                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('task', content)">
+                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('task', content)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
-                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                    <button class="btn btn-xs btn-danger" ng-click="formBuilder.removeModal(content)">
                       <i class="fa fa-trash-o"></i>
                     </button>
                   </td>
@@ -137,14 +135,14 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.stage">
+      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.stage">
         <uib-accordion-heading>
           Stages <small>Flow steps with some activity to complete</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.stage, 'fa-chevron-right': !contentCreator.panel.stage}"></i>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.stage, 'fa-chevron-right': !formBuilder.panel.stage}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
-            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('stage')">
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addModal('stage')">
               <i class="fa fa-plus-circle"></i> Add Stage
             </button>
           </div>
@@ -161,16 +159,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in contentCreator.stages track by $index">
+                <tr ng-repeat="content in formBuilder.stages track by $index">
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
                   <td><pre>{{ content.properties | json: 2 }}</pre></td>
                   <td>
-                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('stage', content)">
+                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('stage', content)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
-                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                    <button class="btn btn-xs btn-danger" ng-click="formBuilder.removeModal(content)">
                       <i class="fa fa-trash-o"></i>
                     </button>
                   </td>
@@ -180,32 +178,6 @@
           </div>
         </div>
       </div>
-      <!--
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.asset">
-        <uib-accordion-heading>
-          Assets
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.asset, 'fa-chevron-right': !contentCreator.panel.asset}"></i>
-        </uib-accordion-heading>
-        <div class="container-fluid">
-          <div layout="column">
-            <div ngf-drop
-              ngf-select
-              ngf-change="partyUpload.addImages($files)"
-              ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
-              class="drop-box"
-              ngf-multiple="false"
-              ngf-allow-dir="false"
-              ngf-accept="'image/*'"
-              ngf-drop-available="true"
-              ng-hide="partyUpload.cropImgSrc">
-              <div>Select asset to upload</div>
-              <div>
-                <strong>OR</strong>
-              </div>
-              <div>Drop asset to upload</div>
-            </div>
-          </div>
-        </div>
       -->
     </uib-accordion>
   </div>

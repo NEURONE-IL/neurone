@@ -4,12 +4,12 @@ export const SynthesisQuestions = new Mongo.Collection('synthesisquestions');
 
 SynthesisQuestions.allow({
   insert(userId, sqs) {
-    return userId && sqs.userId === userId;
+    return userId;
   },
   update(userId, sqs, fields, modifier) {
-    return userId && sqs.userId === userId;
+    return userId;
   },
   remove(userId, sqs) {
-    return userId && sqs.userId === userId;
+    return userId;
   }
 });

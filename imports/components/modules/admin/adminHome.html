@@ -1,0 +1,6 @@
+<div class="container-fluid">
+  <button class="btn btn-sm btn-success pull-right" ng-click="adminHome.getServerStats()">
+    <i class="fa fa-refresh"></i> Reload Stats
+  </button>
+  <pre>{{ adminHome.stats | json: 2 }}</pre>
+</div>

@@ -7,11 +7,13 @@ import RandomString from 'randomstring';
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
-import { name as Enrollment } from './admin/enrollment';
+import { name as AdminHome } from './admin/adminHome';
 import { name as ContentCreator } from './admin/contentCreator';
-import { name as FlowManager } from './admin/flowManager';
-import { name as DocumentViewer } from './admin/documentViewer';
-import { name as DocumentGenerator } from './admin/documentGenerator';
+import { name as FormBuilder } from './admin/formBuilder';
+import { name as DocumentLoader } from './admin/documentLoader';
+import { name as DocumentManager } from './admin/documentManager';
+import { name as StudyManager } from './admin/studyManager';
+import { name as Enrollment } from './admin/enrollment';
 
 import template from './admin.html';
 
@@ -36,11 +38,13 @@ export default angular.module(name, [
   'truncate',
   'ngCsv',
   'ngFileUpload',
-  Enrollment,
+  AdminHome,
   ContentCreator,
-  FlowManager,
-  DocumentViewer,
-  DocumentGenerator
+  FormBuilder,
+  DocumentLoader,
+  DocumentManager,
+  StudyManager,
+  Enrollment
 ])
 .component(name, {
   template: template.default,
@@ -53,25 +57,31 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider.state('admin', {
-    url: '/neuroneAdmin',
+    url: '/admin',
     views: {
       '@': {
         template: '<admin></admin>'
       },
-      'enrollment@admin': {
-        template: '<enrollment></enrollment>'
+      'adminHome@admin': {
+        template: '<admin-home></admin-home>'
       },
       'contentCreator@admin': {
         template: '<content-creator></content-creator>'
       },
-      'flowManager@admin': {
-        template: '<flow-manager></flow-manager>'
+      'formBuilder@admin': {
+        template: '<form-builder></form-builder>'
       },
-      'docViewer@admin': {
-        template: '<document-viewer></document-viewer>'
+      'docLoader@admin': {
+        template: '<document-loader></document-loader>'
       },
-      'docGenerator@admin': {
-        template: '<document-generator></document-generator>'
+      'docManager@admin': {
+        template: '<document-manager></document-manager>'
+      },
+      'studyManager@admin': {
+        template: '<study-manager></study-manager>'
+      },
+      'enrollment@admin': {
+        template: '<enrollment></enrollment>'
       }
     },
     resolve: {

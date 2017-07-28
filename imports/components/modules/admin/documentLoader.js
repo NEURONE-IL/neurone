@@ -1,15 +1,15 @@
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
-import template from './documentGenerator.html';
+import template from './documentLoader.html';
 
-class DocumentGenerator {
+class DocumentLoader {
   constructor($scope, $reactive) {
     'ngInject';
 
     $reactive(this).attach($scope);
 
-    console.log('DocumentGenerator loaded!');
+    console.log('DocumentLoader loaded!');
 
     this.doc = {};
     this.route = '';
@@ -58,12 +58,12 @@ class DocumentGenerator {
   }
 }
 
-const name = 'documentGenerator';
+const name = 'documentLoader';
 
 export default angular.module(name, [
 ])
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: DocumentGenerator
+  controller: DocumentLoader
 });

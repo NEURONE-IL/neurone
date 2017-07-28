@@ -4,12 +4,12 @@ export const FormQuestions = new Mongo.Collection('formquestions');
 
 FormQuestions.allow({
   insert(userId, fqs) {
-    return userId && fqs.userId === userId;
+    return userId;
   },
   update(userId, fqs, fields, modifier) {
-    return userId && fqs.userId === userId;
+    return userId;
   },
   remove(userId, fqs) {
-    return userId && fqs.userId === userId;
+    return userId;
   }
 });

@@ -1,30 +1,30 @@
 <div class="modal-header">
-  <button class="btn btn-xs btn-danger pull-right" type="button" ng-click="$ctrl.close()" ng-if="!($ctrl.showFooter)">{{"modal.closeButton" | translate}}</button>
-  <h3 class="modal-title" id="modal-title" ng-if="$ctrl.title">{{$ctrl.title}}</h3>
+  <button class="btn btn-xs btn-danger pull-right" type="button" ng-click="modal.close()" ng-if="!(modal.showFooter)">{{"modal.closeButton" | translate}}</button>
+  <h3 class="modal-title" id="modal-title" ng-if="modal.title">{{modal.title}}</h3>
 </div>
-<form name="$ctrl.modalForm" ng-submit="$ctrl.ok()" novalidate>
+<form name="modal.form" ng-submit="modal.ok()" novalidate>
   <div class="modal-body" id="modal-body">
-    <div ng-include="$ctrl.template" class="scrollable"></div>
+    <div ng-include="modal.template" class="scrollable"></div>
   </div>
-  <div class="modal-footer" id="modal-footer" ng-if="$ctrl.showFooter">
-    <div ng-if="$ctrl.buttonType==='okcancel'">
-      <button class="btn btn-danger" type="button" ng-click="$ctrl.cancel()">{{"modal.cancelButton" | translate}}</button>
+  <div class="modal-footer" id="modal-footer" ng-if="modal.showFooter">
+    <div ng-if="modal.buttonType==='okcancel'">
+      <button class="btn btn-danger" type="button" ng-click="modal.cancel()">{{"modal.cancelButton" | translate}}</button>
       <button class="btn btn-success" type="submit">{{"modal.acceptButton" | translate}}</button>
     </div>
-    <div ng-if="$ctrl.buttonType==='nextstage'">
+    <div ng-if="modal.buttonType==='nextstage'">
       <button class="btn btn-success" type="submit">{{"modal.nextStageButton" | translate}}</button>
     </div>
-    <div ng-if="$ctrl.buttonType==='next'">
+    <div ng-if="modal.buttonType==='next'">
       <button class="btn btn-success" type="submit">{{"modal.next" | translate}}</button>
     </div>
-    <div ng-if="$ctrl.buttonType==='back'">
+    <div ng-if="modal.buttonType==='back'">
       <button class="btn btn-primary" type="submit">{{"modal.goBackButton" | translate}}</button>
     </div>
-    <div ng-if="$ctrl.buttonType==='button'">
-      <button class="btn btn-primary" type="button" ng-click="$ctrl.button($ctrl.buttonName)">$ctrl.buttonName</button>
+    <div ng-if="modal.buttonType==='button'">
+      <button class="btn btn-primary" type="button" ng-click="modal.button(modal.buttonName)">modal.buttonName</button>
     </div>
-    <div ng-if="$ctrl.buttonType==='save'">
-      <button class="btn btn-danger" type="button" ng-click="$ctrl.cancel()">{{"modal.cancelButton" | translate}}</button>
+    <div ng-if="modal.buttonType==='save'">
+      <button class="btn btn-danger" type="button" ng-click="modal.cancel()">{{"modal.cancelButton" | translate}}</button>
       <button class="btn btn-success" type="submit">{{"modal.saveButton" | translate}}</button>
     </div>
   </div>

@@ -46,3 +46,5 @@ jcbernack:reactive-aggregate
 xamfoo:reactive-obj
 meteorhacks:aggregate
 dispatch:mocha
+cfs:standard-packages
+cfs:filesystem

@@ -1,11 +1,13 @@
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
-import template from './contentCreator.html';
+import template from './formBuilder.html';
 
-import { FlowComponents } from '../../../database/flowComponents/index';
+import { FormQuestions } from '../../../database/formQuestions/index';
+import { FormQuestionnaires } from '../../../database/formQuestionnaires/index';
+import { SynthesisQuestions } from '../../../database/synthesisQuestions/index';
 
-class ContentCreator {
+class FormBuilder {
   constructor($scope, $reactive, ModalService) {
     'ngInject';
 
@@ -14,20 +16,19 @@ class ContentCreator {
     $reactive(this).attach($scope);
 
     this.panel = {
-      locale: false,
-      domain: false,
-      task: false,
-      stage: false,
-      asset: false
+      question: false,
+      questionnaire: false,
+      synthesis: false
     };
 
-    this.subscribe('flowcomponents');
+    this.subscribe('formQuestions');
+    this.subscribe('formQuestionnaires');
+    this.subscribe('synthesisQuestions');
 
     this.helpers({
-      locales: () => FlowComponents.find({ type: 'locale' }),
-      domains: () => FlowComponents.find({ type: 'domain' }),
-      tasks: () => FlowComponents.find({ type: 'task' }),
-      stages: () => FlowComponents.find({ type: 'stage'})
+      questions: () => FormQuestions.find(),
+      questionnaires: () => FormQuestionnaires.find(),
+      synthesis: () => SynthesisQuestions.find()
     });
 
     console.log('ContentCreator loaded!');
@@ -36,31 +37,31 @@ class ContentCreator {
   addModal(type) {
     let modalOpts = {};
 
-    if (type === 'locale') {
+    if (type === 'question') {
       modalOpts = {
         title: 'Add new locale',
-        templateAsset: 'adminAssets/adminLocaleModal.html',
+        templateAsset: 'admin/adminLocaleModal.html',
         buttonType: 'save'
       };
     }
     else if (type === 'domain') {
       modalOpts = {
         title: 'Add new domain',
-        templateAsset: 'adminAssets/adminDomainModal.html',
+        templateAsset: 'admin/adminDomainModal.html',
         buttonType: 'save'
       };
     }
     else if (type === 'task') {
       modalOpts = {
         title: 'Add new task',
-        templateAsset: 'adminAssets/adminTaskModal.html',
+        templateAsset: 'admin/adminTaskModal.html',
         buttonType: 'save'
       };
     }
     else if (type === 'stage') {
       modalOpts = {
         title: 'Add new stage',
-        templateAsset: 'adminAssets/adminStageModal.html',
+        templateAsset: 'admin/adminStageModal.html',
         buttonType: 'save'
       };
     }
@@ -90,7 +91,7 @@ class ContentCreator {
     if (type === 'locale') {
       modalOpts = {
         title: 'Edit locale',
-        templateAsset: 'adminAssets/adminLocaleModal.html',
+        templateAsset: 'admin/adminLocaleModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
@@ -100,7 +101,7 @@ class ContentCreator {
     else if (type === 'domain') {
       modalOpts = {
         title: 'Edit domain',
-        templateAsset: 'adminAssets/adminDomainModal.html',
+        templateAsset: 'admin/adminDomainModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
@@ -110,7 +111,7 @@ class ContentCreator {
     else if (type === 'task') {
       modalOpts = {
         title: 'Edit task',
-        templateAsset: 'adminAssets/adminTaskModal.html',
+        templateAsset: 'admin/adminTaskModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
@@ -120,7 +121,7 @@ class ContentCreator {
     else if (type === 'stage') {
       modalOpts = {
         title: 'Edit stage',
-        templateAsset: 'adminAssets/adminStageModal.html',
+        templateAsset: 'admin/adminStageModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
@@ -153,37 +154,14 @@ class ContentCreator {
       else console.error('Error while removing Flow Component!', err);
     });
   }
-
-  uploadFile() {
-    let modalOpts = {
-      title: 'Upload Asset',
-      templateAsset: 'admin/adminUploadModal.html',
-      buttonType: 'save',
-      size: 'md'
-    };
-
-    this.modal.openModal(modalOpts, (err, res) => {
-      if (!err) {
-        console.log(res);
-      }
-    });
-  }
-
-  loadContent() {
-
-  }
-
-  loadAssets() {
-
-  }
 }
 
-const name = 'contentCreator';
+const name = 'formBuilder';
 
 export default angular.module(name, [
 ])
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: ContentCreator
+  controller: FormBuilder
 });

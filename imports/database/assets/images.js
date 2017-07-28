@@ -1,3 +1,4 @@
+/*
 import { Mongo } from 'meteor/mongo';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { LocalStore } from 'meteor/jalik:ufs-local';
@@ -15,3 +16,12 @@ const AssetStore = new LocalStore({
 });
 
 export default AssetStore;
+*/
+
+import Utils from '../../utils/sharedUtils';
+
+const Assets = new FS.Collection('images', {
+  stores: [ new FS.Store.FileSystem('images', { path: Utils.getAssetSubfolder('uploadedAssets/images') }) ]
+});
+
+export default Assets;

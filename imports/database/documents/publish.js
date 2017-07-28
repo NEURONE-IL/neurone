@@ -3,31 +3,10 @@ import { Documents } from './collection';
 
 if (Meteor.isServer) {
   Meteor.publish('documents', function() {
-    const selector = {
-      $or: [{
-        // the public documents
-        $and: [{
-          public: true
-        }, {
-          public: {
-            $exists: true
-          }
-        }]
-      }, {
-        // when logged in user is the owner
-        $and: [{
-          userId: this.userId
-        }, {
-          userId: {
-            $exists: true
-          }
-        }]
-      }]
-    };
- 
     return Documents.find({});
   });
 
+  // dgacitua: MARKED FOR DEPRECATION
   Meteor.publish('documentDetails', function() {
     return Documents.find({});
   });

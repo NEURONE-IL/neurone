@@ -4,12 +4,12 @@ export const FlowComponents = new Mongo.Collection('flowcomponents');
 
 FlowComponents.allow({
   insert(userId, fc) {
-    return userId && fc.userId === userId;
+    return userId;
   },
   update(userId, fc, fields, modifier) {
-    return userId && fc.userId === userId;
+    return userId
   },
   remove(userId, fc) {
-    return userId && fc.userId === userId;
+    return userId;
   }
 });
