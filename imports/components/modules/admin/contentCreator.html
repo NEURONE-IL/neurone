@@ -5,7 +5,7 @@
   <br>
   <div class="row">
     <uib-accordion>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.locale">
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.locale">
         <uib-accordion-heading>
           Locales <small>Translation templates for simulation flow</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.locale, 'fa-chevron-right': !contentCreator.panel.locale}"></i>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.domain">
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.domain">
         <uib-accordion-heading>
           Domains <small>Tags according to the flow theme or subject</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.domain, 'fa-chevron-right': !contentCreator.panel.domain}"></i>
@@ -94,7 +94,7 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.task">
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.task">
         <uib-accordion-heading>
           Tasks <small>Tags according to the flow activity to complete</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.task, 'fa-chevron-right': !contentCreator.panel.task}"></i>
@@ -137,7 +137,7 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.stage">
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.stage">
         <uib-accordion-heading>
           Stages <small>Flow steps with some activity to complete</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.stage, 'fa-chevron-right': !contentCreator.panel.stage}"></i>
@@ -181,7 +181,7 @@
         </div>
       </div>
       <!--
-      <uib-accordion-group class="panel-default" is-open="contentCreator.panel.asset">
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.asset">
         <uib-accordion-heading>
           Assets
           <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.asset, 'fa-chevron-right': !contentCreator.panel.asset}"></i>

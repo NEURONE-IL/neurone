@@ -5,7 +5,7 @@
   <br>
   <div class="row">
     <uib-accordion>
-      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.question">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.question">
         <uib-accordion-heading>
           Questions <small>Individual form elements to be answered</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.question, 'fa-chevron-right': !formBuilder.panel.question}"></i>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <!--
-      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.domain">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.domain">
         <uib-accordion-heading>
           Domains <small>Tags according to the flow theme or subject</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.domain, 'fa-chevron-right': !formBuilder.panel.domain}"></i>
@@ -92,7 +92,7 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.task">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.task">
         <uib-accordion-heading>
           Tasks <small>Tags according to the flow activity to complete</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.task, 'fa-chevron-right': !formBuilder.panel.task}"></i>
@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <uib-accordion-group class="panel-default" is-open="formBuilder.panel.stage">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.stage">
         <uib-accordion-heading>
           Stages <small>Flow steps with some activity to complete</small>
           <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.stage, 'fa-chevron-right': !formBuilder.panel.stage}"></i>
