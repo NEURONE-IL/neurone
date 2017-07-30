@@ -2,9 +2,9 @@ import Utils from '../../utils/sharedUtils';
 
 import { FilesCollection } from 'meteor/ostrio:files';
 
-export const Templates = new FilesCollection({
-  collectionName: 'Templates',
-  storagePath: Utils.getAssetSubfolder('uploadedAssets/templates'),
+export const Modals = new FilesCollection({
+  collectionName: 'Modals',
+  storagePath: Utils.getAssetSubfolder('uploadedAssets/modals'),
   permissions: 0755,
   onBeforeUpload: (file) => {
     if (/html/i.test(file.extension)) {
@@ -17,7 +17,7 @@ export const Templates = new FilesCollection({
 });
 
 if (Meteor.isServer) {
-  Meteor.publish('templates', () => {
-    return Templates.find().cursor;
+  Meteor.publish('modals', () => {
+    return Modals.find().cursor;
   });
 }

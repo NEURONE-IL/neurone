@@ -5,6 +5,9 @@ import template from './contentCreator.html';
 
 import { FlowComponents } from '../../../database/flowComponents/index';
 import { Locales } from '../../../database/assets/locales';
+import { Modals } from '../../../database/assets/modals';
+import { Templates } from '../../../database/assets/templates';
+import { Images } from '../../../database/assets/images';
 
 class ContentCreator {
   constructor($scope, $reactive, ModalService) {
@@ -24,13 +27,19 @@ class ContentCreator {
 
     this.subscribe('flowcomponents');
     this.subscribe('locales');
+    this.subscribe('modals');
+    this.subscribe('templates');
+    this.subscribe('images');
 
     this.helpers({
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),
       tasks: () => FlowComponents.find({ type: 'task' }),
       stages: () => FlowComponents.find({ type: 'stage'}),
-      localeAssets: () => Locales.find().cursor
+      localeAssets: () => Locales.find().cursor,
+      modalAssets: () => Modals.find().cursor,
+      templateAssets: () => Templates.find().cursor,
+      imageAssets: () => Images.find().cursor
     });
 
     console.log('ContentCreator loaded!');
@@ -44,10 +53,7 @@ class ContentCreator {
         title: 'Add new locale',
         templateAsset: 'adminAssets/adminLocaleModal.html',
         buttonType: 'save',
-        bindToController: true,
-        functions: {
-          uploadLocale: () => {}
-        }
+        bindToController: true
       };
     }
     else if (type === 'domain') {
@@ -193,6 +199,9 @@ class ContentCreator {
     let targetCollection = {};
 
     if (type === 'locale') targetCollection = Locales;
+    else if (type === 'modal') targetCollection = Modals;
+    else if (type === 'template') targetCollection = Templates;
+    else if (type === 'image') targetCollection = Images;
     else return false;
 
     const uploader = targetCollection.insert({
@@ -219,18 +228,21 @@ class ContentCreator {
     let targetCollection = {};
 
     if (type === 'locale') targetCollection = Locales;
+    else if (type === 'modal') targetCollection = Modals;
+    else if (type === 'template') targetCollection = Templates;
+    else if (type === 'image') targetCollection = Images;
     else return false;
 
-    let targetFile = targetCollection.findOne(fileObj._id),
-          download = targetCollection.link(fileObj);
-
-    console.log(download);
+    return targetCollection.link(fileObj);
   }
 
   removeFile(fileObj, type) {
     let targetCollection = {};
 
     if (type === 'locale') targetCollection = Locales;
+    else if (type === 'modal') targetCollection = Modals;
+    else if (type === 'template') targetCollection = Templates;
+    else if (type === 'image') targetCollection = Images;
     else return false;
 
     targetCollection.remove(fileObj._id, (err, res) => {

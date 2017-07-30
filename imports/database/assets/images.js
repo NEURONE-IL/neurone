@@ -1,26 +1,23 @@
 import Utils from '../../utils/sharedUtils';
 
-/*
-const imagePath = Utils.getAssetSubfolder('uploadedAssets/images');
+import { FilesCollection } from 'meteor/ostrio:files';
 
-export const Images = new FS.Collection('images', {
-  stores: [ new FS.Store.FileSystem('images', { path: imagePath }) ]
+export const Images = new FilesCollection({
+  collectionName: 'Images',
+  storagePath: Utils.getAssetSubfolder('uploadedAssets/images'),
+  permissions: 0755,
+  onBeforeUpload: (file) => {
+    if (/jpg|png|gif/i.test(file.extension)) {
+      return true;
+    }
+    else {
+      return 'Invalid image format';
+    }
+  }
 });
 
 if (Meteor.isServer) {
-  Images.allow({
-    insert(userId, fileObj) {
-      return true;
-    },
-    update(userId, fileObj) {
-      return true;
-    },
-    remove(userId, fileObj) {
-      return true;
-    },
-    download() {
-      return true;
-    }
+  Meteor.publish('images', () => {
+    return Images.find().cursor;
   });
 }
-*/

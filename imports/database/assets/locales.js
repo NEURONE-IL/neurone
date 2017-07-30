@@ -21,19 +21,3 @@ if (Meteor.isServer) {
     return Locales.find().cursor;
   });
 }
-
-/*
-const localeStore = new FS.Store.FileSystem('locales', {
-  path: Utils.getAssetSubfolder('uploadedAssets/locales'),
-});
-
-export const Locales = new FS.Collection('locales', {
-  stores: [ localeStore ],
-  filter: {
-    allow: {
-      contentTypes: ['application/json'],
-      extensions: ['json']
-    }
-  }
-});
-*/
