@@ -1,5 +1,8 @@
 import path from 'path';
 
+const rootPath = path.resolve('.');
+const absolutePath = rootPath.split(path.sep + '.meteor')[0];
+
 export default class SharedUtils {
   static isTesting() {
     return Meteor.isTest || Meteor.isAppTest;
@@ -7,31 +10,31 @@ export default class SharedUtils {
 
   static getAssetPath() {
     if (this.isTesting()) {
-      return path.join(Meteor.rootPath);
+      return rootPath;
     }
     else {
       if (process.env.NEURONE_ASSET_PATH) {
         return process.env.NEURONE_ASSET_PATH;
       }
       else if (Meteor.isProduction || Meteor.isDevelopment) {
-        return path.join(Meteor.rootPath, '../web.browser/app/');
+        return path.join(rootPath, '../web.browser/app/');
       }
       else {
-        return path.join(Meteor.rootPath);
+        return path.join(rootPath);
       }
     }
   }
 
-  static getAssetSubfolder(folder) {
-    return path.join(this.getAssetPath(), folder);
+  static getAssetSubfolder(newPath) {
+    return path.join(this.getAssetPath(), newPath);
   }
 
   static getPublicFolder() {
     if (Meteor.isProduction || Meteor.isDevelopment) {
-      return path.join(Meteor.rootPath, '../web.browser/app/');
+      return path.join(rootPath, '../web.browser/app/');
     }
     else {
-      return path.join(Meteor.rootPath);
+      return path.join(rootPath);
     }
   }
 }

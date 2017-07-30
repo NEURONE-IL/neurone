@@ -11,7 +11,7 @@ import template from './modal.html';
 */
 
 class ModalCtrl {
-  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName, submitFn) {
+  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName, functions) {
     'ngInject';
 
     this.$uibModalInstance = $uibModalInstance;
@@ -21,7 +21,7 @@ class ModalCtrl {
     this.fields = customFields;
     this.buttonType = buttonType;
     this.buttonName = buttonName;
-    this.submitFn = submitFn;
+    this.functions = functions;
 
     this.showFooter = (this.buttonType === 'okcancel' || this.buttonType === 'nextstage' || this.buttonType === 'next' || this.buttonType === 'back' || this.buttonType === 'button' || this.buttonType === 'save');
     this.answers = this.fields.content || {};
@@ -40,6 +40,7 @@ class ModalCtrl {
     // dgacitua: Parse questions and answers from a standard form
     else if (this.form.$valid) {
       this.response.answers = this.answers;
+      this.response.files = this.files;
       this.$uibModalInstance.close(this.response);
     }
     else {
@@ -99,7 +100,7 @@ class ModalService {
     let buttonType = modalObject.buttonType || '';
     let buttonName = modalObject.buttonName || '';
     let modalSize = modalObject.size || 'lg';
-    let submitFn = modalObject.submitFn || null;
+    let functions = modalObject.functions || null;
 
     this.modal = this.$uibModal.open({
       template: template.default,
@@ -123,8 +124,8 @@ class ModalService {
         buttonName: () => {
           return buttonName;
         },
-        submitFn: () => {
-          return submitFn;
+        functions: () => {
+          return functions;
         }
       }
     });

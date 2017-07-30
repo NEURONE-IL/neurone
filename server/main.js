@@ -29,7 +29,7 @@ if (!Utils.isTesting()) {
   Meteor.startup(() => {
     console.log('Welcome to NEURONE Server Platform!');
     const assetPath = Utils.getAssetPath();
-    StaticServer.add('/', assetPath);
+    StaticServer.add('/assets', assetPath);
 
     // dgacitua: Start user presence monitor
     InstanceStatus.events.on('registerInstance', (id, record) => {

@@ -4,6 +4,7 @@ import Configs from '../../globalConfigs';
 import template from './contentCreator.html';
 
 import { FlowComponents } from '../../../database/flowComponents/index';
+import { Locales } from '../../../database/assets/locales';
 
 class ContentCreator {
   constructor($scope, $reactive, ModalService) {
@@ -22,12 +23,14 @@ class ContentCreator {
     };
 
     this.subscribe('flowcomponents');
+    this.subscribe('locales');
 
     this.helpers({
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),
       tasks: () => FlowComponents.find({ type: 'task' }),
-      stages: () => FlowComponents.find({ type: 'stage'})
+      stages: () => FlowComponents.find({ type: 'stage'}),
+      localeAssets: () => Locales.find().cursor
     });
 
     console.log('ContentCreator loaded!');
@@ -40,7 +43,11 @@ class ContentCreator {
       modalOpts = {
         title: 'Add new locale',
         templateAsset: 'adminAssets/adminLocaleModal.html',
-        buttonType: 'save'
+        buttonType: 'save',
+        bindToController: true,
+        functions: {
+          uploadLocale: () => {}
+        }
       };
     }
     else if (type === 'domain') {
@@ -71,13 +78,41 @@ class ContentCreator {
     if (!Utils.isEmptyObject(modalOpts) && !!type) {
       this.modal.openModal(modalOpts, (err, res) => {
         if (!err && res.answers) {
-          let newFlowComponent = res.answers;
-          newFlowComponent.type = type;
+          if (res.answers.files) {
+            let newFiles = angular.copy(res.answers.files);
+            let newFlowComponent = res.answers;
+            newFlowComponent.type = type;
+            delete newFlowComponent.files;
 
-          FlowComponents.insert(newFlowComponent, (err, res) => {
-            if (!err) console.log('Flow Component created!', type, res);
-            else console.error('Error while creating Flow Component!', err);
-          });
+            if (type === 'locale') {
+              Locales.insert(newFiles, (err, res) => {
+                if (!err) {
+                  FlowComponents.insert(newFlowComponent, (err, res) => {
+                    if (!err) console.log('Flow Component created!', type, res);
+                    else console.error('Error while creating Flow Component!', err);
+                  });
+                }
+                else {
+                  console.error('Error while uploading Locale!', err);
+                }
+              });
+            }
+            else {
+              FlowComponents.insert(newFlowComponent, (err, res) => {
+                if (!err) console.log('Flow Component created!', type, res);
+                else console.error('Error while creating Flow Component!', err);
+              });
+            }
+          }
+          else {
+            let newFlowComponent = res.answers;
+            newFlowComponent.type = type;
+
+            FlowComponents.insert(newFlowComponent, (err, res) => {
+              if (!err) console.log('Flow Component created!', type, res);
+              else console.error('Error while creating Flow Component!', err);
+            });
+          }
         }
       });
     }
@@ -154,27 +189,60 @@ class ContentCreator {
     });
   }
 
-  uploadFile() {
-    let modalOpts = {
-      title: 'Upload Asset',
-      templateAsset: 'admin/adminUploadModal.html',
-      buttonType: 'save',
-      size: 'md'
-    };
+  uploadFile(uploadedFile, type) {
+    let targetCollection = {};
 
-    this.modal.openModal(modalOpts, (err, res) => {
+    if (type === 'locale') targetCollection = Locales;
+    else return false;
+
+    const uploader = targetCollection.insert({
+      file: uploadedFile,
+      streams: 'dynamic',
+      chunkSize: 'dynamic'
+    }, false);
+
+    uploader.on('end', (err, fileObj) => {
       if (!err) {
-        console.log(res);
+        console.log('File uploaded!', type, fileObj._id, fileObj.name);
+        alert('File uploaded!');
+      }
+      else {
+        console.error('Error while uploading file!', err);
+        alert('Error while uploading file!');
       }
     });
+
+    uploader.start();
   }
 
-  loadContent() {
+  downloadFile(fileObj, type) {
+    let targetCollection = {};
 
+    if (type === 'locale') targetCollection = Locales;
+    else return false;
+
+    let targetFile = targetCollection.findOne(fileObj._id),
+          download = targetCollection.link(fileObj);
+
+    console.log(download);
   }
 
-  loadAssets() {
+  removeFile(fileObj, type) {
+    let targetCollection = {};
 
+    if (type === 'locale') targetCollection = Locales;
+    else return false;
+
+    targetCollection.remove(fileObj._id, (err, res) => {
+      if (!err) {
+        console.log('File removed!', type, fileObj._id, fileObj.name);
+        alert('File removed!');
+      }
+      else {
+        console.error('Error while removing file!', err);
+        alert('Error while removing file!');
+      }
+    });
   }
 }
 

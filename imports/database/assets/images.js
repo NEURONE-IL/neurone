@@ -1,7 +1,26 @@
 import Utils from '../../utils/sharedUtils';
 
-const Images = new FS.Collection('images', {
-  stores: [ new FS.Store.FileSystem('images', { path: Utils.getAssetSubfolder('uploadedAssets/images') }) ]
+/*
+const imagePath = Utils.getAssetSubfolder('uploadedAssets/images');
+
+export const Images = new FS.Collection('images', {
+  stores: [ new FS.Store.FileSystem('images', { path: imagePath }) ]
 });
 
-export default Images;
+if (Meteor.isServer) {
+  Images.allow({
+    insert(userId, fileObj) {
+      return true;
+    },
+    update(userId, fileObj) {
+      return true;
+    },
+    remove(userId, fileObj) {
+      return true;
+    },
+    download() {
+      return true;
+    }
+  });
+}
+*/

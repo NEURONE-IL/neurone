@@ -13,9 +13,18 @@
           <input id="code" class="form-control" type="text" placeholder="en-US" ng-model="modal.answers.properties.code" ng-required="true">
         </div>
       </div>
+      <div class="form-group form-group-fix">
+        <label for="code" class="col-xs-4 control-label">Locale Template</label>
+        <div class="col-xs-8">
+          <!--
+          <input type="file" ngf-select ng-model="modal.answers.files" name="file" ngf-accept="'application/json'" ng-required="true">
+          -->
+          <button class="btn btn-sm btn-primary" ngf-select ng-model="modal.files">
+            <i class="fa fa-upload"></i> Upload File
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <a href="examples/locale.html" target="_blank">Locale Template Example</a>
+    <p><a href="examples/locale.html" target="_blank">Locale Template Example</a></p>
   </div>
 </div>
