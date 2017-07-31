@@ -84,41 +84,13 @@ class ContentCreator {
     if (!Utils.isEmptyObject(modalOpts) && !!type) {
       this.modal.openModal(modalOpts, (err, res) => {
         if (!err && res.answers) {
-          if (res.answers.files) {
-            let newFiles = angular.copy(res.answers.files);
-            let newFlowComponent = res.answers;
-            newFlowComponent.type = type;
-            delete newFlowComponent.files;
+          let newFlowComponent = res.answers;
+          newFlowComponent.type = type;
 
-            if (type === 'locale') {
-              Locales.insert(newFiles, (err, res) => {
-                if (!err) {
-                  FlowComponents.insert(newFlowComponent, (err, res) => {
-                    if (!err) console.log('Flow Component created!', type, res);
-                    else console.error('Error while creating Flow Component!', err);
-                  });
-                }
-                else {
-                  console.error('Error while uploading Locale!', err);
-                }
-              });
-            }
-            else {
-              FlowComponents.insert(newFlowComponent, (err, res) => {
-                if (!err) console.log('Flow Component created!', type, res);
-                else console.error('Error while creating Flow Component!', err);
-              });
-            }
-          }
-          else {
-            let newFlowComponent = res.answers;
-            newFlowComponent.type = type;
-
-            FlowComponents.insert(newFlowComponent, (err, res) => {
-              if (!err) console.log('Flow Component created!', type, res);
-              else console.error('Error while creating Flow Component!', err);
-            });
-          }
+          FlowComponents.insert(newFlowComponent, (err, res) => {
+            if (!err) console.log('Flow Component created!', type, res);
+            else console.error('Error while creating Flow Component!', err);
+          });
         }
       });
     }
