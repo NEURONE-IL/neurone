@@ -9,6 +9,9 @@ import { Modals } from '../../../database/assets/modals';
 import { Templates } from '../../../database/assets/templates';
 import { Images } from '../../../database/assets/images';
 
+// dgacitua: Remember to load new states for stages in this array!
+const availableStages = ['instructions', 'affective', 'taskQuestions', 'tutorial', 'search', 'collection', 'criticalEval', 'synthesis', 'end'];
+
 class ContentCreator {
   constructor($scope, $reactive, ModalService) {
     'ngInject';
@@ -24,6 +27,8 @@ class ContentCreator {
       stage: false,
       asset: false
     };
+
+    this.availableStages = availableStages;
 
     this.subscribe('flowcomponents');
     this.subscribe('locales');
@@ -74,7 +79,13 @@ class ContentCreator {
       modalOpts = {
         title: 'Add new stage',
         templateAsset: 'adminAssets/adminStageModal.html',
-        buttonType: 'save'
+        buttonType: 'save',
+        fields: {
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
       };
     }
     else {
@@ -136,6 +147,10 @@ class ContentCreator {
         templateAsset: 'adminAssets/adminStageModal.html',
         buttonType: 'save',
         fields: {
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets,
           content: elementRef
         }
       };

@@ -1,6 +1,5 @@
 import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
-//import angularFileUpload from 'angular-file-upload';
 import ngCSV from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import RandomString from 'randomstring';
@@ -38,7 +37,6 @@ export default angular.module(name, [
   'ngSanitize',
   'truncate',
   'ngCsv',
-  //'angularFileUpload',
   'ngFileUpload',
   AdminHome,
   ContentCreator,

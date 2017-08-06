@@ -24,8 +24,10 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import angularMeteorAuth from 'angular-meteor-auth';
 import angularMeteorPromiser from 'angular-meteor-promiser';
+import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
+import uiSelect from 'ui-select';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
 
@@ -82,6 +84,8 @@ export default angular.module(name, [
   angularMeteor,
   angularMeteorAuth,
   'angular-meteor-promiser',
+  'ngSanitize',
+  'ui.select',
   uiRouter,
   uiBootstrap,
   angularTranslate,

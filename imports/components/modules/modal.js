@@ -33,15 +33,18 @@ class ModalCtrl {
     this.response.message = 'ok';
 
     // dgacitua: Parse questions and answers from NEURONE Forms Module
-    if (this.fields.questions && this.form.$valid) {
-      this.response.answers = this.parseAnswers(this.fields.questions);
-      this.$uibModalInstance.close(this.response);
+    if (this.fields.questions) {
+      if (this.form.$valid) {
+        this.response.answers = this.parseAnswers(this.fields.questions);
+        this.$uibModalInstance.close(this.response);  
+      }
     }
     // dgacitua: Parse questions and answers from a standard form
-    else if (this.form.$valid) {
-      this.response.answers = this.answers;
-      this.response.files = this.files;
-      this.$uibModalInstance.close(this.response);
+    else if (this.answers) {
+      if (this.form.$valid) {
+        this.response.answers = this.answers;
+        this.$uibModalInstance.close(this.response);  
+      }
     }
     else {
       this.$uibModalInstance.close(this.response);

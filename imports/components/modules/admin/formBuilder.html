@@ -48,10 +48,10 @@
           </div>
         </div>
       </div>
-      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.question">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.questionnaire">
         <uib-accordion-heading>
           Questionnaires <small>Groups of questions that can be loaded into the study</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.question, 'fa-chevron-right': !formBuilder.panel.question}"></i>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.questionnaire, 'fa-chevron-right': !formBuilder.panel.questionnaire}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
@@ -72,7 +72,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in formBuilder.questions track by $index">
+                <tr ng-repeat="content in formBuilder.questionnaires track by $index">
                   <td>{{ content._id }}</td>
                   <td>{{ content.questionnaireId }}</td>
                   <td>{{ content.instructions }}</td>
@@ -91,10 +91,10 @@
           </div>
         </div>
       </div>
-      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.question">
+      <div uib-accordion-group class="panel-default" is-open="formBuilder.panel.synthesis">
         <uib-accordion-heading>
           Synthesis <small>Proposed activities for the Synthesis stage</small>
-          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.question, 'fa-chevron-right': !formBuilder.panel.question}"></i>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': formBuilder.panel.synthesis, 'fa-chevron-right': !formBuilder.panel.synthesis}"></i>
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
@@ -114,7 +114,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="content in formBuilder.questions track by $index">
+                <tr ng-repeat="content in formBuilder.synthesis track by $index">
                   <td>{{ content._id }}</td>
                   <td>{{ content.synthesisId }}</td>
                   <td>{{ content.question }}</td>

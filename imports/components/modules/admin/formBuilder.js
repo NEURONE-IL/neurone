@@ -35,49 +35,52 @@ class FormBuilder {
   }
 
   addModal(type) {
-    let modalOpts = {};
+    let targetCollection = {},
+               modalOpts = {};
 
     if (type === 'question') {
       modalOpts = {
-        title: 'Add new locale',
-        templateAsset: 'admin/adminLocaleModal.html',
-        buttonType: 'save'
+        title: 'Add new question',
+        templateAsset: 'adminAssets/adminQuestionModal.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: 'paragraph' }
+        }
       };
+
+      targetCollection = FormQuestions;
     }
-    else if (type === 'domain') {
+    else if (type === 'questionnaire') {
       modalOpts = {
-        title: 'Add new domain',
-        templateAsset: 'admin/adminDomainModal.html',
+        title: 'Add new questionnaire',
+        templateAsset: 'adminAssets/adminQuestionnaireModal.html',
         buttonType: 'save'
       };
+
+      targetCollection = FormQuestionnaires;
     }
-    else if (type === 'task') {
+    else if (type === 'synthesis') {
       modalOpts = {
-        title: 'Add new task',
-        templateAsset: 'admin/adminTaskModal.html',
+        title: 'Add new synthesis',
+        templateAsset: 'adminAssets/adminSynthesisModal.html',
         buttonType: 'save'
       };
-    }
-    else if (type === 'stage') {
-      modalOpts = {
-        title: 'Add new stage',
-        templateAsset: 'admin/adminStageModal.html',
-        buttonType: 'save'
-      };
+
+      targetCollection = SynthesisQuestions;
     }
     else {
       console.error('Invalid content option!');
+      return false;
     }
 
     if (!Utils.isEmptyObject(modalOpts) && !!type) {
       this.modal.openModal(modalOpts, (err, res) => {
         if (!err && res.answers) {
-          let newFlowComponent = res.answers;
-          newFlowComponent.type = type;
-
-          FlowComponents.insert(newFlowComponent, (err, res) => {
-            if (!err) console.log('Flow Component created!', type, res);
-            else console.error('Error while creating Flow Component!', err);
+          let newQuestion = res.answers;
+          
+          targetCollection.insert(newQuestion, (err, res) => {
+            if (!err) console.log('Question Element created!', type, res);
+            else console.error('Error while creating Question Element!', err);
           });
         }
       });
@@ -85,73 +88,77 @@ class FormBuilder {
   }
 
   editModal(type, element) {
-    let modalOpts = {};
-    let elementRef = angular.copy(element);
+    let targetCollection = {},
+               modalOpts = {},
+              elementRef = angular.copy(element);
+    
+    if (type === 'question') {
+      modalOpts = {
+        title: 'Add new question',
+        templateAsset: 'adminAssets/adminQuestionModal.html',
+        buttonType: 'save',
+        fields: {
+          content: elementRef
+        }
+      };
 
-    if (type === 'locale') {
-      modalOpts = {
-        title: 'Edit locale',
-        templateAsset: 'admin/adminLocaleModal.html',
-        buttonType: 'save',
-        fields: {
-          content: elementRef
-        }
-      };
+      targetCollection = FormQuestions;
     }
-    else if (type === 'domain') {
+    else if (type === 'questionnaire') {
       modalOpts = {
-        title: 'Edit domain',
-        templateAsset: 'admin/adminDomainModal.html',
+        title: 'Add new questionnaire',
+        templateAsset: 'adminAssets/adminQuestionnaireModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
+
+      targetCollection = FormQuestionnaires;
     }
-    else if (type === 'task') {
+    else if (type === 'synthesis') {
       modalOpts = {
-        title: 'Edit task',
-        templateAsset: 'admin/adminTaskModal.html',
+        title: 'Add new synthesis',
+        templateAsset: 'adminAssets/adminSynthesisModal.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-    }
-    else if (type === 'stage') {
-      modalOpts = {
-        title: 'Edit stage',
-        templateAsset: 'admin/adminStageModal.html',
-        buttonType: 'save',
-        fields: {
-          content: elementRef
-        }
-      };
+
+      targetCollection = SynthesisQuestions;
     }
     else {
       console.error('Invalid content option!');
+      return false;
     }
 
     if (!Utils.isEmptyObject(modalOpts) && !!type && !!element) {
       this.modal.openModal(modalOpts, (err, res) => {
         if (!err && res.answers) {
-          let editedFlowComponent = res.answers;
-          editedFlowComponent.type = type;
-          delete editedFlowComponent._id;
+          let editedQuestion = res.answers;
+          delete editedQuestion._id;
 
-          FlowComponents.update(element._id, { $set: editedFlowComponent }, (err, res) => {
-            if (!err) console.log('Flow Component edited!', type, res);
-            else console.error('Error while editing Flow Component!', err);
+          targetCollection.update(element._id, { $set: editedQuestion }, (err, res) => {
+            if (!err) console.log('Question Element edited!', type, res);
+            else console.error('Error while editing Question Element!', err);
           });
         }
       });
     }
   }
 
-  removeModal(element) {
-    FlowComponents.remove(element._id, (err, res) => {
-      if (!err) console.log('Flow Component removed!', type, res);
-      else console.error('Error while removing Flow Component!', err);
+  removeModal(type, element) {
+    let targetCollection = {};
+
+    if (type === 'question') targetCollection = FormQuestions;
+    else if (type === 'questionnaire') targetCollection = FormQuestionnaires;
+    else if (type === 'synthesis') targetCollection = SynthesisQuestions;
+    else return false;
+
+    targetCollection.remove(element._id, (err, res) => {
+      if (!err) console.log('Question Element removed!');
+      else console.error('Error while removing Question Element!', err);
     });
   }
 }

@@ -51,6 +51,7 @@
     "sha": "^2.0.1",
     "solr-node": "^1.0.13",
     "sum": "^0.1.4",
+    "ui-select": "^0.19.8",
     "uppercamelcase": "^1.1.0",
     "useragent": "^2.1.9",
     "website-scraper": "^3.1.0",
