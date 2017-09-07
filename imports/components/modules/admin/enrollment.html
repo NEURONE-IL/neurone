@@ -1,5 +1,9 @@
 <div class="container-fluid">
   <div class="row">
+    The NEURONE User Enrollment module allows the researcher to create user accounts for its own studies. Every user account is tied to a single Study Flow. In case of need to run multiple flows on each student, create multiple acounts for each one.
+  </div>
+  <br>
+  <div class="row">
     <form name="enrollment.form">
       <div class="col-md-9">
         <div class="form-inline admin-row-spacing">
@@ -8,6 +12,7 @@
             <option value="true">TestAccount</option>
             <option value="false">RealAccount</option>
           </select>
+          <!--
           <select class="form-control" ng-model="enrollment.domain" ng-required="true">
             <option value="">-- SearchDomain --</option>
             <option value="SS">SocialScience</option>
@@ -18,6 +23,14 @@
             <option value="">-- TaskType --</option>
             <option value="E">Email</option>
             <option value="A">Article</option>
+            <option value="P">Pilot</option>
+          </select>
+          -->
+          <select class="form-control" ng-model="enrollment.flow" ng-required="true">
+            <option value="">-- StudyFlow --</option>
+            <option value="E">Email</option>
+            <option value="A">Article</option>
+            <option value="P">Pilot</option>
             <option value="P">Pilot</option>
           </select>
           <select class="form-control" ng-model="enrollment.studyStage" ng-required="true">

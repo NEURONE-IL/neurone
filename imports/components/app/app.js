@@ -152,6 +152,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
     //console.log(event, toState, toParams, error);
     if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
+    if (error === 'NO_ADMIN') $state.go('start');
   });
 
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams, error) => {

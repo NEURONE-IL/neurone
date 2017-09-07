@@ -66,8 +66,8 @@ class Enrollment {
           university: this.university,  // [one-digit Integer] University Code
           school: this.school,          // [two-digit Integer] School Code
           class: this.class,              // [Char] Class number code
-          domain: this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
-          task: this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
+          domain: 'SS',//this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
+          task: 'E',//this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
           studyStage: this.studyStage,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
           studyOrder: this.studyOrder,  // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
           userId: id,                   // [four-digit Integer] User Id

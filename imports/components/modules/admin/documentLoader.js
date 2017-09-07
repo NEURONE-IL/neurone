@@ -56,6 +56,10 @@ class DocumentLoader {
       this.state = 'error';
     }
   }
+
+  previewDocument() {
+    // TODO
+  }
 }
 
 const name = 'documentLoader';

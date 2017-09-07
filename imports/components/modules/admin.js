@@ -27,6 +27,23 @@ class Admin {
     this.uds = UserDataService;
     this.auth = AuthService;
 
+    $scope.$on('$stateChangeStart', (event) => {
+      this.uds.setSession({
+        readyButton: false,
+        standbyMode: false,
+        statusMessage: ''
+      }, (err, res) => {});
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.uds.setSession({
+        readyButton: false,
+        standbyMode: true,
+        statusMessage: '',
+        stageHome: 'start'
+      }, (err, res) => {});
+    });
+
     $reactive(this).attach($scope);
   }
 }
@@ -98,8 +115,8 @@ function config($stateProvider) {
               dfr = uds.ready();
 
           return dfr.then((res) => {
-            if (uds.getRole() !== 'researcher') return $q.reject('WRONG_STAGE');
-            else return $q.resolve();
+            if (uds.getRole() === 'researcher') return $q.resolve();
+            else return $q.reject('NO_ADMIN');
           });
         }
       }

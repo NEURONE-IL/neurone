@@ -12,8 +12,8 @@ import { Documents } from '../../imports/database/documents/index';
 
 const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36';
 
-const dirName = 'downloadedDocs';
-const downloadDir = path.join(Utils.getAssetPath(), dirName);
+const dirName = path.join('assets', 'downloadedDocs');
+const downloadDir = path.join(Utils.getAssetPath(), 'downloadedDocs');
 
 const errorObj = { msg: 'ERROR!' };
 

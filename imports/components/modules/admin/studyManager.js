@@ -65,6 +65,24 @@ class StudyManager {
 
       targetCollection = FlowComponents;
     }
+    else if (type === 'flow') {
+      modalOpts = {
+        title: 'Add new study flow',
+        templateAsset: 'adminAssets/adminFlowModal.html',
+        buttonType: 'save',
+        fields: {
+          locales: this.locales,
+          domains: this.domains,
+          tasks: this.tasks,
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
+      };
+
+      targetCollection = FlowComponents;
+    }
     else {
       console.error('Invalid content option!');
       return false;
