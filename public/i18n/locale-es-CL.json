@@ -1,0 +1,217 @@
+{
+  "app": {
+    "pageTitle": "NEURONE",
+    "navbarTitle": "NEURONE",
+    "toggleNav": "Barra de navegación",
+    "search": "Buscar",
+    "documents": "Documentos",
+    "showcase": "Portafolio",
+    "visitedLinks": "Enlaces Visitados",
+    "snippets": "Fragmentos",
+    "bookmarks": "Marcadores",
+    "i18n": "Internacionalización",
+    "forms": "Formularios",
+    "synthesis": "Síntesis",
+    "flow": "Flujo",
+    "searchResults": "Resultados de búsqueda",
+    "documentList": "Lista de documentos",
+    "enrollment": "Inscripción masiva"
+  },
+  "nav": {
+    "tutorialButton": "Tutorial",
+    "tipsButton": "Consejos",
+    "taskButton": "Tarea",
+    "readyButton": "¡Listo!",
+    "backButton": "Volver a la búsqueda",
+    "bookmarkList": "Lista de marcadores",
+    "selectedPages": "Has seleccionado {{bookmarks}} marcador(es)",
+    "snippetCount": "Has seleccionado {{words}} palabra(s)",
+    "snippetButton": "Guardar fragmento",
+    "bookmarkButton": "Marcar",
+    "unbookmarkButton": "Desmarcar",
+    "taskResults": "Resultado de la tarea"
+  },
+  "auth": {
+    "registerButton": "Registrarse",
+    "loginButton": "Ingresar",
+    "logoutButton": "Cerrar sesión",
+    "registerMessage": "Registrarse en NEURONE",
+    "loginMessage": "Ingresar en NEURONE",
+    "email": "Email",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "identity": "Nombre Completo",
+    "required": "Campo requerido",
+    "emailPlaceholder": "Ingresa tu email",
+    "usernamePlaceholder": "Ingresa tu usuario",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "identityPlaceholder": "Ingresa tu nombre completo",
+    "studentRole": "Estudiante",
+    "experimenterRole": "Profesor"
+  },
+  "home": {
+    "welcome": "Bienvenido a NEURONE!",
+    "acronym": "oNlinE inqUiRy experimentatiON systEm",
+    "instructions1": "Por favor regístrate e ingresa con el nombre de tu usuario"
+  },
+  "start": {
+    "beginButton": "Empezar",
+    "instructions1": "Presiona el botón Empezar para inciar (o continuar)",
+    "idea": "Idea {{number}}",
+    "ideaPlaceholder": "¡Escríbe tu idea aquí!"
+  },
+  "search": {
+    "searchEngineTitle": "Mi motor de búsqueda",
+    "searchButton": "Buscar",
+    "searchPlaceholder": "Ingresa el texto para comenzar",
+    "noResults": "Su búsqueda no coincide con ningún resultado",
+    "loading": "Cargando resultados..."
+  },
+  "showcase": {
+    "documentList": "Lista de documentos",
+    "visitedLinksList": "Lista de enlaces",
+    "snippetsList": "Lista de fragmentos",
+    "bookmarksList": "Lista de marcadores"
+  },
+  "alerts": {
+    "error": "Undefined Error",
+    "snippetError": "Error while processing Snippet",
+    "bookmarkError": "Error while processing Bookmark",
+    "snippetSaved": "Snippet saved!",
+    "snippetRemoved": "Snippet removed!",
+    "bookmarkSaved": "Bookmark saved!",
+    "bookmarkRemoved": "Bookmark removed!"
+  },
+  "form": {
+    "title": "Cuestionario",
+    "instructions": "Ahora debes responder unas preguntas",
+    "requiredAnswer": "Respuesta requerida",
+    "submitButton": "Enviar",
+    "submitted": "Tus respuestas han sido enviadas",
+    "submittedError": "¡Un error ha ocurrido!"
+  },
+  "snippet": {
+    "page": "Página {{pageNum}}"
+  },
+  "synthesis": {
+    "title": "Síntesis",
+    "submitButton": "Enviar",
+    "saved": "Tu respuesta está siendo guardada...",
+    "submitted": "Tu respuesta ha sido enviada",
+    "error": "¡Un error ha ocurrido!",
+    "snippets": "Tus fragmentos",
+    "bookmarks": "Tus marcadores",
+    "closeButton": "Cerrar",
+    "snippetModalTitle": "Tu fragmento",
+    "bookmarkModalTitle": "Tu marcador",
+    "allPages": "Todo",
+    "page": "Página {{pageNum}}",
+    "snippet": "Fragmento {{snipNum}} - Página {{pageNum}}",
+    "snippetAll": "Fragmento {{snipNum}}",
+    "allTitle": "Todas las páginas",
+    "wordCount": "Has escrito {{words}} palabra(s)"
+  },
+  "modal": {
+    "closeButton": "Cerrar",
+    "nextStageButton": "Siguiente etapa",
+    "goBackButton": "Atrás",
+    "acceptButton": "Aceptar",
+    "cancelButton": "Cancelar",
+    "nextButton": "Siguiente",
+    "goodDocument": "¡Excelente página!",
+    "badDocument": "Página regular",
+    "documentsFound": "¡Has encontrado {{goodPages}} buena(s) página(s)!",
+    "currentScore": "Tu puntuación es {{stars}} estrella(s)",
+    "nextStageInstructions": "Ahora puedes ir a la siguiente etapa",
+    "goBackInstructions": "¡Vuelve y sigue buscando!",
+    "timeWarning": "¡Te has quedado sin tiempo!",
+    "confirmChanges": "¿Estás seguro de que quieres continuar con la siguiente etapa?",
+    "keepSearching": "Sigue buscando mejores páginas",
+    "timeup": {
+      "title": "Continuar a la siguiente etapa",
+      "instruction": "¿Estás seguro de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
+    },
+    "confirm": {
+      "title": "Continuar a la siguiente etapa",
+      "instruction": "¿Estás seguro de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
+    },
+    "logout": {
+      "title": "Cerrar sesión",
+      "confirm": "¿Estás seguro de que deseas cerrar la sesión?",
+      "action": "Saliendo de NEURONE"
+    }
+  },
+  "hints": {
+    "neuroneButton": "Si te pierdes, presiona el botón NEURONE para llegar a la página principal de tu tarea actual",
+    "taskButton": "¡Recuerda hacer clic en el botón Tarea para ver tu asignación!",
+    "tutorialButton": "¡Recuerda hacer clic en el botón Tutorial para obtener ayuda sobre cómo completar tu tarea!",
+    "tipsButton": "¡Recuerda hacer clic en el botón Consejos para obtener algunas sugerencias para tu tarea!"
+  },
+  "tutorial": {
+    "tryNow": "Ahora es tu momento para intentarlo",
+    "stage0": {
+      "i1": "Escribe una frase que creas que será una buena consulta de búsqueda."
+    },
+    "stage1": {
+      "i1": "Escribe una frase para buscar en el cuadro y haz clic en Buscar",
+      "i2": "Selecciona una página de la lista de resultados y haz clic en el título para abrirla",
+      "i3": "Mientras estás adentro de una página, haz clic en Marcar para guardar la página para referencia futura o haz clic en Desmarcar para quitar la página de tu lista de marcadores",
+      "i4": "La lista de marcadores almacena tus marcadores guardados",
+      "ex_2a": "Mi página web",
+      "ex_2b": "www.mipaginaweb.com",
+      "ex_2c": "¡Este es un sitio web muy relevante!"
+    },
+    "stage2": {
+      "i1": "Haz clic en las pestañas para cargar una página de tu lista de marcadores",
+      "i2": "¡Recuerda responder las preguntas para cada página!",
+      "i3": "Selecciona un texto de la página y haz clic en el botón Guardar fragmento para guardar un texto relevante",
+      "i4": "Puedes volver a visitar o eliminar tu fragmento si lo deseas",
+      "ex_2a": "¿Qué tan creíble es esta página?",
+      "ex_2b": "¿Por qué piensas eso?",
+      "ex_4a": "¡Soy un fragmento! ¡Haz clic en mí!"
+    },
+    "stage3": {
+      "i1": "Escribe tu respuesta en el campo de abajo (¡puedes diseñarlo!)",
+      "i2": "Puedes visitar tus fragmentos haciendo clic en las pestañas",
+      "i3": "Puedes recuperar la página de donde proviene un fragmento haciendo clic en el fragmento",
+      "ex_3a": "¡Soy un fragmento! ¡Haz clic en mí!"
+    },
+    "general": {
+      "i1": "Hola, el tutorial estará disponible sólo durante la realización de la tarea. Pruébalo más tarde si lo necesitas."
+    },
+    "email": {
+      "title": "Mi email",
+      "inbox": "Bandeja de entrada",
+      "drafts": "Borradores",
+      "sent": "Enviados",
+      "allMail": "Todos",
+      "from": "De",
+      "to": "Para",
+      "subject": "Asunto"
+    }
+  },
+  "end": {
+    "t1": "¡Has completado la tarea!",
+    "t2": "¡Gracias por unirte a nosotros!"
+  },
+  "timeout": {
+    "search1": "¡Genial! Encontraste las tres páginas que te ayudarán a resolver la tarea. Tienes estrellas completas. Ahora puedes avanzar.",
+    "search2": "Hiciste un buen trabajo, pero no encontraste todas las páginas que necesitas en el trabajo. Es por eso que acabas de obtener {{stars}} estrellas. Aún te queda tiempo para seguir buscando. Te ayudaré borrando las páginas que no son útiles para el trabajo.",
+    "search3": "Tiempo para buscar páginas ha terminado. Desafortunadamente, no encontraste todas las páginas necesarias, por lo que sólo tienes {{stars}} estrellas. No te preocupes, ya que te las daré cuando las necesites.",
+    "general": "Tiempo fuera. Ahora puedes avanzar.",
+    "alert": "{{time}} minutos restantes"
+  },
+  "sam": {
+    "avatar_d1": "Hola! Bienvenido y gracias por tu tiempo. Mi nombre es {{avatar}}. ¿Cómo te sientes ahora?",
+    "avatar_d2": "Ya veo. ¿Y qué tan tranquilo o ansioso dirías que estás en este momento?",
+    "avatar_d3": "¡Ok! Estamos listos para empezar. Haz clic en el botón \"Listo\" para continuar",
+    "user_d1": "Estoy sintiendo",
+    "user_d2": "Yo estoy",
+    "instructions1": "A continuación encontrarás una lista de emoticones que representan sentimientos positivos y negativos. La extrema izquierda y la extrema derecha indican sentimientos muy fuertes. Por favor, selecciona la que expresa cómo te sientes ahora mismo.",
+    "instructions2": "A continuación encontrarás una lista de emoticones que representan los niveles de ansiedad y tranquilidad. La extrema izquierda y la extrema derecha indican sentimientos muy fuertes. Por favor, selecciona la que expresa cómo te sientes ahora mismo.",
+    "positive_less": "Negativo",
+    "positive_more": "Positivo",
+    "calm_less": "Ansioso",
+    "calm_more": "Calmado"
+  }
+}
