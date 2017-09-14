@@ -26,7 +26,7 @@ before_script:
   - "ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts"
 
 script:
-  - meteor npm run test
+  - meteor npm run unittest
   - meteor npm run apptest
 
 #deploy:
