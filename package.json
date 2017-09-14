@@ -6,11 +6,12 @@
   "license": "AGPL-3.0",
   "private": true,
   "scripts": {
-    "start": "meteor",
-    "test": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
-    "test:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
+    "start": "./scripts/deploy-dev.sh",
+    "test": "./scripts/test.sh",
+    "unittest": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
+    "unittest-watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
     "apptest": "TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --once --driver-package dispatch:mocha",
-    "apptest:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --driver-package dispatch:mocha"
+    "apptest-watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --driver-package dispatch:mocha"
   },
   "dependencies": {
     "angular": "1.5.9",

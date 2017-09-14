@@ -32,6 +32,6 @@ script:
 #deploy:
 #  skip_cleanup: true
 #  provider: script
-#  script: ./.deploy/customDeploy.sh
+#  script: ./scripts/deploy-travis.sh
 #  on:
 #    branch: master
