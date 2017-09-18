@@ -31,9 +31,11 @@ class DocumentManager {
       else console.error('Cannot delete document!', docId, err);
     });
     */
-    Documents.remove(doc._id, (err, res) => {
-      if (!err) console.log('Document deleted!', docId);
-      else console.error('Cannot delete document!', docId, err);
+    let deletedDoc = angular.copy(doc);
+
+    Documents.remove(deletedDoc._id, (err, res) => {
+      if (!err) console.log('Document deleted!', deletedDoc.docId);
+      else console.error('Cannot delete document!', deletedDoc.docId, err);
     });
   }
 }

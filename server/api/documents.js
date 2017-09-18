@@ -42,6 +42,24 @@ Meteor.methods({
       throw new Meteor.Error(573, 'The server cannot fetch document from web', err);
     }
   },
+  previewDocument: function(documentObj) {
+    try {
+      if (this.userId) {
+        check(documentObj, Object);
+
+        let asyncCall = Meteor.wrapAsync(DocumentDownloader.preview),
+              preview = asyncCall(documentObj);
+
+        return preview;  
+      }
+      else {
+        throw new Meteor.Error(599, 'User is not logged in!');
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error(573, 'The server cannot preview document from web', err);
+    }
+  },
   listAllDocuments: function() {
     try {
       if (this.userId) {
