@@ -44,7 +44,7 @@ class FormBuilder {
         templateAsset: 'adminAssets/adminQuestionModal.html',
         buttonType: 'save',
         fields: {
-          content: { type: 'paragraph' }
+          content: { type: 'text' }
         }
       };
 
@@ -160,6 +160,140 @@ class FormBuilder {
       if (!err) console.log('Question Element removed!');
       else console.error('Error while removing Question Element!', err);
     });
+  }
+
+  addQuestion(questionType) {
+    let targetCollection = {},
+               modalOpts = {};
+
+    if (questionType === 'text') {
+      modalOpts = {
+        title: 'Add new text question',
+        templateAsset: 'adminAssets/adminQuestionModals/text.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'paragraph') {
+      modalOpts = {
+        title: 'Add new paragraph question',
+        templateAsset: 'adminAssets/adminQuestionModals/paragraph.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'multipleChoice') {
+      modalOpts = {
+        title: 'Add new multiple choice question',
+        templateAsset: 'adminAssets/adminQuestionModals/multipleChoice.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'checkbox') {
+      modalOpts = {
+        title: 'Add new checkbox question',
+        templateAsset: 'adminAssets/adminQuestionModals/checkbox.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'list') {
+      modalOpts = {
+        title: 'Add new list question',
+        templateAsset: 'adminAssets/adminQuestionModals/list.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'scale') {
+      modalOpts = {
+        title: 'Add new scale question',
+        templateAsset: 'adminAssets/adminQuestionModals/scale.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'rating') {
+      modalOpts = {
+        title: 'Add new rating question',
+        templateAsset: 'adminAssets/adminQuestionModals/rating.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'date') {
+      modalOpts = {
+        title: 'Add new date question',
+        templateAsset: 'adminAssets/adminQuestionModals/date.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else if (questionType === 'time') {
+      modalOpts = {
+        title: 'Add new text question',
+        templateAsset: 'adminAssets/adminQuestionModals/time.html',
+        buttonType: 'save',
+        fields: {
+          content: { type: questionType }
+        }
+      };
+
+      targetCollection = FormQuestions;
+    }
+    else {
+      console.error('Invalid question type!');
+      return false;
+    }
+
+    if (!Utils.isEmptyObject(modalOpts) && !!questionType) {
+      this.modal.openModal(modalOpts, (err, res) => {
+        if (!err && res.answers) {
+          let newQuestion = res.answers;
+
+          targetCollection.insert(newQuestion, (err, res) => {
+            if (!err) console.log('Question created!', questionType, res);
+            else console.error('Error while creating Question Element!', err);
+          });
+        }
+      });
+    }
+  }
+
+  editQuestion(questionType) {
   }
 }
 

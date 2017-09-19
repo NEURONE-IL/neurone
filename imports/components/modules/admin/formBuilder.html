@@ -12,8 +12,32 @@
         </uib-accordion-heading>
         <div class="container-fluid">
           <div class="row">
-            <button class="btn btn-sm btn-success" ng-click="formBuilder.addModal('question')">
-              <i class="fa fa-plus-circle"></i> Add Question
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('text')">
+              <i class="fa fa-plus-circle"></i> Add Text
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('paragraph')">
+              <i class="fa fa-plus-circle"></i> Add Paragraph
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('multipleChoice')">
+              <i class="fa fa-plus-circle"></i> Add Mutiple Choice
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('checkbox')">
+              <i class="fa fa-plus-circle"></i> Add Checkbox
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('list')">
+              <i class="fa fa-plus-circle"></i> Add List
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('scale')">
+              <i class="fa fa-plus-circle"></i> Add Scale
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('rating')">
+              <i class="fa fa-plus-circle"></i> Add Rating
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('date')">
+              <i class="fa fa-plus-circle"></i> Add Date
+            </button>
+            <button class="btn btn-sm btn-success" ng-click="formBuilder.addQuestion('time')">
+                <i class="fa fa-plus-circle"></i> Add Time
             </button>
           </div>
           <br>

@@ -89,16 +89,17 @@ class ModalCtrl {
 }
 
 class ModalService {
-  constructor($uibModal) {
+  constructor($uibModal, $templateCache) {
     'ngInject';
 
     this.modal = {};
     this.$uibModal = $uibModal;
+    this.$templateCache = $templateCache;
   }
 
   openModal(modalObject, callback) {
     let contentTitle = modalObject.title || '';
-    let contentTemplate = modalObject.templateAsset || '';
+    let contentTemplate = this.resolveTemplate(modalObject);
     let contentFields = modalObject.fields || {};
     let buttonType = modalObject.buttonType || '';
     let buttonName = modalObject.buttonName || '';
@@ -139,6 +140,20 @@ class ModalService {
     (dismissResponse) => {
       callback(null, { message: 'dismiss' });
     });
+  }
+
+  resolveTemplate(modalObject) {
+    if (!!modalObject.templateString) {
+      // TODO test template strings for modals
+      this.$templateCache.put('myModalTemplate', modalObject.templateString);
+      return "'myModalTemplate'";
+    }
+    else if (!!modalObject.templateAsset) {
+      return modalObject.templateAsset;
+    }
+    else {
+      return '';
+    }
   }
 }
 

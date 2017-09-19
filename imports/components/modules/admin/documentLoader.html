@@ -27,25 +27,59 @@
         <div class="form-group">
           <label for="locale" class="col-md-4 control-label">Locale Code</label>
           <div class="col-md-8">
+            <multiselect
+              id="locale"
+              ng-model="documentLoader.locale"
+              options="documentLoader.locales"
+              id-prop="properties.code"
+              display-prop="name"
+              selection-limit="1"
+              show-search="true"
+              ng-required="true">
+            </multiselect>
+            <!--
             <input id="locale" class="form-control" type="text" placeholder="en" ng-model="documentLoader.locale" ng-required="true">
+            -->
           </div>
         </div>
         <div class="form-group">
           <label for="domain" class="col-md-4 control-label">Domain</label>
           <div class="col-md-8">
+            <multiselect
+              id="domain"
+              ng-model="documentLoader.domain"
+              options="documentLoader.domains"
+              id-prop="properties.code"
+              display-prop="name"
+              show-search="true"
+              ng-required="true">
+            </multiselect>
+            <!--
             <input id="domain" class="form-control" type="text" placeholder="science" ng-model="documentLoader.domain" ng-required="true">
+            -->
           </div>
         </div>
         <div class="form-group">
           <label for="task" class="col-md-4 control-label">Task</label>
           <div class="col-md-8">
+            <multiselect
+              id="task"
+              ng-model="documentLoader.task"
+              options="documentLoader.tasks"
+              id-prop="properties.code"
+              display-prop="name"
+              show-search="true"
+              ng-required="true">
+            </multiselect>
+            <!--
             <input id="task" class="form-control" type="text" placeholder="article" ng-model="documentLoader.task" ng-required="true">
+            -->
           </div>
         </div>
         <div class="form-group">
-          <label for="task" class="col-md-4 control-label">Keywords</label>
+          <label for="keyword" class="col-md-4 control-label">Keywords</label>
           <div class="col-md-8">
-            <input id="task" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="documentLoader.keywords">
+            <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="documentLoader.keywords">
           </div>
         </div>
         <div class="form-group">

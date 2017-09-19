@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <uib-tabset active="modal.answers.type" justified="true">
-      <uib-tab index="text" heading="Text">
+      <uib-tab index="text" heading="Text" select="setAnswerType('text')">
         <br>
         <div class="form-horizontal">
           <div class="form-group form-group-fix">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </uib-tab>
-      <uib-tab index="paragraph" heading="Paragraph">
+      <uib-tab index="paragraph" heading="Paragraph" select="setAnswerType('paragraph')">
         <br>
         <div class="form-horizontal">
           <div class="form-group form-group-fix">
@@ -53,19 +53,19 @@
           </div>
         </div>
       </uib-tab>
-      <uib-tab index="multipleChoice" heading="MultipleChoice">
+      <uib-tab index="multipleChoice" heading="MultipleChoice" select="setAnswerType('multipleChoice')">
       </uib-tab>
-      <uib-tab index="checkbox" heading="Checkbox">
+      <uib-tab index="checkbox" heading="Checkbox" select="setAnswerType('checkbox')">
       </uib-tab>
-      <uib-tab index="list" heading="List">
+      <uib-tab index="list" heading="List" select="setAnswerType('list')">
       </uib-tab>
-      <uib-tab index="date" heading="Date">
+      <uib-tab index="date" heading="Date" select="setAnswerType('date')">
       </uib-tab>
-      <uib-tab index="time" heading="Time">
+      <uib-tab index="time" heading="Time" select="setAnswerType('time')">
       </uib-tab>
-      <uib-tab index="scale" heading="Scale">
+      <uib-tab index="scale" heading="Scale" select="setAnswerType('scale')">
       </uib-tab>
-      <uib-tab index="rating" heading="Stars">
+      <uib-tab index="rating" heading="Rating" select="setAnswerType('rating')">
       </uib-tab>
     </uib-tabset>
   </div>
