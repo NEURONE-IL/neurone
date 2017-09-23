@@ -7,11 +7,45 @@
     <form name="enrollment.form">
       <div class="col-md-9">
         <div class="form-inline admin-row-spacing">
-          <select class="form-control" ng-model="enrollment.testAct" ng-required="true">
-            <option value="">-- AccountType --</option>
-            <option value="true">TestAccount</option>
-            <option value="false">RealAccount</option>
-          </select>
+          <label class="control-label">
+            UserLocale
+            <multiselect
+              id="locale"
+              ng-model="enrollment.locale"
+              options="enrollment.locales"
+              id-prop="properties.code"
+              display-prop="name"
+              show-search="true"
+              selection-limit="1"
+              ng-required="true">
+            </multiselect>
+          </label>
+          <label class="control-label">
+            UserDomain
+            <multiselect
+              id="domain"
+              ng-model="enrollment.domain"
+              options="enrollment.domains"
+              id-prop="properties.alias"
+              display-prop="name"
+              show-search="true"
+              selection-limit="1"
+              ng-required="true">
+            </multiselect>
+          </label>
+          <label class="control-label">
+            UserTask
+            <multiselect
+              id="task"
+              ng-model="enrollment.task"
+              options="enrollment.tasks"
+              id-prop="properties.alias"
+              display-prop="name"
+              show-search="true"
+              selection-limit="1"
+              ng-required="true">
+            </multiselect>
+          </label>
           <!--
           <select class="form-control" ng-model="enrollment.domain" ng-required="true">
             <option value="">-- SearchDomain --</option>
@@ -26,25 +60,16 @@
             <option value="P">Pilot</option>
           </select>
           -->
-          <select class="form-control" ng-model="enrollment.flow" ng-required="true">
-            <option value="">-- StudyFlow --</option>
-            <option value="E">Email</option>
-            <option value="A">Article</option>
-            <option value="P">Pilot</option>
-            <option value="P">Pilot</option>
-          </select>
-          <select class="form-control" ng-model="enrollment.studyStage" ng-required="true">
-            <option value="">-- StudyStage --</option>
-            <option value="1">Pretest</option>
-            <option value="2">Posttest</option>
-          </select>
-          <select class="form-control" ng-model="enrollment.studyOrder" ng-required="true">
-            <option value="">-- StudyOrder --</option>
-            <option value="1">First</option>
-            <option value="2">Second</option>
-          </select>
         </div>
         <div class="form-inline admin-row-spacing">
+          <label class="control-label">
+            AccountType
+            <select class="form-control" ng-model="enrollment.testAct" ng-required="true">
+              <option value=""></option>
+              <option value="true">TestAccount</option>
+              <option value="false">RealAccount</option>
+            </select>      
+          </label>
           <label class="control-label">
             UniversityCode
             <input class="form-control" type="number" min="0" ng-min="0" max="9" ng-max="9" ng-model="enrollment.university" ng-required="true">
@@ -59,6 +84,26 @@
           </label>
         </div>
         <div class="form-inline admin-row-spacing">
+          <label class="control-label">
+            StudyStage
+            <input class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyStage" ng-required="true">
+          </label>
+          <label class="control-label">
+            StudyOrder
+            <input class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyOrder" ng-required="true">
+          </label>
+          <!--
+          <select class="form-control" ng-model="enrollment.studyStage" ng-required="true">
+            <option value="">-- StudyStage --</option>
+            <option value="1">Pretest</option>
+            <option value="2">Posttest</option>
+          </select>
+          <select class="form-control" ng-model="enrollment.studyOrder" ng-required="true">
+            <option value="">-- StudyOrder --</option>
+            <option value="1">First</option>
+            <option value="2">Second</option>
+          </select>
+          -->
           <label class="control-label">
             StartingUserId
             <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">

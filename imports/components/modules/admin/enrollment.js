@@ -6,6 +6,8 @@ import RandomString from 'randomstring';
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
+import { FlowComponents } from '../../../database/flowComponents/index';
+
 import template from './enrollment.html';
 
 class Enrollment {
@@ -49,6 +51,12 @@ class Enrollment {
 
     $reactive(this).attach($scope);
 
+    this.helpers({
+      locales: () => FlowComponents.find({ type: 'locale' }),
+      domains: () => FlowComponents.find({ type: 'domain' }),
+      tasks: () => FlowComponents.find({ type: 'task' })
+    });
+
     this.userList = [];
     this.allUppercaseRegex = /^[A-Z]*$/;
   }
@@ -65,12 +73,13 @@ class Enrollment {
           test: this.testAct,           // [Boolean] Is a test account
           university: this.university,  // [one-digit Integer] University Code
           school: this.school,          // [two-digit Integer] School Code
-          class: this.class,              // [Char] Class number code
-          domain: 'SS',//this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
-          task: 'E',//this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
+          class: this.class,            // [Char] Class number code
+          domain: this.domain[0].properties.code,   // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
+          task: this.task[0].properties.code,       // [Char] Task type (for iFuCo: [E]Email, [A]Article)
           studyStage: this.studyStage,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
           studyOrder: this.studyOrder,  // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
           userId: id,                   // [four-digit Integer] User Id
+          locale: this.locale[0].properties.code,  // [String] Student's locale
           status: 'NotChecked'
         };
 

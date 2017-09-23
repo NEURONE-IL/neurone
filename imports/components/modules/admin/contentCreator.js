@@ -57,8 +57,7 @@ class ContentCreator {
       modalOpts = {
         title: 'Add new locale',
         templateAsset: 'adminAssets/adminLocaleModal.html',
-        buttonType: 'save',
-        bindToController: true
+        buttonType: 'save'
       };
     }
     else if (type === 'domain') {

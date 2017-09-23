@@ -6,6 +6,7 @@ import Utils from '../utils/serverUtils';
 
 import { UserData } from '../../imports/database/userData/index';
 import { Settings } from '../../imports/database/settings/index';
+import { FlowComponents } from '../../imports/database/flowComponents/index';
 import { Identities } from '../../imports/database/identities/index';
 
 // NEURONE API: Configs Getter

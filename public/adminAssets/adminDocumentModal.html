@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="form-horizontal">
+      <div class="form-group form-group-fix">
+        <label for="docName" class="col-md-4 control-label">Document Name</label>
+        <div class="col-md-8 form-group-fix">
+          <input id="docName" class="form-control" type="text" placeholder="mydoc-01" ng-model="modal.answers.docName" ng-required="true">
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="url" class="col-md-4 control-label">Document Title</label>
+        <div class="col-md-8 form-group-fix">
+          <input id="url" class="form-control" type="text" placeholder="Meteor Blog" ng-model="modal.answers.title" ng-required="true">
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="locale" class="col-md-4 control-label">Locale Code</label>
+        <div class="col-md-8 form-group-fix">
+          <multiselect
+            id="locale"
+            ng-model="modal.answers.locale"
+            options="modal.fields.locales"
+            id-prop="properties.code"
+            display-prop="name"
+            selection-limit="1"
+            ng-required="true">
+          </multiselect>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="domain" class="col-md-4 control-label">Domain</label>
+        <div class="col-md-8 form-group-fix">
+          <multiselect
+            id="domain"
+            ng-model="modal.answers.domain"
+            options="modal.fields.domains"
+            id-prop="properties.alias"
+            display-prop="name"
+            ng-required="true">
+          </multiselect>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="task" class="col-md-4 control-label">Task</label>
+        <div class="col-md-8 form-group-fix">
+          <multiselect
+            id="task"
+            ng-model="modal.answers.task"
+            options="modal.fields.tasks"
+            id-prop="properties.alias"
+            display-prop="name"
+            ng-required="true">
+          </multiselect>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <div class="form-group">
+          <label for="snippet" class="col-md-4 control-label">Search Snippet</label>
+          <div class="col-md-8 form-group-fix">
+            <textarea id="snippet" class="form-control" rows="5" placeholder="This is a brief description of the contents of the website, shown as a fallback 'search snippet' in case NEURONE's search index cannot build one automatically." ng-model="modal.answers.snippet"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="keyword" class="col-md-4 control-label">Keywords</label>
+        <div class="col-md-8 form-group-fix">
+          <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="modal.answers.keywords">
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <label for="snippet" class="col-md-4 control-label">Search Snippet</label>
+        <div class="col-md-8 form-group-fix">
+          <textarea id="snippet" class="form-control" rows="5" placeholder="This is a brief description of the contents of the website, shown as a fallback 'search snippet' in case NEURONE's search index cannot build one automatically." ng-model="modal.answers.snippet"></textarea>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <div class="col-md-offset-4 col-md-8 form-group-fix">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="modal.answers.relevant"> Relevant Document
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

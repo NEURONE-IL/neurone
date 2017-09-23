@@ -34,7 +34,6 @@
               id-prop="properties.code"
               display-prop="name"
               selection-limit="1"
-              show-search="true"
               ng-required="true">
             </multiselect>
             <!--
@@ -49,9 +48,8 @@
               id="domain"
               ng-model="documentLoader.domain"
               options="documentLoader.domains"
-              id-prop="properties.code"
+              id-prop="properties.alias"
               display-prop="name"
-              show-search="true"
               ng-required="true">
             </multiselect>
             <!--
@@ -66,9 +64,8 @@
               id="task"
               ng-model="documentLoader.task"
               options="documentLoader.tasks"
-              id-prop="properties.code"
+              id-prop="properties.alias"
               display-prop="name"
-              show-search="true"
               ng-required="true">
             </multiselect>
             <!--
