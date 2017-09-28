@@ -1,5 +1,15 @@
 <div class="container-fluid">
+  <div>
+    <b>Text Questions</b> are designed to be filled with short one-line plain-text answers. Question IDs must be unique strings between all available questions in this NEURONE instance!
+  </div>
+  <br>
   <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="qid" class="col-md-4 control-label">Question ID</label>
+      <div class="col-md-8">
+        <input id="qid" class="form-control" type="text" placeholder="math-question-1" ng-model="modal.answers.questionId" ng-required="true">
+      </div>
+    </div>
     <div class="form-group form-group-fix">
       <label for="title" class="col-md-4 control-label">Title</label>
       <div class="col-md-8">
@@ -11,13 +21,13 @@
       <div class="col-md-8">
         <input id="hint" class="form-control" type="text" placeholder="It's a math operation!" ng-model="modal.answers.hint">
       </div>
-      <div class="form-group form-group-fix">
-        <div class="col-md-offset-4 col-md-8">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="modal.answers.required"> Required text answer
-            </label>
-          </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <div class="col-md-offset-4 col-md-8">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="modal.answers.required"> Required text answer
+          </label>
         </div>
       </div>
     </div>

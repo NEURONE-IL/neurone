@@ -48,7 +48,7 @@
                   <th>ID</th>
                   <th>Question ID</th>
                   <th>Type</th>
-                  <th>Object Properties</th>
+                  <th>Question Object Properties</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -59,7 +59,7 @@
                   <td>{{ content.type }}</td>
                   <td><pre>{{ content | json: 2 }}</pre></td>
                   <td>
-                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('question', content)">
+                    <button class="btn btn-xs btn-info" ng-click="formBuilder.editQuestion(content.type, content)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
                     <button class="btn btn-xs btn-danger" ng-click="formBuilder.removeModal('question', content)">
@@ -100,7 +100,10 @@
                   <td>{{ content._id }}</td>
                   <td>{{ content.questionnaireId }}</td>
                   <td>{{ content.instructions }}</td>
-                  <td><pre>{{ content.questions | json: 2 }}</pre></td>
+                  <td>
+                    <div ng-repeat="question in content.questions">{{ question }}</div>
+                    <!--<pre>{{ content.questions | json: 2 }}</pre>-->
+                  </td>
                   <td>
                     <button class="btn btn-xs btn-info" ng-click="formBuilder.editModal('questionnaire', content)">
                       <i class="fa fa-pencil-square-o"></i>

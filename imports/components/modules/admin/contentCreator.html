@@ -186,7 +186,9 @@
                   <th>ID</th>
                   <th>Type</th>
                   <th>Name</th>
-                  <th>Properties</th>
+                  <th>Locale Code</th>
+                  <th>Locale User Alias</th>
+                  <!--<th>Properties</th>-->
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -195,7 +197,9 @@
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
-                  <td><pre>{{ content.properties | json: 2 }}</pre></td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.alias }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
                   <td>
                     <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('locale', content)">
                       <i class="fa fa-pencil-square-o"></i>
@@ -229,7 +233,10 @@
                   <th>ID</th>
                   <th>Type</th>
                   <th>Name</th>
-                  <th>Properties</th>
+                  <th>Domain Alias</th>
+                  <th>Domain User Code</th>
+                  <th>Domain Description</th>
+                  <!--<th>Properties</th>-->
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -238,7 +245,10 @@
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
-                  <td><pre>{{ content.properties | json: 2 }}</pre></td>
+                  <td>{{ content.properties.alias }}</td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.description }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
                   <td>
                     <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('domain', content)">
                       <i class="fa fa-pencil-square-o"></i>
@@ -272,7 +282,10 @@
                   <th>ID</th>
                   <th>Type</th>
                   <th>Name</th>
-                  <th>Properties</th>
+                  <th>Task Alias</th>
+                  <th>Task User Code</th>
+                  <th>Task Description</th>
+                  <!--<th>Properties</th>-->
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -281,7 +294,10 @@
                   <td>{{ content._id }}</td>
                   <td>{{ content.type }}</td>
                   <td>{{ content.name }}</td>
-                  <td><pre>{{ content.properties | json: 2 }}</pre></td>
+                  <td>{{ content.properties.alias }}</td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.description }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
                   <td>
                     <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('task', content)">
                       <i class="fa fa-pencil-square-o"></i>
