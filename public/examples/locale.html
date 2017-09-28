@@ -1,10 +1,12 @@
 <head>
   <title>NEURONE Locale Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-  <p>Below these instructions is a Locale example template for NEURONE (in JSON format). All string values must be translated to the target language for NEURONE use (string keys must not be translated). Save the locale templates as <tt>locale-XX.json</tt>, where <tt>XX</tt> is a language code (like <tt>en</tt> or <tt>es-CL</tt>). Words between double brackets (like <tt>{{bookmarks}}</tt>) must not be translated, because they are variables that are replaced during NEURONE execution.</p>
-  <hr>
-  <pre>
+  <div class="container-fluid">
+    <p>Below these instructions is a Locale example template for NEURONE (in JSON format). All string values must be translated to the target language for NEURONE use (string keys must not be translated). Save the locale templates as <tt>locale-XX.json</tt>, where <tt>XX</tt> is a language code (like <tt>en</tt> or <tt>es-CL</tt>). Words between double brackets (like <tt>{{bookmarks}}</tt>) must not be translated, because they are variables that are replaced during NEURONE execution.</p>
+    <hr>
+    <pre>
 {
   "app": {
     "pageTitle": "NEURONE",
@@ -222,5 +224,6 @@
     "calm_more": "Calm"
   }
 }
-  </pre>
+    </pre>
+  </div>
 </body>
