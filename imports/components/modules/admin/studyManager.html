@@ -1,14 +1,27 @@
 <div class="container-fluid">
   <div class="row">
-    The NEURONE Study Manager allows the researcher to build Stages (activities for the study) and Study Flows (configured sequence of Stages). Based on assets created on Content Creator and Form Builder.
+    The NEURONE Study Manager allows the researcher to build Stages (activities for the study) and Study Flows (configured sequence of Stages) based on assets created on Content Creator and Form Builder.
   </div>
   <br>
   <div class="row">
     <div class="col-md-5">
       <h3>Stages
-        <button class="btn btn-sm btn-primary pull-right" ng-click="studyManager.add('stage')">
-          <i class="fa fa-plus"></i> New Stage
-        </button>
+        <div class="dropdown pull-right">
+          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-plus"></i> New Stage <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('affective')">Affective (SAM)</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('taskQuestions')">Task Questions</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('instructions')">Instructions</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('tutorial')">Tutorial</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('search')">Search</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('collection')">Collection</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('criticalEval')">Critical Evaluation</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('synthesis')">Synthesis</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('end')">End</li>
+          </ul>
+        </div>
       </h3>
       <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>

@@ -50,6 +50,8 @@ class StudyManager {
     let targetCollection = {},
                modalOpts = {};
 
+    console.log(type);
+    /*
     if (type === 'stage') {
       modalOpts = {
         title: 'Add new stage',
@@ -99,6 +101,7 @@ class StudyManager {
         });
       }
     });
+    */
   }
 
   edit(type, content) {
