@@ -11,14 +11,15 @@ import template from './modal.html';
 */
 
 class ModalCtrl {
-  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName, functions) {
+  constructor($uibModalInstance, $timeout, title, template, fields, buttonType, buttonName, functions) {
     'ngInject';
 
     this.$uibModalInstance = $uibModalInstance;
+    this.$timeout = $timeout;
 
-    this.title = customTitle;
-    this.template = customTemplate;
-    this.fields = customFields;
+    this.title = title;
+    this.template = template;
+    this.fields = fields;
     this.buttonType = buttonType;
     this.buttonName = buttonName;
     this.functions = functions;
@@ -86,6 +87,24 @@ class ModalCtrl {
 
     return answerArray;
   }
+
+  addElement(elementArray, elementContent) {
+    this.$timeout(() => {
+      console.log(elementArray, elementContent);
+      elementArray = elementArray || [];
+      elementArray.splice(elementArray.length, 0, elementContent);
+      console.log(elementArray);
+    }, 0);
+  }
+
+  removeElement(elementArray, elementIndex) {
+    this.$timeout(() => {
+      console.log(elementArray, elementIndex);
+      elementArray = elementArray || [];
+      elementArray.splice(elementIndex, 1);
+      console.log(elementArray);
+    }, 0);
+  }
 }
 
 class ModalService {
@@ -98,29 +117,31 @@ class ModalService {
   }
 
   openModal(modalObject, callback) {
-    let contentTitle = modalObject.title || '';
-    let contentTemplate = this.resolveTemplate(modalObject);
-    let contentFields = modalObject.fields || {};
-    let buttonType = modalObject.buttonType || '';
-    let buttonName = modalObject.buttonName || '';
-    let modalSize = modalObject.size || 'lg';
-    let functions = modalObject.functions || null;
+    let customTpl = this.resolveTemplate(modalObject),
+            title = modalObject.title || '',
+           fields = modalObject.fields || {},
+       buttonType = modalObject.buttonType || '',
+       buttonName = modalObject.buttonName || '',
+        modalSize = modalObject.size || 'lg',
+        modalBack = modalObject.backdrop || 'static',
+        functions = modalObject.functions || null;
 
     this.modal = this.$uibModal.open({
       template: template.default,
-      animation: true,
-      size: modalSize,
       controller: ModalCtrl,
       controllerAs: 'modal',
+      size: modalSize,
+      backdrop: modalBack,
+      animation: true,
       resolve: {
-        customTitle: () => {
-          return contentTitle;
+        title: () => {
+          return title;
         },
-        customTemplate: () => {
-          return contentTemplate;
+        template: () => {
+          return customTpl;
         },
-        customFields: () => {
-          return contentFields;
+        fields: () => {
+          return fields;
         },
         buttonType: () => {
           return buttonType;

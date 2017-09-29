@@ -169,11 +169,8 @@ class FormBuilder {
   removeModal(type, element) {
     let targetCollection = {};
 
-    /*
     if (type === 'question') targetCollection = FormQuestions;
-    else // (...)
-    */
-    if (type === 'questionnaire') targetCollection = FormQuestionnaires;
+    else if (type === 'questionnaire') targetCollection = FormQuestionnaires;
     else if (type === 'synthesis') targetCollection = SynthesisQuestions;
     else return false;
 
@@ -184,7 +181,7 @@ class FormBuilder {
   }
 
   addQuestion(questionType) {
-    let targetCollection = {},
+    let targetCollection = FormQuestions,
                modalOpts = {};
 
     if (questionType === 'text') {
@@ -196,8 +193,6 @@ class FormBuilder {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'paragraph') {
       modalOpts = {
@@ -208,8 +203,6 @@ class FormBuilder {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'multipleChoice') {
       modalOpts = {
@@ -217,11 +210,12 @@ class FormBuilder {
         templateAsset: 'adminAssets/adminQuestionModals/multipleChoice.html',
         buttonType: 'save',
         fields: {
-          content: { type: questionType }
+          content: {
+            type: questionType,
+            options: []
+          }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'checkbox') {
       modalOpts = {
@@ -229,11 +223,12 @@ class FormBuilder {
         templateAsset: 'adminAssets/adminQuestionModals/checkbox.html',
         buttonType: 'save',
         fields: {
-          content: { type: questionType }
+          content: {
+            type: questionType,
+            options: []
+          }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'list') {
       modalOpts = {
@@ -241,11 +236,12 @@ class FormBuilder {
         templateAsset: 'adminAssets/adminQuestionModals/list.html',
         buttonType: 'save',
         fields: {
-          content: { type: questionType }
+          content: {
+            type: questionType,
+            options: []
+          }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'scale') {
       modalOpts = {
@@ -256,8 +252,6 @@ class FormBuilder {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'rating') {
       modalOpts = {
@@ -268,8 +262,6 @@ class FormBuilder {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'date') {
       modalOpts = {
@@ -280,20 +272,16 @@ class FormBuilder {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'time') {
       modalOpts = {
-        title: 'Add new text question',
+        title: 'Add new time question',
         templateAsset: 'adminAssets/adminQuestionModals/time.html',
         buttonType: 'save',
         fields: {
           content: { type: questionType }
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else {
       console.error('Invalid question type!');
@@ -304,9 +292,10 @@ class FormBuilder {
       this.modal.openModal(modalOpts, (err, res) => {
         if (!err && res.answers) {
           let newQuestion = res.answers;
+          newQuestion.required = newQuestion.required || false;
 
           targetCollection.insert(newQuestion, (err, res) => {
-            if (!err) console.log('Question created!', questionType, res);
+            if (!err) console.log('Question created!', res, newQuestion);
             else console.error('Error while creating Question Element!', err);
           });
         }
@@ -315,39 +304,33 @@ class FormBuilder {
   }
 
   editQuestion(questionType, element) {
-    console.log(questionType, element);
-
-    let targetCollection = {},
+    let targetCollection = FormQuestions,
                modalOpts = {},
               elementRef = angular.copy(element);
 
     if (questionType === 'text') {
       modalOpts = {
-        title: 'Add new text question',
+        title: 'Edit text question',
         templateAsset: 'adminAssets/adminQuestionModals/text.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'paragraph') {
       modalOpts = {
-        title: 'Add new paragraph question',
+        title: 'Edit paragraph question',
         templateAsset: 'adminAssets/adminQuestionModals/paragraph.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'multipleChoice') {
       modalOpts = {
-        title: 'Add new multiple choice question',
+        title: 'Edit multiple choice question',
         templateAsset: 'adminAssets/adminQuestionModals/multipleChoice.html',
         buttonType: 'save',
         fields: {
@@ -359,75 +342,63 @@ class FormBuilder {
     }
     else if (questionType === 'checkbox') {
       modalOpts = {
-        title: 'Add new checkbox question',
+        title: 'Edit checkbox question',
         templateAsset: 'adminAssets/adminQuestionModals/checkbox.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'list') {
       modalOpts = {
-        title: 'Add new list question',
+        title: 'Edit list question',
         templateAsset: 'adminAssets/adminQuestionModals/list.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'scale') {
       modalOpts = {
-        title: 'Add new scale question',
+        title: 'Edit scale question',
         templateAsset: 'adminAssets/adminQuestionModals/scale.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'rating') {
       modalOpts = {
-        title: 'Add new rating question',
+        title: 'Edit rating question',
         templateAsset: 'adminAssets/adminQuestionModals/rating.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'date') {
       modalOpts = {
-        title: 'Add new date question',
+        title: 'Edit date question',
         templateAsset: 'adminAssets/adminQuestionModals/date.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else if (questionType === 'time') {
       modalOpts = {
-        title: 'Add new text question',
+        title: 'Edit time question',
         templateAsset: 'adminAssets/adminQuestionModals/time.html',
         buttonType: 'save',
         fields: {
           content: elementRef
         }
       };
-
-      targetCollection = FormQuestions;
     }
     else {
       console.error('Invalid question type!');
@@ -441,7 +412,7 @@ class FormBuilder {
           delete editedQuestion._id;
 
           targetCollection.update(element._id, { $set: editedQuestion }, (err, res) => {
-            if (!err) console.log('Question Element edited!', questionType, res);
+            if (!err) console.log('Question Element edited!', res, element._id, editedQuestion);
             else console.error('Error while editing Question Element!', err);
           });
         }

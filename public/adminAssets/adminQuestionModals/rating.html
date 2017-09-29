@@ -1,37 +1,38 @@
 <div class="container-fluid">
   <div>
-    <!-- TODO -->
-    <b>Rating Questions</b> . Question IDs must be unique strings between all available questions in this NEURONE instance!
+    In <b>Rating Questions</b> students must evaluate an item from 1 to X "stars". Question IDs must be unique strings between all available questions in this NEURONE instance!
   </div>
   <br>
   <div class="form-horizontal">
     <div class="form-group form-group-fix">
       <label for="qid" class="col-md-4 control-label">Question ID</label>
       <div class="col-md-8">
-        <input id="qid" class="form-control" type="text" placeholder="math-question-1" ng-model="modal.answers.questionId" ng-required="true">
+        <input id="qid" class="form-control" type="text" placeholder="rating-question-1" ng-model="modal.answers.questionId" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
       <label for="title" class="col-md-4 control-label">Title</label>
       <div class="col-md-8">
-        <input id="title" class="form-control" type="text" placeholder="What's the result of 2+2?" ng-model="modal.answers.title" ng-required="true">
+        <input id="title" class="form-control" type="text" placeholder="How good is this web page?" ng-model="modal.answers.title" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
       <label for="hint" class="col-md-4 control-label">Hint</label>
       <div class="col-md-8">
-        <input id="hint" class="form-control" type="text" placeholder="It's a math operation!" ng-model="modal.answers.hint">
+        <input id="hint" class="form-control" type="text" placeholder="Answer based on your opinion" ng-model="modal.answers.hint">
       </div>
     </div>
-    <!-- TODO -->
-    <div>
-      
+    <div class="form-group form-group-fix">
+      <label for="max-stars" class="col-md-4 control-label">Rating Max Limit (stars)</label>
+      <div class="col-md-8">
+        <input id="max-stars" class="form-control" type="number" placeholder="3" min="3" ng-min"3" ng-model="modal.answers.maxStars" ng-required="true">
+      </div>
     </div>
     <div class="form-group form-group-fix">
       <div class="col-md-offset-4 col-md-8">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="modal.answers.required"> Required text answer
+            <input type="checkbox" ng-model="modal.answers.required"> Required answer
           </label>
         </div>
       </div>
