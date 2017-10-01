@@ -48,10 +48,11 @@ class StudyManager {
 
   add(type) {
     let targetCollection = {},
-               modalOpts = {};
+               modalOpts = {},
+           componentType = '';
 
     console.log(type);
-    /*
+    
     if (type === 'stage') {
       modalOpts = {
         title: 'Add new stage',
@@ -66,6 +67,89 @@ class StudyManager {
       };
 
       targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'taskQuestions') {
+      modalOpts = {
+        title: 'Add new task questions stage',
+        templateAsset: 'adminAssets/adminStageModals/taskQuestions.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          questionnaires: this.questionnaires
+        }
+      };
+
+      targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'affective') {
+      modalOpts = {
+        title: 'Add new affective stage',
+        templateAsset: 'adminAssets/adminStageModals/affective.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
+      };
+
+      targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'instructions') {
+      modalOpts = {
+        title: 'Add new instructions stage',
+        templateAsset: 'adminAssets/adminStageModals/instructions.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
+      };
+
+      targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'tutorial') {
+      modalOpts = {
+        title: 'Add new tutorial stage',
+        templateAsset: 'adminAssets/adminStageModals/tutorial.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
+      };
+
+      targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'end') {
+      modalOpts = {
+        title: 'Add new end stage',
+        templateAsset: 'adminAssets/adminStageModals/end.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          stages: this.availableStages,
+          modals: this.modalAssets,
+          templates: this.templateAssets,
+          images: this.imageAssets
+        }
+      };
+
+      targetCollection = FlowComponents;
+      componentType = 'stage';
     }
     else if (type === 'flow') {
       modalOpts = {
@@ -84,6 +168,7 @@ class StudyManager {
       };
 
       targetCollection = FlowComponents;
+      componentType = 'flow';
     }
     else {
       console.error('Invalid content option!');
@@ -95,13 +180,16 @@ class StudyManager {
         let newStudyComponent = res.answers;
         newStudyComponent.type = type;
 
+        console.log(newStudyComponent);
+
+        /*
         targetCollection.insert(newQuestion, (err, res) => {
           if (!err) console.log('Study Component created!', type, res);
           else console.error('Error while creating Study Component!', err);
         });
+        */
       }
     });
-    */
   }
 
   edit(type, content) {

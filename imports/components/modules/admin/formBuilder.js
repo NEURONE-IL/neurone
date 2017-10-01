@@ -84,9 +84,11 @@ class FormBuilder {
         if (!err && res.answers) {
           let newQuestion = res.answers;
 
+          /*
           if (type === 'questionnaire') {
             newQuestion.questions = !!(newQuestion.questions) ? newQuestion.questions.map((x) => { return x.questionId }) : [];
           }
+          */
           
           targetCollection.insert(newQuestion, (err, res) => {
             if (!err) console.log('Question Element created!', type, res);
@@ -153,9 +155,11 @@ class FormBuilder {
           let editedQuestion = res.answers;
           delete editedQuestion._id;
 
+          /*
           if (type === 'questionnaire') {
             editedQuestion.questions = !!(editedQuestion.questions) ? editedQuestion.questions.map((x) => { return x.questionId }) : [];
           }
+          */
 
           targetCollection.update(element._id, { $set: editedQuestion }, (err, res) => {
             if (!err) console.log('Question Element edited!', type, res);

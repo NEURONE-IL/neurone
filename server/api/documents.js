@@ -73,13 +73,21 @@ Meteor.methods({
       throw new Meteor.Error(574, 'Cannot list all documents', err);
     }
   },
+  reindex: function() {
+    try {
+      return DocumentRetrieval.reindex();
+    }
+    catch (err) {
+      throw new Meteor.Error(575, 'Cannot reindex', err);
+    }
+  },
   deleteDocument: function(docId) {
     try {
       check(docId, String);
       return DocumentRetrieval.deleteDocument(docId);
     }
     catch (err) {
-      throw new Meteor.Error(575, 'Cannot delete document', err);
+      throw new Meteor.Error(576, 'Cannot delete document', err);
     }
   }
 });

@@ -92,11 +92,11 @@ class DocumentLoader {
     let form = {
       docName: this.docName,
       title: this.title,
-      locale: !!(this.locale) ? this.locale[0].properties.code : '',
+      locale: this.locale || '', //!!(this.locale) ? this.locale[0].properties.code : '',
       relevant: this.relevant || false,
-      test: !!(this.task) ? this.task.map((obj) => { return obj.properties.alias }) : [],  // !!this.task ? this.task.split(',').map((kw) => { return kw.trim() }) : [],
-      topic: !!(this.domain) ? this.domain.map((obj) => { return obj.properties.alias }) : [],  //!!this.domain ? this.domain.split(',').map((kw) => { return kw.trim() }) : [],
-      keywords: !!(this.keywords) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
+      test: this.task || [], // !!this.task ? this.task.split(',').map((kw) => { return kw.trim() }) : [],
+      topic: this.domain || [], //!!this.domain ? this.domain.split(',').map((kw) => { return kw.trim() }) : [],
+      keywords: !!(this.keywords) && (this.keywords.length > 1) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
       url: this.url,
       searchSnippet: this.snippet || '',
     };

@@ -6,97 +6,100 @@
   <div class="row row-equal-height">
     <div class="col-md-5">
       <form name="documentLoader.form" class="form-horizontal">
-        <div class="form-group">
-          <label for="docName" class="col-md-4 control-label">Document Name</label>
-          <div class="col-md-8">
-            <input id="docName" class="form-control" type="text" placeholder="mydoc-01" ng-model="documentLoader.docName" ng-required="true">
+        <div class="row">
+          <div class="form-group">
+            <label for="docName" class="col-md-4 control-label">Document Name</label>
+            <div class="col-md-8">
+              <input id="docName" class="form-control" type="text" placeholder="mydoc-01" ng-model="documentLoader.docName" ng-required="true">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="url" class="col-md-4 control-label">Document URL</label>
-          <div class="col-md-8">
-            <input id="url" class="form-control" type="text" placeholder="https://blog.meteor.com/" ng-model="documentLoader.url" ng-required="true">
+          <div class="form-group">
+            <label for="url" class="col-md-4 control-label">Document URL</label>
+            <div class="col-md-8">
+              <input id="url" class="form-control" type="text" placeholder="https://blog.meteor.com/" ng-model="documentLoader.url" ng-required="true">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="url" class="col-md-4 control-label">Document Title</label>
-          <div class="col-md-8">
-            <input id="url" class="form-control" type="text" placeholder="Meteor Blog" ng-model="documentLoader.title" ng-required="true">
+          <div class="form-group">
+            <label for="url" class="col-md-4 control-label">Document Title</label>
+            <div class="col-md-8">
+              <input id="url" class="form-control" type="text" placeholder="Meteor Blog" ng-model="documentLoader.title" ng-required="true">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="locale" class="col-md-4 control-label">Locale Code</label>
-          <div class="col-md-8">
-            <multiselect
-              id="locale"
-              ng-model="documentLoader.locale"
-              options="documentLoader.locales"
-              id-prop="properties.code"
-              display-prop="name"
-              selection-limit="1"
-              ng-required="true">
-            </multiselect>
-            <!--
-            <input id="locale" class="form-control" type="text" placeholder="en" ng-model="documentLoader.locale" ng-required="true">
-            -->
+          <div class="form-group">
+            <label for="locale" class="col-md-4 control-label">Locale Code</label>
+            <div class="col-md-8">
+              <ui-select id="locale" ng-model="documentLoader.locale" ng-required="true">
+                <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+                <ui-select-choices repeat="locale.properties.code as locale in documentLoader.locales | filter: { name: $select.search }">
+                  {{ locale.name }} <small>{{ locale.properties.code }}</small>
+                </ui-select-choices>
+              </ui-select>
+              <!--
+              <input id="locale" class="form-control" type="text" placeholder="en" ng-model="documentLoader.locale" ng-required="true">
+              -->
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="domain" class="col-md-4 control-label">Domain</label>
-          <div class="col-md-8">
-            <multiselect
-              id="domain"
-              ng-model="documentLoader.domain"
-              options="documentLoader.domains"
-              id-prop="properties.alias"
-              display-prop="name"
-              ng-required="true">
-            </multiselect>
-            <!--
-            <input id="domain" class="form-control" type="text" placeholder="science" ng-model="documentLoader.domain" ng-required="true">
-            -->
+          <div class="form-group">
+            <label for="domain" class="col-md-4 control-label">Domain</label>
+            <div class="col-md-8">
+              <ui-select multiple id="domain" ng-model="documentLoader.domain" sortable="true" close-on-select="false" ng-required="true">
+                <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
+                <ui-select-choices repeat="domain.properties.alias as domain in documentLoader.domains | filter: { name: $select.search }">
+                  {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+                </ui-select-choices>
+              </ui-select>
+              <!--
+              <input id="domain" class="form-control" type="text" placeholder="science" ng-model="documentLoader.domain" ng-required="true">
+              -->
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="task" class="col-md-4 control-label">Task</label>
-          <div class="col-md-8">
-            <multiselect
-              id="task"
-              ng-model="documentLoader.task"
-              options="documentLoader.tasks"
-              id-prop="properties.alias"
-              display-prop="name"
-              ng-required="true">
-            </multiselect>
-            <!--
-            <input id="task" class="form-control" type="text" placeholder="article" ng-model="documentLoader.task" ng-required="true">
-            -->
+          <div class="form-group">
+            <label for="task" class="col-md-4 control-label">Task</label>
+            <div class="col-md-8">
+              <ui-select multiple id="task" ng-model="documentLoader.task" sortable="true" close-on-select="false" ng-required="true">
+                <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
+                <ui-select-choices repeat="task.properties.alias as task in documentLoader.tasks | filter: { name: $select.search }">
+                  {{ task.name }} <small>{{ task.properties.alias }}</small>
+                </ui-select-choices>
+              </ui-select>
+              <!--
+              <input id="task" class="form-control" type="text" placeholder="article" ng-model="documentLoader.task" ng-required="true">
+              -->
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="keyword" class="col-md-4 control-label">Keywords</label>
-          <div class="col-md-8">
-            <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="documentLoader.keywords">
+          <div class="form-group">
+            <label for="keyword" class="col-md-4 control-label">Keywords</label>
+            <div class="col-md-8">
+              <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="documentLoader.keywords">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="snippet" class="col-md-4 control-label">Search Snippet</label>
-          <div class="col-md-8">
-            <textarea id="snippet" class="form-control" rows="5" placeholder="This is a brief description of the contents of the website, shown as a fallback 'search snippet' in case NEURONE's search index cannot build one automatically." ng-model="documentLoader.snippet"></textarea>
+          <div class="form-group">
+            <label for="snippet" class="col-md-4 control-label">Search Snippet</label>
+            <div class="col-md-8">
+              <textarea id="snippet" class="form-control" rows="5" placeholder="This is a brief description of the contents of the website, shown as a fallback 'search snippet' in case NEURONE's search index cannot build one automatically." ng-model="documentLoader.snippet"></textarea>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="col-md-offset-4 col-md-8">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" ng-model="documentLoader.relevant"> Relevant Document
-              </label>
+          <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="documentLoader.relevant"> Relevant Document
+                </label>
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <button type="submit" class="btn btn-info col-md-6" ng-click="documentLoader.previewDocument()">Preview Page from URL</button>
-          <button type="submit" class="btn btn-success col-md-6" ng-click="documentLoader.downloadDocument()">Download Page from URL</button>
+          <div class="col-md-6 text-center">
+            <button type="submit" class="btn btn-info" ng-click="documentLoader.previewDocument()">
+              <i class="fa fa-eye" aria-hidden="true"></i> Preview Page from URL
+            </button>
+          </div>
+          <div class="col-md-6 text-center">
+            <button type="submit" class="btn btn-success" ng-click="documentLoader.downloadDocument()">
+              <i class="fa fa-download" aria-hidden="true"></i> Download Page from URL
+            </button>
+          </div>
         </div>
       </form>
     </div>

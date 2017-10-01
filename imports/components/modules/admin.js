@@ -1,6 +1,5 @@
 import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
-import multiSelect from 'angular-bootstrap-multiselect';
 import ngCSV from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import RandomString from 'randomstring';
@@ -53,7 +52,6 @@ const name = 'admin';
 
 export default angular.module(name, [
   'ngSanitize',
-  'btorfs.multiselect',   // angular-bootstrap-multiselect
   'truncate',
   'ngCsv',
   'ngFileUpload',

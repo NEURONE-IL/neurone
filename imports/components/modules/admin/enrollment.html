@@ -9,39 +9,30 @@
         <div class="form-inline admin-row-spacing">
           <label class="control-label">
             UserLocale
-            <multiselect
-              id="locale"
-              ng-model="enrollment.locale"
-              options="enrollment.locales"
-              id-prop="properties.code"
-              display-prop="name"
-              selection-limit="1"
-              ng-required="true">
-            </multiselect>
+            <ui-select id="locale" ng-model="enrollment.locale" ng-required="true">
+              <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+              <ui-select-choices repeat="locale.properties.code as locale in enrollment.locales | filter: { name: $select.search }">
+                {{ locale.name }} <small>{{ locale.properties.code }}</small>
+              </ui-select-choices>
+            </ui-select>
           </label>
           <label class="control-label">
             UserDomain
-            <multiselect
-              id="domain"
-              ng-model="enrollment.domain"
-              options="enrollment.domains"
-              id-prop="properties.alias"
-              display-prop="name"
-              selection-limit="1"
-              ng-required="true">
-            </multiselect>
+            <ui-select id="domain" ng-model="enrollment.domain" ng-required="true">
+              <ui-select-match placeholder="Select domain">{{ $select.selected.name }}</ui-select-match>
+              <ui-select-choices repeat="domain.properties.alias as domain in enrollment.domains | filter: { name: $select.search }">
+                {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+              </ui-select-choices>
+            </ui-select>
           </label>
           <label class="control-label">
             UserTask
-            <multiselect
-              id="task"
-              ng-model="enrollment.task"
-              options="enrollment.tasks"
-              id-prop="properties.alias"
-              display-prop="name"
-              selection-limit="1"
-              ng-required="true">
-            </multiselect>
+            <ui-select id="task" ng-model="enrollment.task" ng-required="true">
+              <ui-select-match placeholder="Select task">{{ $select.selected.name }}</ui-select-match>
+              <ui-select-choices repeat="task.properties.alias as task in enrollment.tasks | filter: { name: $select.search }">
+                {{ task.name }} <small>{{ task.properties.alias }}</small>
+              </ui-select-choices>
+            </ui-select>
           </label>
           <!--
           <select class="form-control" ng-model="enrollment.domain" ng-required="true">

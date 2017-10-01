@@ -7,8 +7,10 @@ import { Documents } from '../../../database/documents/index';
 import { FlowComponents } from '../../../database/flowComponents/index';
 
 class DocumentManager {
-  constructor($scope, $reactive) {
+  constructor($scope, $reactive, ModalService) {
     'ngInject';
+
+    this.modal = ModalService;
 
     $reactive(this).attach($scope);
 
@@ -26,7 +28,7 @@ class DocumentManager {
 
   editDocument(doc) {
     let docRef = angular.copy(doc);
-    docref.keywords.join(', ');
+    docRef.keywords.join(', ');
 
     let modalOpts = {
       title: 'Edit document',
@@ -44,15 +46,24 @@ class DocumentManager {
       if (!err && res.answers) {
         let editedDocument = res.answers;
 
-        editedDocument.locale = !!(editedDocument.locale) ? editedDocument.locale[0].properties.code : '';
-        editedDocument.test = !!(editedDocument.test) ? editedDocument.test.map((obj) => { return obj.properties.alias }) : [];
-        editedDocument.topic = !!(editedDocument.topic) ? editedDocument.topic.map((obj) => { return obj.properties.alias }) : [];
-        editedDocument.keywords = !!(editedDocument.keywords) ? editedDocument.keywords.split(',').map((kw) => { return kw.trim() }) : [];
+        //editedDocument.locale = !!(editedDocument.locale) ? editedDocument.locale[0].properties.code : '';
+        //editedDocument.test = !!(editedDocument.test) ? editedDocument.test.map((obj) => { return obj.properties.alias }) : [];
+        //editedDocument.topic = !!(editedDocument.topic) ? editedDocument.topic.map((obj) => { return obj.properties.alias }) : [];
+        editedDocument.keywords = !!(editedDocument.keywords) && (editedDocument.keywords.length > 1) ? editedDocument.keywords.split(',').map((kw) => { return kw.trim() }) : [];
         delete editedDocument._id;
 
         Documents.update(doc._id, { $set: editedDocument }, (err, res) => {
-          if (!err) console.log('Document edited!', res);
-          else console.error('Error while editing Document!', err);
+          if (!err) {
+            console.log('Document edited in Database!', res);
+
+            this.call('reindex', (err, res) => {
+              if (!err) console.log('Inverted Index regenerated!');
+              else console.error('Cannot regenerate Inverted Index!', err);
+            });
+          }
+          else {
+            console.error('Error while editing Document!', err);
+          }
         });
       }
     });
@@ -62,8 +73,17 @@ class DocumentManager {
     let deletedDoc = angular.copy(doc);
     
     Documents.remove(deletedDoc._id, (err, res) => {
-      if (!err) console.log('Document deleted!', deletedDoc.docId);
-      else console.error('Cannot delete document!', deletedDoc.docId, err);
+      if (!err) {
+        console.log('Document deleted from Database!', deletedDoc.docId);
+
+        this.call('reindex', (err, res) => {
+          if (!err) console.log('Inverted Index regenerated!');
+          else console.error('Cannot regenerate Inverted Index!', err);
+        });
+      }
+      else {
+        console.error('Cannot delete document!', deletedDoc.docId, err);
+      }
     });
 
     /*

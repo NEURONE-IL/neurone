@@ -16,49 +16,34 @@
       <div class="form-group form-group-fix">
         <label for="locale" class="col-md-4 control-label">Locale Code</label>
         <div class="col-md-8 form-group-fix">
-          <multiselect
-            id="locale"
-            ng-model="modal.answers.locale"
-            options="modal.fields.locales"
-            id-prop="properties.code"
-            display-prop="name"
-            selection-limit="1"
-            ng-required="true">
-          </multiselect>
+          <ui-select id="locale" ng-model="modal.answers.locale" ng-required="true">
+            <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-choices repeat="locale.properties.code as locale in modal.fields.locales | filter: { name: $select.search }">
+              {{ locale.name }} <small>{{ locale.properties.code }}</small>
+            </ui-select-choices>
+          </ui-select>
         </div>
       </div>
       <div class="form-group form-group-fix">
         <label for="domain" class="col-md-4 control-label">Domain</label>
         <div class="col-md-8 form-group-fix">
-          <multiselect
-            id="domain"
-            ng-model="modal.answers.domain"
-            options="modal.fields.domains"
-            id-prop="properties.alias"
-            display-prop="name"
-            ng-required="true">
-          </multiselect>
+          <ui-select multiple id="domain" ng-model="modal.answers.domain" sortable="true" close-on-select="false" ng-required="true">
+            <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
+            <ui-select-choices repeat="domain.properties.alias as domain in modal.fields.domains | filter: { name: $select.search }">
+              {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+            </ui-select-choices>
+          </ui-select>
         </div>
       </div>
       <div class="form-group form-group-fix">
         <label for="task" class="col-md-4 control-label">Task</label>
         <div class="col-md-8 form-group-fix">
-          <multiselect
-            id="task"
-            ng-model="modal.answers.task"
-            options="modal.fields.tasks"
-            id-prop="properties.alias"
-            display-prop="name"
-            ng-required="true">
-          </multiselect>
-        </div>
-      </div>
-      <div class="form-group form-group-fix">
-        <div class="form-group">
-          <label for="snippet" class="col-md-4 control-label">Search Snippet</label>
-          <div class="col-md-8 form-group-fix">
-            <textarea id="snippet" class="form-control" rows="5" placeholder="This is a brief description of the contents of the website, shown as a fallback 'search snippet' in case NEURONE's search index cannot build one automatically." ng-model="modal.answers.snippet"></textarea>
-          </div>
+          <ui-select multiple id="task" ng-model="modal.answers.task" sortable="true" close-on-select="false" ng-required="true">
+            <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
+            <ui-select-choices repeat="task.properties.alias as task in modal.fields.tasks | filter: { name: $select.search }">
+              {{ task.name }} <small>{{ task.properties.alias }}</small>
+            </ui-select-choices>
+          </ui-select>
         </div>
       </div>
       <div class="form-group form-group-fix">

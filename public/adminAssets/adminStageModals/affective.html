@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div>
+    <b>Affective Stage</b> is for applying the adapted Self Assessment Manikin questionnaire (Bradley et al) for students.
+  </div>
+  <br>
+  <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="sid" class="col-md-4 control-label">Stage ID</label>
+      <div class="col-md-8">
+        <input id="sid" class="form-control" type="text" placeholder="pretaskSAM" ng-model="modal.answers.id" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="time" class="col-md-4 control-label">Time Limit (minutes)</label>
+      <div class="col-md-8">
+        <input id="time" class="form-control" type="number" min="-1" ng-min="-1" placeholder="-1" ng-model="modal.answers.time" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="avatar" class="col-md-4 control-label">Avatar Name</label>
+      <div class="col-md-8">
+        <input id="avatar" class="form-control" type="text" placeholder="Sarah" ng-model="modal.answers.avatar" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="type" class="col-md-4 control-label">Form Answer Label</label>
+      <div class="col-md-8">
+        <input id="type" class="form-control" type="text" placeholder="PretaskSAM" ng-model="modal.answers.type" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="template" class="col-md-4 control-label">SAM HTML Template Path</label>
+      <div class="col-md-8">
+        <select
+          id="template"
+          ng-options="tpl.meta.referencePath as tpl.name for tpl in modal.fields.templates"
+          ng-model="modal.answers.page"
+          class="form-control"
+          ng-required="true">
+        </select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="urlparams" class="col-md-4 control-label">URL Parameter</label>
+      <div class="col-md-8">
+        <input id="urlparams" class="form-control" type="text" placeholder="pretaskSAM" ng-model="modal.answers.urlParams.stage" ng-required="true">
+      </div>
+    </div>
+  </div>
+  <pre>{{ modal.answers | json: 2 }}</pre>
+</div>

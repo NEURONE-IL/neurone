@@ -27,9 +27,11 @@ import angularMeteorPromiser from 'angular-meteor-promiser';
 import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
-import uiSelect from 'ui-select';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
+
+import uiSelect from 'ui-select';
+import 'ui-select/dist/select.css';
 
 import template from './app.html';
 

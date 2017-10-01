@@ -19,15 +19,12 @@
     <div class="form-group form-group-fix">
       <label for="questions" class="col-md-4 control-label">Questions</label>
       <div class="col-md-8">
-        <multiselect
-          id="questions"
-          ng-model="modal.answers.questions"
-          options="modal.fields.formQuestions"
-          id-prop="questionId"
-          display-prop="questionId"
-          show-search="true"
-          ng-required="true">
-        </multiselect>
+        <ui-select multiple id="questions" ng-model="modal.answers.questions" sortable="true" close-on-select="false" ng-required="true">
+          <ui-select-match placeholder="Select questions">{{ $item.questionId }}</ui-select-match>
+          <ui-select-choices repeat="question.questionId as question in modal.fields.formQuestions | filter: { questionId: $select.search }">
+            {{ question.questionId }} <small>{{ question.title }}</small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
   </div>
