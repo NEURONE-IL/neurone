@@ -1,4 +1,4 @@
-import Utils from './utils/serverUtils';
+import Utils from '../utils/serverUtils';
 
 UserPresenceMonitor.onSetUserStatus((user, status, statusConnection) => {
   var timestamp = Utils.getTimestamp();

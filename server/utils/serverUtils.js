@@ -5,8 +5,6 @@ const rootPath = path.resolve('.');
 const absolutePath = rootPath.split(path.sep + '.meteor')[0];
 
 export default class ServerUtils {
-  constructor() {}
-
   // dgacitua: Check if string is empty
   // http://stackoverflow.com/a/3261380
   static isEmpty(str) {

@@ -1,4 +1,4 @@
-import { UserData } from '../../imports/database/userData/index';
+import { UserData } from '../database/definitions';
 
 export default class UserUtils {
   static isAdmin(userId) {

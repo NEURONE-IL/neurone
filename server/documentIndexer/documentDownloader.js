@@ -5,7 +5,7 @@ import scrape from 'website-scraper';
 import DocumentParser from './documentParser';
 import Indexer from './indexer';
 
-import ServerConfigs from '../serverConfigs';
+import ServerConfigs from '../utils/serverConfigs';
 import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
