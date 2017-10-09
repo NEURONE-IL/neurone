@@ -22,19 +22,10 @@
         <ui-select multiple ng-model="modal.answers.slides" sortable="true" close-on-select="false" ng-required="true">
           <ui-select-match placeholder="Select image">{{ $item.meta.referencePath }}</ui-select-match>
           <ui-select-choices repeat="image.meta.referencePath as image in modal.fields.images | filter: { name: $select.search }">
-            {{ image.meta.referencePath }}
+            <div>{{ image.name }}</div>
+            <small>{{ image.meta.referencePath }}</small>
           </ui-select-choices>
         </ui-select>
-        <!--
-        <select
-          multiple
-          id="template"
-          ng-options="tpl.meta.referencePath as tpl.name for tpl in modal.fields.images"
-          ng-model="modal.answers.slides"
-          class="form-control"
-          ng-required="true">
-        </select>
-        -->
       </div>
     </div>
     <div class="form-group form-group-fix">

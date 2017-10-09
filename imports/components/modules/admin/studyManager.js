@@ -4,6 +4,7 @@ import Configs from '../../globalConfigs';
 import template from './studyManager.html';
 
 import { FlowComponents } from '../../../database/flowComponents/index';
+import { FlowElements } from '../../../database/flowElements/index';
 import { Locales } from '../../../database/assets/locales';
 import { Modals } from '../../../database/assets/modals';
 import { Templates } from '../../../database/assets/templates';
@@ -20,7 +21,8 @@ class StudyManager {
 
     $reactive(this).attach($scope);
 
-    this.subscribe('flowcomponents');
+    this.subscribe('flowComponents');
+    this.subscribe('flowElements');
     this.subscribe('locales');
     this.subscribe('modals');
     this.subscribe('templates');
@@ -33,7 +35,8 @@ class StudyManager {
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),
       tasks: () => FlowComponents.find({ type: 'task' }),
-      stages: () => FlowComponents.find({ type: 'stage'}),
+      stages: () => FlowElements.find({ type: 'stage' }),
+      flows: () => FlowElements.find({ type: 'flow' }),
       localeAssets: () => Locales.find().cursor,
       modalAssets: () => Modals.find().cursor,
       templateAssets: () => Templates.find().cursor,
@@ -47,7 +50,7 @@ class StudyManager {
   }
 
   add(type) {
-    let targetCollection = {},
+    let targetCollection = FlowElements,
                modalOpts = {},
            componentType = '';
 
@@ -66,7 +69,6 @@ class StudyManager {
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'stage';
     }
     else if (type === 'taskQuestions') {
@@ -80,7 +82,6 @@ class StudyManager {
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'stage';
     }
     else if (type === 'affective') {
@@ -90,14 +91,10 @@ class StudyManager {
         buttonType: 'save',
         fields: {
           content: { state: type },
-          stages: this.availableStages,
-          modals: this.modalAssets,
-          templates: this.templateAssets,
-          images: this.imageAssets
+          templates: this.templateAssets
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'stage';
     }
     else if (type === 'instructions') {
@@ -107,14 +104,10 @@ class StudyManager {
         buttonType: 'save',
         fields: {
           content: { state: type },
-          stages: this.availableStages,
-          modals: this.modalAssets,
-          templates: this.templateAssets,
-          images: this.imageAssets
+          templates: this.templateAssets
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'stage';
     }
     else if (type === 'tutorial') {
@@ -124,14 +117,67 @@ class StudyManager {
         buttonType: 'save',
         fields: {
           content: { state: type },
-          stages: this.availableStages,
-          modals: this.modalAssets,
-          templates: this.templateAssets,
           images: this.imageAssets
         }
       };
 
-      targetCollection = FlowComponents;
+      componentType = 'stage';
+    }
+    else if (type === 'search') {
+      modalOpts = {
+        title: 'Add new search stage',
+        templateAsset: 'adminAssets/adminStageModals/search.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          modals: this.modalAssets,
+          images: this.imageAssets
+        }
+      };
+
+      componentType = 'stage';
+    }
+    else if (type === 'collection') {
+      modalOpts = {
+        title: 'Add new collection stage',
+        templateAsset: 'adminAssets/adminStageModals/collection.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          modals: this.modalAssets,
+          images: this.imageAssets
+        }
+      };
+
+      componentType = 'stage';
+    }
+    else if (type === 'criticalEval') {
+      modalOpts = {
+        title: 'Add new critical evaluation stage',
+        templateAsset: 'adminAssets/adminStageModals/criticalEval.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          modals: this.modalAssets,
+          images: this.imageAssets,
+          questionnaires: this.questionnaires
+        }
+      };
+
+      componentType = 'stage';
+    }
+    else if (type === 'synthesis') {
+      modalOpts = {
+        title: 'Add new synthesis stage',
+        templateAsset: 'adminAssets/adminStageModals/synthesis.html',
+        buttonType: 'save',
+        fields: {
+          content: { state: type },
+          modals: this.modalAssets,
+          images: this.imageAssets
+        }
+      };
+
       componentType = 'stage';
     }
     else if (type === 'end') {
@@ -140,15 +186,10 @@ class StudyManager {
         templateAsset: 'adminAssets/adminStageModals/end.html',
         buttonType: 'save',
         fields: {
-          content: { state: type },
-          stages: this.availableStages,
-          modals: this.modalAssets,
-          templates: this.templateAssets,
-          images: this.imageAssets
+          content: { state: type }
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'stage';
     }
     else if (type === 'flow') {
@@ -167,7 +208,6 @@ class StudyManager {
         }
       };
 
-      targetCollection = FlowComponents;
       componentType = 'flow';
     }
     else {
@@ -178,16 +218,14 @@ class StudyManager {
     this.modal.openModal(modalOpts, (err, res) => {
       if (!err && res.answers) {
         let newStudyComponent = res.answers;
-        newStudyComponent.type = type;
+        newStudyComponent.type = componentType;
 
         console.log(newStudyComponent);
 
-        /*
-        targetCollection.insert(newQuestion, (err, res) => {
+        targetCollection.insert(newStudyComponent, (err, res) => {
           if (!err) console.log('Study Component created!', type, res);
           else console.error('Error while creating Study Component!', err);
         });
-        */
       }
     });
   }

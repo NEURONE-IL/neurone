@@ -11,7 +11,7 @@ class DocumentLoader {
 
     $reactive(this).attach($scope);
 
-    this.subscribe('flowcomponents');
+    this.subscribe('flowComponents');
 
     this.helpers({
       locales: () => FlowComponents.find({ type: 'locale' }),

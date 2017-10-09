@@ -1,12 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import Utils from './utils/serverUtils.js';
+import Utils from '../utils/serverUtils.js';
 
-import { Locales } from '../imports/database/assets/locales';
-import { Modals } from '../imports/database/assets/modals';
-import { Templates } from '../imports/database/assets/templates';
-import { Images } from '../imports/database/assets/images';
+import { Locales, Modals, Templates, Images } from '../database/definitions';
 
 Locales.allowClient();
 Modals.allowClient();

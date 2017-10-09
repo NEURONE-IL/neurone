@@ -3,8 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import Utils from '../utils/serverUtils';
 import Users from '../utils/userUtils';
 
-import { Settings } from '../../imports/database/settings/index';
-import { FlowComponents } from '../../imports/database/flowComponents/index';
+import { Settings, FlowComponents } from '../database/definitions';
 
 // NEURONE API: Configs Setter
 // Methods for modifying settings for simulation from the server

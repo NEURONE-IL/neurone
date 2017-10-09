@@ -30,7 +30,7 @@ class ContentCreator {
 
     this.availableStages = availableStages;
 
-    this.subscribe('flowcomponents');
+    this.subscribe('flowComponents');
     this.subscribe('locales');
     this.subscribe('modals');
     this.subscribe('templates');

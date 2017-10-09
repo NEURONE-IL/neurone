@@ -3,14 +3,7 @@ import UserAgent from 'useragent';
 
 import Utils from '../utils/serverUtils';
 
-import { Snippets } from '../../imports/database/snippets/index';
-import { Queries } from '../../imports/database/queries/index';
-import { Bookmarks } from '../../imports/database/bookmarks/index';
-import { VisitedLinks } from '../../imports/database/visitedLinks/index';
-import { SessionLogs } from '../../imports/database/sessionLogs/index';
-import { EventLogs } from '../../imports/database/eventLogs/index';
-import { FormAnswers } from '../../imports/database/formAnswers/index';
-import { Counters } from './serverCollections';
+import { EventLogs, SessionLogs, Snippets, Queries, Bookmarks, VisitedLinks, FormAnswers, Counters } from '../database/definitions';
 
 // NEURONE API: Event Logs
 // Methods for storing actions made by users in NEURONE simulation

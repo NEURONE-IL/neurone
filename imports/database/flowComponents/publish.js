@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowComponents } from './collection';
 
 if (Meteor.isServer) {
-  Meteor.publish('flowcomponents', function() {
+  Meteor.publish('flowComponents', function() {
     return FlowComponents.find({});
   });
 }

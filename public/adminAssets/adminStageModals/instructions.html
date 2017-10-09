@@ -19,13 +19,13 @@
     <div class="form-group form-group-fix">
       <label for="template" class="col-md-4 control-label">HTML Template</label>
       <div class="col-md-8">
-        <select
-          id="template"
-          ng-options="tpl.meta.referencePath as tpl.name for tpl in modal.fields.templates"
-          ng-model="modal.answers.page"
-          class="form-control"
-          ng-required="true">
-        </select>
+        <ui-select id="template" ng-model="modal.answers.page" ng-required="true">
+          <ui-select-match placeholder="Select template">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="tpl.meta.referencePath as tpl in modal.fields.templates | filter: { name: $select.search }">
+            <div>{{ tpl.name }}</div>
+            <small>{{ tpl.meta.referencePath }}</small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
     <div class="form-group form-group-fix">

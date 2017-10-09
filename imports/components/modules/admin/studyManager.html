@@ -27,8 +27,7 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Template</th>
+            <th>Type</th>
             <th>Time Limit</th>
             <th>Actions</th>
           </tr>
@@ -36,14 +35,13 @@
         <tbody>
           <tr ng-repeat="content in studyManager.stages track by $index">
             <td>{{ content.id }}</td>
-            <td>{{ content.name }}</td>
             <td>{{ content.state }}</td>
             <td>{{ content.time }}</td>
             <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
+              <button class="btn btn-xs btn-info" ng-click="studyManager.edit(content.type, content)">
                 <i class="fa fa-pencil-square-o"></i>
               </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
+              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove(content.type, content)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </td>

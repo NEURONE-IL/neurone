@@ -24,6 +24,7 @@ import ContentLoader from './contentLoader/contentLoader';
 
 import ServerConfigs from './serverConfigs';
 import Utils from './utils/serverUtils';
+import * as DB from './database/definitions';
 
 if (!Utils.isTesting()) {
   Meteor.startup(() => {

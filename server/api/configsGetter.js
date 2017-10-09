@@ -4,10 +4,7 @@ import UserAgent from 'useragent';
 
 import Utils from '../utils/serverUtils';
 
-import { UserData } from '../../imports/database/userData/index';
-import { Settings } from '../../imports/database/settings/index';
-import { FlowComponents } from '../../imports/database/flowComponents/index';
-import { Identities } from '../../imports/database/identities/index';
+import { UserData, Settings, Identities, FlowComponents } from '../database/definitions';
 
 // NEURONE API: Configs Getter
 // Methods for getting settings for users from the server

@@ -1,22 +1,62 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    ¡Welcome to <b>NEURONE Administration Panel</b>! In this place it is possible to configure all the study variables in order to run experiments on students.
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-4">
       <h3>Server Status</h3>
-      <p><b>Server Time:</b> {{ adminHome.stats.serverTime }}</p>
-      <p><b>Server IP Address:</b> {{ adminHome.stats.serverIpAddr }}</p>
-      <p><b>Server Ping:</b> {{ adminHome.stats.ping }}</p>
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><b>Server Time</b></td>
+              <td>{{ adminHome.stats.serverTime }}</td>
+            </tr>
+            <tr>
+              <td><b>Server IP Address</b></td>
+              <td>{{ adminHome.stats.serverIpAddr }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <h3>Current User Status
         <button class="btn btn-sm btn-success pull-right" ng-click="adminHome.getServerStats()">
           <i class="fa fa-refresh"></i> Reload Stats
         </button>
       </h3>
-      <p><b>Client IP Address:</b> {{ adminHome.stats.clientIpAddr }}</p>
-      <p><b>Client User Agent:</b> {{ adminHome.stats.clientUserAgent }}</p>
-      <p><b>Client Web Browser:</b> {{ adminHome.stats.clientBrowser }}</p>
-      <p><b>Client Operating System:</b> {{ adminHome.stats.clientOperatingSystem }}</p>
-      <p><b>Client Device:</b> {{ adminHome.stats.clientDevice }}</p>
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><b>Client to Server Ping</b></td>
+              <td>{{ adminHome.stats.ping }}</td>
+            </tr>
+            <tr>
+              <td><b>Client IP Address</b></td>
+              <td>{{ adminHome.stats.clientIpAddr }}</td>
+            </tr>
+            <tr>
+              <td><b>Client User Agent</b></td>
+              <td>{{ adminHome.stats.clientUserAgent }}</td>
+            </tr>
+            <tr>
+              <td><b>Client Web Browser</b></td>
+              <td>{{ adminHome.stats.clientBrowser }}</td>
+            </tr>
+            <tr>
+              <td><b>Client Operating System</b></td>
+              <td>{{ adminHome.stats.clientOperatingSystem }}</td>
+            </tr>
+            <tr>
+              <td><b>Client Device</b></td>
+              <td>{{ adminHome.stats.clientDevice }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <!--
