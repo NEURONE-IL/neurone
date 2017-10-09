@@ -7,6 +7,7 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 import { FlowComponents } from '../../../database/flowComponents/index';
+import { FlowElements } from '../../../database/flowElements/index';
 
 import template from './enrollment.html';
 
@@ -20,6 +21,7 @@ class Enrollment {
     this.uds = UserDataService;
     this.auth = AuthService;
 
+    /*
     $scope.$on('$stateChangeStart', (event) => {
       this.uds.setSession({
         readyButton: false,
@@ -48,13 +50,16 @@ class Enrollment {
         }
       });
     });
+    */
 
     $reactive(this).attach($scope);
 
     this.helpers({
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),
-      tasks: () => FlowComponents.find({ type: 'task' })
+      tasks: () => FlowComponents.find({ type: 'task' }),
+      stages: () => FlowElements.find({ type: 'stage' }),
+      flows: () => FlowElements.find({ type: 'flow' }),
     });
 
     this.userList = [];

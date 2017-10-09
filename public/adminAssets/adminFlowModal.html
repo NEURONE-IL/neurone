@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div>
+    <b>Study Flows</b> are the main component of NEURONE simulation. They are built on top of assets (defined on <b>Content Creator</b>), questionnaires (defined on <b>Form Builder</b>) and Documents (defined on <b>Document Manager</b>).
+  </div>
+  <br>
+  <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="sid" class="col-md-6 control-label">Flow ID</label>
+      <div class="col-md-6">
+        <input id="sid" class="form-control" type="text" placeholder="english-science-article" ng-model="modal.answers.id" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="locale" class="col-md-6 control-label">Flow Locale</label>
+      <div class="col-md-6">
+        <ui-select id="locale" ng-model="modal.answers.locale" ng-required="true">
+          <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="locale.properties.code as locale in modal.fields.locales | filter: { name: $select.search }">
+            {{ locale.name }} <small>{{ locale.properties.code }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="domain" class="col-md-6 control-label">Flow Domain</label>
+      <div class="col-md-6">
+        <ui-select id="domain" ng-model="modal.answers.domain" ng-required="true">
+          <ui-select-match placeholder="Select domain">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="domain.properties.alias as domain in modal.fields.domains | filter: { name: $select.search }">
+            {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="task" class="col-md-6 control-label">Flow Task</label>
+      <div class="col-md-6">
+        <ui-select id="task" ng-model="modal.answers.task" ng-required="true">
+          <ui-select-match placeholder="Select task">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="task.properties.alias as task in modal.fields.tasks | filter: { name: $select.search }">
+            {{ task.name }} <small>{{ task.properties.alias }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="time" class="col-md-6 control-label">Global Time Limit (minutes)</label>
+      <div class="col-md-6">
+        <input id="time" class="form-control" type="number" min="-1" ng-min="-1" placeholder="-1" ng-model="modal.answers.maxGlobalTime" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="min-bookmarks" class="col-md-6 control-label">Minimum Required Bookmarks</label>
+      <div class="col-md-6">
+        <input id="min-bookmarks" class="form-control" type="number" min="1" ng-min="1" placeholder="3" ng-model="modal.answers.minBookmarks" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="max-bookmarks" class="col-md-6 control-label">Maximum Required Bookmarks</label>
+      <div class="col-md-6">
+        <input id="max-bookmarks" class="form-control" type="number" min="1" ng-min="1" placeholder="3" ng-model="modal.answers.maxBookmarks" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="min-snippets" class="col-md-6 control-label">Minimum Required Snippets per Bookmark</label>
+      <div class="col-md-6">
+        <input id="min-snippets" class="form-control" type="number" min="1" ng-min="1" placeholder="2" ng-model="modal.answers.minSnippetsPerPage" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="max-snippets" class="col-md-6 control-label">Maximum Required Snippets per Bookmark</label>
+      <div class="col-md-6">
+        <input id="max-snippets" class="form-control" type="number" min="1" ng-min="1" placeholder="2" ng-model="modal.answers.maxSnippetsPerPage" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="min-snippet-length" class="col-md-6 control-label">Minimum Snippet Length (words)</label>
+      <div class="col-md-6">
+        <input id="min-snippet-length" class="form-control" type="number" min="1" ng-min="1" placeholder="5" ng-model="modal.answers.minSnippetWordLength" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="max-snippet-length" class="col-md-6 control-label">Maximum Snippet Length (words)</label>
+      <div class="col-md-6">
+        <input id="max-snippet-length" class="form-control" type="number" min="1" ng-min="1" placeholder="20" ng-model="modal.answers.maxSnippetWordLength" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="snippet-truncate" class="col-md-6 control-label">Snippet Truncate Threshold (words)</label>
+      <div class="col-md-6">
+        <input id="snippet-truncate" class="form-control" type="number" min="1" ng-min="1" placeholder="20" ng-model="modal.answers.snippetWordTruncateThreshold" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="min-synthesis-word" class="col-md-6 control-label">Synthesis Length (words)</label>
+      <div class="col-md-6">
+        <input id="min-synthesis-word" class="form-control" type="number" min="1" ng-min="1" placeholder="50" ng-model="modal.answers.minSynthesisWordLength" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="min-synthesis-char" class="col-md-6 control-label">Synthesis Length (characters)</label>
+      <div class="col-md-6">
+        <input id="min-synthesis-char" class="form-control" type="number" min="1" ng-min="1" placeholder="425" ng-model="modal.answers.minSynthesisCharLength" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="synthesis-autosave" class="col-md-6 control-label">Synthesis Autosave Interval (seconds)</label>
+      <div class="col-md-6">
+        <input id="synthesis-autosave" class="form-control" type="number" min="30" ng-min="30" placeholder="30" ng-model="modal.answers.syhtesisAutosaveInterval" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="task-page" class="col-md-6 control-label">Flow Assignment Default Modal</label>
+      <div class="col-md-6">
+        <ui-select id="task-page" ng-model="modal.answers.taskPage" ng-required="true">
+          <ui-select-match placeholder="Select modal">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="mod.meta.referencePath as mod in modal.fields.modals | filter: { name: $select.search }">
+            <div>{{ mod.name }}</div>
+            <small>{{ mod.meta.referencePath }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="replace-relevant" class="col-md-6 control-label">Replace Student Bookmarks with Relevant Documents</label>
+      <div class="col-md-6">
+        <input id="replace-relevant" type="checkbox" ng-model="modal.answers.replaceWithRelevantDocuments">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="avatar" class="col-md-6 control-label">Avatar Name</label>
+      <div class="col-md-6">
+        <input id="avatar" class="form-control" type="text" placeholder="Sarah" ng-model="modal.answers.avatar" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="template" class="col-md-6 control-label">Stages</label>
+      <div class="col-md-6">
+        <ui-select multiple ng-model="modal.answers.stages" sortable="true" close-on-select="false" ng-required="true">
+          <ui-select-match placeholder="Select stages">{{ $item.id }}</ui-select-match>
+          <ui-select-choices repeat="stage in modal.fields.stages | filter: { id: $select.search }">
+            <div>{{ stage.id }}</div>
+            <small>Type: {{ stage.state }} · Time Limit: {{ stage.state }} · URL Params: {{ stage.urlParams.stage }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+  </div>
+  <pre>{{ modal.answers | json: 2 }}</pre>
+</div>

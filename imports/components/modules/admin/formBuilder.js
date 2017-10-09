@@ -423,10 +423,6 @@ class FormBuilder {
       });
     }
   }
-
-  parseQuestionArray(questionArray) {
-    return [];
-  }
 }
 
 const name = 'formBuilder';

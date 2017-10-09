@@ -38,142 +38,14 @@
             <td>{{ content.state }}</td>
             <td>{{ content.time }}</td>
             <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit(content.type, content)">
+              <button class="btn btn-xs btn-info" ng-click="studyManager.edit((content.state || content.type), content)">
                 <i class="fa fa-pencil-square-o"></i>
               </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove(content.type, content)">
+              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove((content.state || content.type), content)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </td>
           </tr>
-          <!--
-          <tr>
-            <td>samBegin</td>
-            <td>Pretask SAM</td>
-            <td>affective</td>
-            <td>-1</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>begin</td>
-            <td>Initial Instructions</td>
-            <td>instructions</td>
-            <td>-1</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>tutorial</td>
-            <td>Stage Tutorial</td>
-            <td>tutorial</td>
-            <td>-1</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>search</td>
-            <td>Search Stage</td>
-            <td>search</td>
-            <td>8</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>collection</td>
-            <td>Collection Stage</td>
-            <td>collection</td>
-            <td>12</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>criticalEval</td>
-            <td>Critical Evaluation Stage</td>
-            <td>crtitcalEval</td>
-            <td>7</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>synthesis</td>
-            <td>Synthesis Stage</td>
-            <td>synthesis</td>
-            <td>15</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>samEnd</td>
-            <td>Posttask SAM</td>
-            <td>affective</td>
-            <td>-1</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>end</td>
-            <td>End Phase</td>
-            <td>end</td>
-            <td>-1</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('stage', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('stage', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          -->
         </tbody>
       </table>
     </div>
@@ -196,100 +68,18 @@
           </tr>
         </thead>
         <tbody>
-          <!--
           <tr ng-repeat="content in studyManager.flows track by $index">
-            <td>{{ content.flowSettingsId }}</td>
+            <td>{{ content.id }}</td>
             <td>{{ content.locale }}</td>
             <td>{{ content.task }}</td>
             <td>{{ content.domain }}</td>
             <td>{{ content.maxGlobalTime }}</td>
             <td>{{ content.stages.length }}</td>
             <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
+              <button class="btn btn-xs btn-info" ng-click="studyManager.edit(content.type, content)">
                 <i class="fa fa-pencil-square-o"></i>
               </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          -->
-          <tr>
-            <td>fi-social-article</td>
-            <td>fi</td>
-            <td>social</td>
-            <td>article</td>
-            <td>-1</td>
-            <td>18</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>fi-social-email</td>
-            <td>fi</td>
-            <td>social</td>
-            <td>email</td>
-            <td>-1</td>
-            <td>18</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>fi-science-article</td>
-            <td>fi</td>
-            <td>science</td>
-            <td>article</td>
-            <td>-1</td>
-            <td>18</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>fi-science-email</td>
-            <td>fi</td>
-            <td>science</td>
-            <td>email</td>
-            <td>-1</td>
-            <td>18</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>esCL-pilot</td>
-            <td>es-CL</td>
-            <td>pilot</td>
-            <td>pilot</td>
-            <td>25</td>
-            <td>10</td>
-            <td>
-              <button class="btn btn-xs btn-info" ng-click="studyManager.edit('flow', content)">
-                <i class="fa fa-pencil-square-o"></i>
-              </button>
-              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove('flow', content)">
+              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove(content.type, content)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </td>
