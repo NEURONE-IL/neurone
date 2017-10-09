@@ -4,7 +4,7 @@ import UserAgent from 'useragent';
 
 import Utils from '../utils/serverUtils';
 
-import { UserData, Settings, Identities, FlowComponents } from '../database/definitions';
+import { UserData, Settings, Identities, FlowComponents, FlowElements } from '../database/definitions';
 
 // NEURONE API: Configs Getter
 // Methods for getting settings for users from the server
@@ -151,9 +151,25 @@ Meteor.methods({
         profile: {}
       };
 
-      // TODO Undo hardcode of domain and tasks
-      let domain, task, flowSettings;
+      let studyFlow = FlowElements.findOne({ type: 'flow', locale: user.locale, domain: user.domain, task: user.task });
 
+      if (!(!!studyFlow)) {
+        arr[idx].status = 'ConfigError';
+      }
+      else {
+        tempCredentials.configs = studyFlow;
+
+        let id = Accounts.createUser(tempCredentials);
+        
+        if (!(!!id)) {
+          arr[idx].status = 'RegisterError';
+        }
+        else {
+          arr[idx].status = 'Registered';
+        }
+      }
+
+      /*
       if (user.domain === 'SS') domain = 'social';
       else if (user.domain === 'SC') domain = 'science';
       else domain = 'pilot';
@@ -179,6 +195,7 @@ Meteor.methods({
           arr[idx].status = 'Registered';
         }
       }
+      */
     });
 
     return userList;

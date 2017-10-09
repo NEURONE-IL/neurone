@@ -1,115 +1,95 @@
 <div class="container-fluid">
   <div class="row">
-    The NEURONE User Enrollment module allows the researcher to create user accounts for its own studies. Every user account is tied to a single Study Flow. In case of need to run multiple flows on each student, create multiple acounts for each one.
+    The <b>NEURONE User Enrollment</b> module allows the researcher to create multiple student accounts for its own studies (defined on <b>Study Manager</b>). Each user account is tied to a single Study Flow. In case of need to run multiple flows on each student, create multiple accounts for each one.
   </div>
   <br>
   <div class="row">
     <form name="enrollment.form">
-      <div class="col-md-9">
-        <div class="form-inline admin-row-spacing">
-          <label class="control-label">
-            UserLocale
-            <ui-select id="locale" ng-model="enrollment.locale" ng-required="true">
-              <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
-              <ui-select-choices repeat="locale.properties.code as locale in enrollment.locales | filter: { name: $select.search }">
-                {{ locale.name }} <small>{{ locale.properties.code }}</small>
-              </ui-select-choices>
-            </ui-select>
-          </label>
-          <label class="control-label">
-            UserDomain
-            <ui-select id="domain" ng-model="enrollment.domain" ng-required="true">
-              <ui-select-match placeholder="Select domain">{{ $select.selected.name }}</ui-select-match>
-              <ui-select-choices repeat="domain.properties.alias as domain in enrollment.domains | filter: { name: $select.search }">
-                {{ domain.name }} <small>{{ domain.properties.alias }}</small>
-              </ui-select-choices>
-            </ui-select>
-          </label>
-          <label class="control-label">
-            UserTask
-            <ui-select id="task" ng-model="enrollment.task" ng-required="true">
-              <ui-select-match placeholder="Select task">{{ $select.selected.name }}</ui-select-match>
-              <ui-select-choices repeat="task.properties.alias as task in enrollment.tasks | filter: { name: $select.search }">
-                {{ task.name }} <small>{{ task.properties.alias }}</small>
-              </ui-select-choices>
-            </ui-select>
-          </label>
-          <!--
-          <select class="form-control" ng-model="enrollment.domain" ng-required="true">
-            <option value="">-- SearchDomain --</option>
-            <option value="SS">SocialScience</option>
-            <option value="SC">Science</option>
-            <option value="PL">Pilot</option>
-          </select>
-          <select class="form-control" ng-model="enrollment.task" ng-required="true">
-            <option value="">-- TaskType --</option>
-            <option value="E">Email</option>
-            <option value="A">Article</option>
-            <option value="P">Pilot</option>
-          </select>
-          -->
-        </div>
-        <div class="form-inline admin-row-spacing">
-          <label class="control-label">
-            AccountType
-            <select class="form-control" ng-model="enrollment.testAct" ng-required="true">
-              <option value=""></option>
-              <option value="true">TestAccount</option>
-              <option value="false">RealAccount</option>
-            </select>      
-          </label>
-          <label class="control-label">
-            UniversityCode
-            <input class="form-control" type="number" min="0" ng-min="0" max="9" ng-max="9" ng-model="enrollment.university" ng-required="true">
-          </label>
-          <label class="control-label">
-            SchoolCode
-            <input class="form-control" type="number" min="0" ng-min="0" max="99" ng-max="99" ng-model="enrollment.school" ng-required="true">
-          </label>
-          <label class="control-label">
-            ClassCode
-            <input class="form-control" type="text" ng-minlength="1" ng-maxlength="1" ng-pattern="enrollment.allUppercaseRegex" ng-model="enrollment.class" ng-required="true">
-          </label>
-        </div>
-        <div class="form-inline admin-row-spacing">
-          <label class="control-label">
-            StudyStage
-            <input class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyStage" ng-required="true">
-          </label>
-          <label class="control-label">
-            StudyOrder
-            <input class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyOrder" ng-required="true">
-          </label>
-          <!--
-          <select class="form-control" ng-model="enrollment.studyStage" ng-required="true">
-            <option value="">-- StudyStage --</option>
-            <option value="1">Pretest</option>
-            <option value="2">Posttest</option>
-          </select>
-          <select class="form-control" ng-model="enrollment.studyOrder" ng-required="true">
-            <option value="">-- StudyOrder --</option>
-            <option value="1">First</option>
-            <option value="2">Second</option>
-          </select>
-          -->
-          <label class="control-label">
-            StartingUserId
-            <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">
-          </label>
-          <label class="control-label">
-            EndingUserId
-            <input class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idEnd" ng-required="true">
-          </label>
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-4 form-horizontal">
+            <div class="row">
+              <div class="form-group">
+                <label for="flow" class="col-md-5 control-label">Study Flow</label>
+                <ui-select id="flow" ng-model="enrollment.flow" class="col-md-7" ng-required="true">
+                  <ui-select-match placeholder="Select study flow">{{ $select.selected.id }}</ui-select-match>
+                  <ui-select-choices repeat="flow in enrollment.flows | filter: { id: $select.search }">
+                    <div>{{ flow.id }} <small>{{ flow.locale}}</small></div>
+                    <small>Domain: {{ flow.domain }} · Task: {{ flow.task }}</small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+              <div class="form-group">
+                <label for="stage" class="col-md-5 control-label">Application Stage</label>
+                <div class="col-md-7">
+                  <input id="stage" class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyStage" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="order" class="col-md-5 control-label">Study Order</label>
+                <div class="col-md-7">
+                  <input id="order" class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyOrder" ng-required="true">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 form-horizontal">
+            <div class="row">
+              <div class="form-group">
+                <label for="test" class="col-md-5 control-label">Account Type</label>
+                <div class="col-md-7">
+                  <select id="test" class="form-control" ng-model="enrollment.testAct" ng-required="true">
+                    <option value="true">Test Account</option>
+                    <option value="false">Real Account</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="start-id" class="col-md-5 control-label">Starting User ID</label>
+                <div class="col-md-7">
+                  <input id="start-id" class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="end-id" class="col-md-5 control-label">Ending User ID</label>
+                <div class="col-md-7">
+                  <input id="end-id" class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idEnd" ng-required="true">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 form-horizontal">
+            <div class="row">
+              <div class="form-group">
+                <label for="code-u" class="col-md-5 control-label">University Code</label>
+                <div class="col-md-7">
+                  <input id="code-u" class="form-control" type="number" min="0" ng-min="0" max="9" ng-max="9" ng-model="enrollment.university" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="code-school" class="col-md-5 control-label">School Code</label>
+                <div class="col-md-7">
+                  <input id="code-school" class="form-control" type="number" min="0" ng-min="0" max="99" ng-max="99" ng-model="enrollment.school" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="code-class" class="col-md-5 control-label">Class Code</label>
+                <div class="col-md-7">
+                  <input id="code-class" class="form-control" type="text" ng-minlength="1" ng-maxlength="1" ng-pattern="enrollment.allUppercaseRegex" ng-model="enrollment.class" ng-required="true">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="row admin-row-spacing">
+      <div class="col-md-2">
+        <div class="row admin-row-spacing text-center">
           <button type="button" class="btn btn-info" ng-click="enrollment.generateUsers()">Generate Users</button>
         </div>
-        <div class="row admin-row-spacing">
+        <div class="row admin-row-spacing text-center">
           <button type="button" class="btn btn-success" ng-click="enrollment.registerUsers()">Register Users</button>
         </div>
-        <div class="row admin-row-spacing">
+        <div class="row admin-row-spacing text-center">
           <button type="button" class="btn btn-warning" ng-csv="enrollment.userList" filename="neuroneUsers.csv">Export as CSV</button>
         </div>
       </div>
