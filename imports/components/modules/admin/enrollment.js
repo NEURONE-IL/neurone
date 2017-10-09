@@ -23,6 +23,9 @@ class Enrollment {
 
     $reactive(this).attach($scope);
 
+    this.subscribe('flowComponents');
+    this.subscribe('flowElements');
+
     this.helpers({
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),

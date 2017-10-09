@@ -45,9 +45,10 @@
     "emailPlaceholder": "Enter your email",
     "usernamePlaceholder": "Enter your username",
     "passwordPlaceholder": "Enter your password",
-    "identityPlaceholder": "",
+    "identityPlaceholder": "Enter your name",
     "studentRole": "Student",
-    "experimenterRole": "Teacher"
+    "experimenterRole": "Teacher",
+    "flow": "Activity"
   },
   "home": {
     "welcome": "Welcome to NEURONE!",

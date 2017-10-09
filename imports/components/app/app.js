@@ -58,8 +58,6 @@ import { name as Logger } from '../services/logger/logger';
 import { name as Stages } from './stages/stages';
 
 import { name as Admin } from '../modules/admin';
-//import { name as ViewDocuments } from '../modules/viewDocuments';
-//import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
 
@@ -116,8 +114,6 @@ export default angular.module(name, [
   Stages,
   /* Other modules */
   Admin
-  //ViewDocuments
-  //Enrollment
 ])
 .component(name, {
   template: template.default,
@@ -141,7 +137,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage('fi');
+  $translateProvider.preferredLanguage('en');
 };
 
 function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {

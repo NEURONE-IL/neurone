@@ -99,13 +99,13 @@ Meteor.methods({
   // dgacitua: Get initial user configs for new created user from client
   //           PARAMS: domain (flow domain as String) & task (flow task as String)
   //           RETURNS: Flow Settings JSON object
-  initialConfigs: function(domain, task) {
+  initialConfigs: function(locale, task, domain) {
     try {
       var envSettings = Settings.findOne({ envSettingsId: 'default' }),
          flowSettings = null;
 
-      if (!!task && !!domain) {
-        flowSettings = Settings.findOne({ task: task, domain: domain });
+      if (!!locale && !!task && !!domain) {
+        flowSettings = FlowElements.findOne({ type: 'flow', locale: locale, task: task, domain: domain });
       }
       else {
         flowSettings = Settings.findOne({ flowSettingsId: envSettings.flowSettings }); 

@@ -18,13 +18,13 @@
       </ul>
       <div class="tab-content">
         <div id="student" class="tab-pane fade in active">
-          <form class="form-horizontal">
+          <form name="register.studentForm" class="form-horizontal">
             <div class="form-group">
               <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
               <div class="cols-sm-10">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" required autofocus/>
+                  <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" ng-required="true" autofocus/>
                 </div>
               </div>
             </div>
@@ -34,7 +34,23 @@
               <div class="cols-sm-10">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                  <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" required/>
+                  <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" ng-required="true"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="flow" class="cols-sm-2 control-label login">{{"auth.flow" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-cogs fa-lg" aria-hidden="true"></i></span>
+                  <ui-select id="flow" ng-model="register.flow" ng-required="true">
+                    <ui-select-match>{{ $select.selected.id }}</ui-select-match>
+                    <ui-select-choices repeat="flow in register.flows | filter: { id: $select.search }">
+                      <div>{{ flow.id }}</div>
+                      <small>{{ flow.locale }} · {{ flow.domain }} · {{ flow.task }}</small>
+                    </ui-select-choices>
+                  </ui-select>
                 </div>
               </div>
             </div>
@@ -45,42 +61,42 @@
               <button type="submit" class="btn btn-success btn-lg btn-block login-button" ng-click="register.register('student')">{{"auth.registerButton" | translate}}</button>
             </div>
             <div class="login-register">
-              <a href="/login">{{"auth.loginButton" | translate}}</a>
+              <a ui-sref="login">{{"auth.loginButton" | translate}}</a>
             </div>
           </form>
         </div>
 
         <div id="researcher" class="tab-pane fade">
-          <form class="form-horizontal">
-              <div class="form-group">
-                <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
-                <div class="cols-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" required autofocus/>
-                  </div>
+          <form name="register.researcherForm" class="form-horizontal">
+            <div class="form-group">
+              <label for="username" class="cols-sm-2 control-label login">{{"auth.username" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="username" id="username"  placeholder="{{'auth.usernamePlaceholder' | translate}}" ng-model="register.credentials.username" ng-required="true" autofocus/>
                 </div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label for="email" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
-                <div class="cols-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" name="email" id="email" placeholder="{{'auth.emailPlaceholder' | translate}}" ng-model="register.credentials.email" required/>
-                  </div>
+            <div class="form-group">
+              <label for="email" class="cols-sm-2 control-label login">{{"auth.email" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="email" id="email" placeholder="{{'auth.emailPlaceholder' | translate}}" ng-model="register.credentials.email" ng-required="true"/>
                 </div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>
-                <div class="cols-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" required/>
-                  </div>
+            <div class="form-group">
+              <label for="password" class="cols-sm-2 control-label login">{{"auth.password" | translate}}</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                  <input type="password" class="form-control" name="password" id="password" placeholder="{{'auth.passwordPlaceholder' | translate}}" ng-model="register.credentials.password" ng-required="true"/>
                 </div>
               </div>
+            </div>
 
             <div class="text-center">{{register.error.message}}</div>
 
@@ -88,7 +104,7 @@
               <button type="submit" class="btn btn-success btn-lg btn-block login-button" ng-click="register.register('researcher')">{{"auth.registerButton" | translate}}</button>
             </div>
             <div class="login-register">
-              <a href="/login">{{"auth.loginButton" | translate}}</a>
+              <a ui-sref="login">{{"auth.loginButton" | translate}}</a>
             </div>
           </form>
         </div>

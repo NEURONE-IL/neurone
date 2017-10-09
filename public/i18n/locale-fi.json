@@ -47,7 +47,8 @@
     "passwordPlaceholder": "Anna salasanasi",
     "identityPlaceholder": "",
     "studentRole": "Oppilas",
-    "experimenterRole": "Opettaja"
+    "experimenterRole": "Opettaja",
+    "flow": "Aktiviteetti"
   },
   "home": {
     "welcome": "Tervetuloa nettilukutaidon testiin!",

@@ -14,7 +14,7 @@
                 <ui-select id="flow" ng-model="enrollment.flow" class="col-md-7" ng-required="true">
                   <ui-select-match placeholder="Select study flow">{{ $select.selected.id }}</ui-select-match>
                   <ui-select-choices repeat="flow in enrollment.flows | filter: { id: $select.search }">
-                    <div>{{ flow.id }} <small>{{ flow.locale}}</small></div>
+                    <div>{{ flow.id }} <small>{{ flow.locale }}</small></div>
                     <small>Domain: {{ flow.domain }} · Task: {{ flow.task }}</small>
                   </ui-select-choices>
                 </ui-select>

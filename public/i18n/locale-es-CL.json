@@ -47,7 +47,8 @@
     "passwordPlaceholder": "Ingresa tu contraseña",
     "identityPlaceholder": "Ingresa tu nombre completo",
     "studentRole": "Estudiante",
-    "experimenterRole": "Profesor"
+    "experimenterRole": "Profesor",
+    "flow": "Actividad"
   },
   "home": {
     "welcome": "Bienvenido a NEURONE!",
