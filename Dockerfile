@@ -12,13 +12,6 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 RUN apt-get -qq update \
   && apt-get -qq --no-install-recommends install curl ca-certificates wget python unzip bsdtar
 
-# Replace tar with bsdtar
-# Fixes https://github.com/meteor/meteor/issues/5762
-RUN echo -n "Old tar version: "; tar --version \
-	&& mv /usr/bin/tar /usr/bin/tar.gnu \
-	&& ln -s /usr/bin/bsdtar /usr/bin/tar \
-	&& echo -n "New tar version: "; tar --version
-
 # Install gosu
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
   && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
@@ -71,9 +64,6 @@ ENV HTTP_FORWARDED_COUNT 1
 # Enable Nginx and Passenger
 RUN rm -f /etc/nginx/sites-enabled/default \
   && rm -f /etc/service/nginx/down
-
-# Restore old tar
-RUN mv /usr/bin/tar.gnu /usr/bin/tar
 
 # Set ports, data volumes and commands
 EXPOSE 80

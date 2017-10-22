@@ -9,7 +9,15 @@ HOMEDIR=$(pwd)
 
 printf "%b\n" "\e[1;31m>> Installing Meteor Framework [1/8]\e[0m"
 
-curl https://install.meteor.com/ | sh
+# Download installer script
+curl https://install.meteor.com -o /tmp/install_meteor.sh
+
+# Change tar command in the install script with bsdtar ( bsdtar -xf "$TARBALL_FILE" -C "$INSTALL_TMPDIR" )
+# Fixes https://github.com/meteor/meteor/issues/5762
+sed -i.bak "s/tar -xzf.*/bsdtar -xf \"\$TARBALL_FILE\" -C \"\$INSTALL_TMPDIR\"/g" /tmp/install_meteor.sh
+
+# Install Meteor
+sh /tmp/install_meteor.sh
 
 printf "%b\n" "\e[1;31m>> Packaging NPM dependencies [2/8]\e[0m"
 
