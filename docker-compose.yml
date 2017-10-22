@@ -32,8 +32,6 @@ services:
         userid: ${NEURONE_USERID:-9001}
     image: dgacitua/neurone
     restart: on-failure
-    cpu_percent: 50
-    mem_limit: 512m
     ports:
      - 80:80
     volumes:
