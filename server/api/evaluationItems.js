@@ -2,13 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../utils/serverUtils';
 
-import { EventLogs } from '../../imports/database/eventLogs/index';
-
-import { FormAnswers } from '../../imports/database/formAnswers/index';
-import { FormQuestions } from '../../imports/database/formQuestions/index';
-import { FormQuestionnaires } from '../../imports/database/formQuestionnaires/index';
-import { SynthesisQuestions } from '../../imports/database/synthesisQuestions/index';
-import { SynthesisAnswers } from '../../imports/database/synthesisAnswers/index';
+import { EventLogs, FormAnswers, FormQuestions, FormQuestionnaires, SynthesisQuestions, SynthesisAnswers } from '../database/definitions';
 
 // NEURONE API: Evaluation Items
 // Methods for saving and loading forms, synthesis and answers are described here

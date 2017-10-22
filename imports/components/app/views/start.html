@@ -4,5 +4,11 @@
     <b>{{"start.instructions1" | translate}}</b>
   </div>
   <br>
-  <button type="button" class="btn btn-lg btn-success center-block" ng-click="start.begin()"><i class="fa fa-play" aria-hidden="true"> {{"start.beginButton" | translate}}</button>
+  <button type="button" class="btn btn-lg btn-success center-block" ng-click="start.begin()">
+    <i class="fa fa-play" aria-hidden="true"> {{"start.beginButton" | translate}}
+  </button>
+  <br>
+  <button type="button" class="btn btn-lg btn-info center-block" ng-click="start.goToAdminPanel()" ng-if="start.enableAdmin()">
+    <i class="fa fa-unlock-alt" aria-hidden="true"> Admin Panel
+  </button>
 </div>

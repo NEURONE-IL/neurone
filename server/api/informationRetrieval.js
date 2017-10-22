@@ -2,11 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Utils from '../utils/serverUtils';
 
-import { Documents } from '../../imports/database/documents/index';
-import { Snippets } from '../../imports/database/snippets/index';
-import { Queries } from '../../imports/database/queries/index';
-import { Bookmarks } from '../../imports/database/bookmarks/index';
-import { UserData } from '../../imports/database/userData/index';
+import { Documents, Queries, Bookmarks, Snippets, UserData } from '../database/definitions';
 
 // NEURONE API: Information Retrieval
 // Methods for getting information on document, bookmark and snippet status for the user

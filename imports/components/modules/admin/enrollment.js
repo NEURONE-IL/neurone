@@ -6,6 +6,9 @@ import RandomString from 'randomstring';
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
+import { FlowComponents } from '../../../database/flowComponents/index';
+import { FlowElements } from '../../../database/flowElements/index';
+
 import template from './enrollment.html';
 
 class Enrollment {
@@ -18,36 +21,18 @@ class Enrollment {
     this.uds = UserDataService;
     this.auth = AuthService;
 
-    $scope.$on('$stateChangeStart', (event) => {
-      this.uds.setSession({
-        readyButton: false,
-        statusMessage: ''
-      }, (err, res) => {
-        if (!err) {
-          // dgacitua: Do nothing for now
-        }
-        else {
-          console.error('Error while unloading Stage!', err);
-        }
-      });
-    });
-
-    $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({
-        readyButton: false,
-        statusMessage: '',
-        stageHome: 'start'
-      }, (err, res) => {
-        if (!err) {
-          console.log('Enrollment loaded!');
-        }
-        else {
-          console.error('Error while loading Stage!', err);
-        }
-      });
-    });
-
     $reactive(this).attach($scope);
+
+    this.subscribe('flowComponents');
+    this.subscribe('flowElements');
+
+    this.helpers({
+      locales: () => FlowComponents.find({ type: 'locale' }),
+      domains: () => FlowComponents.find({ type: 'domain' }),
+      tasks: () => FlowComponents.find({ type: 'task' }),
+      stages: () => FlowElements.find({ type: 'stage' }),
+      flows: () => FlowElements.find({ type: 'flow' })
+    });
 
     this.userList = [];
     this.allUppercaseRegex = /^[A-Z]*$/;
@@ -61,27 +46,33 @@ class Enrollment {
             end = this.idEnd;
 
       for (var id = start; id <= end; id++) {
+        let domainCode = this.domains.find((e) => (e.properties.alias === this.flow.domain)).properties.code || '',
+              taskCode = this.tasks.find((e) => (e.properties.alias === this.flow.task)).properties.code || '',
+            localeCode = this.locales.find((e) => (e.properties.code === this.flow.locale)).properties.alias || '';
+
         let tempUser = {
           test: this.testAct,           // [Boolean] Is a test account
           university: this.university,  // [one-digit Integer] University Code
           school: this.school,          // [two-digit Integer] School Code
-          class: this.class,              // [Char] Class number code
-          domain: this.domain,          // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
-          task: this.task,              // [Char] Task type (for iFuCo: [E]Email, [A]Article)
+          class: this.class,            // [Char] Class number code
+          domain: this.flow.domain,   // [two-char String] Search Domain (for iFuCo: [SS]SocialScience, [SC]Science)
+          task: this.flow.task,       // [Char] Task type (for iFuCo: [E]Email, [A]Article)
           studyStage: this.studyStage,  // [one-digit Integer] Study Stage (for iFuCo: [1]Pretest, [2]Posttest)
           studyOrder: this.studyOrder,  // [one-digit Integer] Study Order of Application (for iFuCo: [1]First, [2]Second)
           userId: id,                   // [four-digit Integer] User Id
+          locale: this.flow.locale,  // [String] Student's locale
           status: 'NotChecked'
         };
 
         tempUser.password = RandomString.generate({ length: 4, readable: true, charset: 'numeric' });
 
         tempUser.username = (tempUser.test === 'true' ? 't' : '') +
+                            localeCode +
                             tempUser.university +
                             this.zeroPad(2, tempUser.school, true) +
                             tempUser.class +
-                            tempUser.domain + 
-                            tempUser.task + 
+                            domainCode + 
+                            taskCode + 
                             tempUser.studyStage +
                             tempUser.studyOrder +
                             this.zeroPad(4, tempUser.userId, true);
@@ -91,6 +82,7 @@ class Enrollment {
     }
     else {
       console.error('Invalid user form!');
+      alert('Invalid user form!');
     }
   }
 
@@ -131,35 +123,3 @@ export default angular.module(name, [
   controllerAs: name,
   controller: Enrollment
 });
-/*
-.config(config);
-
-function config($stateProvider) {
-  'ngInject';
-
-  $stateProvider.state('enrollment', {
-    url: '/neuroneEnrollment',
-    template: '<enrollment></enrollment>',
-    resolve: {
-      userData(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
-      },
-      currentUser($q, UserDataService, userData) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          var uds = UserDataService,
-              dfr = uds.ready();
-
-          return dfr.then((res) => {
-            if (uds.getRole() !== 'researcher') return $q.reject('WRONG_STAGE');
-            else return $q.resolve();
-          });
-        }
-      }
-    }
-  });
-};
-*/

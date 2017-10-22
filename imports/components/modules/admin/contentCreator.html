@@ -1,0 +1,362 @@
+<div class="container-fluid">
+  <div class="row">
+    The NEURONE Content Creator must be used to build the parts involved in the simulation flow (Locales, Domains, Tasks and Stages) and link them to their respective assets (that can be also uploaded here).
+  </div>
+  <br>
+  <div class="row">
+    <uib-accordion>
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.asset">
+        <uib-accordion-heading>
+          Assets <small>Helper templates and images for simulation</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.asset, 'fa-chevron-right': !contentCreator.panel.asset}"></i>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+          <div class="row">
+            <button class="btn btn-sm btn-primary" ngf-select="contentCreator.uploadFile($file, 'locale')">
+              <i class="fa fa-upload"></i> Upload Locale
+            </button>
+            <button class="btn btn-sm btn-primary" ngf-select="contentCreator.uploadFile($file, 'modal')">
+              <i class="fa fa-upload"></i> Upload Modal
+            </button>
+            <button class="btn btn-sm btn-primary" ngf-select="contentCreator.uploadFile($file, 'template')">
+              <i class="fa fa-upload"></i> Upload Template
+            </button>
+            <button class="btn btn-sm btn-primary" ngf-select="contentCreator.uploadFile($file, 'image')">
+              <i class="fa fa-upload"></i> Upload Image
+            </button>
+            <div>
+              <a href="examples/locale.html" target="_blank">Locale Example</a> | 
+              <a href="examples/modal.html" target="_blank">Modal Example</a> | 
+              <a href="examples/template.html" target="_blank">View Template Example</a> · In case of upload a new version of an already uploaded asset, remember to delete the original asset first!
+            </div>
+          </div>
+          <br>
+          <uib-tabset justified="true">
+            <uib-tab index="0">
+              <uib-tab-heading>Locales</uib-tab-heading>
+              <br>
+              <div class="row">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Reference Path</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="content in contentCreator.localeAssets track by $index">
+                      <td>{{ content._id }}</td>
+                      <td>{{ content.meta.type }}</td>
+                      <td>{{ content.name }}</td>
+                      <td>{{ content.meta.referencePath }}</td>
+                      <td>
+                        <a class="btn btn-xs btn-success" ng-href="{{ contentCreator.downloadFile(content, 'locale') }}" target="_blank" download="{{ content.name }}">
+                          <i class="fa fa-download"></i>
+                        </a>
+                        <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeFile(content, 'locale')">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </uib-tab>
+            <uib-tab index="1">
+              <uib-tab-heading>Modals</uib-tab-heading>
+              <br>
+              <div class="row">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Reference Path</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="content in contentCreator.modalAssets track by $index">
+                      <td>{{ content._id }}</td>
+                      <td>{{ content.meta.type }}</td>
+                      <td>{{ content.name }}</td>
+                      <td>{{ content.meta.referencePath }}</td>
+                      <td>
+                        <a class="btn btn-xs btn-success" ng-href="{{ contentCreator.downloadFile(content, 'modal') }}" target="_blank" download="{{ content.name }}">
+                          <i class="fa fa-download"></i>
+                        </a>
+                        <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeFile(content, 'modal')">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </uib-tab>
+            <uib-tab index="2">
+              <uib-tab-heading>View Templates</uib-tab-heading>
+              <br>
+              <div class="row">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Reference Path</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="content in contentCreator.templateAssets track by $index">
+                      <td>{{ content._id }}</td>
+                      <td>{{ content.meta.type }}</td>
+                      <td>{{ content.name }}</td>
+                      <td>{{ content.meta.referencePath }}</td>
+                      <td>
+                        <a class="btn btn-xs btn-success" ng-href="{{ contentCreator.downloadFile(content, 'template') }}" target="_blank" download="{{ content.name }}">
+                          <i class="fa fa-download"></i>
+                        </a>
+                        <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeFile(content, 'template')">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </uib-tab>
+            <uib-tab index="3">
+              <uib-tab-heading>Images</uib-tab-heading>
+              <br>
+              <div class="row">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Reference Path</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="content in contentCreator.imageAssets track by $index">
+                      <td>{{ content._id }}</td>
+                      <td>{{ content.meta.type }}</td>
+                      <td>{{ content.name }}</td>
+                      <td>{{ content.meta.referencePath }}</td>
+                      <td>
+                        <a class="btn btn-xs btn-success" ng-href="{{ contentCreator.downloadFile(content, 'image') }}" target="_blank" download="{{ content.name }}">
+                          <i class="fa fa-download"></i>
+                        </a>
+                        <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeFile(content, 'image')">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </uib-tab>
+          </uib-tabset>
+        </div>
+      </div>
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.locale">
+        <uib-accordion-heading>
+          Locales <small>Translation templates for simulation flow</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.locale, 'fa-chevron-right': !contentCreator.panel.locale}"></i>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+          <div class="row">
+            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('locale')">
+              <i class="fa fa-plus-circle"></i> Add Locale
+            </button>
+          </div>
+          <br>
+          <div class="row">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Locale Code</th>
+                  <th>Locale User Alias</th>
+                  <!--<th>Properties</th>-->
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="content in contentCreator.locales track by $index">
+                  <td>{{ content._id }}</td>
+                  <td>{{ content.type }}</td>
+                  <td>{{ content.name }}</td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.alias }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
+                  <td>
+                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('locale', content)">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.domain">
+        <uib-accordion-heading>
+          Domains <small>Tags according to the flow theme or subject</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.domain, 'fa-chevron-right': !contentCreator.panel.domain}"></i>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+          <div class="row">
+            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('domain')">
+              <i class="fa fa-plus-circle"></i> Add Domain
+            </button>
+          </div>
+          <br>
+          <div class="row">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Domain Alias</th>
+                  <th>Domain User Code</th>
+                  <th>Domain Description</th>
+                  <!--<th>Properties</th>-->
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="content in contentCreator.domains track by $index">
+                  <td>{{ content._id }}</td>
+                  <td>{{ content.type }}</td>
+                  <td>{{ content.name }}</td>
+                  <td>{{ content.properties.alias }}</td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.description }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
+                  <td>
+                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('domain', content)">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.task">
+        <uib-accordion-heading>
+          Tasks <small>Tags according to the flow activity to complete</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.task, 'fa-chevron-right': !contentCreator.panel.task}"></i>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+          <div class="row">
+            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('task')">
+              <i class="fa fa-plus-circle"></i> Add Task
+            </button>
+          </div>
+          <br>
+          <div class="row">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Task Alias</th>
+                  <th>Task User Code</th>
+                  <th>Task Description</th>
+                  <!--<th>Properties</th>-->
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="content in contentCreator.tasks track by $index">
+                  <td>{{ content._id }}</td>
+                  <td>{{ content.type }}</td>
+                  <td>{{ content.name }}</td>
+                  <td>{{ content.properties.alias }}</td>
+                  <td>{{ content.properties.code }}</td>
+                  <td>{{ content.properties.description }}</td>
+                  <!--<td><pre>{{ content.properties | json: 2 }}</pre></td>-->
+                  <td>
+                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('task', content)">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div uib-accordion-group class="panel-default" is-open="contentCreator.panel.stage">
+        <uib-accordion-heading>
+          Stages <small>Flow steps with some activity to complete</small>
+          <i class="pull-right fa" ng-class="{'fa-chevron-down': contentCreator.panel.stage, 'fa-chevron-right': !contentCreator.panel.stage}"></i>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+          <div class="row">
+            <button class="btn btn-sm btn-success" ng-click="contentCreator.addModal('stage')">
+              <i class="fa fa-plus-circle"></i> Add Stage
+            </button>
+          </div>
+          <br>
+          <div class="row">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Properties</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="content in contentCreator.stages track by $index">
+                  <td>{{ content._id }}</td>
+                  <td>{{ content.type }}</td>
+                  <td>{{ content.name }}</td>
+                  <td><pre>{{ content.properties | json: 2 }}</pre></td>
+                  <td>
+                    <button class="btn btn-xs btn-info" ng-click="contentCreator.editModal('stage', content)">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger" ng-click="contentCreator.removeModal(content)">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      -->
+    </uib-accordion>
+  </div>
+</div>

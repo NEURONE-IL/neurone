@@ -42,6 +42,24 @@ Meteor.methods({
       throw new Meteor.Error(573, 'The server cannot fetch document from web', err);
     }
   },
+  previewDocument: function(documentObj) {
+    try {
+      if (this.userId) {
+        check(documentObj, Object);
+
+        let asyncCall = Meteor.wrapAsync(DocumentDownloader.preview),
+              preview = asyncCall(documentObj);
+
+        return preview;  
+      }
+      else {
+        throw new Meteor.Error(599, 'User is not logged in!');
+      }
+    }
+    catch (err) {
+      throw new Meteor.Error(573, 'The server cannot preview document from web', err);
+    }
+  },
   listAllDocuments: function() {
     try {
       if (this.userId) {
@@ -55,13 +73,21 @@ Meteor.methods({
       throw new Meteor.Error(574, 'Cannot list all documents', err);
     }
   },
+  reindex: function() {
+    try {
+      return DocumentRetrieval.reindex();
+    }
+    catch (err) {
+      throw new Meteor.Error(575, 'Cannot reindex', err);
+    }
+  },
   deleteDocument: function(docId) {
     try {
       check(docId, String);
       return DocumentRetrieval.deleteDocument(docId);
     }
     catch (err) {
-      throw new Meteor.Error(575, 'Cannot delete document', err);
+      throw new Meteor.Error(576, 'Cannot delete document', err);
     }
   }
 });

@@ -1,44 +1,47 @@
-<div class="container">
-  <div class="row">
-    <h1>NEURONE <small>{{"app.admin.title" | translate}}</small></h1>
-  </div>
-  <div class="row">
+<div class="container-fluid">
+  <div class="row admin-row-spacing">
     <uib-tabset>
       <uib-tab index="0">
         <uib-tab-heading>
-          <i class="fa fa-home" aria-hidden="true"></i> Home
+          <i class="fa fa-home" aria-hidden="true"></i> Admin Panel Home
         </uib-tab-heading>
-        Server statistics goes here
+        <div ui-view="adminHome" class="admin-tab-content"></div>
       </uib-tab>
       <uib-tab index="1">
+        <uib-tab-heading>
+          <i class="fa fa-plus-circle" aria-hidden="true"></i> Content Creator
+        </uib-tab-heading>
+        <div ui-view="contentCreator" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="2">
+        <uib-tab-heading>
+          <i class="fa fa-question-circle" aria-hidden="true"></i> Form Builder
+        </uib-tab-heading>
+        <div ui-view="formBuilder" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="3">
+        <uib-tab-heading>
+          <i class="fa fa-file-text-o" aria-hidden="true"></i> Document Loader
+        </uib-tab-heading>
+        <div ui-view="docLoader" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="4">
+        <uib-tab-heading>
+          <i class="fa fa-eye" aria-hidden="true"></i> Document Manager
+        </uib-tab-heading>
+        <div ui-view="docManager" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="5">
+        <uib-tab-heading>
+          <i class="fa fa-magic" aria-hidden="true"></i> Study Manager
+        </uib-tab-heading>
+        <div ui-view="studyManager" class="admin-tab-content"></div>
+      </uib-tab>
+      <uib-tab index="6">
         <uib-tab-heading>
           <i class="fa fa-users" aria-hidden="true"></i> User Enrollment
         </uib-tab-heading>
         <div ui-view="enrollment" class="admin-tab-content"></div>
-      </uib-tab>
-      <uib-tab index="2">
-        <uib-tab-heading>
-          <i class="fa fa-magic" aria-hidden="true"></i> Flow Wizard
-        </uib-tab-heading>
-        Flow Wizard goes here
-      </uib-tab>
-      <uib-tab index="3">
-        <uib-tab-heading>
-          <i class="fa fa-archive" aria-hidden="true"></i> Flow Manager
-        </uib-tab-heading>
-        <div ui-view="flowManager" class="admin-tab-content"></div>
-      </uib-tab>
-      <uib-tab index="4">
-        <uib-tab-heading>
-          <i class="fa fa-eye" aria-hidden="true"></i> Document Viewer
-        </uib-tab-heading>
-        <div ui-view="docViewer" class="admin-tab-content"></div>
-      </uib-tab>
-      <uib-tab index="5">
-        <uib-tab-heading>
-          <i class="fa fa-file-text-o" aria-hidden="true"></i> Document Generator
-        </uib-tab-heading>
-        <div ui-view="docGenerator" class="admin-tab-content"></div>
       </uib-tab>
     </uib-tabset>
   </div>

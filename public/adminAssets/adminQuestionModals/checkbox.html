@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div>
+    In <b>Checkbox Questions</b> students must choose one or more options from a list of possible responses. Question IDs must be unique strings between all available questions in this NEURONE instance!
+  </div>
+  <br>
+  <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="qid" class="col-md-4 control-label">Question ID</label>
+      <div class="col-md-8">
+        <input id="qid" class="form-control" type="text" placeholder="cb-question-1" ng-model="modal.answers.questionId" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="title" class="col-md-4 control-label">Title</label>
+      <div class="col-md-8">
+        <input id="title" class="form-control" type="text" placeholder="What's the best option to solve this problem?" ng-model="modal.answers.title" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="hint" class="col-md-4 control-label">Hint</label>
+      <div class="col-md-8">
+        <input id="hint" class="form-control" type="text" placeholder="Choose an option!" ng-model="modal.answers.hint">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="options" class="col-md-4 control-label">Options</label>
+      <div class="col-md-8">
+        <fieldset id="options" ng-repeat="option in modal.answers.options track by $index" ng-required="true">
+          <div class="input-group">
+            <input class="form-control" type="text" placeholder="Some option" name="option" ng-model="modal.answers.options[$index]" ng-required="true">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-danger" ng-click="modal.removeElement(modal.answers.options, $index)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </fieldset>
+        <div>
+          <button type="button" class="btn btn-sm btn-success" ng-click="modal.addElement(modal.answers.options, '')">
+            <i class="fa fa-plus-circle"></i> Add option
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <div class="col-md-offset-4 col-md-8">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="modal.answers.required"> Required answer
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<pre>{{ modal.answers | json: 2 }}</pre>-->
+</div>

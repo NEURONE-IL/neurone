@@ -1,0 +1,91 @@
+<div class="container-fluid">
+  <div class="row">
+    The NEURONE Study Manager allows the researcher to build Stages (activities for the study) and Study Flows (configured sequence of Stages) based on assets created on Content Creator and Form Builder.
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+      <h3>Stages
+        <div class="dropdown pull-right">
+          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-plus"></i> New Stage <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('affective')">Affective (SAM)</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('taskQuestions')">Task Questions</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('instructions')">Instructions</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('tutorial')">Tutorial</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('search')">Search</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('collection')">Collection</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('criticalEval')">Critical Evaluation</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('synthesis')">Synthesis</li>
+            <li><a href="javascript:void(0);" ng-click="studyManager.add('end')">End</li>
+          </ul>
+        </div>
+      </h3>
+      <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Time Limit</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="content in studyManager.stages track by $index">
+            <td>{{ content.id }}</td>
+            <td>{{ content.state }}</td>
+            <td>{{ content.time }}</td>
+            <td>
+              <button class="btn btn-xs btn-info" ng-click="studyManager.edit((content.state || content.type), content)">
+                <i class="fa fa-pencil-square-o"></i>
+              </button>
+              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove((content.state || content.type), content)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-7">
+      <h3>Study Flows
+        <button class="btn btn-sm btn-primary pull-right" ng-click="studyManager.add('flow')">
+          <i class="fa fa-plus"></i> New Study
+        </button>
+      </h3>
+      <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Locale</th>
+            <th>Task</th>
+            <th>Domain</th>
+            <th>Time Limit</th>
+            <th># Stages</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="content in studyManager.flows track by $index">
+            <td>{{ content.id }}</td>
+            <td>{{ content.locale }}</td>
+            <td>{{ content.task }}</td>
+            <td>{{ content.domain }}</td>
+            <td>{{ content.maxGlobalTime }}</td>
+            <td>{{ content.stages.length }}</td>
+            <td>
+              <button class="btn btn-xs btn-info" ng-click="studyManager.edit(content.type, content)">
+                <i class="fa fa-pencil-square-o"></i>
+              </button>
+              <button class="btn btn-xs btn-danger" ng-click="studyManager.remove(content.type, content)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

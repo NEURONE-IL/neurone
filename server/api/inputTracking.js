@@ -1,12 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Utils from '../utils/serverUtils';
 
-import { VisitedLinks } from '../../imports/database/visitedLinks/index';
-import { Keystrokes } from '../../imports/database/keystrokes/index';
-import { MouseClicks } from '../../imports/database/mouseClicks/index';
-import { MouseCoordinates } from '../../imports/database/mouseCoordinates/index';
-import { ScrollMoves } from '../../imports/database/scrollMoves/index';
-import { SessionLogs } from '../../imports/database/sessionLogs/index';
+import { Keystrokes, MouseClicks, MouseCoordinates, ScrollMoves } from '../database/definitions';
 
 // NEURONE API: Input Tracking
 // Methods for storing input tracking from keyboard and mouse

@@ -27,14 +27,15 @@ export default class Utils {
     else return null;
   }
 
-  // From http://stackoverflow.com/a/10779201
+  // dgacitua: Get framed window
+  // http://stackoverflow.com/a/10779201
   static getFramedWindow(f) {
-    if(f.parentNode == null)
+    if (f.parentNode == null)
       f = document.body.appendChild(f);
 
     var w = (f.contentWindow || f.contentDocument);
 
-    if(w && w.nodeType && w.nodeType==9)
+    if (w && w.nodeType && w.nodeType==9)
         w = (w.defaultView || w.parentWindow);
 
     return w;

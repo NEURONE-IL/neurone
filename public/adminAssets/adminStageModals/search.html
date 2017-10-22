@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div>
+    In the <b>Search Stage</b> students must use the NEURONE Search Engine and <i>bookmark</i> relevant documents for their assignment.
+  </div>
+  <br>
+  <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="sid" class="col-md-4 control-label">Stage ID</label>
+      <div class="col-md-8">
+        <input id="sid" class="form-control" type="text" placeholder="instructions-begin" ng-model="modal.answers.id" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="time" class="col-md-4 control-label">Time Limit (minutes)</label>
+      <div class="col-md-8">
+        <input id="time" class="form-control" type="number" min="-1" ng-min="-1" placeholder="8" ng-model="modal.answers.time" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="alert" class="col-md-4 control-label">Reminder Alert (minutes)</label>
+      <div class="col-md-8">
+        <input id="alert" class="form-control" type="number" min="-1" ng-min="-1" placeholder="3" ng-model="modal.answers.reminderAlert">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="tips" class="col-md-4 control-label">Tips Modal Template</label>
+      <div class="col-md-8">
+        <ui-select id="tips" ng-model="modal.answers.tips" ng-required="true">
+          <ui-select-match placeholder="Select modal">{{ $select.selected.name }}</ui-select-match>
+          <ui-select-choices repeat="mod.meta.referencePath as mod in modal.fields.modals | filter: { name: $select.search }">
+            <div>{{ mod.name }}</div>
+            <small>{{ mod.meta.referencePath }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="template" class="col-md-4 control-label">Tutorial Image Templates</label>
+      <div class="col-md-8">
+        <ui-select multiple ng-model="modal.answers.slides" sortable="true" close-on-select="false" ng-required="true">
+          <ui-select-match placeholder="Select image">{{ $item.meta.referencePath }}</ui-select-match>
+          <ui-select-choices repeat="image.meta.referencePath as image in modal.fields.images | filter: { name: $select.search }">
+            <div>{{ image.name }}</div>
+            <small>{{ image.meta.referencePath }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="urlparams" class="col-md-4 control-label">URL Parameter</label>
+      <div class="col-md-8">
+        <input id="urlparams" class="form-control" type="text" placeholder="instructions-begin" ng-model="modal.answers.urlParams.stage">
+      </div>
+    </div>
+  </div>
+  <!--<pre>{{ modal.answers | json: 2 }}</pre>-->
+</div>

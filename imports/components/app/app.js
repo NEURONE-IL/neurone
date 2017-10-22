@@ -24,10 +24,14 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import angularMeteorAuth from 'angular-meteor-auth';
 import angularMeteorPromiser from 'angular-meteor-promiser';
+import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
+
+import uiSelect from 'ui-select';
+import 'ui-select/dist/select.css';
 
 import template from './app.html';
 
@@ -54,8 +58,6 @@ import { name as Logger } from '../services/logger/logger';
 import { name as Stages } from './stages/stages';
 
 import { name as Admin } from '../modules/admin';
-//import { name as ViewDocuments } from '../modules/viewDocuments';
-//import { name as Enrollment } from '../modules/enrollment';
 
 import Configs from '../globalConfigs';
 
@@ -82,6 +84,8 @@ export default angular.module(name, [
   angularMeteor,
   angularMeteorAuth,
   'angular-meteor-promiser',
+  'ngSanitize',
+  'ui.select',
   uiRouter,
   uiBootstrap,
   angularTranslate,
@@ -110,8 +114,6 @@ export default angular.module(name, [
   Stages,
   /* Other modules */
   Admin
-  //ViewDocuments
-  //Enrollment
 ])
 .component(name, {
   template: template.default,
@@ -135,7 +137,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
       suffix: '.json'
     });
   $translateProvider.useSanitizeValueStrategy('escape');
-  $translateProvider.preferredLanguage('fi');
+  $translateProvider.preferredLanguage('en');
 };
 
 function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {
@@ -148,6 +150,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
     //console.log(event, toState, toParams, error);
     if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
+    if (error === 'NO_ADMIN') $state.go('start');
   });
 
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams, error) => {

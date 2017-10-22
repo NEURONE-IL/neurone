@@ -57,6 +57,15 @@ class Start {
       }
     }
   }
+
+  enableAdmin() {
+    if (this.uds.getRole() === 'researcher') return true;
+    else return false;
+  }
+
+  goToAdminPanel() {
+    this.$state.go('admin', {});
+  }
 }
 
 // create a module

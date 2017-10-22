@@ -123,6 +123,21 @@ export default class DocumentRetrieval {
     return Documents.find().fetch();
   }
 
+  // dgacitua: Regenerate inverted index
+  static reindex() {
+    if (Indexer.checkSolrIndex()) {
+      let asyncCall = Meteor.wrapAsync(SolrIndex.generate),
+              fetch = asyncCall();
+
+      return true;
+    }
+    else {
+      LunrIndex.generate();
+
+      return true;
+    }
+  }
+
   // dgacitua: Delete document on database and index
   static deleteDocument(docId) {
     if (Indexer.checkSolrIndex()) {

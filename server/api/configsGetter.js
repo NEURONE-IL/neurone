@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+import ip from 'ip';
+import UserAgent from 'useragent';
 
 import Utils from '../utils/serverUtils';
 
-import { UserData } from '../../imports/database/userData/index';
-import { Settings } from '../../imports/database/settings/index';
-import { Identities } from '../../imports/database/identities/index';
+import { UserData, Settings, Identities, FlowComponents, FlowElements } from '../database/definitions';
 
 // NEURONE API: Configs Getter
 // Methods for getting settings for users from the server
@@ -99,13 +99,13 @@ Meteor.methods({
   // dgacitua: Get initial user configs for new created user from client
   //           PARAMS: domain (flow domain as String) & task (flow task as String)
   //           RETURNS: Flow Settings JSON object
-  initialConfigs: function(domain, task) {
+  initialConfigs: function(locale, task, domain) {
     try {
       var envSettings = Settings.findOne({ envSettingsId: 'default' }),
          flowSettings = null;
 
-      if (!!task && !!domain) {
-        flowSettings = Settings.findOne({ task: task, domain: domain });
+      if (!!locale && !!task && !!domain) {
+        flowSettings = FlowElements.findOne({ type: 'flow', locale: locale, task: task, domain: domain });
       }
       else {
         flowSettings = Settings.findOne({ flowSettingsId: envSettings.flowSettings }); 
@@ -151,9 +151,25 @@ Meteor.methods({
         profile: {}
       };
 
-      // TODO Undo hardcode of domain and tasks
-      let domain, task, flowSettings;
+      let studyFlow = FlowElements.findOne({ type: 'flow', locale: user.locale, domain: user.domain, task: user.task });
 
+      if (!(!!studyFlow)) {
+        arr[idx].status = 'ConfigError';
+      }
+      else {
+        tempCredentials.configs = studyFlow;
+
+        let id = Accounts.createUser(tempCredentials);
+        
+        if (!(!!id)) {
+          arr[idx].status = 'RegisterError';
+        }
+        else {
+          arr[idx].status = 'Registered';
+        }
+      }
+
+      /*
       if (user.domain === 'SS') domain = 'social';
       else if (user.domain === 'SC') domain = 'science';
       else domain = 'pilot';
@@ -179,6 +195,7 @@ Meteor.methods({
           arr[idx].status = 'Registered';
         }
       }
+      */
     });
 
     return userList;
@@ -211,6 +228,38 @@ Meteor.methods({
     catch (err) {
       console.error(err);
       throw new Meteor.Error(538, 'Could not register new user!', err);
+    }
+  },
+  getServerStats: function(localTimestamp) {
+    try {
+      check(localTimestamp, Match.Maybe(Number));
+
+      let ipAddr = this.connection ? this.connection.clientAddress : '',
+             rua = this.connection ? this.connection.httpHeaders['user-agent'] : '',   // raw user agent
+             oua = rua ? UserAgent.parse(rua) : '',               // object user agent
+         browser = oua ? oua.toAgent() : 'undefined',
+              os = oua ? oua.os.toString() : 'undefined',
+          device = oua ? oua.device.toString() : 'undefined';
+
+      let serverTimestamp = Utils.getTimestamp(),
+                pingValue = !!localTimestamp ? (serverTimestamp - localTimestamp) : null;
+
+      let response = {
+        serverTime: Utils.timestamp2date(serverTimestamp) + ' ' + Utils.timestamp2time(serverTimestamp),
+        serverIpAddr: ip.address(),
+        clientUserAgent: rua,
+        clientIpAddr: ipAddr,
+        clientBrowser: browser,
+        clientOperatingSystem: os,
+        clientDevice: device,
+        ping: pingValue
+      };
+
+      return response;
+    }
+    catch (err) {
+      console.error(err);
+      throw new Meteor.Error(539, 'Could not get server statistics!', err);
     }
   }
 });

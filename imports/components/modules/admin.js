@@ -1,16 +1,19 @@
 import angularSanitize from 'angular-sanitize';
 import angularTruncate from 'angular-truncate-2';
-import angularCSV from 'ng-csv';
-import angularFileUpload from 'angular-file-upload';
+import ngCSV from 'ng-csv';
+import ngFileUpload from 'ng-file-upload';
 import RandomString from 'randomstring';
 
 import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
+import { name as AdminHome } from './admin/adminHome';
+import { name as ContentCreator } from './admin/contentCreator';
+import { name as FormBuilder } from './admin/formBuilder';
+import { name as DocumentLoader } from './admin/documentLoader';
+import { name as DocumentManager } from './admin/documentManager';
+import { name as StudyManager } from './admin/studyManager';
 import { name as Enrollment } from './admin/enrollment';
-import { name as FlowManager } from './admin/flowManager';
-import { name as DocumentViewer } from './admin/documentViewer';
-import { name as DocumentGenerator } from './admin/documentGenerator';
 
 import template from './admin.html';
 
@@ -24,6 +27,23 @@ class Admin {
     this.uds = UserDataService;
     this.auth = AuthService;
 
+    $scope.$on('$stateChangeStart', (event) => {
+      this.uds.setSession({
+        readyButton: false,
+        standbyMode: false,
+        statusMessage: ''
+      }, (err, res) => {});
+    });
+
+    $scope.$on('$stateChangeSuccess', (event) => {
+      this.uds.setSession({
+        readyButton: false,
+        standbyMode: true,
+        statusMessage: '',
+        stageHome: 'start'
+      }, (err, res) => {});
+    });
+
     $reactive(this).attach($scope);
   }
 }
@@ -34,11 +54,14 @@ export default angular.module(name, [
   'ngSanitize',
   'truncate',
   'ngCsv',
-  'angularFileUpload',
-  Enrollment,
-  FlowManager,
-  DocumentViewer,
-  DocumentGenerator
+  'ngFileUpload',
+  AdminHome,
+  ContentCreator,
+  FormBuilder,
+  DocumentLoader,
+  DocumentManager,
+  StudyManager,
+  Enrollment
 ])
 .component(name, {
   template: template.default,
@@ -51,22 +74,31 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider.state('admin', {
-    url: '/neuroneAdmin',
+    url: '/admin',
     views: {
       '@': {
         template: '<admin></admin>'
       },
+      'adminHome@admin': {
+        template: '<admin-home></admin-home>'
+      },
+      'contentCreator@admin': {
+        template: '<content-creator></content-creator>'
+      },
+      'formBuilder@admin': {
+        template: '<form-builder></form-builder>'
+      },
+      'docLoader@admin': {
+        template: '<document-loader></document-loader>'
+      },
+      'docManager@admin': {
+        template: '<document-manager></document-manager>'
+      },
+      'studyManager@admin': {
+        template: '<study-manager></study-manager>'
+      },
       'enrollment@admin': {
         template: '<enrollment></enrollment>'
-      },
-      'flowManager@admin': {
-        template: '<flow-manager></flow-manager>'
-      },
-      'docViewer@admin': {
-        template: '<document-viewer></document-viewer>'
-      },
-      'docGenerator@admin': {
-        template: '<document-generator></document-generator>'
       }
     },
     resolve: {
@@ -83,8 +115,8 @@ function config($stateProvider) {
               dfr = uds.ready();
 
           return dfr.then((res) => {
-            if (uds.getRole() !== 'researcher') return $q.reject('WRONG_STAGE');
-            else return $q.resolve();
+            if (uds.getRole() === 'researcher') return $q.resolve();
+            else return $q.reject('NO_ADMIN');
           });
         }
       }

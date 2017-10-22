@@ -6,11 +6,12 @@
   "license": "AGPL-3.0",
   "private": true,
   "scripts": {
-    "start": "meteor",
-    "test": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
-    "test:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
+    "start": "./scripts/deploy-dev.sh",
+    "test": "./scripts/test.sh",
+    "unittest": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
+    "unittest-watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
     "apptest": "TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --once --driver-package dispatch:mocha",
-    "apptest:watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --driver-package dispatch:mocha"
+    "apptest-watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --driver-package dispatch:mocha"
   },
   "dependencies": {
     "angular": "1.5.9",
@@ -23,7 +24,7 @@
     "angular-translate-loader-static-files": "^2.12.1",
     "angular-translate-storage-local": "^2.12.1",
     "angular-truncate-2": "^0.4.2",
-    "angular-ui-bootstrap": "^2.2.0",
+    "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "^0.3.2",
     "array.prototype.move": "^0.0.3",
     "babel-runtime": "^6.18.0",
@@ -36,12 +37,14 @@
     "glob": "^7.1.1",
     "html-to-text": "^2.1.3",
     "iconv": "^2.2.1",
+    "ip": "^1.1.5",
     "jschardet": "^1.4.1",
     "lunr": "^0.7.2",
     "lunr-languages": "0.0.4",
     "mark.js": "julmot/mark.js",
     "meteor-node-stubs": "^0.2.11",
     "ng-csv": "^0.3.6",
+    "ng-file-upload": "^12.2.13",
     "ng-wig": "^3.0.14",
     "path": "^0.12.7",
     "randomstring": "^1.1.5",
@@ -49,10 +52,10 @@
     "sha": "^2.0.1",
     "solr-node": "^1.0.13",
     "sum": "^0.1.4",
+    "ui-select": "^0.19.8",
     "uppercamelcase": "^1.1.0",
     "useragent": "^2.1.9",
     "website-scraper": "^3.1.0",
-    "website-scraper-phantom": "^0.1.0",
     "yamlparser": "^0.0.2"
   },
   "devDependencies": {

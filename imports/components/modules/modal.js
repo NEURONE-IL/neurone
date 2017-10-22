@@ -11,110 +11,146 @@ import template from './modal.html';
 */
 
 class ModalCtrl {
-  constructor($uibModalInstance, customTitle, customTemplate, customFields, buttonType, buttonName) {
+  constructor($uibModalInstance, $timeout, title, template, fields, buttonType, buttonName, functions) {
     'ngInject';
 
-    var $ctrl = this;
+    this.$uibModalInstance = $uibModalInstance;
+    this.$timeout = $timeout;
 
-    $ctrl.title = customTitle;
-    $ctrl.template = customTemplate;
-    $ctrl.fields = customFields;
-    $ctrl.buttonType = buttonType;
-    $ctrl.buttonName = buttonName;
+    this.title = title;
+    this.template = template;
+    this.fields = fields;
+    this.buttonType = buttonType;
+    this.buttonName = buttonName;
+    this.functions = functions;
 
-    $ctrl.showFooter = ($ctrl.buttonType === 'okcancel' || $ctrl.buttonType === 'nextstage' || $ctrl.buttonType === 'next' || $ctrl.buttonType === 'back' || $ctrl.buttonType === 'button') ? true : false;
+    this.showFooter = (this.buttonType === 'okcancel' || this.buttonType === 'nextstage' || this.buttonType === 'next' || this.buttonType === 'back' || this.buttonType === 'button' || this.buttonType === 'save');
+    this.answers = this.fields.content || {};
+    
+    this.response = {};
+  }
 
-    $ctrl.response = {};
+  ok() {
+    this.response.message = 'ok';
 
-    $ctrl.ok = function() {
-      $ctrl.response.message = 'ok';
-
-      if ($ctrl.fields.questions) {
-        if ($ctrl.modalForm.$valid) {
-          $ctrl.response.answers = $ctrl.parseAnswers($ctrl.fields.questions);
-          $uibModalInstance.close($ctrl.response);  
-        }
+    // dgacitua: Parse questions and answers from NEURONE Forms Module
+    if (this.fields.questions) {
+      if (this.form.$valid) {
+        this.response.answers = this.parseAnswers(this.fields.questions);
+        this.$uibModalInstance.close(this.response);  
       }
-      else {
-        $uibModalInstance.close($ctrl.response);
+    }
+    // dgacitua: Parse questions and answers from a standard form
+    else if (this.answers) {
+      if (this.form.$valid) {
+        this.response.answers = this.answers;
+        this.$uibModalInstance.close(this.response);  
       }
-    };
+    }
+    else {
+      this.$uibModalInstance.close(this.response);
+    }
+  }
 
-    $ctrl.cancel = function() {
-      $ctrl.response.message = 'cancel';
-      $uibModalInstance.dismiss($ctrl.response.message);
-    };
+  cancel() {
+    this.response.message = 'cancel';
+    this.$uibModalInstance.dismiss(this.response.message);
+  }
 
-    $ctrl.button = function(msg) {
-      $ctrl.response.message = msg;
-      $uibModalInstance.close($ctrl.response);
-    };
+  button(msg) {
+    this.response.message = msg;
+    this.$uibModalInstance.close(this.response);
+  }
 
-    $ctrl.close = function() {
-      $ctrl.response.message = 'close';
-      $uibModalInstance.dismiss($ctrl.response.message);
-    };
+  close() {
+    this.response.message = 'close';
+    this.$uibModalInstance.dismiss(this.response.message);
+  }
 
-    $ctrl.parseAnswers = function(questions) {
-      var answerArray = [];
+  parseAnswers(questions) {
+    let answerArray = [];
 
-      questions.forEach((question) => {
-        var response = {
-          type: question.type,
-          questionId: question.questionId,
-          title: question.title,
-          answer: question.answer || ''
-        };
+    questions.forEach((question) => {
+      let response = {
+        type: question.type,
+        questionId: question.questionId,
+        title: question.title,
+        answer: question.answer || ''
+      };
 
-        if (question.otherAnswer) {
-          response.otherAnswer = question.otherAnswer;
-        }
+      if (question.otherAnswer) {
+        response.otherAnswer = question.otherAnswer;
+      }
 
-        answerArray.push(response);
-      });
+      answerArray.push(response);
+    });
 
-      return answerArray;
-    };
+    return answerArray;
+  }
+
+  addElement(elementArray, elementContent) {
+    this.$timeout(() => {
+      console.log(elementArray, elementContent);
+      elementArray = elementArray || [];
+      elementArray.splice(elementArray.length, 0, elementContent);
+      console.log(elementArray);
+    }, 0);
+  }
+
+  removeElement(elementArray, elementIndex) {
+    this.$timeout(() => {
+      console.log(elementArray, elementIndex);
+      elementArray = elementArray || [];
+      elementArray.splice(elementIndex, 1);
+      console.log(elementArray);
+    }, 0);
   }
 }
 
 class ModalService {
-  constructor($uibModal) {
+  constructor($uibModal, $templateCache) {
     'ngInject';
 
     this.modal = {};
     this.$uibModal = $uibModal;
+    this.$templateCache = $templateCache;
   }
 
   openModal(modalObject, callback) {
-    var contentTitle = modalObject.title ? modalObject.title : '';
-    var contentTemplate = modalObject.templateAsset ? modalObject.templateAsset : '';
-    var contentFields = modalObject.fields ? modalObject.fields : {};
-    var buttonType = modalObject.buttonType ? modalObject.buttonType : '';
-    var buttonName = modalObject.buttonName ? modalObject.buttonName : '';
-    var modalSize = modalObject.size ? modalObject.size : 'lg';
+    let customTpl = this.resolveTemplate(modalObject),
+            title = modalObject.title || '',
+           fields = modalObject.fields || {},
+       buttonType = modalObject.buttonType || '',
+       buttonName = modalObject.buttonName || '',
+        modalSize = modalObject.size || 'lg',
+        modalBack = modalObject.backdrop || 'static',
+        functions = modalObject.functions || null;
 
     this.modal = this.$uibModal.open({
       template: template.default,
-      animation: true,
-      size: 'lg',
       controller: ModalCtrl,
-      controllerAs: '$ctrl',
+      controllerAs: 'modal',
+      size: modalSize,
+      backdrop: modalBack,
+      animation: true,
       resolve: {
-        customTitle: () => {
-          return contentTitle;
+        title: () => {
+          return title;
         },
-        customTemplate: () => {
-          return contentTemplate;
+        template: () => {
+          return customTpl;
         },
-        customFields: () => {
-          return contentFields;
+        fields: () => {
+          return fields;
         },
         buttonType: () => {
           return buttonType;
         },
         buttonName: () => {
           return buttonName;
+        },
+        functions: () => {
+          return functions;
         }
       }
     });
@@ -126,10 +162,34 @@ class ModalService {
       callback(null, { message: 'dismiss' });
     });
   }
+
+  resolveTemplate(modalObject) {
+    if (!!modalObject.templateString) {
+      // TODO test template strings for modals
+      this.$templateCache.put('myModalTemplate', modalObject.templateString);
+      return "'myModalTemplate'";
+    }
+    else if (!!modalObject.templateAsset) {
+      return modalObject.templateAsset;
+    }
+    else {
+      return '';
+    }
+  }
 }
 
 export default angular.module(name, [
   Question
 ])
-.controller('ModalCtrl', ModalCtrl)
-.service('ModalService', ModalService);
+//.controller('ModalCtrl', ModalCtrl)
+.service('ModalService', ModalService)
+.component('modal', {
+  template: template.default,
+  controller: ModalCtrl,
+  controllerAs: 'modal',
+  bindings: {
+    resolve: '<',
+    close: '&',
+    dismiss: '&'
+  }
+});

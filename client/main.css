@@ -278,6 +278,11 @@ div.admin-row-spacing {
   border: 0;
 }
 
+.form-group-fix {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
 /*
 /* Created by Filipe Pina
  * Specific styles of signin, register, component
@@ -355,38 +360,38 @@ input::-webkit-input-placeholder {
 
 /* Affective Questionnaire Chat */
 .chat {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .chat li {
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px dotted #B3A9A9;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #B3A9A9;
 }
 
 .chat li.left .chat-body {
-    margin-left: 60px;
+  margin-left: 60px;
 }
 
 .chat li.right .chat-body {
-    margin-right: 60px;
+  margin-right: 60px;
 }
 
 .chat li .chat-body p {
-    margin: 0;
-    color: #777777;
+  margin: 0;
+  color: #777777;
 }
 
 .panel .slidedown .glyphicon, .chat .glyphicon {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .panel-body {
-    overflow-y: scroll;
-    min-height: 80%;
-    height: 80%;
+  overflow-y: auto;
+  min-height: 80%;
+  height: 80%;
 }
 
 img.chat-image {

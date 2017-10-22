@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div>
+    <b>End Stage</b> does an automatic logout of the student, and should be put at the end of the Study Flow.
+  </div>
+  <br>
+  <div class="form-horizontal">
+    <div class="form-group form-group-fix">
+      <label for="sid" class="col-md-4 control-label">Stage ID</label>
+      <div class="col-md-8">
+        <input id="sid" class="form-control" type="text" placeholder="end" ng-model="modal.answers.id" ng-required="true">
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <label for="time" class="col-md-4 control-label">Time Limit (minutes)</label>
+      <div class="col-md-8">
+        <input id="time" class="form-control" type="number" min="-1" ng-min="-1" placeholder="-1" ng-model="modal.answers.time" ng-required="true">
+      </div>
+    </div>
+  </div>
+  <!--<pre>{{ modal.answers | json: 2 }}</pre>-->
+</div>

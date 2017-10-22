@@ -1,0 +1,57 @@
+<head>
+  <title>NEURONE HTML Template Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container-fluid">
+    <div>
+      <p>Below there is an example of a HTML Template for NEURONE. HTML Templates are customizable content screens that can be used in some stages of the NEURONE study. These templates must be written in plain HTML and they can contain Twitter Bootstrap styling, NEURONE translation strings and/or AngularJS controller logic.</p>
+      <p>NEURONE translation strings must be called inside the template as <tt>{{ "mystring" | translate }}</tt>, where <tt>mystring</tt> is a key inside the NEURONE Translation JSON file.</p>
+      <p>AngularJS controller logic from NEURONE can be used referencing the following scope objects:</p>
+      <ul>
+        <li><tt>tutorial</tt> on Tutorial Stage</li>
+        <li><tt>instructions</tt> on Instruction Stage</li>
+        <li><tt>affective</tt> on Affective Stage (SAM)</li>
+        <li><tt>taskQuestions</tt> on Question Stage</li>
+      </ul>
+    </div>
+    <hr>
+    <pre>
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-2 col-sm-2 col-xs-2"&gt;
+      &lt;b&gt;{{"tutorial.email.inbox" | translate}} (1)&lt;/b&gt;&lt;br&gt;
+      {{"tutorial.email.drafts" | translate}}&lt;br&gt;
+      {{"tutorial.email.sent" | translate}}&lt;br&gt;
+      {{"tutorial.email.allMail" | translate}}
+    &lt;/div&gt;
+    &lt;div class="col-md-10 col-sm-10 col-xs-10"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-md-2 col-sm-2 col-xs-2"&gt;
+          &lt;img src="images/avatars/{{instructions.avatar}}_portrait.png" class="img-circle img-responsive"&gt;
+        &lt;/div&gt;
+        &lt;div class="col-md-10 col-sm-10 col-xs-10"&gt;
+          &lt;b&gt;{{"tutorial.email.from" | translate}}:&lt;/b&gt; Sarah Jones &lt;sarah.jones@myemail.com&gt;&lt;br&gt;
+          &lt;b&gt;{{"tutorial.email.to" | translate}}:&lt;/b&gt; You&lt;br&gt;
+          &lt;b&gt;{{"tutorial.email.subject" | translate}}:&lt;/b&gt; Need help with our newspaper article! 
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;hr&gt;
+      &lt;div class="row"&gt;
+        &lt;h2&gt;Hey! I need your help!&lt;/h2&gt;
+          
+        &lt;p&gt;We are making an article for our school newspaper and we need some help recovering information from our local network.&lt;/p&gt;
+  
+        &lt;p&gt;Don't worry, in the following step I will give you some advice for making this task.&lt;/p&gt;
+  
+        &lt;p&gt;Your help will be very appreciated.&lt;/p&gt;
+  
+        &lt;p&gt;Sarah Jones&lt;br&gt;
+        School Newspaper Chief Editor&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+  </div>
+</body>

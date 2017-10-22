@@ -4,9 +4,9 @@ import uiRouter from 'angular-ui-router';
 
 import { Accounts } from 'meteor/accounts-base';
 
-import template from './register.html';
+import { FlowElements } from '../../../database/flowElements/index';
 
-//import Settings from '../../../sharedSettings';
+import template from './register.html';
 
 class Register {
   constructor($scope, $reactive, $state, $translate, AuthService, UserDataService) {
@@ -19,6 +19,12 @@ class Register {
     this.uds = UserDataService;
 
     $reactive(this).attach($scope);
+
+    this.subscribe('flows');
+
+    this.helpers({
+      flows: () => FlowElements.find()
+    });
 
     this.credentials = {
       username: '',
@@ -34,35 +40,40 @@ class Register {
   }
 
   register(userRole) {
-    this.call('initialConfigs', (err, res) => {
-      if (!err)  {
-        this.credentials.role = userRole || 'undefined';
-        this.credentials.configs = res;
-        
-        this.auth.register(this.credentials, (err2, res2) => {
-          if (!err2) {
-            this.error = res2;
-            this.$state.go('start');
+    if (userRole === 'student' && this.studentForm.$valid) {
+      let loadedFlow = angular.copy(this.flow);
+      delete this.flow;
 
-            /*
-            this.uds.ready().then(() => {
-              var locale = this.uds.getConfigs().locale;
+      this.credentials.role = userRole || 'undefined';
+      this.credentials.configs = loadedFlow;
 
-              this.$translate.use(locale).then(() => {
-                this.$state.go('start');  
-              });
-            });
-            */
-          }
-          else {
-            this.error = err2;
-          } 
-        });  
-      }
-      else {
-        console.error(err);
-      }
-    })
+      this.auth.register(this.credentials, (err, res) => {
+        if (!err) {
+          this.error = res;
+          this.$state.go('start');
+        }
+        else {
+          this.error = err;
+        }
+      });
+    }
+    else if (userRole === 'researcher' && this.researcherForm.$valid) {
+      this.credentials.role = userRole || 'undefined';
+      this.credentials.configs = {};
+
+      this.auth.register(this.credentials, (err, res) => {
+        if (!err) {
+          this.error = res;
+          this.$state.go('start');
+        }
+        else {
+          this.error = err;
+        }
+      });
+    }
+    else {
+      console.error('Form not valid!');
+    }
   }
 }
 

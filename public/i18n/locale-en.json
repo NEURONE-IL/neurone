@@ -45,9 +45,10 @@
     "emailPlaceholder": "Enter your email",
     "usernamePlaceholder": "Enter your username",
     "passwordPlaceholder": "Enter your password",
-    "identityPlaceholder": "",
+    "identityPlaceholder": "Enter your name",
     "studentRole": "Student",
-    "experimenterRole": "Teacher"
+    "experimenterRole": "Teacher",
+    "flow": "Activity"
   },
   "home": {
     "welcome": "Welcome to NEURONE!",
@@ -195,10 +196,10 @@
     "t2": "Thank you for join us!"
   },
   "timeout": {
-    "search1": "Hienoa! Löysit kaikki kolme sivua, jotka auttavat sinua ratkaisemaan tehtävän. Sait täydet {{stars}} tähteä. Nyt voit siirtyä tehtävässä eteenpäin.",
-    "search2": "Teit hyvää työtä, mutta et löytänyt kaikkia sivuja, joita tarvitset tehtävässä. Siksi sait vain {{stars}} tähteä. Sinulla on vielä aikaa jäljellä joten jatka hakemista. Minä autan sinua poistamalla listalta sivut, joista ei ole hyötyä tehtävässä.",
-    "search3": "Aika sivujen etsimiseen loppui. Valitettavasti et löytänyt kaikkia tarvittavia sivuja joten sait tähtiä vain {{stars}}. Älä välitä, sillä annan ne sinulle sitten kun tarvitset niitä.",
-    "general": "Aika loppui. Nyt voit siirtyä tehtävässä eteenpäin.",
+    "search1": "Great! You found all three pages that will help you solve the task. You got full {{stars}} stars. Now you can move forward.",
+    "search2": "You did a good job, but you did not find all the pages you need in the job. That's why you just got {{stars}} stars. You still have time left so keep searching. I will help you by deleting pages that are not useful for the job.",
+    "search3": "Time to search for pages ended. Unfortunately, you did not find all the required pages so you just got stars {{stars}}. Do not worry, as I'll give it to you when you need them.",
+    "general": "Time out. Now you can move forward.",
     "alert": "{{time}} minutes remaining"
   },
   "sam": {
