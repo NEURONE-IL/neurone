@@ -3,6 +3,8 @@
 set -u
 set -e
 
+export TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=768 --gc_interval=100"
+
 HOMEDIR=$(pwd)
 
 printf "%b\n" "\e[1;31m>> Installing Meteor Framework [1/8]\e[0m"
@@ -11,7 +13,6 @@ curl https://install.meteor.com/ | sh
 
 printf "%b\n" "\e[1;31m>> Packaging NPM dependencies [2/8]\e[0m"
 
-export TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=768 --gc_interval=100"
 (cd $HOMEDIR/src && meteor npm install --quiet)
 
 printf "%b\n" "\e[1;31m>> Building Meteor app as Node.js app [3/8]\e[0m"

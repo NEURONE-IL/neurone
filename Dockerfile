@@ -10,7 +10,8 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 
 # Install basic dependencies
 RUN apt-get -qq update \
-  && apt-get -qq --no-install-recommends install curl ca-certificates wget unzip python
+  && apt-get -qq --no-install-recommends install curl ca-certificates wget python unzip bsdtar \
+  && export tar="bsdtar"
 
 # Install gosu
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
