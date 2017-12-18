@@ -3,7 +3,7 @@
 set -u
 set -e
 
-export TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=768 --gc_interval=100"
+# export TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=1024 --gc_interval=100"
 
 HOMEDIR=$(pwd)
 
