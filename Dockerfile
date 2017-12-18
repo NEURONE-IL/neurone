@@ -50,6 +50,9 @@ RUN cp ./src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
 # Set Meteor Framework location as environment variable
 ENV PATH $PATH:$HOME/.meteor
 
+# Set Build Memory Limit
+ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=2048 --gc_interval=100
+
 # Installation and packaging script
 RUN gosu $username ./meteorBuild.sh
 
