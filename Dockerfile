@@ -57,7 +57,7 @@ ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=2048 --gc_interval=
 RUN gosu $username ./meteorBuild.sh
 
 # Create NEURONE assets directory and create softlink
-RUN gosu $username bash -c 'mkdir -p ./assets && ./fixPermissions.sh ./assets'
+RUN gosu $username bash -c 'mkdir -p /assets && ./fixPermissions.sh /assets'
 RUN ln -s ./assets /assets
 
 # Set internal Meteor environment variables
