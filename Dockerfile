@@ -27,7 +27,8 @@ ENV LOCAL_USER_NAME $username
 ENV LOCAL_USER_ID $userid
 ADD ./.deploy/docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD ./.deploy/docker/createUser.sh /tmp/createUser.sh
-RUN bash /tmp/createUser.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh && chmod +x /tmp/createUser.sh
+RUN ./tmp/createUser.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Set working directory
