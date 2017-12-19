@@ -10,7 +10,7 @@ GROUP_ID=$(id -g)
 
 printf "%b\n" "\e[1;31m>> Fixing permissions on $ASSET_DIR as user $USER ($USER_ID:$GROUP_ID)\e[0m"
 
-chown -R $USER_ID:$GROUP_ID $ASSET_DIR
+gosu root bash -c "chown -R $USER_ID:$GROUP_ID $ASSET_DIR"
 
 cd $ASSET_DIR
 find . -type d -exec chmod 755 {} +
