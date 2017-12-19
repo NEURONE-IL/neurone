@@ -58,7 +58,7 @@ RUN gosu $username ./meteorBuild.sh
 
 # Create NEURONE assets directory
 RUN mkdir -p /assets
-RUN gosu $username bash -c "./fixPermissions.sh /assets"
+RUN ./fixPermissions.sh /assets $username
 
 # Set internal Meteor environment variables
 ENV NEURONE_ASSET_PATH /assets
