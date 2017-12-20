@@ -4,26 +4,16 @@ dist: trusty
 language: node_js
 
 node_js:
-  - "4"
+  - "8"
 
 services:
   - docker
 
-env:
-  - CXX=g++-4.8
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
 
-before_script:
-  - "ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts"
+#before_script:
+#  - "ssh-keyscan -H -t rsa,dsa $HOST >> ~/.ssh/known_hosts"
 
 script:
   - meteor npm run unittest
