@@ -18,13 +18,12 @@ ARG userid=9001
 ENV LOCAL_USER_NAME $username
 ENV LOCAL_USER_ID $userid
 ADD ./.deploy/docker/createUser.sh /tmp/createUser.sh
-RUN chmod +x /tmp/createUser.sh \
-  && ./tmp/createUser.sh
+RUN chmod +x /tmp/createUser.sh && ./tmp/createUser.sh
 
 # Set working directory
-RUN mkdir -p /home/$username
+RUN mkdir -p /app && chown -R $username:$username /app
+WORKDIR /app
 ENV HOME /home/$username
-WORKDIR /home/$username
 
 # Add all files
 ADD . ./src
@@ -62,7 +61,7 @@ RUN rm -f /etc/nginx/sites-enabled/default \
 # Set ports, data volumes and commands
 EXPOSE 80
 VOLUME ["/assets"]
-CMD ["/sbin/my_init", "--", "/sbin/setuser", $username, "bash"]
+CMD ["/sbin/my_init"]
 
 # Clean up APT when done
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
