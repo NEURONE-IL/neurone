@@ -12,24 +12,14 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 RUN apt-get -qq update \
   && apt-get -qq --no-install-recommends install curl ca-certificates wget python unzip bsdtar
 
-# Install gosu
-RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-  && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
-  && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture).asc" \
-  && gpg --verify /usr/local/bin/gosu.asc \
-  && rm /usr/local/bin/gosu.asc \
-  && chmod +x /usr/local/bin/gosu
-
 # Set user
 ARG username=user
 ARG userid=9001
 ENV LOCAL_USER_NAME $username
 ENV LOCAL_USER_ID $userid
-ADD ./.deploy/docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD ./.deploy/docker/createUser.sh /tmp/createUser.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh && chmod +x /tmp/createUser.sh
-RUN ./tmp/createUser.sh
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+RUN chmod +x /tmp/createUser.sh
+  && ./tmp/createUser.sh
 
 # Set working directory
 RUN mkdir -p /home/$username
@@ -55,7 +45,7 @@ ENV PATH $PATH:$HOME/.meteor
 ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=2048 --gc_interval=100
 
 # Installation and packaging script
-RUN gosu $username ./meteorBuild.sh
+RUN /sbin/setuser $username ./meteorBuild.sh
 
 # Create NEURONE assets directory
 RUN mkdir -p /assets
