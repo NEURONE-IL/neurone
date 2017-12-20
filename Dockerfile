@@ -29,7 +29,7 @@ ADD ./.deploy/docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD ./.deploy/docker/createUser.sh /tmp/createUser.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh && chmod +x /tmp/createUser.sh
 RUN ./tmp/createUser.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Set working directory
 RUN mkdir -p /home/$username
@@ -72,7 +72,7 @@ RUN rm -f /etc/nginx/sites-enabled/default \
 # Set ports, data volumes and commands
 EXPOSE 80
 VOLUME ["/assets"]
-CMD ["/sbin/my_init"]
+CMD ["/sbin/my_init", "--", "/sbin/setuser", $username, "bash"]
 
 # Clean up APT when done
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
