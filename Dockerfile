@@ -18,7 +18,7 @@ ARG userid=9001
 ENV LOCAL_USER_NAME $username
 ENV LOCAL_USER_ID $userid
 ADD ./.deploy/docker/createUser.sh /tmp/createUser.sh
-RUN chmod +x /tmp/createUser.sh
+RUN chmod +x /tmp/createUser.sh \
   && ./tmp/createUser.sh
 
 # Set working directory
