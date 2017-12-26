@@ -137,7 +137,7 @@ Meteor.publish({
   userBookmarks: function() {
     if (this.userId) {
       var user = UserData.findOne({ userId: this.userId }),
-         limit = user.configs.maxBookmarks,
+         limit = user.configs.maxBookmarks || 1,
           pipe = [
                   { $match: { userId: this.userId }},
                   { $sort: { serverTimestamp: -1 }},
@@ -159,7 +159,7 @@ Meteor.publish({
     if (this.userId) {
       // dgacitua: http://stackoverflow.com/a/40266075
       var user = UserData.findOne({ userId: this.userId }),
-         limit = user.configs.maxSnippetsPerPage,
+         limit = user.configs.maxSnippetsPerPage || 1,
           pipe = [
                   { $match: { userId: this.userId }},
                   { $sort: { serverTimestamp: -1 }},
