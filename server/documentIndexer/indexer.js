@@ -10,6 +10,20 @@ import DocumentParser from './documentParser';
 import { Documents } from '../../imports/database/documents/index';
 
 export default class Indexer {
+  static checkOldDocumentDefinitions(assetPath) {
+    try {
+      let files = glob.sync(path.join(assetPath, 'documents', '*.json')),
+          total = files.length;
+
+      if (total > 0) return true;
+      else return false;
+    }
+    catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
   static generateDocumentCollection(assetPath) {
     try {
       console.log('Generating Document Collection!');

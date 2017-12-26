@@ -62,12 +62,15 @@ Meteor.startup(() => {
     if (ServerConfigs.reloadDocCollectionOnDeploy) {
       console.log('Generating Document Collection...');
 
-      let step1 = Indexer.generateDocumentCollection(assetPath),
-          step2 = Indexer.deleteOrphanDocuments(assetPath),
-          step3 = Indexer.generateInvertedIndex();
+      if (Indexer.checkOldDocumentDefinitions(assetPath)) {
+        let step1 = Indexer.generateDocumentCollection(assetPath),
+            step2 = Indexer.deleteOrphanDocuments(assetPath);
+      }
+      
+      let idx = Indexer.generateInvertedIndex();
     }
     else {
-      let step = Indexer.loadInvertedIndex();
+      let idx = Indexer.loadInvertedIndex();
     }
 
     console.log('NEURONE Server Platform is ready!');
