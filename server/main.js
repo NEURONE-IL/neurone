@@ -44,7 +44,7 @@ Meteor.startup(() => {
 
     // dgacitua: Creating download documents folder
     console.log('Creating download directory...');
-    DocumentDownloader.createDownloadDir();
+    DocumentDownloader.createDownloadDirs();
 
     // dgacitua: Preloading of Form and Synthesis questions
     if (ServerConfigs.reloadProfilesOnDeploy) {

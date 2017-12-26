@@ -23,12 +23,15 @@ const previewDir = path.join(Utils.getAssetPath(), 'previewDocs');
 
 export default class DocumentDownloader {
   // dgacitua: Create download directory (on Asset path) for automatic document downloading
-  static createDownloadDir() {
-    fs.ensureDirSync(downloadDir);
-  }
-
-  static createDownloadDir() {
-    fs.ensureDirSync(previewDir);
+  static createDownloadDirs() {
+    try {
+      fs.ensureDirSync(downloadDir);
+      fs.ensureDirSync(previewDir);
+    }
+    catch (err) {
+      console.log(err);
+      throw new Meteor.Error(500, 'Cannot create download directories!', err);
+    }
   }
 
   // dgacitua: Automatic document download from web
