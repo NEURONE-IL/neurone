@@ -8,25 +8,31 @@
       <form name="documentLoader.form" class="form-horizontal">
         <div class="row">
           <div class="form-group">
-            <label for="docName" class="col-md-4 control-label">Document Name</label>
+            <label for="docName" class="col-md-4 control-label">Document Name <span class="required-text">*</span></label>
             <div class="col-md-8">
               <input id="docName" class="form-control" type="text" placeholder="mydoc-01" ng-model="documentLoader.docName" ng-required="true">
             </div>
           </div>
           <div class="form-group">
-            <label for="url" class="col-md-4 control-label">Document URL</label>
+            <label for="url" class="col-md-4 control-label">Document URL <span class="required-text">*</span></label>
             <div class="col-md-8">
-              <input id="url" class="form-control" type="text" placeholder="https://blog.meteor.com/" ng-model="documentLoader.url" ng-required="true">
+              <input id="url" class="form-control" type="text" placeholder="http://assets.mylocalserver.org/pages/blog01/index.html" ng-model="documentLoader.url" ng-required="true">
             </div>
           </div>
           <div class="form-group">
-            <label for="url" class="col-md-4 control-label">Document Title</label>
+            <label for="url" class="col-md-4 control-label">Masked URL</label>
             <div class="col-md-8">
-              <input id="url" class="form-control" type="text" placeholder="Meteor Blog" ng-model="documentLoader.title" ng-required="true">
+              <input id="url" class="form-control" type="text" placeholder="https://www.myblog.info/posts/hello-world" ng-model="documentLoader.maskedUrl">
             </div>
           </div>
           <div class="form-group">
-            <label for="locale" class="col-md-4 control-label">Locale Code</label>
+            <label for="url" class="col-md-4 control-label">Document Title <span class="required-text">*</span></label>
+            <div class="col-md-8">
+              <input id="url" class="form-control" type="text" placeholder="The origins of the 'Hello World' expression" ng-model="documentLoader.title" ng-required="true">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="locale" class="col-md-4 control-label">Locale Code <span class="required-text">*</span></label>
             <div class="col-md-8">
               <ui-select id="locale" ng-model="documentLoader.locale" ng-required="true">
                 <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
@@ -40,7 +46,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="domain" class="col-md-4 control-label">Domain</label>
+            <label for="domain" class="col-md-4 control-label">Domain <span class="required-text">*</span></label>
             <div class="col-md-8">
               <ui-select multiple id="domain" ng-model="documentLoader.domain" sortable="true" close-on-select="false" ng-required="true">
                 <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
@@ -54,7 +60,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="task" class="col-md-4 control-label">Task</label>
+            <label for="task" class="col-md-4 control-label">Task <span class="required-text">*</span></label>
             <div class="col-md-8">
               <ui-select multiple id="task" ng-model="documentLoader.task" sortable="true" close-on-select="false" ng-required="true">
                 <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
@@ -86,6 +92,11 @@
                   <input type="checkbox" ng-model="documentLoader.relevant"> Relevant Document
                 </label>
               </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+              <span class="required-text">*</span> Required field
             </div>
           </div>
         </div>

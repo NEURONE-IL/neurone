@@ -91,7 +91,7 @@ export default class DocumentDownloader {
       topic: docObj.topic || [ 'pilot' ],
       keywords: docObj.keywords || [],
       date: docObj.date || Utils.getDate(),
-      url: docObj.url,
+      url: docObj.maskedUrl || docObj.url || '',
       searchSnippet: docObj.searchSnippet || '',
       indexedBody: ''
     };
@@ -169,7 +169,7 @@ export default class DocumentDownloader {
         topic: docObj.topic || [ 'preview' ],
         keywords: docObj.keywords || [],
         date: docObj.date || Utils.getDate(),
-        url: docObj.url,
+        url: docObj.maskedUrl || docObj.url || '',
         searchSnippet: docObj.searchSnippet || '',
         indexedBody: ''
       };

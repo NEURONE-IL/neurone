@@ -86,6 +86,11 @@ a.search-result-title:visited {
   color: #FF0000;
 }
 
+.required-text {
+  font-weight: bold;
+  color: #FF0000;
+}
+
 .modal-xl .modal-dialog {
   width: 95vw;
 }
@@ -263,6 +268,9 @@ div.admin-row-spacing {
 }
 
 .iframe-scale {
+  zoom: 0.75;
+  transform: scale(0.75);
+  transform-origin: 0 0;
   -ms-zoom: 0.75;
   -moz-transform: scale(0.75);
   -moz-transform-origin: 0 0;

@@ -98,6 +98,7 @@ class DocumentLoader {
       topic: this.domain || [], //!!this.domain ? this.domain.split(',').map((kw) => { return kw.trim() }) : [],
       keywords: !!(this.keywords) && (this.keywords.length > 1) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
       url: this.url,
+      maskedUrl: this.maskedUrl,
       searchSnippet: this.snippet || '',
     };
 
