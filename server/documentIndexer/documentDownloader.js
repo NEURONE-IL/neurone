@@ -10,7 +10,7 @@ import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
 
-const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36';
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36';
 const errorObj = { msg: 'ERROR!' };
 
 // dgacitua: Paths for indexable documents
