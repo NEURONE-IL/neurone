@@ -50,8 +50,25 @@ export default class DocumentDownloader {
     let options = {
       urls: [ documentUrl ],
       directory: downloadPath,
-      filenameGenerator: 'byType', //'bySiteStructure',
-      request: { headers: { 'User-Agent': userAgent }}
+      filenameGenerator: 'bySiteStructure', //'byType',
+      recursive: false,
+      sources: [
+        { selector: 'iframe:not([src^="https://www.facebook.com"])', attr: 'src' }
+      ],
+      httpResponseHandler: (response) => {
+        const htmlBody = response.headers['content-type'].startsWith('text/html') && response.body;
+        const re = /((https?:\/\/)(\w+)(.disqus.com))/;
+        if (htmlBody && re.test(htmlBody)) {
+          const updatedHtmlBody = htmlBody.replace(re, ''); 
+          return Promise.resolve(updatedHtmlBody);
+        }
+        else {
+          return Promise.resolve(response.body);
+        }
+      },
+      request: {
+        headers: { 'User-Agent': userAgent }
+      }
     }
 
     fs.remove(downloadPath, (err, res) => {
