@@ -47,8 +47,8 @@ export default class SolrIndex {
             searchSnippet_t: doc.searchSnippet || '',
             indexedBody_t: SolrIndex.escapeString(doc.indexedBody) || '',
             keywords_t: doc.keywords || [],
-            test_s: doc.test || [],
-            topic_s: doc.topic || []
+            task_s: doc.task || [],
+            domain_s: doc.domain || []
           };
 
           idxDocs.push(newDoc);
@@ -91,8 +91,8 @@ export default class SolrIndex {
       searchSnippet_t: docObj.searchSnippet || '',
       indexedBody_t: SolrIndex.escapeString(docObj.indexedBody) || '',
       keywords_t: docObj.keywords || [],
-      test_s: docObj.test || [],
-      topic_s: docObj.topic || []
+      task_s: docObj.task || [],
+      domain_s: docObj.domain || []
     };
 
     let arrDocs = [ newDoc ];
@@ -112,13 +112,13 @@ export default class SolrIndex {
 
     var queryString = encodeURIComponent(queryObject.query),
         queryLocale = queryObject.locale ? encodeURIComponent(queryObject.locale) : null,
-          queryTest = queryObject.test ? encodeURIComponent(queryObject.test) : null,
-         queryTopic = queryObject.topic ? encodeURIComponent(queryObject.topic) : null;
+          queryTask = queryObject.task ? encodeURIComponent(queryObject.task) : null,
+        queryDomain = queryObject.domain ? encodeURIComponent(queryObject.domain) : null;
 
     var q1 = 'q=' + '(' + 'title_t:' + queryString + ' OR ' + 'indexedBody_t:' + queryString + ' OR ' + 'keywords_t:' + queryString + ')',
         q2 = queryLocale ? ' AND locale_s:' + queryLocale : '',
-        q3 = queryTest ? ' AND test_s:' + queryTest : '',
-        q4 = queryTopic ? ' AND topic_s:' + queryTopic : '',
+        q3 = queryTask ? ' AND task_s:' + queryTask : '',
+        q4 = queryDomain ? ' AND domain_s:' + queryDomain : '',
         q5 = 'start=0&rows=100',
         q6 = 'df=indexedBody_t',
         q7 = 'hl=on&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>',

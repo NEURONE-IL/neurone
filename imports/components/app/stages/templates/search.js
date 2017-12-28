@@ -86,12 +86,13 @@ class Search {
       this.qts.saveQuery(queryText);
       this.$state.go('.', {query: queryText}, {notify: false});
 
-      var queryObj = {
+      // TODO Verify topic=>domain & test=>task
+      let queryObj = {
         query: queryText,
         locale: this.uds.getConfigs().locale,
-        test: this.uds.getConfigs().test,
-        topic: this.uds.getConfigs().topic
-      }
+        task: this.uds.getConfigs().task,
+        domain: this.uds.getConfigs().domain
+      };
 
       console.log(queryObj);
 

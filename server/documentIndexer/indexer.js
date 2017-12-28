@@ -39,7 +39,7 @@ export default class Indexer {
         var total2 = documentList.length;
 
         documentList.forEach((doc, idx2, arr2) => {
-          if (doc.route && doc.title && doc.test && doc.topic && doc.locale) {
+          if (doc.route && doc.title && doc.task && doc.domain && doc.locale) {
             var docRoute = path.join(assetPath, doc.route);
             var fn = path.basename(doc.route);
 

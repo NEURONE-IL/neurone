@@ -7,7 +7,7 @@
     <div class="well well-sm" ng-repeat="doc in documentManager.docs track by $index">
       <div class="row">
         <div class="col-md-10">
-          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.topic[0] }} | <b>Task:</b> {{ doc.test[0] }} ]
+          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} ]
         </div>
         <div class="col-md-2">
           <button type="button" class="btn btn-xs btn-danger pull-right" ng-click="documentManager.deleteDocument(doc)">

@@ -89,13 +89,14 @@ class DocumentLoader {
   }
 
   parseDocumentForm() {
+    // TODO check change test-topic
     let form = {
       docName: this.docName,
       title: this.title,
       locale: this.locale || '', //!!(this.locale) ? this.locale[0].properties.code : '',
       relevant: this.relevant || false,
-      test: this.task || [], // !!this.task ? this.task.split(',').map((kw) => { return kw.trim() }) : [],
-      topic: this.domain || [], //!!this.domain ? this.domain.split(',').map((kw) => { return kw.trim() }) : [],
+      task: this.task || [], // !!this.task ? this.task.split(',').map((kw) => { return kw.trim() }) : [],
+      domain: this.domain || [], //!!this.domain ? this.domain.split(',').map((kw) => { return kw.trim() }) : [],
       keywords: !!(this.keywords) && (this.keywords.length > 1) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
       url: this.url,
       maskedUrl: this.maskedUrl,

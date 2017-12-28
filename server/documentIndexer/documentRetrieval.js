@@ -111,7 +111,7 @@ export default class DocumentRetrieval {
     else {
       var qo = queryObj,
         res1 = LunrIndex.searchDocuments(qo.query),
-        res2 = res1.filter((d) => { return d.locale === qo.locale && d.test.indexOf(qo.test) !== -1 && d.topic.indexOf(qo.topic) !== -1 });
+        res2 = res1.filter((d) => { return d.locale === qo.locale && d.task.indexOf(qo.task) !== -1 && d.domain.indexOf(qo.domain) !== -1 });
 
       if (res2.length >= 1) return DocumentRetrieval.iFuCoSort(res2, 3, 2);
       else return res2;

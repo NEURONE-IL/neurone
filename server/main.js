@@ -63,6 +63,7 @@ Meteor.startup(() => {
       console.log('Generating Document Collection...');
 
       if (Indexer.checkOldDocumentDefinitions(assetPath)) {
+        console.warn('Generating document collection with JSON Files (Fallback Mode)');
         let step1 = Indexer.generateDocumentCollection(assetPath),
             step2 = Indexer.deleteOrphanDocuments(assetPath);
       }
