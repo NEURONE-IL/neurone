@@ -89,16 +89,16 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
         $ mkdir -p ~/neuroneDatabase
         $ unzip myAssets.zip -d ~/neuroneAssets
 
-7. Run Docker Compose to build and deploy NEURONE:
+7. Run bundled scripts for building and deploying NEURONE:
 
         $ cd ~/neurone-master
-        $ ./docker-deploy.sh
-        $ docker-compose up -d
+        $ ./neurone-build.sh
+        $ ./neurone-start.sh
 
     All required project dependencies will be downloaded automatically. Depending on internet connection, the build process could take between 15 and 30 minutes. To undeploy NEURONE, run the following commands:
     
         $ cd ~/neurone-master
-        $ docker-compose down
+        $ ./neurone-stop.sh
 
 8. You can access your NEURONE simulation instance through a web browser by entering your IP or DNS address or use the following ports to access and configure NEURONE when deployed:
  
