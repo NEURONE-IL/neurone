@@ -46,3 +46,25 @@ services:
      - NEURONE_SOLR_PORT=8983
      - NEURONE_SOLR_CORE=neurone
      - DISABLE_WEBSOCKETS=0
+  fallback-app:
+    build: 
+      context: .
+      args:
+        username: ${NEURONE_USERNAME:-neurone}
+        userid: ${NEURONE_USERID:-9001}
+    image: dgacitua/neurone
+    restart: on-failure
+    ports:
+     - 81:80
+    volumes:
+     - ${NEURONE_ASSET_PATH:-~/neuroneAssets}:/assets
+    links:
+     - database
+     - search
+    environment:
+     - ROOT_URL=http://${NEURONE_HOST:-localhost}
+     - MONGO_URL=mongodb://${NEURONE_DB_USER:-neurone}:${NEURONE_DB_PASS:-neurone2017}@database:27017/${NEURONE_DB:-neurone}
+     - NEURONE_SOLR_HOST=search
+     - NEURONE_SOLR_PORT=8983
+     - NEURONE_SOLR_CORE=neurone
+     - DISABLE_WEBSOCKETS=1
