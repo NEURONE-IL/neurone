@@ -53,7 +53,7 @@ export default class DocumentDownloader {
       filenameGenerator: 'bySiteStructure', //'byType',
       recursive: false,
       sources: [
-        { selector: 'iframe:not([src^="https://www.facebook.com"])', attr: 'src' }
+        { selector: 'iframe:not(src)', attr: 'src' }
       ],
       httpResponseHandler: (response) => {
         const htmlBody = response.headers['content-type'].startsWith('text/html') && response.body;

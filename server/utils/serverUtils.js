@@ -124,4 +124,22 @@ export default class ServerUtils {
       return path.join(rootPath);
     }
   }
+
+  static startsWith(fullString, startString) {
+    let str = (fullString || '').toLowerCase(),
+      start = (startString || '').toLowerCase();
+    return str.startsWith(start);
+  }
+
+  static startsWithArray(fullString, startStringArray) {
+    let flag = false,
+         str = (fullString || '').toLowerCase();
+
+    startStringArray.forEach((el, idx, arr) => {
+      let start = (el || '').toLowerCase();
+      if (str.startsWith(start)) flag = true;
+    });
+
+    return flag;
+  }
 }

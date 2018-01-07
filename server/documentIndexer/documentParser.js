@@ -101,28 +101,52 @@ export default class DocumentParser {
         htmlString = htmlFile.toString(),
                  $ = cheerio.load(htmlFile);
 
-      // dgacitua: Remove all anchor tags with links
-      /*
-      $('a[href]').each((i, elem) => {
-        var content = $(elem.childNodes);
-        $(elem).replaceWith(content);
-      });
-      */
+      const blockedIds = [ 'disqus', 'taboola', 'cresta', 'pubexchange', 'newsletter', 'sociales' ];
+      const blockedClasses = [ 'share', 'entry-share', 'textwidget', 'widget_ad', 'fb-comments', 'fb-social-plugin', 'fb-login-button', 'fb_iframe_widget', 'leikiwidget' ];
+      const blockedElements = [ 'iframe', 'object' ];
 
-      // dgacitua: Remove href attribute from all tags
-      $('a').each((i, elem) => {
-        $(elem).removeAttr('href');
+      const adRemover = (elem) => {
+        // dgacitua: Remove all onclick events
         $(elem).removeAttr('onclick');
-      });
-
-      $('div').each((i, elem) => {
-        $(elem).removeAttr('onclick');
-
-        // dgacitua: Highly specific filter for ads
-        if ($(elem).hasClass('widget_ad') || $(elem).hasClass('fb-social-plugin') || $(elem).hasClass('leikiwidget')) {
+        
+        // dgacitua: Minimal ad filter by div id
+        if (Utils.startsWithArray($(elem).attr('id'), blockedIds)) {
           $(elem).remove();
+          return true;
         }
+
+        // dgacitua: Minimal ad filter by div class
+        blockedClasses.some((el, idx, arr) => {
+          if ($(elem).hasClass(el)) {
+            $(elem).remove();
+            return true;
+          }
+        });
+
+        return false;
+      };
+
+      const specialElementsRemover = (elementArray) => {
+        elementArray.forEach((el, idx, arr) => {
+          $(el).each((i, elem) => { $(elem).remove() });
+        });
+      };
+
+      specialElementsRemover(blockedElements);
+
+      // dgacitua: Remove onclick attribute from anchor tags
+      $('a').each((i, elem) => {
+        $(elem).removeAttr('onclick');
       });
+
+      // dgacitua: Remove all external links
+      $('a[href]').each((i, elem) => {
+        $(elem).attr('href', 'javascript:void(0)');
+        $(elem).removeAttr('target');
+      });
+
+      $('div').each((i, elem) => { adRemover(elem) });
+      $('aside').each((i, elem) => { adRemover(elem) });
 
       $('p script').each((i, elem) => {
         if ($(elem).attr('type') === 'text/javascript') {
@@ -171,16 +195,6 @@ export default class DocumentParser {
       $('form').each((i, elem) => {
         $(elem).removeAttr('action');
         $(elem).removeAttr('method');
-      });
-
-      // dgacitua: Remove iframe elements
-      $('iframe').each((i, elem) => {
-        $(elem).remove();
-      });
-
-      // dgacitua: Remove object elements
-      $('object').each((i, elem) => {
-        $(elem).remove();
       });
 
       var cleanedHtml = $.html();
