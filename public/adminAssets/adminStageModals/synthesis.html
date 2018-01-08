@@ -26,7 +26,7 @@
       <label for="form" class="col-md-4 control-label">Synthesis Form</label>
       <div class="col-md-8">
         <ui-select id="form" ng-model="modal.answers.form" ng-required="true">
-          <ui-select-match placeholder="Select modal">{{ $select.selected.synthesisId }}</ui-select-match>
+          <ui-select-match placeholder="Select synthesis">{{ $select.selected.synthesisId }}</ui-select-match>
           <ui-select-choices repeat="syn.synthesisId as syn in modal.fields.synthesis | filter: { synthesisId: $select.search }">
             <div>{{ syn.synthesisId }}</div>
             <small>{{ syn.question }}</small>

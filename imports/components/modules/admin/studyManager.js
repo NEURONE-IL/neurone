@@ -159,7 +159,8 @@ class StudyManager {
         fields: {
           content: { state: type },
           modals: this.modalAssets,
-          images: this.imageAssets
+          images: this.imageAssets,
+          synthesis: this.synthesis
         }
       };
 
