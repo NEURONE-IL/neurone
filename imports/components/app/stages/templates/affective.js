@@ -66,7 +66,7 @@ class Affective {
        currentStage = this.uds.getConfigs().stages[stageNumber];
 
     this.type = currentStage.type;
-    this.samTemplate = currentStage.template;
+    this.samTemplate = currentStage.template || currentStage.page;
     this.avatar = this.uds.getConfigs().avatar;
   }
 
