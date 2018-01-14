@@ -40,12 +40,12 @@
     "email": "Email",
     "username": "Usuario",
     "password": "Contraseña",
-    "identity": "Nombre Completo",
+    "identity": "Nombre",
     "required": "Campo requerido",
     "emailPlaceholder": "Ingresa tu email",
     "usernamePlaceholder": "Ingresa tu usuario",
     "passwordPlaceholder": "Ingresa tu contraseña",
-    "identityPlaceholder": "Ingresa tu nombre completo",
+    "identityPlaceholder": "Ingresa tu nombre",
     "studentRole": "Estudiante",
     "experimenterRole": "Profesor",
     "flow": "Actividad"
@@ -75,13 +75,13 @@
     "bookmarksList": "Lista de marcadores"
   },
   "alerts": {
-    "error": "Undefined Error",
-    "snippetError": "Error while processing Snippet",
-    "bookmarkError": "Error while processing Bookmark",
-    "snippetSaved": "Snippet saved!",
-    "snippetRemoved": "Snippet removed!",
-    "bookmarkSaved": "Bookmark saved!",
-    "bookmarkRemoved": "Bookmark removed!"
+    "error": "Error indefinido",
+    "snippetError": "Error al procesar Fragmento",
+    "bookmarkError": "Error al procesar Marcador",
+    "snippetSaved": "¡Fragmento guardado!",
+    "snippetRemoved": "¡Fragmento eliminado!",
+    "bookmarkSaved": "¡Marcador guardado!",
+    "bookmarkRemoved": "¡Marcador eliminado!"
   },
   "form": {
     "title": "Cuestionario",
@@ -140,6 +140,10 @@
       "title": "Cerrar sesión",
       "confirm": "¿Estás seguro de que deseas cerrar la sesión?",
       "action": "Saliendo de NEURONE"
+    },
+    "general": {
+      "tutorial": "¡Hola! La ayuda solo aparecerá cuando realices alguna de las tareas asignadas.",
+      "tips": "¡Hola! La ayuda solo aparecerá cuando realices alguna de las tareas asignadas. Lee la siguiente instrucción y tutorial. Luego podrás hacer el siguiente paso."
     }
   },
   "hints": {
@@ -203,6 +207,7 @@
     "alert": "{{time}} minutos restantes"
   },
   "sam": {
+    "user": "Tú",
     "avatar_d1": "Hola! Bienvenido y gracias por tu tiempo. Mi nombre es {{avatar}}. ¿Cómo te sientes ahora?",
     "avatar_d2": "Ya veo. ¿Y qué tan tranquilo o ansioso dirías que estás en este momento?",
     "avatar_d3": "¡Ok! Estamos listos para empezar. Haz clic en el botón \"Listo\" para continuar",

@@ -40,7 +40,7 @@
     "email": "Email",
     "username": "Username",
     "password": "Password",
-    "identity": "Full name",
+    "identity": "Name",
     "required": "Required field",
     "emailPlaceholder": "Enter your email",
     "usernamePlaceholder": "Enter your username",
@@ -140,6 +140,10 @@
       "title": "Logout",
       "confirm": "Are you sure that you want to logout?",
       "action": "Logging out of NEURONE"
+    },
+    "general": {
+      "tutorial": "Hi! Help will onle appear when you are doing some of the assigned tasks",
+      "tips": "Hi! Tips will only appear when you are doing some of the assigned tasks. Read the following tutorial and instructions. Then you can do the next stage."
     }
   },
   "hints": {
@@ -203,6 +207,7 @@
     "alert": "{{time}} minutes remaining"
   },
   "sam": {
+    "user": "You",
     "avatar_d1": "Hi there! Welcome and thanks for your time. My name is {{avatar}}. How do you feel now?",
     "avatar_d2": "I see. And how calm or anxious would you say you are in this moment?",
     "avatar_d3": "Ok! We are all set to start. Please click on the \"Ready\" button to continue",

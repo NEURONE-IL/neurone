@@ -140,6 +140,10 @@
       "title": "Poistu",
       "confirm": "Olet kirjautumassa ulos. Oletko varma?",
       "action": "NEURONE sulkeutuu"
+    },
+    "general": {
+      "tutorial": "Hei! Ohje näkyy vain silloin, kun olet tekemässä jotakin sinulle annettua tehtävää.",
+      "tips": "Terve! Ohje näkyy vain silloin, kun olet tekemässä jotakin sinulle annettua tehtävää. Lue siis ensin seuraava tehtäväohje ja siihen liittyvä tutoriaali. Sen jälkeen pääset tekemäään tehtävän seuraavaa vaihetta."
     }
   },
   "hints": {
