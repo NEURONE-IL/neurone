@@ -9,14 +9,14 @@ export default class SessionTrackService {
 
   saveSessionLog(currentState) {
     if (!!Meteor.userId()) {
-      var sessionLog = {
+      let sessionLog = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         state: currentState,
         localTimestamp: Utils.getTimestamp()
       };
 
-      Meteor.call('storeSessionLog', sessionLog, (err, res) => {
+      Meteor.apply('storeSessionLog', [ sessionLog ], { noRetry: true }, (err, res) => {
         if (!err) {
           LogUtils.logToConsole('Session Log Saved!', sessionLog.state, sessionLog.userId, sessionLog.username, sessionLog.localTimestamp);
         }

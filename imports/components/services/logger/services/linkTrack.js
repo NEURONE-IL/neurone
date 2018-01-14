@@ -14,20 +14,20 @@ export default class LinkTrackService {
 
   saveVisitedLink(linkState) {
     if (Meteor.user()) {
-      var pageTitle = this.$rootScope.documentTitle,
+      let pageTitle = this.$rootScope.documentTitle,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
       // http://stackoverflow.com/a/25615010
-      var linkObject = {
+      let linkObject = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         state: linkState,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
         localTimestamp: Utils.getTimestamp()
       };
 
-      Meteor.call('storeVisitedLink', linkObject, (err, result) => {
+      Meteor.apply('storeVisitedLink', [ linkObject ], { noRetry: true }, (err, result) => {
         if (!err) {
           LogUtils.logToConsole('Page Saved!', linkObject.state, linkObject.userId, linkObject.username, linkObject.title, linkObject.url, linkObject.localTimestamp);
         }

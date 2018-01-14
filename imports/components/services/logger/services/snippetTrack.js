@@ -20,7 +20,7 @@ export default class SnippetTrackService {
   makeSnippet(type, index, callback) {
     if (!!Meteor.userId()) {
       if (type === 'Snippet') {
-        var iframeElement = document.getElementById(LoggerConfigs.iframeId),
+        let iframeElement = document.getElementById(LoggerConfigs.iframeId),
            iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement : null,
                 snippet = iframeWindow ? iframeWindow.getSelection().toString() : '',
               wordCount = snippet ? snippet.match(/\S+/g).length : 0;
@@ -29,16 +29,16 @@ export default class SnippetTrackService {
         this.uds.setSession({ wordCount : wordCount });
 
         if (!Utils.isEmpty(snippet)) {
-          var pageTitle = this.$rootScope.documentTitle,
+          let pageTitle = this.$rootScope.documentTitle,
                   docId = this.$rootScope.docId,
                 pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
           
-          var truncatedLimit = this.uds.getConfigs().maxSnippetWordLength,
+          let truncatedLimit = this.uds.getConfigs().maxSnippetWordLength,
             truncatedSnippet = truncatedLimit ? snippet.split(" ").splice(0, truncatedLimit).join(" ") : snippet;
 
-          var snippetObject = {
+          let snippetObject = {
             userId: Meteor.userId(),
-            username: Meteor.user().username || Meteor.user().emails[0].address,
+            username: Meteor.user().username || Meteor.user().emails[0].address || '',
             action: type,
             snippetId: 0,
             snippedText: truncatedSnippet,
@@ -48,14 +48,14 @@ export default class SnippetTrackService {
             localTimestamp: Utils.getTimestamp()
           };
 
-          Meteor.call('storeSnippet', snippetObject, (err, result) => {
+          Meteor.apply('storeSnippet', [ snippetObject ], { noRetry: true }, (err, result) => {
             if (!err) {
-              var msg = this.$translate.instant('alerts.snippetSaved');
+              let msg = this.$translate.instant('alerts.snippetSaved');
               LogUtils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
               callback(null, msg);
             }
             else {
-              var msg = this.$translate.instant('alerts.error');
+              let msg = this.$translate.instant('alerts.error');
               LogUtils.logToConsole('Error!', err);
               callback(msg);
             }
@@ -63,13 +63,13 @@ export default class SnippetTrackService {
         }
       }
       else if (type === 'Unsnippet') {
-        var pageTitle = this.$rootScope.documentTitle,
+        let pageTitle = this.$rootScope.documentTitle,
                 docId = this.$rootScope.docId,
               pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
         
-        var snippetObject = {
+        let snippetObject = {
           userId: Meteor.userId(),
-          username: Meteor.user().username || Meteor.user().emails[0].address,
+          username: Meteor.user().username || Meteor.user().emails[0].address || '',
           action: type,
           snippetId: (index ? index : 0),
           snippedText: '',
@@ -79,14 +79,14 @@ export default class SnippetTrackService {
           localTimestamp: Utils.getTimestamp()
         };
 
-        Meteor.call('storeSnippet', snippetObject, (err, result) => {
+        Meteor.apply('storeSnippet', [ snippetObject ], { noRetry: true }, (err, result) => {
           if (!err) {
-            var msg = this.$translate.instant('alerts.snippetSaved');
-            LogUtils.logToConsole('Snippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
+            let msg = this.$translate.instant('alerts.snippetSaved');
+            LogUtils.logToConsole('Unsnippet Saved!', snippetObject.docId, snippetObject.snippedText, snippetObject.localTimestamp);
             callback(null, msg);
           }
           else {
-            var msg = this.$translate.instant('alerts.error');
+            let msg = this.$translate.instant('alerts.error');
             LogUtils.logToConsole('Error!', err);
             callback(msg);
           }
@@ -115,41 +115,5 @@ export default class SnippetTrackService {
         callback(err);
       }
     });
-  }
-
-  bindWordCounter() {
-    // TODO Centralized reference to pageContainer
-    var elem = document.getElementById(LoggerConfigs.iframeId);
-    /*
-    angular.element(elem).ready(() => {
-      angular.element(elem).on('mouseup', this.wordCounter);
-      console.log('BIND!', 'Snippet', elem);
-    });
-    */
-  }
-
-  unbindWordCounter() {
-    /*
-    var elem = document.getElementById(LoggerConfigs.iframeId);
-    angular.element(elem).ready(() => {
-      angular.element(elem).off('mouseup', this.wordCounter);
-      console.log('UNBIND!', 'Snippet', elem);
-    });
-    */
-  }
-
-  wordCounter() {
-    var iframeElement = document.getElementById(LoggerConfigs.iframeId),
-         iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement.contentDocument.defaultView : null,
-              snippet = iframeWindow ? iframeWindow.getSelection().toString() : '';
-
-    if (!Utils.isEmpty(snippet)) {
-      var wordCount = snippet.match(/\S+/g).length;
-      console.log('wcY', snippet, wordCount);
-      this.$rootScope._counters.words = wordCount;
-    }
-    else {
-      console.log('wcN', snippet);
-    }
   }
 }

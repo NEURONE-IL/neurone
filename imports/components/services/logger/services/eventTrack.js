@@ -13,14 +13,14 @@ export default class EventTrackService {
   }
 
   storeCustomEvent(action, params, callback) {
-    var msg = '';
+    let msg = '';
 
     if (!!Meteor.userId()) {
       params.url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
-      var event = {
+      let event = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         action: action,
         localTimestamp: Utils.getTimestamp(),
         extras: params
@@ -28,7 +28,7 @@ export default class EventTrackService {
 
       console.log('Custom Event!', event);
 
-      Meteor.call('storeCustomEvent', event, (err,res) => {
+      Meteor.apply('storeCustomEvent', [ event ], { noRetry: true }, (err, res) => {
         if (!err) {
           msg = 'Custom Event stored sucessfully';
           typeof callback === 'function' && callback(null, msg);

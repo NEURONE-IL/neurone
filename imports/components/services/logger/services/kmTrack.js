@@ -62,40 +62,28 @@ export default class KMTrackService {
   mouseMoveListener(evt) {
     if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       // From http://stackoverflow.com/a/23323821
-      var w = evt.data.w,
-          d = evt.data.d,
-          e = evt.data.e,
-          g = evt.data.g,
-          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-          h = window.innerHeight || e.clientHeight || g.clientHeight,
+      let win = evt.data.w,
+          doc = evt.data.d,
+          elm = evt.data.e,
+          gtb = evt.data.g,
+          w = window.innerWidth  || elm.clientWidth  || gtb.clientWidth,
+          h = window.innerHeight || elm.clientHeight || gtb.clientHeight,
           s = evt.data.s,
         src = s.href(s.current.name, s.params, {absolute: false}),
        time = Utils.getTimestamp();
-      /*
-      var w = angular.element(window),
-          d = angular.element(document),
-          e = d[0].documentElement,
-          g = d[0].getElementsByTagName('body')[0],
-          x = evt.pageX,
-          y = evt.pageY,
-          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-          h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,
-       time = Utils.getTimestamp();
-      */
-      
-      var docX = evt.pageX,
+            
+      let docX = evt.pageX,
           docY = evt.pageY,
           winX = evt.clientX,
           winY = evt.clientY,
-          docW = d.width(),
-          docH = d.height(),
+          docW = doc.width(),
+          docH = doc.height(),
           winW = w,
           winH = h;
 
-      var movementOutput = {
+      let movementOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'MouseMovement',
         source: 'Window',
         url: src,
@@ -111,49 +99,35 @@ export default class KMTrackService {
       };
 
       LogUtils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
+      Meteor.apply('storeMouseCoordinate', [ movementOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
   mouseClickListener(evt) {
     if (!!Meteor.userId() && LoggerConfigs.mouseClicksLogging) {
       // From http://stackoverflow.com/a/11744120/1319998
-      var w = evt.data.w,
-          d = evt.data.d,
-          e = evt.data.e,
-          g = evt.data.g,
-          x = evt.pageX,
-          y = evt.pageY,
-          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-          h = window.innerHeight || e.clientHeight || g.clientHeight,
-          s = evt.data.s,
-        src = s.href(s.current.name, s.params, {absolute: false}),
-       time = Utils.getTimestamp();
-      /*
-      var w = angular.element(window),
-          d = angular.element(document),
-          e = d[0].documentElement,
-          g = d[0].getElementsByTagName('body')[0],
-          x = evt.pageX,
-          y = evt.pageY,
-          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-          h = window.innerHeight || e.clientHeight || g.clientHeight,
-        src = window.location.href,
-       time = Utils.getTimestamp();
-      */
+      let win = evt.data.w,
+          doc = evt.data.d,
+          elm = evt.data.e,
+          gtb = evt.data.g,
+            w = window.innerWidth  || elm.clientWidth  || gtb.clientWidth,
+            h = window.innerHeight || elm.clientHeight || gtb.clientHeight,
+            s = evt.data.s,
+          src = s.href(s.current.name, s.params, {absolute: false}),
+         time = Utils.getTimestamp();
 
-      var docX = evt.pageX,
+      let docX = evt.pageX,
           docY = evt.pageY,
           winX = evt.clientX,
           winY = evt.clientY,
-          docW = d.width(),
-          docH = d.height(),
+          docW = doc.width(),
+          docH = doc.height(),
           winW = w,
           winH = h;
       
-      var clickOutput = {
+      let clickOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'MouseClick',
         source: 'Window',
         url: src,
@@ -169,33 +143,33 @@ export default class KMTrackService {
       };
 
       LogUtils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
+      Meteor.apply('storeMouseClick', [ clickOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
   scrollListener(evt) {
     if (!!Meteor.userId() && LoggerConfigs.mouseCoordsLogging) {
       // From http://stackoverflow.com/a/23323821
-      var w = evt.data.w,
-          d = evt.data.d,
-          e = evt.data.e,
-          g = evt.data.g,
-          w = window.innerWidth  || e.clientWidth  || g.clientWidth,
-          h = window.innerHeight || e.clientHeight || g.clientHeight,
-          s = evt.data.s,
-        src = s.href(s.current.name, s.params, {absolute: false}),
-       time = Utils.getTimestamp();
+      let win = evt.data.w,
+          doc = evt.data.d,
+          elm = evt.data.e,
+          gtb = evt.data.g,
+            w = window.innerWidth  || elm.clientWidth  || gtb.clientWidth,
+            h = window.innerHeight || elm.clientHeight || gtb.clientHeight,
+            s = evt.data.s,
+          src = s.href(s.current.name, s.params, {absolute: false}),
+         time = Utils.getTimestamp();
       
-      var scrollX = window.scrollX,
+      let scrollX = window.scrollX,
           scrollY = window.scrollY,
-          docW = d.width(),
-          docH = d.height(),
+          docW = doc.width(),
+          docH = doc.height(),
           winW = w,
           winH = h;
 
-      var scrollOutput = {
+      let scrollOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'Scroll',
         source: 'Window',
         url: src,
@@ -209,26 +183,25 @@ export default class KMTrackService {
       };
 
       LogUtils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
+      Meteor.apply('storeScrollMove', [ scrollOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
   keydownListener(evt) {
     evt = evt || event;
       
-    var t = Utils.getTimestamp(),
+    let t = Utils.getTimestamp(),
        kc = evt.keyCode,
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
-    //cond = ((kc >= 8 && kc <= 46) || (kc >= 91 && kc <= 93) || (kc >= 106 && kc <= 222)) ? true : false;
-
+    
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var keyOutput = {
+      let keyOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyDown',
         source: 'Window',
         keyCode: kc,
@@ -252,26 +225,25 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
   keypressListener(evt) {
     evt = evt || event;
       
-    var t = Utils.getTimestamp(),
+    let t = Utils.getTimestamp(),
        kc = evt.keyCode,
         w = evt.which,
       chc = evt.charCode,
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
-     //cond = ((kc >= 48 && kc <= 57) || (kc >= 65 && kc <= 90)) ? true : false;
-
+    
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var keyOutput = {
+      let keyOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyPress',
         source: 'Window',
         keyCode: kc,
@@ -295,7 +267,7 @@ export default class KMTrackService {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 

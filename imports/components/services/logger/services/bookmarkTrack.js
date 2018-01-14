@@ -15,21 +15,21 @@ export default class BookmarkTrackService {
 
   isBookmarked(callback) {
     if (!!Meteor.userId()) {
-      var url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
+      let url = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
-      Meteor.call('isBookmark', url, (err, res) => {
+      Meteor.apply('isBookmark', [ url ], { noRetry: true }, (err, res) => {
         if(!err) {
           callback(null, res);
         }
         else {
-          var msg = this.$translate.instant('alerts.bookmarkError');
+          let msg = this.$translate.instant('alerts.bookmarkError');
           console.error('Error getting current page as bookmark!', err);
           callback(msg);
         }
       });
     }
     else {
-      var msg = this.$translate.instant('alerts.bookmarkError');
+      let msg = this.$translate.instant('alerts.bookmarkError');
       console.error('Error while detecting current page as bookmark!');
       callback(msg);
     }
@@ -37,21 +37,21 @@ export default class BookmarkTrackService {
 
   getBookmarks(callback) {
     if (!!Meteor.userId()) {
-      var limit = Meteor.user() && Meteor.user().configs.maxBookmarks;
+      let limit = Meteor.user() && Meteor.user().configs.maxBookmarks;
 
-      Meteor.call('getBookmarks', limit, (err, res) => {
+      Meteor.apply('getBookmarks', [ limit ], { noRetry: true }, (err, res) => {
         if(!err) {
           callback(null, res);
         }
         else {
-          var msg = this.$translate.instant('alerts.bookmarkError');
+          let msg = this.$translate.instant('alerts.bookmarkError');
           console.error('Error while getting bookmarks!', err);
           callback(msg);
         }
       });
     }
     else {
-      var msg = this.$translate.instant('alerts.bookmarkError');
+      let msg = this.$translate.instant('alerts.bookmarkError');
       console.error('Error while getting bookmarks!');
       callback(msg);
     }
@@ -59,14 +59,14 @@ export default class BookmarkTrackService {
 
   makeBookmark(params, callback) {
     if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
-      var pageTitle = this.$rootScope.documentTitle,
+      let pageTitle = this.$rootScope.documentTitle,
               docId = this.$rootScope.docId,
            relevant = this.$rootScope.documentRelevant,
             pageUrl = this.$state.href(this.$state.current.name, this.$state.params, {absolute: false});
 
-      var bookmarkObject = {
+      let bookmarkObject = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         action: params.type,
         title: (pageTitle ? pageTitle : document.title),
         url: (pageUrl ? pageUrl : window.location.href),
@@ -78,27 +78,24 @@ export default class BookmarkTrackService {
         localTimestamp: Utils.getTimestamp()
       };
 
-      var navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
+      let navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
          consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
 
-
-      //console.log('Bookmark', bookmarkObject);
-
-      Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
+      Meteor.apply('storeBookmark', [ bookmarkObject ], { noRetry: true }, (err, res) => {
         if (!err) {
-          var msg = this.$translate.instant(navbarMsg);
+          let msg = this.$translate.instant(navbarMsg);
           LogUtils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
           callback(null, msg);
         }
         else {
-          var msg = this.$translate.instant('alerts.bookmarkError');
+          let msg = this.$translate.instant('alerts.bookmarkError');
           console.error('Error saving bookmark!', err);
           callback(msg);
         }
       });
     }
     else {
-      var msg = this.$translate.instant('alerts.bookmarkError');
+      let msg = this.$translate.instant('alerts.bookmarkError');
       console.error('Error while saving bookmark!');
       callback(msg);
     }
@@ -108,41 +105,41 @@ export default class BookmarkTrackService {
     if (!!Meteor.userId() && (params.type === 'Bookmark' || params.type === 'Unbookmark')) {
       
       delete bookmarkObject._id;
-      bookmarkObject.username = Meteor.user().username || Meteor.user().emails[0].address;
+      bookmarkObject.username = Meteor.user().username || Meteor.user().emails[0].address || '';
       bookmarkObject.action = params.type;
       bookmarkObject.userMade = params.userMade;
       bookmarkObject.localTimestamp = Utils.getTimestamp();
       bookmarkObject.rating = 0;
       bookmarkObject.reason = '';
 
-      var navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
+      let navbarMsg = (params.type === 'Bookmark') ? 'alerts.bookmarkSaved' : 'alerts.bookmarkRemoved',
          consoleMsg = (params.type === 'Bookmark') ? 'Bookmark Saved!' : 'Bookmark Removed!';
 
 
       //console.log('CustomBookmark', bookmarkObject);
 
-      Meteor.call('storeBookmark', bookmarkObject, (err, res) => {
+      Meteor.apply('storeBookmark', [ bookmarkObject ], { noRetry: true }, (err, res) => {
         if (!err) {
-          var msg = this.$translate.instant(navbarMsg);
+          let msg = this.$translate.instant(navbarMsg);
           LogUtils.logToConsole(consoleMsg, bookmarkObject.title, bookmarkObject.url, bookmarkObject.localTimestamp);
           callback(null, msg);
         }
         else {
-          var msg = this.$translate.instant('alerts.bookmarkError');
+          let msg = this.$translate.instant('alerts.bookmarkError');
           console.error('Error saving bookmark!', err);
           callback(msg);
         }
       });
     }
     else {
-      var msg = this.$translate.instant('alerts.bookmarkError');
+      let msg = this.$translate.instant('alerts.bookmarkError');
       console.error('Error while saving bookmark!');
       callback(msg);
     }
   }
 
   saveBookmark(callback) {
-    var params = {
+    let params = {
       type: 'Bookmark',
       userMade: true
     }
@@ -158,7 +155,7 @@ export default class BookmarkTrackService {
   }
 
   removeBookmark(callback) {
-    var params = {
+    let params = {
       type: 'Unbookmark',
       userMade: true
     }
@@ -174,12 +171,12 @@ export default class BookmarkTrackService {
   }
 
   removeNonRelevantBookmarks(bookmarkArray, callback) {
-    var params = {
+    let params = {
       type: 'Unbookmark',
       userMade: false
     }
 
-    var proc = 0;
+    let proc = 0;
     
     bookmarkArray.forEach((bkm, idx, arr) => {
       //console.log(bkm);
@@ -195,10 +192,10 @@ export default class BookmarkTrackService {
 
   removeAllBookmarks(bookmarkArray, callback) {
     if (bookmarkArray.length > 0) {
-      var proc = 0;
+      let proc = 0;
       
       bookmarkArray.forEach((bkm, idx, arr) => {
-        var params = {
+        let params = {
           type: 'Unbookmark',
           userMade: false
         };
@@ -218,23 +215,23 @@ export default class BookmarkTrackService {
   replaceWithRelevantBookmarks(bookmarkArray, callback) {
     console.log('Replacing!');
 
-    Meteor.call('getRelevantDocuments', (err, res) => {
+    Meteor.apply('getRelevantDocuments', [], { noRetry: true }, (err, res) => {
       if (!err) {
-        var relevantDocs = res;
+        let relevantDocs = res;
 
         this.removeAllBookmarks(bookmarkArray, (err, res) => {
           if (!err) {
-            var proc = 0;
+            let proc = 0;
 
             relevantDocs.forEach((doc, idx, arr) => {
-              var params = {
+              let params = {
                 type: 'Bookmark',
                 userMade: false
               };
 
-              var bkm = {
+              let bkm = {
                 userId: Meteor.userId(),
-                username: Meteor.user().username || Meteor.user().emails[0].address,
+                username: Meteor.user().username || Meteor.user().emails[0].address || '',
                 action: doc.type,
                 title: doc.title,
                 url: '/page/' + doc._id,
@@ -258,7 +255,7 @@ export default class BookmarkTrackService {
         });
       }
       else {
-        var msg = this.$translate.instant('alerts.bookmarkError');
+        let msg = this.$translate.instant('alerts.bookmarkError');
         console.error('Error saving bookmark!', err);
         callback(msg);
       }
