@@ -78,7 +78,7 @@ constructor($window, $document, $state) {
       };
 
       LogUtils.logToConsole('Mouse Movement!', movementOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseCoordinate', movementOutput, (err, result) => {});
+      Meteor.apply('storeMouseCoordinate', [ movementOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
@@ -126,7 +126,7 @@ constructor($window, $document, $state) {
       };
 
       LogUtils.logToConsole('Mouse Click!', clickOutput.source, 'X:' + winX + ' Y:' + winY + ' W:' + winW + ' H:' + winH + ' docX:' + docX + ' docY:' + docY + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeMouseClick', clickOutput, (err, result) => {});
+      Meteor.apply('storeMouseClick', [ clickOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
@@ -170,7 +170,7 @@ constructor($window, $document, $state) {
       };
 
       LogUtils.logToConsole('Scroll Movement!', scrollOutput.source, 'scrX:' + scrollX + ' scrY:' + scrollY + ' W:' + winW + ' H:' + winH + ' docW:' + docW + ' docH:' + docH + ' TIME:' + time + ' SRC:' + src);
-      Meteor.call('storeScrollMove', scrollOutput, (err, result) => {});
+      Meteor.apply('storeScrollMove', [ scrollOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
@@ -212,7 +212,7 @@ constructor($window, $document, $state) {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
@@ -254,7 +254,7 @@ constructor($window, $document, $state) {
         ' src:' + src
       );
 
-      Meteor.call('storeKeystroke', keyOutput, (err, result) => {});
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
     }
   }
 
