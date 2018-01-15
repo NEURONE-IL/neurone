@@ -22,7 +22,7 @@ class QuestionCtrl {
     this.$timeout = $timeout;
 
     this.$timeout(() => {
-      if (this.data.type === 'scale') this.scaleArray = this.range(this.data.min, this.data.max, this.data.step);
+      if (this.data.type === 'scale') this.scaleArray = this.generateScale(this.data.min, this.data.max, this.data.step);
 
       this.$element.html(this.getTemplate(this.data.type)).show();
       this.$compile(this.$element.contents())(this.$scope);
@@ -40,51 +40,25 @@ class QuestionCtrl {
     const timeQuestionTemplate = TimeQuestion.template;
     const ratingQuestionTemplate = RatingQuestion.template;
 
-    var template = '';
-
-    switch (questionType) {
-      case 'text':
-        template = textQuestionTemplate;
-        break;
-      case 'paragraph':
-        template = paragraphQuestionTemplate;
-        break;
-      case 'multipleChoice':
-        template = multipleChoiceQuestionTemplate;
-        break;
-      case 'checkbox':
-        template = checkboxQuestionTemplate;
-        break;
-      case 'list':
-        template = listQuestionTemplate;
-        break;
-      case 'scale':
-        template = scaleQuestionTemplate;
-        break;
-      case 'date':
-        template = dateQuestionTemplate;
-        break;
-      case 'time':
-        template = timeQuestionTemplate;
-        break;
-      case 'rating':
-        template = ratingQuestionTemplate;
-        break;
-    }
-
-    return template;
+    if (questionType === 'text') return textQuestionTemplate;
+    else if (questionType === 'paragraph') return paragraphQuestionTemplate;
+    else if (questionType === 'multipleChoice') return multipleChoiceQuestionTemplate;
+    else if (questionType === 'checkbox') return checkboxQuestionTemplate;
+    else if (questionType === 'list') return listQuestionTemplate;
+    else if (questionType === 'scale') return scaleQuestionTemplate;
+    else if (questionType === 'date') return dateQuestionTemplate;
+    else if (questionType === 'time') return timeQuestionTemplate;
+    else if (questionType === 'rating') return ratingQuestionTemplate;
+    else return '';
   }
 
-  range(start, stop, step) {
-    if (typeof stop == 'undefined') stop = start, start = 0;
-    if (typeof step == 'undefined') step = 1;
+  generateScale(start, stop, step) {
+    if (isNaN(stop) || !stop) stop = start, start = 0;
+    if (isNaN(step) || !step) step = 1;
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) return [];
 
-    var result = [];
-    for (var i = start; step > 0 ? i <= stop : i >= stop; i += step) {
-      result.push(i);
-    }
-
+    let result = [];
+    for (let i = start; step > 0 ? i <= stop : i >= stop; i += step) { result.push(i) }
     return result;
   }
 }

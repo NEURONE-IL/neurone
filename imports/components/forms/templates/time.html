@@ -3,5 +3,8 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
+  <div uib-timepicker id="timeAnswer" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required"></div>
+  <!--
   <input type="time" id="timeAnswer" class="form-control" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" placeholder="HH:mm:ss" ng-required="$ctrl.data.required">
+  -->
 </div>

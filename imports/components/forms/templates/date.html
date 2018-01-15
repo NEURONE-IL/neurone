@@ -3,5 +3,13 @@
     {{$ctrl.data.title}} <span ng-if="$ctrl.data.required" class="form-asterisk">*</span>
   </label>
   <span id="hint" class="help-block" ng-if="$ctrl.data.hint">{{$ctrl.data.hint}}</span>
+  <div class="input-group">
+    <input type="text" id="dateAnswer" class="form-control" uib-datepicker-popup name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" ng-required="$ctrl.data.required" is-open="datepicker.opened" close-text="X" />
+    <span class="input-group-btn">
+      <button type="button" class="btn btn-default" ng-click="datepicker.opened = true"><i class="fa fa-calendar"></i></button>
+    </span>
+  </div>
+  <!--
   <input type="date" id="dateAnswer" class="form-control" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" placeholder="yyyy-MM-dd" ng-required="$ctrl.data.required">
+  -->
 </div>

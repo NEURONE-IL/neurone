@@ -14,7 +14,7 @@
         <tr>
           <td class="text-right">{{$ctrl.data.minLabel}}</td>
           <td class="text-center scale-choice" ng-repeat="option in $ctrl.scaleArray track by $index">
-            <input type="radio" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required && !$ctrl.data.isOtherAnswer">
+            <input type="radio" name="{{$ctrl.data.questionId}}" ng-model="$ctrl.data.answer" ng-value="option" ng-required="$ctrl.data.required">
           </td>
           <td class="text-left">{{$ctrl.data.maxLabel}}</td>
         </tr>

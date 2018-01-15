@@ -1,9 +1,10 @@
 import template from './multipleChoice.html';
 
 export default MultipleChoiceQuestion = {
+  template: template.default,
   bindings: {
     data: '='
-  },
+  }
   /*
   controller: () => {
     if(!$ctrl.questionResponse.selectedAnswer){
@@ -14,5 +15,4 @@ export default MultipleChoiceQuestion = {
     }
   },
   */
-  template
 }
