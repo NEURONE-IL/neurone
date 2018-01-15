@@ -36,7 +36,7 @@ class TaskQuestions {
         stageHome: '#'
       }, (err, res) => {
         if (!err) {
-          var stageNumber = this.uds.getSession().currentStageNumber,
+          let stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
           //this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
@@ -53,38 +53,37 @@ class TaskQuestions {
 
     $reactive(this).attach($scope);
     
-    var stageName = this.uds.getSession().currentStageName,
+    let stageName = this.uds.getSession().currentStageName,
       stageNumber = this.uds.getSession().currentStageNumber;
 
-    this.avatar = this.uds.getConfigs().avatar;
-
     this.form = {};
+    this.avatar = this.uds.getConfigs().avatar;
     this.questionnaire = this.uds.getConfigs().stages[stageNumber].questionnaire;
 
-    this.call('getForm', Utils.parseStringAsInteger(this.questionnaire), (err, result) => {
+    this.getQuestions(this.questionnaire);
+
+    this.readyEvent = this.$rootScope.$on('readyTaskQuestions', (event, data) => { this.submit() });
+    this.$onDestroy = () => { this.$scope.$on('$destroy', this.readyEvent) };
+
+    $timeout(() => {
+      this.$scope.$watch(() => this.taskForm.$valid, (newVal, oldVal) => {
+        if (newVal) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
+  }
+
+  getQuestions(questionnaireId) {
+    this.call('getForm', Utils.parseStringAsInteger(questionnaireId), (err, result) => {
       if (!err) {
         this.form = result;
+        console.log("Form loaded!", this.form);
         this.$scope.$apply();
       }
       else {
         console.error('Unknown Error', err);
       }
     });
-
-    this.readyEvent = this.$rootScope.$on('readyTaskQuestions', (event, data) => {
-      this.submit();
-    });
-
-    this.$onDestroy = () => {
-      this.$scope.$on('$destroy', this.readyEvent);
-    };
-
-    $timeout(() => {
-      $scope.$watch(() => this.taskForm.$valid, (newVal, oldVal) => {
-        if (newVal) this.uds.setSession({ readyButton: true });
-        else this.uds.setSession({ readyButton: false });
-      });
-    }, 0);
   }
 
   submit() {
@@ -92,7 +91,7 @@ class TaskQuestions {
     this.answerArray = [];
 
     this.form.questions.forEach((question) => {
-      var response = {
+      let response = {
         type: question.type,
         questionId: question.questionId,
         title: question.title,
@@ -108,7 +107,7 @@ class TaskQuestions {
     });
 
     if (!!Meteor.userId()) {
-      var response = {
+      let response = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         action: 'FormResponse',
@@ -151,7 +150,7 @@ function config($stateProvider) {
     template: '<task-questions></task-questions>',
     resolve: {
       dataReady(UserDataService) {
-        var uds = UserDataService;
+        let uds = UserDataService;
         return uds.ready();
       },
       stageLock($q, UserDataService, dataReady) {
@@ -159,11 +158,11 @@ function config($stateProvider) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          var uds = UserDataService,
+          let uds = UserDataService,
               dfr = uds.ready();
 
           return dfr.then((res) => {
-            var cstn = uds.getSession().currentStageNumber,
+            let cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
                 stst = 'taskQuestions';

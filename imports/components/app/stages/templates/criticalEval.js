@@ -50,7 +50,7 @@ class CriticalEval {
         if (!err) {
           this.sts.bindWordCounter();
 
-          var stageNumber = this.uds.getSession().currentStageNumber,
+          let stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
           this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
@@ -79,7 +79,7 @@ class CriticalEvalPV {
     $reactive(this).attach($scope);
 
     $rootScope.$on('highlightSnippet', (event, data) => {
-      var snip = data || '';
+      let snip = data || '';
       
       this.searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
       this.markInstance = new Mark(this.searchables);
@@ -159,25 +159,27 @@ class CriticalEvalSB {
   }
 
   loadForms() {
-    var stageNumber = this.uds.getSession().currentStageNumber,
+    let stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber],
                form = currentStage.form;
 
-    this.pages.forEach((page, idx) => {
-      this.call('getForm', form, (err, res) => { // TODO change hardcoded value
-        if (!err) {
-          var pageForm = {
+    this.call('getForm', form, (err, res) => {
+      if (!err) {
+        this.pages.forEach((page, idx) => {
+          let formQuestions = angular.copy(res).questions;
+
+          let pageForm = {
             index: idx,
             docId: page.docId,
-            questions: res.questions
+            questions: formQuestions
           };
 
           this.forms.push(pageForm);
-        }
-        else {
-          console.error('Error while loading CriticalEval forms', err);
-        }
-      });
+        });
+      }
+      else {
+        console.error('Error while loading CriticalEval forms', err);
+      }
     });
 
     console.log('Forms Ready!', this.forms);
@@ -185,12 +187,11 @@ class CriticalEvalSB {
 
   sendForms() {
     if (!!Meteor.userId()) {
-      var answerArray = [];
+      let answerArray = [];
 
       this.forms.forEach((pageForm) => {
-        console.log(pageForm);
         pageForm.questions.forEach((question) => {
-          var response = {
+          let response = {
             index: pageForm.index,
             docId: pageForm.docId,
             type: question.type,
@@ -207,7 +208,7 @@ class CriticalEvalSB {
         });
       });
 
-      var response = {
+      let response = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         action: 'FormResponse',
@@ -307,7 +308,7 @@ function config($stateProvider) {
     },
     resolve: {
       dataReady(UserDataService) {
-        var uds = UserDataService;
+        let uds = UserDataService;
         return uds.ready();
       },
       stageLock($q, UserDataService, dataReady) {
@@ -315,11 +316,11 @@ function config($stateProvider) {
           return $q.reject('AUTH_REQUIRED');
         }
         else {
-          var uds = UserDataService,
+          let uds = UserDataService,
               dfr = uds.ready();
 
           return dfr.then((res) => {
-            var cstn = uds.getSession().currentStageNumber,
+            let cstn = uds.getSession().currentStageNumber,
                 csst = uds.getConfigs().stages[cstn].state,
                 cstp = uds.getConfigs().stages[cstn].urlParams,
                 stst = 'criticalEval';
