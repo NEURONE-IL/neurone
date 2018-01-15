@@ -69,7 +69,7 @@ function config($stateProvider) {
       },
       logout($q, AuthService, stageLock) {
         if (Meteor.userId() === null) {
-          return $q.resolve();
+          return $q.reject('AUTH_REQUIRED');
         }
         else {
           const auth = AuthService;
