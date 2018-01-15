@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="text-center" ng-if="modal.fields.case===1">{{"timeout.search1" | translate: modal.fields}}</div>
+  <div class="text-center" ng-if="modal.fields.case===2">{{"timeout.search2" | translate: modal.fields}}</div>
+  <div class="text-center" ng-if="modal.fields.case===3">{{"timeout.search3" | translate: modal.fields}}</div>
+  <div class="text-center">
+    <span uib-rating ng-model="modal.fields.stars" max="modal.fields.maxStars" read-only="true" state-on="'fa fa-star fa-3x rating-on'" state-off="'fa fa-star-o fa-3x rating-off'" aria-labelledby="score"></span>
+  </div>
+  <hr>
+  <div ng-repeat="bm in modal.fields.bookmarks track by $index">
+    <div class="row">
+      <div class="col-md-2">
+        <div ng-if="bm.relevant" class="text-center" style="color: blue;"><i class="fa fa-thumbs-o-up fa-5x"></i></div>
+        <div ng-if="!bm.relevant" class="text-center" style="color: red;"><i class="fa fa-thumbs-o-down fa-5x"></i></div>
+      </div>
+      <div class="col-md-10">
+        <h3>{{bm.title}}</h3>
+        <h4 ng-if="bm.relevant">{{"modal.goodDocument" | translate}}</h4>
+        <h4 ng-if="!bm.relevant">{{"modal.badDocument" | translate}}</h4>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

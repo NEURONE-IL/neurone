@@ -392,15 +392,10 @@ class Navigation {
     }
 
     else {
-      var modalTemplate = '';
-
-      if (locale === 'fi') modalTemplate = 'modals/tips_fi_general.html';
-      else modalTemplate = 'modals/tips_general.html';
-
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tipsButton'),
-        templateAsset: modalTemplate,
+        templateAsset: 'modals/tips_general.html',
         fields: {
           avatar: this.uds.getConfigs().avatar || ''
         }
@@ -442,15 +437,10 @@ class Navigation {
       this.modal.openModal(modalObject, (err, res) => {});
     }
     else {
-      var modalTemplate = '';
-
-      if (locale === 'fi') modalTemplate = 'modals/tutorial_fi_general.html';
-      else modalTemplate = 'modals/tutorial_general.html';
-
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
       var modalObject = {
         title: this.$translate.instant('nav.tutorialButton'),
-        templateAsset: modalTemplate,
+        templateAsset: 'modals/tutorial_general.html',
         fields: {}
       };
 
@@ -518,7 +508,7 @@ class Navigation {
 
         var modalObject = {
           title: '', //this.$translate.instant('nav.taskResults'),
-          templateAsset: 'modals/ready_stage1.html',
+          templateAsset: 'modals/ready_search.html',
           buttonType: 'nextstage',
           fields: {
             stars: stars,
@@ -542,7 +532,19 @@ class Navigation {
 
       var modalObject = {
         title: '', //this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage2.html',
+        templateAsset: 'modals/ready_collection.html',
+        buttonType: 'nextstage',
+        fields: {}
+      };
+
+      this.modal.openModal(modalObject, (err, res) => {});
+    }
+    else if (currentState === 'synthesis') {
+      this.$rootScope.$broadcast('readySynthesis');
+
+      var modalObject = {
+        title: '', //this.$translate.instant('nav.taskResults'),
+        templateAsset: 'modals/ready_synthesis.html',
         buttonType: 'nextstage',
         fields: {}
       };
@@ -552,7 +554,7 @@ class Navigation {
     else {
       var modalObject = {
         title: '', //this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage2.html',
+        templateAsset: 'modals/ready_general.html',
         buttonType: 'nextstage',
         fields: {}
       };
@@ -580,7 +582,7 @@ class Navigation {
     if (currentState === 'stage0') {
       var modalObject = {
         title: '', //this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage0.html',
+        templateAsset: 'modals/ready_general.html',
         buttonType: 'okcancel',
         fields: {}
       };
@@ -617,7 +619,7 @@ class Navigation {
 
         var modalObject = {
           title: '', //this.$translate.instant('nav.taskResults'),
-          templateAsset: 'modals/ready_stage1.html',
+          templateAsset: 'modals/ready_search.html',
           buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
           fields: {
             stars: stars,
@@ -645,7 +647,7 @@ class Navigation {
     else if (currentState === 'collection' || currentState === 'criticalEval') {
       var modalObject = {
         title: '', //this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage2.html',
+        templateAsset: 'modals/ready_collection.html',
         buttonType: 'okcancel',
         fields: {}
       };
@@ -662,7 +664,7 @@ class Navigation {
     else if (currentState === 'synthesis') {
       var modalObject = {
         title: '', //this.$translate.instant('nav.taskResults'),
-        templateAsset: 'modals/ready_stage3.html',
+        templateAsset: 'modals/ready_synthesis.html',
         buttonType: 'okcancel',
         fields: {}
       };
