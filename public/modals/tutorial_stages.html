@@ -1,8 +1,8 @@
 <div class="container-fluid container-wrapper">
   <br>
-  <div class="row tutorial-background">
-    <div uib-carousel active="0">
-      <div uib-slide ng-repeat="slide in tutorial.slides track by $index" index="$index">
+  <div class="row">
+    <div uib-carousel active="0" style="max-height: 500px">
+      <div uib-slide ng-repeat="slide in $ctrl.fields.slides track by $index" index="$index">
         <img ng-src="{{slide}}" class="tutorial-image img-responsive center-block">
         <div class="carousel-caption"></div>
       </div>
