@@ -68,6 +68,17 @@ export default class Utils {
     navbarMessageElement.hide();
   }
 
+  // dgacitua: Forces conversion of a single element into an array
+  static forceArray(element) {
+    if (Array.isArray(element)) {
+      return element;
+    }
+    else {
+      if (element == null) return [];
+      else return [ element ];
+    }
+  }
+
   // dgacitua: Check if string is empty
   // http://stackoverflow.com/a/3261380
   static isEmpty(str) {

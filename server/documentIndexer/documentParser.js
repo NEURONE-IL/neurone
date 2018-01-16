@@ -24,7 +24,8 @@ export default class DocumentParser {
         ignoreImage: true
       };
 
-      return htmlToText.fromString(htmlFile, options) || '';
+      var extractedText = htmlToText.fromString(htmlFile, options) || '';
+      return this.escapeString(extractedText);
     }
     catch (e) {
       console.error(e);
@@ -232,6 +233,19 @@ export default class DocumentParser {
       console.error(e);
       return '';
     }
+  }
+
+  static escapeString(str) {
+    // dgacitua: http://stackoverflow.com/a/9204218
+    return str
+      .replace(/[\\]/g, ' ')
+      .replace(/[\"]/g, ' ')
+      .replace(/[\/]/g, ' ')
+      .replace(/[\b]/g, ' ')
+      .replace(/[\f]/g, ' ')
+      .replace(/[\n]/g, ' ')
+      .replace(/[\r]/g, ' ')
+      .replace(/[\t]/g, ' ');
   }
 
   static getDocumentInfo(documentPath) {
