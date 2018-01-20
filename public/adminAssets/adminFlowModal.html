@@ -5,13 +5,13 @@
   <br>
   <div class="form-horizontal">
     <div class="form-group form-group-fix">
-      <label for="sid" class="col-md-6 control-label">Flow ID</label>
+      <label for="sid" class="col-md-6 control-label">Flow ID <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="sid" class="form-control" type="text" placeholder="english-science-article" ng-model="modal.answers.id" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="locale" class="col-md-6 control-label">Flow Locale</label>
+      <label for="locale" class="col-md-6 control-label">Flow Locale <span class="required-text">*</span></label>
       <div class="col-md-6">
         <ui-select id="locale" ng-model="modal.answers.locale" ng-required="true">
           <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="domain" class="col-md-6 control-label">Flow Domain</label>
+      <label for="domain" class="col-md-6 control-label">Flow Domain <span class="required-text">*</span></label>
       <div class="col-md-6">
         <ui-select id="domain" ng-model="modal.answers.domain" ng-required="true">
           <ui-select-match placeholder="Select domain">{{ $select.selected.name }}</ui-select-match>
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="task" class="col-md-6 control-label">Flow Task</label>
+      <label for="task" class="col-md-6 control-label">Flow Task <span class="required-text">*</span></label>
       <div class="col-md-6">
         <ui-select id="task" ng-model="modal.answers.task" ng-required="true">
           <ui-select-match placeholder="Select task">{{ $select.selected.name }}</ui-select-match>
@@ -44,73 +44,73 @@
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="time" class="col-md-6 control-label">Global Time Limit (minutes)</label>
+      <label for="time" class="col-md-6 control-label">Global Time Limit (minutes) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="time" class="form-control" type="number" min="-1" ng-min="-1" placeholder="-1" ng-model="modal.answers.maxGlobalTime" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="min-bookmarks" class="col-md-6 control-label">Minimum Required Bookmarks</label>
+      <label for="min-bookmarks" class="col-md-6 control-label">Minimum Required Bookmarks <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="min-bookmarks" class="form-control" type="number" min="1" ng-min="1" placeholder="3" ng-model="modal.answers.minBookmarks" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="max-bookmarks" class="col-md-6 control-label">Maximum Required Bookmarks</label>
+      <label for="max-bookmarks" class="col-md-6 control-label">Maximum Required Bookmarks <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="max-bookmarks" class="form-control" type="number" min="1" ng-min="1" placeholder="3" ng-model="modal.answers.maxBookmarks" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="min-snippets" class="col-md-6 control-label">Minimum Required Snippets per Bookmark</label>
+      <label for="min-snippets" class="col-md-6 control-label">Minimum Required Snippets per Bookmark <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="min-snippets" class="form-control" type="number" min="1" ng-min="1" placeholder="2" ng-model="modal.answers.minSnippetsPerPage" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="max-snippets" class="col-md-6 control-label">Maximum Required Snippets per Bookmark</label>
+      <label for="max-snippets" class="col-md-6 control-label">Maximum Required Snippets per Bookmark <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="max-snippets" class="form-control" type="number" min="1" ng-min="1" placeholder="2" ng-model="modal.answers.maxSnippetsPerPage" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="min-snippet-length" class="col-md-6 control-label">Minimum Snippet Length (words)</label>
+      <label for="min-snippet-length" class="col-md-6 control-label">Minimum Snippet Length (words) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="min-snippet-length" class="form-control" type="number" min="1" ng-min="1" placeholder="5" ng-model="modal.answers.minSnippetWordLength" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="max-snippet-length" class="col-md-6 control-label">Maximum Snippet Length (words)</label>
+      <label for="max-snippet-length" class="col-md-6 control-label">Maximum Snippet Length (words) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="max-snippet-length" class="form-control" type="number" min="1" ng-min="1" placeholder="20" ng-model="modal.answers.maxSnippetWordLength" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="snippet-truncate" class="col-md-6 control-label">Snippet Truncate Threshold (words)</label>
+      <label for="snippet-truncate" class="col-md-6 control-label">Snippet Truncate Threshold (words) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="snippet-truncate" class="form-control" type="number" min="1" ng-min="1" placeholder="20" ng-model="modal.answers.snippetWordTruncateThreshold" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="min-synthesis-word" class="col-md-6 control-label">Synthesis Length (words)</label>
+      <label for="min-synthesis-word" class="col-md-6 control-label">Synthesis Length (words) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="min-synthesis-word" class="form-control" type="number" min="1" ng-min="1" placeholder="50" ng-model="modal.answers.minSynthesisWordLength" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="min-synthesis-char" class="col-md-6 control-label">Synthesis Length (characters)</label>
+      <label for="min-synthesis-char" class="col-md-6 control-label">Synthesis Length (characters) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="min-synthesis-char" class="form-control" type="number" min="1" ng-min="1" placeholder="425" ng-model="modal.answers.minSynthesisCharLength" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="synthesis-autosave" class="col-md-6 control-label">Synthesis Autosave Interval (seconds)</label>
+      <label for="synthesis-autosave" class="col-md-6 control-label">Synthesis Autosave Interval (seconds) <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="synthesis-autosave" class="form-control" type="number" min="30" ng-min="30" placeholder="30" ng-model="modal.answers.syhtesisAutosaveInterval" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="task-page" class="col-md-6 control-label">Flow Assignment Default Modal</label>
+      <label for="task-page" class="col-md-6 control-label">Flow Assignment Default Modal <span class="required-text">*</span></label>
       <div class="col-md-6">
         <ui-select id="task-page" ng-model="modal.answers.taskPage" ng-required="true">
           <ui-select-match placeholder="Select modal">{{ $select.selected.name }}</ui-select-match>
@@ -128,13 +128,13 @@
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="avatar" class="col-md-6 control-label">Avatar Name</label>
+      <label for="avatar" class="col-md-6 control-label">Avatar Name <span class="required-text">*</span></label>
       <div class="col-md-6">
         <input id="avatar" class="form-control" type="text" placeholder="Sarah" ng-model="modal.answers.avatar" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="template" class="col-md-6 control-label">Stages</label>
+      <label for="template" class="col-md-6 control-label">Stages <span class="required-text">*</span></label>
       <div class="col-md-6">
         <ui-select multiple ng-model="modal.answers.stages" sortable="true" close-on-select="false" ng-required="true">
           <ui-select-match placeholder="Select stages">{{ $item.id }}</ui-select-match>
@@ -143,6 +143,11 @@
             <small>Type: {{ stage.state }} · Time Limit: {{ stage.state }} · URL Params: {{ stage.urlParams.stage }}</small>
           </ui-select-choices>
         </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <div class="col-md-offset-6 col-md-6">
+        <span class="required-text">*</span> Required field
       </div>
     </div>
   </div>

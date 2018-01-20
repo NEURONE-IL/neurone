@@ -2,27 +2,32 @@
   <div class="row">
     <div class="form-horizontal">
       <div class="form-group form-group-fix">
-        <label for="name" class="col-md-4 control-label">Task Name</label>
-        <div class="col-md-8">
+        <label for="name" class="col-xs-4 control-label">Task Name <span class="required-text">*</span></label>
+        <div class="col-xs-8">
           <input id="name" class="form-control" type="text" placeholder="Email" ng-model="modal.answers.name" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="alias" class="col-md-4 control-label">Task Alias</label>
-        <div class="col-md-8">
+        <label for="alias" class="col-xs-4 control-label">Task Alias <span class="required-text">*</span></label>
+        <div class="col-xs-8">
           <input id="alias" class="form-control" type="text" placeholder="email" ng-model="modal.answers.properties.alias" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="code" class="col-md-4 control-label">Task User Code</label>
-        <div class="col-md-8">
+        <label for="code" class="col-xs-4 control-label">Task User Code <span class="required-text">*</span></label>
+        <div class="col-xs-8">
           <input id="code" class="form-control" type="text" placeholder="E" ng-model="modal.answers.properties.code" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="description" class="col-md-4 control-label">Task Description</label>
-        <div class="col-md-8">
+        <label for="description" class="col-xs-4 control-label">Task Description</label>
+        <div class="col-xs-8">
           <textarea id="description" class="form-control" type="text" placeholder="This is a brief description of the Email task tag" ng-model="modal.answers.properties.description"></textarea>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <div class="col-xs-offset-4 col-xs-8">
+          <span class="required-text">*</span> Required field
         </div>
       </div>
     </div>

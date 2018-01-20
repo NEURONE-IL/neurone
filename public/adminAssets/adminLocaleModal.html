@@ -2,24 +2,32 @@
   <div class="row">
     <div class="form-horizontal">
       <div class="form-group form-group-fix">
-        <label for="name" class="col-xs-4 control-label">Locale Name</label>
+        <label for="name" class="col-xs-4 control-label">Locale Name <span class="required-text">*</span></label>
         <div class="col-xs-8">
           <input id="name" class="form-control" type="text" placeholder="American English" ng-model="modal.answers.name" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="code" class="col-xs-4 control-label">Locale Code</label>
+        <label for="code" class="col-xs-4 control-label">Locale Code <span class="required-text">*</span></label>
         <div class="col-xs-8">
           <input id="code" class="form-control" type="text" placeholder="en-US" ng-model="modal.answers.properties.code" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="code" class="col-xs-4 control-label">Locale User Alias</label>
+        <label for="code" class="col-xs-4 control-label">Locale User Alias <span class="required-text">*</span></label>
         <div class="col-xs-8">
           <input id="code" class="form-control" type="text" placeholder="US" ng-model="modal.answers.properties.alias" ng-required="true">
         </div>
       </div>
     </div>
-    <p>NEURONE will automatically select the latest version of <tt>locale-XX.json</tt>, where <tt>XX</tt> is the current Locale Code.</p>
+    <div class="form-group form-group-fix">
+      <div class="col-xs-offset-4 col-xs-8">
+        <span class="required-text">*</span> Required field
+      </div>
+    </div>
+    <div>
+      <br>
+      <p>NEURONE will automatically select the latest version of <tt>locale-XX.json</tt>, where <tt>XX</tt> is the current Locale Code.</p>
+    </div>
   </div>
 </div>

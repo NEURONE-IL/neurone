@@ -5,26 +5,31 @@
   <br>
   <div class="form-horizontal">
     <div class="form-group form-group-fix">
-      <label for="qid" class="col-md-4 control-label">Questionnaire ID</label>
-      <div class="col-md-8">
+      <label for="qid" class="col-xs-4 control-label">Questionnaire ID <span class="required-text">*</span></label>
+      <div class="col-xs-8">
         <input id="qid" class="form-control" type="text" placeholder="questionnaire-1" ng-model="modal.answers.questionnaireId" ng-required="true">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="instructions" class="col-md-4 control-label">Questionnaire Instructions</label>
-      <div class="col-md-8">
+      <label for="instructions" class="col-xs-4 control-label">Questionnaire Instructions</label>
+      <div class="col-xs-8">
         <input id="instructions" class="form-control" type="paragraph" placeholder="Please answer these questions to be able to continue" ng-model="modal.answers.instructions">
       </div>
     </div>
     <div class="form-group form-group-fix">
-      <label for="questions" class="col-md-4 control-label">Questions</label>
-      <div class="col-md-8">
+      <label for="questions" class="col-xs-4 control-label">Questions <span class="required-text">*</span></label>
+      <div class="col-xs-8">
         <ui-select multiple id="questions" ng-model="modal.answers.questions" sortable="true" close-on-select="false" ng-required="true">
           <ui-select-match placeholder="Select questions">{{ $item.questionId }}</ui-select-match>
           <ui-select-choices repeat="question.questionId as question in modal.fields.formQuestions | filter: { questionId: $select.search }">
             {{ question.questionId }} <small>{{ question.title }}</small>
           </ui-select-choices>
         </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
+      <div class="col-xs-offset-4 col-xs-8">
+        <span class="required-text">*</span> Required field
       </div>
     </div>
   </div>

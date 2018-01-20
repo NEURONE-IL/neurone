@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    The <b>NEURONE User Enrollment</b> module allows the researcher to create multiple student accounts for its own studies (defined on <b>Study Manager</b>). Each user account is tied to a single Study Flow. In case of need to run multiple flows on each student, create multiple accounts for each one.
+    <p>The <b>NEURONE User Enrollment</b> module allows the researcher to create multiple student accounts for its own studies (defined on <b>Study Manager</b>). Each user account is tied to a single Study Flow. In case of need to run multiple flows on each student, create multiple accounts for each one.</p>
+    <p><span class="required-text">*</span> Required field</p>
   </div>
   <br>
   <div class="row">
@@ -10,7 +11,7 @@
           <div class="col-md-4 form-horizontal">
             <div class="row">
               <div class="form-group">
-                <label for="flow" class="col-md-5 control-label">Study Flow</label>
+                <label for="flow" class="col-md-5 control-label">Study Flow  <span class="required-text">*</span></label>
                 <ui-select id="flow" ng-model="enrollment.flow" class="col-md-7" ng-required="true">
                   <ui-select-match placeholder="Select study flow">{{ $select.selected.id }}</ui-select-match>
                   <ui-select-choices repeat="flow in enrollment.flows | filter: { id: $select.search }">
@@ -20,13 +21,13 @@
                 </ui-select>
               </div>
               <div class="form-group">
-                <label for="stage" class="col-md-5 control-label">Application Stage</label>
+                <label for="stage" class="col-md-5 control-label">Application Stage <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="stage" class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyStage" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <label for="order" class="col-md-5 control-label">Study Order</label>
+                <label for="order" class="col-md-5 control-label">Study Order <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="order" class="form-control" type="number" min="1" ng-min="1" max="9" ng-max="9" ng-model="enrollment.studyOrder" ng-required="true">
                 </div>
@@ -36,7 +37,7 @@
           <div class="col-md-4 form-horizontal">
             <div class="row">
               <div class="form-group">
-                <label for="test" class="col-md-5 control-label">Account Type</label>
+                <label for="test" class="col-md-5 control-label">Account Type <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <select id="test" class="form-control" ng-model="enrollment.testAct" ng-required="true">
                     <option value="true">Test Account</option>
@@ -45,13 +46,13 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="start-id" class="col-md-5 control-label">Starting User ID</label>
+                <label for="start-id" class="col-md-5 control-label">Starting User ID <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="start-id" class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idStart" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <label for="end-id" class="col-md-5 control-label">Ending User ID</label>
+                <label for="end-id" class="col-md-5 control-label">Ending User ID <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="end-id" class="form-control" type="number" min="0" ng-min="0" max="9999" ng-max="9999" ng-model="enrollment.idEnd" ng-required="true">
                 </div>
@@ -61,19 +62,19 @@
           <div class="col-md-4 form-horizontal">
             <div class="row">
               <div class="form-group">
-                <label for="code-u" class="col-md-5 control-label">University Code</label>
+                <label for="code-u" class="col-md-5 control-label">University Code <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="code-u" class="form-control" type="number" min="0" ng-min="0" max="9" ng-max="9" ng-model="enrollment.university" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <label for="code-school" class="col-md-5 control-label">School Code</label>
+                <label for="code-school" class="col-md-5 control-label">School Code <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="code-school" class="form-control" type="number" min="0" ng-min="0" max="99" ng-max="99" ng-model="enrollment.school" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <label for="code-class" class="col-md-5 control-label">Class Code</label>
+                <label for="code-class" class="col-md-5 control-label">Class Code <span class="required-text">*</span></label>
                 <div class="col-md-7">
                   <input id="code-class" class="form-control" type="text" ng-minlength="1" ng-maxlength="1" ng-pattern="enrollment.allUppercaseRegex" ng-model="enrollment.class" ng-required="true">
                 </div>

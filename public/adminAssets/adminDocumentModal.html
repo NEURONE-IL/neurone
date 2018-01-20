@@ -2,19 +2,19 @@
   <div class="row">
     <div class="form-horizontal">
       <div class="form-group form-group-fix">
-        <label for="docName" class="col-md-4 control-label">Document Name</label>
+        <label for="docName" class="col-md-4 control-label">Document Name <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <input id="docName" class="form-control" type="text" placeholder="mydoc-01" ng-model="modal.answers.docName" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="url" class="col-md-4 control-label">Document Title</label>
+        <label for="url" class="col-md-4 control-label">Document Title <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <input id="url" class="form-control" type="text" placeholder="Meteor Blog" ng-model="modal.answers.title" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="locale" class="col-md-4 control-label">Locale Code</label>
+        <label for="locale" class="col-md-4 control-label">Locale Code <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <ui-select id="locale" ng-model="modal.answers.locale" ng-required="true">
             <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="domain" class="col-md-4 control-label">Domain</label>
+        <label for="domain" class="col-md-4 control-label">Domain <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <ui-select multiple id="domain" ng-model="modal.answers.domain" sortable="true" close-on-select="false" ng-required="true">
             <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="task" class="col-md-4 control-label">Task</label>
+        <label for="task" class="col-md-4 control-label">Task <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <ui-select multiple id="task" ng-model="modal.answers.task" sortable="true" close-on-select="false" ng-required="true">
             <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
@@ -59,12 +59,17 @@
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <div class="col-md-offset-4 col-md-8 form-group-fix">
+        <div class="col-md-offset-4 col-md-8">
           <div class="checkbox">
             <label>
               <input type="checkbox" ng-model="modal.answers.relevant"> Relevant Document
             </label>
           </div>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <div class="col-md-offset-4 col-md-8">
+          <span class="required-text">*</span> Required field
         </div>
       </div>
     </div>

@@ -2,19 +2,19 @@
   <div class="row">
     <div class="form-horizontal">
       <div class="form-group form-group-fix">
-        <label for="name" class="col-md-4 control-label">Domain Name</label>
+        <label for="name" class="col-md-4 control-label">Domain Name <span class="required-text">*</span></label>
         <div class="col-md-8 form-group-fix">
           <input id="name" class="form-control" type="text" placeholder="Social Science" ng-model="modal.answers.name" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="alias" class="col-md-4 control-label">Domain Alias</label>
+        <label for="alias" class="col-md-4 control-label">Domain Alias <span class="required-text">*</span></label>
         <div class="col-md-8">
           <input id="alias" class="form-control" type="text" placeholder="social" ng-model="modal.answers.properties.alias" ng-required="true">
         </div>
       </div>
       <div class="form-group form-group-fix">
-        <label for="code" class="col-md-4 control-label">Domain User Code</label>
+        <label for="code" class="col-md-4 control-label">Domain User Code <span class="required-text">*</span></label>
         <div class="col-md-8">
           <input id="code" class="form-control" type="text" placeholder="SS" ng-model="modal.answers.properties.code" ng-required="true">
         </div>
@@ -23,6 +23,11 @@
         <label for="description" class="col-md-4 control-label">Domain Description</label>
         <div class="col-md-8">
           <textarea id="description" class="form-control" type="text" placeholder="This is a brief description of the Social Science domain tag" ng-model="modal.answers.properties.description"></textarea>
+        </div>
+      </div>
+      <div class="form-group form-group-fix">
+        <div class="col-md-offset-4 col-md-8">
+          <span class="required-text">*</span> Required field
         </div>
       </div>
     </div>
