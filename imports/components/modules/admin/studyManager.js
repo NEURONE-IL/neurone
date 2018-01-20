@@ -357,7 +357,7 @@ class StudyManager {
           locales: this.locales,
           domains: this.domains,
           tasks: this.tasks,
-          stages: this.availableStages,
+          stages: this.stages,
           modals: this.modalAssets,
           templates: this.templateAssets,
           images: this.imageAssets

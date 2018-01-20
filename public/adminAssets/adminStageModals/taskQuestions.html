@@ -31,7 +31,7 @@
       <label for="avatar" class="col-md-4 control-label">Avatar Image Template</label>
       <div class="col-md-8">
         <ui-select id="avatar" ng-model="modal.answers.avatarImage" ng-required="true">
-          <ui-select-match placeholder="Select image">{{ $item.meta.referencePath }}</ui-select-match>
+          <ui-select-match placeholder="Select image">{{ $select.selected.meta.referencePath }}</ui-select-match>
           <ui-select-choices repeat="image.meta.referencePath as image in modal.fields.images | filter: { name: $select.search }">
             <div>{{ image.name }}</div>
             <small>{{ image.meta.referencePath }}</small>
