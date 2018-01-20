@@ -3,7 +3,7 @@ version: '2.3'
 services:
   database:
     build: ./.deploy/mongo
-    image: dgacitua/mongo
+    image: dgacitua/mongo:3.4
     restart: on-failure
     ports:
       - 1313:27017
@@ -16,14 +16,16 @@ services:
       - MONGODB_APPLICATION_USER=${NEURONE_DB_USER:-neurone}
       - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone2017}
   search:
-    image: solr:6.5
+    image: solr:6
     restart: on-failure
     ports:
       - 1314:8983
+    volumes:
+      - ${NEURONE_INDEX_PATH:-~/neuroneIndex}:/opt/solr/server/solr/mycores
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
-      - neurone
+      - ${NEURONE_SOLR_CORE:-neurone}
   app:
     build: 
       context: .
@@ -42,9 +44,9 @@ services:
     environment:
      - ROOT_URL=http://${NEURONE_HOST:-localhost}
      - MONGO_URL=mongodb://${NEURONE_DB_USER:-neurone}:${NEURONE_DB_PASS:-neurone2017}@database:27017/${NEURONE_DB:-neurone}
-     - NEURONE_SOLR_HOST=search
-     - NEURONE_SOLR_PORT=8983
-     - NEURONE_SOLR_CORE=neurone
+     - NEURONE_SOLR_HOST=${NEURONE_SOLR_HOST:-search}
+     - NEURONE_SOLR_PORT=${NEURONE_SOLR_PORT:-8983}
+     - NEURONE_SOLR_CORE=${NEURONE_SOLR_CORE:-neurone}
      - DISABLE_WEBSOCKETS=0
   fallback-app:
     build: 
@@ -64,7 +66,7 @@ services:
     environment:
      - ROOT_URL=http://${NEURONE_HOST:-localhost}
      - MONGO_URL=mongodb://${NEURONE_DB_USER:-neurone}:${NEURONE_DB_PASS:-neurone2017}@database:27017/${NEURONE_DB:-neurone}
-     - NEURONE_SOLR_HOST=search
-     - NEURONE_SOLR_PORT=8983
-     - NEURONE_SOLR_CORE=neurone
+     - NEURONE_SOLR_HOST=${NEURONE_SOLR_HOST:-search}
+     - NEURONE_SOLR_PORT=${NEURONE_SOLR_PORT:-8983}
+     - NEURONE_SOLR_CORE=${NEURONE_SOLR_CORE:-neurone}
      - DISABLE_WEBSOCKETS=1

@@ -2,7 +2,7 @@
 
 FROM mongo:3.4
  
-MAINTAINER <Alex Bejan> contact@bejanalex.com
+MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
  
 ENV AUTH yes
 ENV STORAGE_ENGINE wiredTiger
