@@ -25,13 +25,6 @@ export NEURONE_SOLR_CORE=${NEURONE_SOLR_CORE:-neurone}
 # NEURONE environment variables
 export NEURONE_HOST=${NEURONE_HOST:-localhost}
 
-# Create directories in filesystem
-printf "%b\n" "\e[1;92m>> Creating filesystem directories for persistence...\e[0m"
-
-mkdir -p $NEURONE_ASSET_PATH
-mkdir -p $NEURONE_MONGO_PATH
-mkdir -p $NEURONE_INDEX_PATH
-
 # Start with Docker Compose after all environment variables are declared
 printf "%b\n" "\e[1;92m>> Starting NEURONE for user: $NEURONE_USERNAME (UID: $NEURONE_USERID)\e[0m"
 printf "%b\n" "\e[1;92mWARNING: Docker and Docker Compose are mandatory dependencies needed to run this script!\e[0m"
