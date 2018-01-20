@@ -59,6 +59,7 @@ class TaskQuestions {
     this.form = {};
     this.avatar = this.uds.getConfigs().avatar;
     this.questionnaire = this.uds.getConfigs().stages[stageNumber].questionnaire;
+    this.avatarImage = this.uds.getConfigs().stages[stageNumber].avatarImage;
 
     this.getQuestions(this.questionnaire);
 

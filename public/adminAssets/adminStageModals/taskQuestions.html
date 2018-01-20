@@ -28,6 +28,18 @@
       </div>
     </div>
     <div class="form-group form-group-fix">
+      <label for="avatar" class="col-md-4 control-label">Avatar Image Template</label>
+      <div class="col-md-8">
+        <ui-select id="avatar" ng-model="modal.answers.avatarImage" ng-required="true">
+          <ui-select-match placeholder="Select image">{{ $item.meta.referencePath }}</ui-select-match>
+          <ui-select-choices repeat="image.meta.referencePath as image in modal.fields.images | filter: { name: $select.search }">
+            <div>{{ image.name }}</div>
+            <small>{{ image.meta.referencePath }}</small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group form-group-fix">
       <label for="urlparams" class="col-md-4 control-label">URL Parameter</label>
       <div class="col-md-8">
         <input id="urlparams" class="form-control" type="text" placeholder="instructions-begin" ng-model="modal.answers.urlParams.stage" ng-required="true">

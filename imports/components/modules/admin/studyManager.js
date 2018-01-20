@@ -63,7 +63,8 @@ class StudyManager {
         buttonType: 'save',
         fields: {
           content: { state: type },
-          questionnaires: this.questionnaires
+          questionnaires: this.questionnaires,
+          images: this.imageAssets
         }
       };
 
@@ -231,7 +232,8 @@ class StudyManager {
         buttonType: 'save',
         fields: {
           content: elementRef,
-          questionnaires: this.questionnaires
+          questionnaires: this.questionnaires,
+          images: this.imageAssets
         }
       };
 
