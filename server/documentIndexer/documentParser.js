@@ -118,7 +118,7 @@ export default class DocumentParser {
 
         // dgacitua: Minimal ad filter by div class
         blockedClasses.some((el, idx, arr) => {
-          if ($(elem).hasClass(el)) {
+          if ($(elem).is(`.${el}`)) {
             $(elem).remove();
             return true;
           }
