@@ -2,10 +2,11 @@ import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
 class UserDataService {
-  constructor($q) {
+  constructor($q, $translate) {
     'ngInject';
 
     this.$q = $q;
+    this.$translate = $translate;
 
     this.userId = Meteor.userId();
     this.udsp = this.$q.defer();
@@ -26,10 +27,8 @@ class UserDataService {
   }
 
   autorun(userId) {
-    this.udsp = this.$q.defer();
-
     if (!!userId) {
-      //console.log('UserData AUTORUN!', userId);
+      console.log('Loading UserData!', userId);
       
       var p1 = this.fetchConfigs(),
           p2 = this.fetchSession(),
@@ -37,12 +36,13 @@ class UserDataService {
 
       this.$q.all([p1, p2, p3]).then((res) => {
         this.udsp.resolve('USER_LOGGED');
+      },
+      (err) => {
+        this.udsp.reject('CANNOT_LOAD_USERDATA');
       });
     }
     else {
-      console.log('UserData FLUSH!');
-      this.flush();
-      this.udsp.resolve('USER_NOT_LOGGED');
+      this.udsp.reject('AUTH_REQUIRED');
     }
   }
 
@@ -111,6 +111,23 @@ class UserDataService {
     return this.role;
   }
 
+  changeLocale() {
+    let dfr = this.$q.defer();
+
+    this.udsp.promise.then((res) => {
+      let locale = this.userConfigs.get().locale || 'en';
+      console.log('Changing to user locale!', locale);
+      this.$translate.use(locale);
+      return dfr.resolve();
+    },
+    (err) => {
+      let locale = Session.get('locale') || 'en';
+      console.log('Changing to default locale!', locale);
+      this.$translate.use(locale);
+      return dfr.resolve();
+    });
+  }
+
   flush() {
     var dfr = this.$q.defer();
 
@@ -127,19 +144,6 @@ class UserDataService {
         if (!err) {
           Object.keys(res).map((p) => this.userSession.set(p, res[p]));
           typeof callback === 'function' && callback(null, property);
-          /*
-          Meteor.call('userSession', (err2, res2) => {
-            if (!err2) {
-              Object.keys(res2).map((p) => this.userSession.set(p, res2[p]));
-              //console.log('SessionSet', property);
-              typeof callback === 'function' && callback(null, property);
-            }
-            else {
-              console.error(err);
-              typeof callback === 'function' && callback(err);
-            }
-          });
-          */
         }
         else {
           console.error(err);

@@ -64,7 +64,7 @@ class Start {
   }
 
   goToAdminPanel() {
-    this.$state.go('admin', {});
+    this.$state.go('admin');
   }
 }
 
@@ -84,14 +84,22 @@ function config($stateProvider) {
     url: '/start',
     template: '<start></start>',
     resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
+      isUserLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
+      }/*,
+      startReady($q, UserDataService, isUserLogged) {
+        let uds = UserDataService;
+        uds.ready().then((status) => {
+          console.log('UDS STATUS', status);
+          if (status === 'USER_LOGGED') return $q.resolve();
+          else return $q.reject('USERDATA_NOT_LOADED');
+        },
+        (err) => {
           return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          return $q.resolve();
-        }
+        });
       }
+      */
     }
   });
 };

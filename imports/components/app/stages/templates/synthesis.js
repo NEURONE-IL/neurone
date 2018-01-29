@@ -279,9 +279,12 @@ function config($stateProvider) {
     url: '/synthesis',
     template: '<synthesis></synthesis>',
     resolve: {
-      dataReady(UserDataService) {
+      dataReady($q, UserDataService) {
         var uds = UserDataService;
-        return uds.ready();
+        return uds.ready().then((status) => {
+          if (status === 'USER_LOGGED') return $q.resolve();
+          else return $q.reject('USERDATA_NOT_LOADED');
+        });
       },
       stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {

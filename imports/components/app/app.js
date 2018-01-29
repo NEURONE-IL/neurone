@@ -62,16 +62,16 @@ import { name as Admin } from '../modules/admin';
 import Configs from '../globalConfigs';
 
 class App {
-  constructor($scope, $translate) {
+  constructor($scope, $translate, UserDataService) {
     'ngInject';
+
+    this.uds = UserDataService;
 
     // dgacitua: Get client settings and base language
     Meteor.call('clientSettings', (err, res) => {
       if (!err) {
         Session.set('locale', res.locale);
-        $translate.use(Session.get('locale')).then(() => {
-          console.log('Using Client Locale', Session.get('locale'));
-        });
+        this.uds.changeLocale();
       }
     });
   }
@@ -148,6 +148,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     //console.log(event, toState, toParams, error);
+    if (error === 'USERDATA_NOT_LOADED') { console.log('UDNL!'); $state.go('home'); }
     if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
     if (error === 'NO_ADMIN') $state.go('start');
@@ -160,38 +161,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   angular.element($window).on('beforeunload', () => {
     //if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
-    $window.localstorage.clear();
-  });
-
-  Accounts.onLogin(() => {
-    uds.ready().then((status) => {
-      if (status === 'USER_LOGGED') {
-        var locale = uds.getConfigs().locale;
-        
-        //console.log('Using Flow Locale', locale);
-
-        $translate.use(locale).then(() => {
-          //console.log('Meteor onLogin READY!');
-        });
-      }
-      else {
-        var locale = Session.get('locale');
-        
-        //console.log('Using Client Locale', locale);
-
-        $translate.use(locale).then(() => {
-          //console.log('Meteor onLogin READY!');
-        });
-      }
-    });
-  });
-
-  Accounts.onLogout(() => {
-    var locale = Session.get('locale');
-        
-    $translate.use(locale).then(() => {
-      console.log('Meteor onLogout READY!');
-    });
+    if (!!($window.localstorage)) $window.localstorage.clear();
   });
 };
 
@@ -207,14 +177,11 @@ function setTrackers($rootScope, FlowService, KMTrackService, LinkTrackService, 
   $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
       lts.saveEnterPage();
-      //kmts.service();
-      //abs.service();
-
-      if (toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') {
+      
+      if ((toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') || (fromState.name === 'admin')) {
         kmts.service();
         abs.service();
 
-        // TODO: Disable fs.service() on displayPage in viewDocuments
         if (Configs.flowEnabled) fs.service();
       }
     }
@@ -227,10 +194,8 @@ function setTrackers($rootScope, FlowService, KMTrackService, LinkTrackService, 
   $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
     if (!!Meteor.userId()) {
       lts.saveExitPage();
-      //kmts.service();
-      //abs.service();
       
-      if (toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') {
+      if ((toState.name !== 'start' && toState.name !== 'admin' && toState.name !== 'enrollment' && toState.name !== 'viewDocuments') || (fromState.name === 'admin')) {
         kmts.service();
         abs.service();
       }

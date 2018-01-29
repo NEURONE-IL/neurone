@@ -24,6 +24,7 @@ class AuthService {
       }
       else {
         this.sts.saveLogin();
+        this.uds.changeLocale();
 
         var msg = { message: 'Login successful!' };  // TODO: Translate message
         callback(null, msg);
@@ -42,6 +43,7 @@ class AuthService {
       else {
         if (Configs.flowEnabled) this.fs.stopFlow();
         this.uds.flush();
+        this.uds.changeLocale();
 
         var msg = { message: 'Logout successful!' };  // TODO: Translate message
         callback(null, msg);

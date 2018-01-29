@@ -151,9 +151,15 @@ function config($stateProvider) {
     url: '/affective?stage',
     template: '<affective></affective>',
     resolve: {
-      dataReady(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
+      dataReady($q, UserDataService, isUserLogged) {
+        let uds = UserDataService;
+        return uds.ready().then((status) => {
+          if (status === 'USER_LOGGED') return $q.resolve();
+          else return $q.reject('USERDATA_NOT_LOADED');
+        },
+        (err) => {
+          return $q.reject('AUTH_REQUIRED');
+        });
       },
       stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {
