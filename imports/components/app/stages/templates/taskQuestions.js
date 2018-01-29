@@ -150,12 +150,9 @@ function config($stateProvider) {
     url: '/taskQuestions?stage',
     template: '<task-questions></task-questions>',
     resolve: {
-      dataReady($q, UserDataService) {
-        var uds = UserDataService;
-        return uds.ready().then((status) => {
-          if (status === 'USER_LOGGED') return $q.resolve();
-          else return $q.reject('USERDATA_NOT_LOADED');
-        });
+      dataReady(UserDataService) {
+        let uds = UserDataService;
+        return uds.ready();
       },
       stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {

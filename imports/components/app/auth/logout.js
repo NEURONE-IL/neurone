@@ -11,9 +11,7 @@ class Logout {
     this.$scope = $scope;
     this.$state = $state;
     this.$rootScope = $rootScope;
-
     this.auth = AuthService;
-    this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -27,7 +25,9 @@ class Logout {
 
     $reactive(this).attach($scope);
 
-    $timeout(this.logout(), 1500);
+    $timeout(() => {
+      this.logout();
+    }, 1500);
   }
 
   logout() {
@@ -58,12 +58,9 @@ function config($stateProvider) {
     url: '/logout',
     template: '<logout></logout>',
     resolve: {
-      dataReady($q, UserDataService) {
+      dataReady(UserDataService) {
         var uds = UserDataService;
-        return uds.ready().then((status) => {
-          if (status === 'USER_LOGGED') return $q.resolve();
-          else return $q.reject('USERDATA_NOT_LOADED');
-        });
+        return uds.ready();
       },
       currentUser($q, dataReady) {
         if (Meteor.userId() === null) {

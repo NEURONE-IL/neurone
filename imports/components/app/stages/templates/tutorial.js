@@ -82,12 +82,9 @@ function config($stateProvider) {
     url: '/tutorial?stage',
     template: '<tutorial></tutorial>',
     resolve: {
-      dataReady($q, UserDataService) {
+      dataReady(UserDataService) {
         var uds = UserDataService;
-        return uds.ready().then((status) => {
-          if (status === 'USER_LOGGED') return $q.resolve();
-          else return $q.reject('USERDATA_NOT_LOADED');
-        });
+        return uds.ready();
       },
       stageLock($q, UserDataService, dataReady) {
         if (Meteor.userId() === null) {

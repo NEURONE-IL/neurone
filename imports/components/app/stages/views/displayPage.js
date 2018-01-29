@@ -84,12 +84,9 @@ function config($stateProvider) {
     url: '/page/:docName',
     template: '<display-page previous-state="$resolve.previousState"></display-page>',
     resolve: {
-      dataReady($q, UserDataService) {
+      dataReady(UserDataService) {
         var uds = UserDataService;
-        return uds.ready().then((status) => {
-          if (status === 'USER_LOGGED') return $q.resolve();
-          else return $q.reject('USERDATA_NOT_LOADED');
-        });
+        return uds.ready();
       },
       currentUser($q, dataReady) {
         if (Meteor.userId() === null) {

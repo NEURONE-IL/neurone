@@ -40,6 +40,16 @@ class Login {
           if (!err2) {
             console.log('UserID registered', res2.userId, res2.username, res2.identity);
             this.$state.go('start');
+
+            /*
+            this.uds.ready().then(() => {
+              var locale = this.uds.getConfigs().locale;
+
+              this.$translate.use(locale).then(() => {
+                this.$state.go('start');    
+              });
+            });
+            */
           }
           else {
             this.error = err2;
