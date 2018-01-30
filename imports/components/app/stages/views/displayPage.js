@@ -84,20 +84,19 @@ function config($stateProvider) {
     url: '/page/:docName',
     template: '<display-page previous-state="$resolve.previousState"></display-page>',
     resolve: {
-      dataReady(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
+      userLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
       },
-      currentUser($q, dataReady) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          return $q.resolve();
-        }
+      dataReady(userLogged, $q, UserDataService) {
+        let uds = UserDataService;
+        return uds.ready().then(
+          (res) => { return $q.resolve() },
+          (err) => { return $q.reject('USERDATA_NOT_READY') }
+        );
       },
       // dgacitua: http://stackoverflow.com/a/25945003
-      previousState($state, currentUser) {
+      previousState($state, dataReady) {
         var currentStateData = {
           name: $state.current.name,
           params: $state.params,

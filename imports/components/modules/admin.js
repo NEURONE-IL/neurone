@@ -102,23 +102,22 @@ function config($stateProvider) {
       }
     },
     resolve: {
-      userData(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
+      userLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
       },
-      currentUser($q, UserDataService, userData) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          var uds = UserDataService,
-              dfr = uds.ready();
+      dataReady(userLogged, $q, UserDataService) {
+        let uds = UserDataService;
+        return uds.ready().then(
+          (res) => { return $q.resolve() },
+          (err) => { return $q.reject('USERDATA_NOT_READY') }
+        );
+      },
+      checkAdmin(dataReady, $q, UserDataService) {
+        let uds = UserDataService;
 
-          return dfr.then((res) => {
-            if (uds.getRole() === 'researcher') return $q.resolve();
-            else return $q.reject('NO_ADMIN');
-          });
-        }
+        if (uds.getRole() === 'researcher') return $q.resolve();
+        else return $q.reject('NO_ADMIN');
       }
     }
   });

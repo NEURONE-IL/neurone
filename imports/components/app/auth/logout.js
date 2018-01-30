@@ -58,17 +58,16 @@ function config($stateProvider) {
     url: '/logout',
     template: '<logout></logout>',
     resolve: {
-      dataReady(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
+      userLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
       },
-      currentUser($q, dataReady) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          return $q.resolve();
-        }
+      dataReady(userLogged, $q, UserDataService) {
+        let uds = UserDataService;
+        return uds.ready().then(
+          (res) => { return $q.resolve() },
+          (err) => { return $q.reject('USERDATA_NOT_READY') }
+        );
       }
     }
   });
