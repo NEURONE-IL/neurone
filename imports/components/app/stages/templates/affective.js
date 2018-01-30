@@ -151,28 +151,26 @@ function config($stateProvider) {
     url: '/affective?stage',
     template: '<affective></affective>',
     resolve: {
-      dataReady(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
+      userLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
       },
-      stageLock($q, UserDataService, dataReady) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          var uds = UserDataService,
-              dfr = uds.ready();
+      dataReady(userLogged, $q, UserDataService) {
+        let uds = UserDataService;
+        return uds.ready().then(
+          (res) => { return $q.resolve() },
+          (err) => { return $q.reject('USERDATA_NOT_READY') }
+        );
+      },
+      stageLock(dataReady, $q, UserDataService) {
+        let uds = UserDataService,
+           cstn = uds.getSession().currentStageNumber,
+           csst = uds.getConfigs().stages[cstn].state,
+           cstp = uds.getConfigs().stages[cstn].urlParams,
+           stst = 'affective';
 
-          return dfr.then((res) => {
-            var cstn = uds.getSession().currentStageNumber,
-                csst = uds.getConfigs().stages[cstn].state,
-                cstp = uds.getConfigs().stages[cstn].urlParams,
-                stst = 'affective';
-
-            if (csst !== stst) return $q.reject('WRONG_STAGE');
-            else return $q.resolve();
-          });
-        }
+        if (csst !== stst) return $q.reject('WRONG_STAGE');
+        else return $q.resolve();
       }
     }
   });

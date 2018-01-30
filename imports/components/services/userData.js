@@ -2,10 +2,11 @@ import Utils from '../globalUtils';
 import Configs from '../globalConfigs';
 
 class UserDataService {
-  constructor($q) {
+  constructor($q, $translate) {
     'ngInject';
 
     this.$q = $q;
+    this.$translate = $translate;
 
     this.userId = Meteor.userId();
     this.udsp = this.$q.defer();
@@ -35,14 +36,20 @@ class UserDataService {
           p2 = this.fetchSession(),
           p3 = this.fetchRole();
 
-      this.$q.all([p1, p2, p3]).then((res) => {
-        this.udsp.resolve('USER_LOGGED');
-      });
+      this.$q.all([p1, p2, p3]).then(
+        (res) => {
+          this.changeLocale();
+          this.udsp.resolve('USER_LOGGED');
+        },
+        (err) => {
+          this.udsp.reject('CANNOT_LOAD_USERDATA');
+        }
+      );
     }
     else {
-      console.log('UserData FLUSH!');
       this.flush();
-      this.udsp.resolve('USER_NOT_LOGGED');
+      this.changeLocale();
+      this.udsp.reject('USER_NOT_LOGGED');
     }
   }
 
@@ -109,6 +116,12 @@ class UserDataService {
 
   getRole() {
     return this.role;
+  }
+
+  changeLocale() {
+    let locale = this.getConfigs().locale || 'en';
+    this.$translate.use(locale);
+    console.log('Changing Locale!', locale);
   }
 
   flush() {

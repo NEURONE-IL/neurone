@@ -10,10 +10,6 @@ class AuthService {
     this.fs = FlowService;
     this.sts = SessionTrackService;
     this.uds = UserDataService;
-
-    this.threshold = Utils.sec2millis(Configs.idleThreshold);
-    this.interval = Utils.sec2millis(Configs.idleCheckInterval);
-    this.idleOnBlur = Configs.idleOnBlur;
   }
 
   login(user, password, callback) {

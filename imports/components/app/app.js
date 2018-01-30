@@ -140,7 +140,7 @@ function config($stateProvider, $locationProvider, $urlRouterProvider, $translat
   $translateProvider.preferredLanguage('en');
 };
 
-function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, UserDataService) {
+function run($rootScope, $state, $window, $urlRouter, FlowService, UserDataService) {
   'ngInject';
 
   fs = FlowService;
@@ -148,6 +148,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
 
   $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     //console.log(event, toState, toParams, error);
+    if (error === 'USERDATA_NOT_READY') $state.go('home');
     if (error === 'AUTH_REQUIRED') $state.go('home');
     if (error === 'WRONG_STAGE') $state.go('start');
     if (error === 'NO_ADMIN') $state.go('start');
@@ -160,38 +161,7 @@ function run($rootScope, $state, $window, $translate, $urlRouter, FlowService, U
   angular.element($window).on('beforeunload', () => {
     //if (Configs.flowEnabled) fs.stopFlow();
     uds.flush();
-    $window.localstorage.clear();
-  });
-
-  Accounts.onLogin(() => {
-    uds.ready().then((status) => {
-      if (status === 'USER_LOGGED') {
-        var locale = uds.getConfigs().locale;
-        
-        //console.log('Using Flow Locale', locale);
-
-        $translate.use(locale).then(() => {
-          //console.log('Meteor onLogin READY!');
-        });
-      }
-      else {
-        var locale = Session.get('locale');
-        
-        //console.log('Using Client Locale', locale);
-
-        $translate.use(locale).then(() => {
-          //console.log('Meteor onLogin READY!');
-        });
-      }
-    });
-  });
-
-  Accounts.onLogout(() => {
-    var locale = Session.get('locale');
-        
-    $translate.use(locale).then(() => {
-      console.log('Meteor onLogout READY!');
-    });
+    if (!!$window.localstorage) $window.localstorage.clear();
   });
 };
 

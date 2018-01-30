@@ -9,6 +9,8 @@ class Home {
   constructor($scope, $rootScope, $reactive, UserDataService) {
     'ngInject';
 
+    this.uds = UserDataService;
+
     $scope.$on('$stateChangeStart', (event) => {
       if (!!Meteor.userId()) {
         Session.set('lockButtons', true);
@@ -43,12 +45,6 @@ function config($stateProvider) {
 
   $stateProvider.state('home', {
     url: '/home',
-    template: '<home></home>',
-    resolve: {
-      dataReady(UserDataService) {
-        var uds = UserDataService;
-        return uds.ready();
-      }
-    }
+    template: '<home></home>'
   });
 };
