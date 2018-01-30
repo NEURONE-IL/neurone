@@ -1,4 +1,4 @@
-import { name as Question } from '../forms/modules/question';
+import { name as Question } from './forms/modules/question';
 
 import template from './modal.html';
 

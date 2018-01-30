@@ -2,16 +2,16 @@ import angularTruncate from 'angular-truncate-2';
 
 import 'mark.js';
 
-import Utils from '../../../globalUtils';
-import Configs from '../../../globalConfigs';
+import Utils from '../../globalUtils';
+import Configs from '../../globalConfigs';
 
-import { UserBookmarks, UserSnippets } from '../../../userCollections';
+import { UserBookmarks, UserSnippets } from '../../userCollections';
 
-import template from './collection.html';
+import template from './criticalEval.html';
 
-const name = 'collection';
+const name = 'criticalEval';
 
-class Collection {
+class CriticalEval {
   constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, UserDataService) {
     'ngInject';
 
@@ -45,19 +45,19 @@ class Collection {
     $scope.$on('$stateChangeSuccess', (event) => {
       this.uds.setSession({
         snippetCounter: true,
-        stageHome: '/collection'
+        stageHome: '/criticalEval'
       }, (err, res) => {
         if (!err) {
           this.sts.bindWordCounter();
 
-          var stageNumber = this.uds.getSession().currentStageNumber,
+          let stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
           this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
           
           this.$rootScope.$broadcast('updateNavigation');
 
-          console.log('Collection loaded!');
+          console.log('CriticalEval loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -69,7 +69,7 @@ class Collection {
   }
 }
 
-class CollectionPV {
+class CriticalEvalPV {
   constructor($scope, $rootScope, $state, $reactive, $document, $q, $promiser, SnippetTrackService, UserDataService) {
     'ngInject';
 
@@ -79,7 +79,7 @@ class CollectionPV {
     $reactive(this).attach($scope);
 
     $rootScope.$on('highlightSnippet', (event, data) => {
-      var snip = data || '';
+      let snip = data || '';
       
       this.searchables = document.getElementById('pageContainer').contentDocument;//this.$document.find('.highlight').toArray();
       this.markInstance = new Mark(this.searchables);
@@ -99,8 +99,8 @@ class CollectionPV {
   }
 }
 
-class CollectionSB {
-  constructor($scope, $rootScope, $state, $reactive, $q, $promiser, SnippetTrackService, EventTrackService, UserDataService) {
+class CriticalEvalSB {
+  constructor($scope, $rootScope, $state, $reactive, $timeout, $q, $promiser, SnippetTrackService, EventTrackService, UserDataService) {
     'ngInject';
 
     this.$state = $state;
@@ -111,13 +111,15 @@ class CollectionSB {
     this.sts = SnippetTrackService;
     this.ets = EventTrackService;
 
-    /*
-    $rootScope.$on('readyCollection', (event, data) => {
+    $reactive(this).attach($scope);
+
+    this.readyEvent = this.$rootScope.$on('readyCriticalEval', (event, data) => {
       this.sendForms();
     });
-    */
-    
-    $reactive(this).attach($scope);
+
+    this.$onDestroy = () => {
+      this.$scope.$on('$destroy', this.readyEvent);
+    };
 
     this.currentDocId = '';
     this.pages = [];
@@ -126,15 +128,22 @@ class CollectionSB {
 
     this.pages = UserBookmarks.find().fetch();
     this.changePage(0);
-    //this.loadForms();
+    this.loadForms();
     this.meteorReady = true;
 
     this.autorun(() => {
       this.pages = UserBookmarks.find().fetch();
       this.currentDocId = this.uds.getSession().docId;
       this.snippetCount = UserSnippets.find({ docId: this.currentDocId }).count();
-      //console.log('Collection AUTORUN!', this.userData, this.currentDocId, this.snippetCount);
+      //console.log('CriticalEval AUTORUN!', this.userData, this.currentDocId, this.snippetCount);
     });
+
+    $timeout(() => {
+      $scope.$watch(() => this.evaluationForm.$valid, (newVal, oldVal) => {
+        if (newVal) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
 
     this.helpers({
       pageList: () => {
@@ -149,23 +158,28 @@ class CollectionSB {
     });
   }
 
-  /*
   loadForms() {
-    this.pages.forEach((page, idx) => {
-      this.call('getForm', 'collection-fi', (err, res) => { // TODO change hardcoded value
-        if (!err) {
-          var pageForm = {
+    let stageNumber = this.uds.getSession().currentStageNumber,
+       currentStage = this.uds.getConfigs().stages[stageNumber],
+               form = currentStage.form;
+
+    this.call('getForm', form, (err, res) => {
+      if (!err) {
+        this.pages.forEach((page, idx) => {
+          let formQuestions = angular.copy(res).questions;
+
+          let pageForm = {
             index: idx,
             docId: page.docId,
-            questions: res.questions
+            questions: formQuestions
           };
 
           this.forms.push(pageForm);
-        }
-        else {
-          console.error('Error while loading Collection forms', err);
-        }
-      });
+        });
+      }
+      else {
+        console.error('Error while loading CriticalEval forms', err);
+      }
     });
 
     console.log('Forms Ready!', this.forms);
@@ -173,12 +187,11 @@ class CollectionSB {
 
   sendForms() {
     if (!!Meteor.userId()) {
-      var answerArray = [];
+      let answerArray = [];
 
       this.forms.forEach((pageForm) => {
-        console.log(pageForm);
         pageForm.questions.forEach((question) => {
-          var response = {
+          let response = {
             index: pageForm.index,
             docId: pageForm.docId,
             type: question.type,
@@ -195,11 +208,11 @@ class CollectionSB {
         });
       });
 
-      var response = {
+      let response = {
         userId: Meteor.userId(),
         username: Meteor.user().username || Meteor.user().emails[0].address,
         action: 'FormResponse',
-        reason: 'ReadyCollection',
+        reason: 'ReadyCriticalEval',
         answer: answerArray,
         localTimestamp: Utils.getTimestamp()
       }
@@ -214,12 +227,12 @@ class CollectionSB {
       });
     }
   }
-  */
-  
+
   url2docName(url) {
     return url.substr(url.lastIndexOf('/') + 1);
   }
 
+  /*
   viewSnippet(snippet) {
     this.$rootScope.$broadcast('highlightSnippet', snippet);
   }
@@ -235,21 +248,18 @@ class CollectionSB {
       }
     });
   }
+  */
 
   changePage(index) {
     this.url = this.pages[index] ? this.pages[index].url : '/error';
     this.currentDocId = this.pages[index] ? this.pages[index].docId : '';
     this.$rootScope.docId = this.currentDocId;
-    //this.$rootScope.docId = this.url2docName(this.url);
-    //this.$rootScope.docId = this.pages[index] ? this.pages[index].docId : '';
-    //this.currentDocId = this.$rootScope.docId;
-
+    
     this.uds.setSession({ docId: this.currentDocId });
     Session.set('docId', this.currentDocId);
     console.log('ChangePage', this.url, this.currentDocId);
 
     this.$rootScope.$broadcast('changeIframePage', this.currentDocId);
-    this.$rootScope.$broadcast('updateSnippetButton');
 
     this.storeEvent('ChangePageTab', { docId: this.currentDocId, pageIndex: index });
   }
@@ -265,17 +275,17 @@ export default angular.module(name, [
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: Collection
+  controller: CriticalEval
 })
-.component('collectionPageview', {
-  templateUrl: 'collection/pageview.html',
+.component('criticalEvalPageview', {
+  templateUrl: 'criticalEval/pageview.html',
   controllerAs: 'pageview',
-  controller: CollectionPV
+  controller: CriticalEvalPV
 })
-.component('collectionSnippetbar', {
-  templateUrl: 'collection/snippetbar.html',
+.component('criticalEvalSnippetbar', {
+  templateUrl: 'criticalEval/snippetbar.html',
   controllerAs: 'snippetbar',
-  controller: CollectionSB
+  controller: CriticalEvalSB
 })
 .config(config);
 
@@ -283,17 +293,17 @@ function config($stateProvider) {
   'ngInject';
 
   // dgacitua: http://stackoverflow.com/a/37964199
-  $stateProvider.state('collection', {
-    url: '/collection',
+  $stateProvider.state('criticalEval', {
+    url: '/criticalEval',
     views: {
       '@': {
-        template: '<collection></collection>'
+        template: '<critical-eval></critical-eval>'
       },
-      'pageview@collection': {
-        template: '<collection-pageview></collection-pageview>'
+      'pageview@criticalEval': {
+        template: '<critical-eval-pageview></critical-eval-pageview>'
       },
-      'snippetbar@collection': {
-        template: '<collection-snippetbar></collection-snippetbar>'
+      'snippetbar@criticalEval': {
+        template: '<critical-eval-snippetbar></critical-eval-snippetbar>'
       }
     },
     resolve: {
@@ -313,7 +323,7 @@ function config($stateProvider) {
            cstn = uds.getSession().currentStageNumber,
            csst = uds.getConfigs().stages[cstn].state,
            cstp = uds.getConfigs().stages[cstn].urlParams,
-           stst = 'collection';
+           stst = 'criticalEval';
 
         if (csst !== stst) return $q.reject('WRONG_STAGE');
         else return $q.resolve();

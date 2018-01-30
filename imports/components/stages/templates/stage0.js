@@ -1,50 +1,42 @@
-import Utils from '../../../globalUtils';
-import Configs from '../../../globalConfigs';
+import Utils from '../../globalUtils';
+import Configs from '../../globalConfigs';
 
-import template from './instructions.html';
+import template from './stage0.html';
 
-class Instructions {
-  constructor($scope, $rootScope, $reactive, $translate, $timeout, $state, UserDataService, AuthService) {
+class Stage0 {
+  constructor($scope, $rootScope, $reactive, $translate, $timeout, UserDataService) {
     'ngInject';
 
-    this.$state = $state;
-    this.$timeout = $timeout;
     this.$rootScope = $rootScope;
 
     this.uds = UserDataService;
-    this.auth = AuthService;
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
-      
+
       this.uds.setSession({
         readyButton: false,
+        backButton: false,
         statusMessage: ''
-      }, (err, res) => {
-        if (!err) {
-          // dgacitua: Do nothing for now
-        }
-        else {
-          console.error('Error while unloading Stage!', err);
-        }
       });
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      console.log('Stage0 Success');
       this.uds.setSession({
         readyButton: false,
-        statusMessage: '',
-        stageHome: '#'
+        backButton: false,
+        stageHome: '/stage0'
       }, (err, res) => {
         if (!err) {
           var stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
 
-          //this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
+          this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
 
           this.$rootScope.$broadcast('updateNavigation');
 
-          console.log('Instructions loaded!');
+          console.log('Stage0 loaded!');
         }
         else {
           console.error('Error while loading Stage!', err);
@@ -53,30 +45,64 @@ class Instructions {
     });
 
     $reactive(this).attach($scope);
-    
+
     var stageName = this.uds.getSession().currentStageName,
       stageNumber = this.uds.getSession().currentStageNumber;
 
-    this.avatar = this.uds.getConfigs().avatar;
     this.instructionsPage = this.uds.getConfigs().stages[stageNumber].page;
+    
+    this.numberIdeas = this.uds.getConfigs().queryIdeas;
+    this.ideas = [];
+    this.queryIdeasForm = {};
+    
+    for (var i=0; i<this.numberIdeas; i++) {
+      var form = {
+        num: (i+1),
+        query: ''
+      };
 
-    this.$timeout(() => {
-      if (stageName !== 'end') this.uds.setSession({ readyButton: true });
-    }, Configs.instructionTimeout);
+      this.ideas.push(form);
+    }
 
-    this.$timeout(() => {
-      if (stageName === 'end') {
-        this.auth.logout((err, res) => {
-          if (!err) {
-            this.$state.go('home');
-          }
-        });
+    this.stageReady = true;
+    
+    $rootScope.$on('readyStage0', (event, data) => {
+      this.submit();
+    });
+
+    $timeout(() => {
+      $scope.$watch(() => this.queryIdeasForm.$valid, (newVal, oldVal) => {
+        if (newVal === true) this.uds.setSession({ readyButton: true });
+        else this.uds.setSession({ readyButton: false });
+      });
+    }, 0);
+  }
+
+  submit() {
+    var answers = angular.toJson(this.ideas);
+
+    var response = {
+      userId: Meteor.userId(),
+      username: Meteor.user().username || Meteor.user().emails[0].address,
+      action: 'ReadyStage0',
+      localTimestamp: Utils.getTimestamp(),
+      extras: { answers: answers }
+    };
+
+    console.log(response);
+
+    this.call('storeCustomEvent', response, (err,res) => {
+      if (!err) {
+        console.log('Success!');
       }
-    }, Configs.autoLogout);
+      else {
+        console.error('Error while saving Stage0 answers', err);
+      }
+    });
   }
 }
 
-const name = 'instructions';
+const name = 'stage0';
 
 // create a module
 export default angular.module(name, [
@@ -84,16 +110,16 @@ export default angular.module(name, [
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: Instructions
+  controller: Stage0
 })
 .config(config);
 
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('instructions', {
-    url: '/instructions?stage',
-    template: '<instructions></instructions>',
+  $stateProvider.state('stage0', {
+    url: '/stage0',
+    template: '<stage0></stage0>',
     resolve: {
       userLogged($q) {
         if (!!Meteor.userId()) return $q.resolve();
@@ -111,7 +137,7 @@ function config($stateProvider) {
            cstn = uds.getSession().currentStageNumber,
            csst = uds.getConfigs().stages[cstn].state,
            cstp = uds.getConfigs().stages[cstn].urlParams,
-           stst = 'instructions';
+           stst = 'stage0';
 
         if (csst !== stst) return $q.reject('WRONG_STAGE');
         else return $q.resolve();

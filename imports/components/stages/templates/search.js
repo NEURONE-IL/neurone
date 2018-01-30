@@ -3,8 +3,8 @@ import angularTruncate from 'angular-truncate-2';
 
 import 'mark.js';
 
-import Utils from '../../../globalUtils';
-import Configs from '../../../globalConfigs';
+import Utils from '../../globalUtils';
+import Configs from '../../globalConfigs';
 
 import template from './search.html';
 

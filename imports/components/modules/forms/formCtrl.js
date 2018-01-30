@@ -1,34 +1,38 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
 
-import template from './formsExample.html';
+import template from './formCtrl.html';
 
 import Utils from '../../globalUtils';
-import { name as Question } from '../../forms/modules/question';
+import { name as Question } from './modules/question';
 
-class FormsExample {
-  constructor($scope, $reactive) {
+class FormCtrl {
+  constructor($scope, $reactive, $state, $stateParams) {
     'ngInject';
 
     this.$scope = $scope;
-    
+    this.$state = $state;
+
     $reactive(this).attach($scope);
 
     this.form = {};
     this.answers = '';
+    this.submitted = false;
+    this.submittedError = false;
 
-    Meteor.call('getForm', 1, (err, result) => {
+    Meteor.call('getForm', Utils.parseStringAsInteger($stateParams.id), (err, result) => {
       if (!err) {
         this.form = result;
         this.$scope.$apply();
       }
       else {
-        console.log('Unknown Error', err);
+        console.error('Unknown Error', err);
       }
     });
   }
 
-  showAnswers() {
+  submit() {
     this.answers = '';
     this.answerArray = [];
 
@@ -60,26 +64,29 @@ class FormsExample {
       Meteor.call('storeFormAnswer', formAnswer, (err, result) => {
         if (!err) {
           console.log('Answer registered!', formAnswer.userId, formAnswer.username, formAnswer.formId, formAnswer.answers, formAnswer.localTimestamp);
+          this.submitted = true;
         }
         else {
-          console.log('Unknown Error', err);
+          console.error('Error while saving form answers', err);
+          this.submittedError = true;
         }
       });
     }
   }
-};
+}
 
-const name = 'formsExample';
+const name = 'formCtrl';
 
 // create a module
 export default angular.module(name, [
   angularMeteor,
+  uiRouter,
   Question
 ])
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: FormsExample
+  controller: FormCtrl
 })
 .config(config);
 
@@ -87,9 +94,9 @@ function config($stateProvider) {
   'ngInject';
 
   $stateProvider
-    .state('formsExample', {
-      url: '/formsExample',
-      template: '<forms-example></forms-example>',
+    .state('form', {
+      url: '/form?id',
+      template: '<form-ctrl></form-ctrl>',
       resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {

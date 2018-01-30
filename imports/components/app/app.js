@@ -44,20 +44,15 @@ import { name as Start } from './views/start';
 import { name as End } from './views/end';
 import { name as ErrorPage } from './views/error';
 
-import { name as SearchModule } from '../search/searchPage';
-import { name as FormsModule } from '../forms/formCtrl';
-import { name as SynthesisModule } from '../synthesis/synthesis';
-import { name as ShowcaseModule } from '../showcase/showcase';
-
 import { name as AuthService } from '../services/auth';
 import { name as UserDataService } from '../services/userData';
 import { name as ActionBlocker } from '../services/actionBlocker';
 import { name as Flow } from '../services/flow';
 import { name as Logger } from '../services/logger/logger';
 
-import { name as Stages } from './stages/stages';
-
+import { name as Stages } from '../stages/stages';
 import { name as Admin } from '../modules/admin';
+import { name as FormsModule } from '../modules/forms/formCtrl';
 
 import Configs from '../globalConfigs';
 
@@ -96,11 +91,6 @@ export default angular.module(name, [
   Logger,
   ActionBlocker,
   Flow,
-  /* Prototype components */
-  SearchModule,
-  SynthesisModule,
-  FormsModule,
-  ShowcaseModule,
   /* Modular Components */
   Navigation,
   Iframe,
@@ -110,9 +100,10 @@ export default angular.module(name, [
   Start,
   End,
   ErrorPage,
-  /* iFuCo Simulation */
+  /* iFuCo Simulation Stages */
   Stages,
   /* Other modules */
+  FormsModule,
   Admin
 ])
 .component(name, {

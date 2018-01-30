@@ -1,5 +1,5 @@
-import Utils from '../../../globalUtils';
-import Configs from '../../../globalConfigs';
+import Utils from '../../globalUtils';
+import Configs from '../../globalConfigs';
 
 import template from './tutorial.html';
 
