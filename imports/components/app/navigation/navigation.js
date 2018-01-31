@@ -10,6 +10,7 @@ import { name as Password } from '../auth/password';
 import { UserBookmarks, UserSnippets } from '../../userCollections';
 
 import { name as ModalService } from '../../modules/modal';
+import { name as LoadingService } from '../../modules/loading';
 
 import Utils from '../../globalUtils';
 
@@ -19,6 +20,7 @@ import Utils from '../../globalUtils';
     Module Dependencies:
         angularTranslate
         ModalService
+        LoadingService
         Login
         Register
         Password
@@ -729,7 +731,8 @@ export default angular.module(name, [
   Login,
   Register,
   Password,
-  ModalService
+  ModalService,
+  LoadingService
 ])
 .component(name, {
   template: template.default,

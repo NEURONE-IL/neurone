@@ -13,10 +13,11 @@ import { Images } from '../../../database/assets/images';
 const availableStages = ['instructions', 'affective', 'taskQuestions', 'tutorial', 'search', 'collection', 'criticalEval', 'synthesis', 'end'];
 
 class ContentCreator {
-  constructor($scope, $reactive, ModalService) {
+  constructor($scope, $reactive, ModalService, LoadingService) {
     'ngInject';
 
     this.modal = ModalService;
+    this.loading = LoadingService;
 
     $reactive(this).attach($scope);
 
@@ -196,12 +197,19 @@ class ContentCreator {
       chunkSize: 'dynamic'
     }, false);
 
+    uploader.on('start', () => {
+      let params = { message: `Loading ${type}...` };
+      this.loading.start(params);
+    });
+
     uploader.on('end', (err, fileObj) => {
       if (!err) {
+        this.loading.stop();
         console.log('File uploaded!', type, fileObj._id, fileObj.name);
         alert('File uploaded!');
       }
       else {
+        this.loading.stop();
         console.error('Error while uploading file!', err);
         alert('Error while uploading file!');
       }
