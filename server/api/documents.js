@@ -80,14 +80,5 @@ Meteor.methods({
     catch (err) {
       throw new Meteor.Error(575, 'Cannot reindex', err);
     }
-  },
-  deleteDocument: function(docId) {
-    try {
-      check(docId, String);
-      return DocumentRetrieval.deleteDocument(docId);
-    }
-    catch (err) {
-      throw new Meteor.Error(576, 'Cannot delete document', err);
-    }
   }
 });

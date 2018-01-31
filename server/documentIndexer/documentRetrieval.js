@@ -29,7 +29,9 @@ export default class DocumentRetrieval {
     check(insertions, Number);
     check(offset, Number);
 
-    // iFuCoSort v3
+    //==============//
+    // iFuCoSort v3 //
+    //==============//
     var newArray = documentArray,
        insertNum = newArray.length < insertions ? newArray.length : insertions,
        offsetPos = newArray.length < offset ? newArray.length : offset;
@@ -58,7 +60,9 @@ export default class DocumentRetrieval {
 
     // dgacitua: Old iFuCoSort algorithms are kept for reference
 
-    // iFuCoSort v2
+    //==============//
+    // iFuCoSort v2 //
+    //==============//
     /*
     var insertNum = documentArray.length < insertions ? documentArray.length : insertions,
         offsetPos = documentArray.length < offset ? documentArray.length : offset;
@@ -77,7 +81,9 @@ export default class DocumentRetrieval {
     return documentArray;
     */
 
-    // iFuCoSort v1
+    //==============//
+    // iFuCoSort v1 //
+    //==============//
     /*
     var relevantDocs = this.shuffleArray(Documents.find({ relevant: true }).fetch()),
            insertNum = relevantDocs.length < insertions ? relevantDocs.length : insertions,
@@ -133,25 +139,6 @@ export default class DocumentRetrieval {
     }
     else {
       LunrIndex.generate();
-
-      return true;
-    }
-  }
-
-  // dgacitua: Delete document on database and index
-  static deleteDocument(docId) {
-    if (Indexer.checkSolrIndex()) {
-      Documents.remove(docId);
-
-      let asyncCall = Meteor.wrapAsync(SolrIndex.generate),
-              fetch = asyncCall();
-
-      return true;
-    }
-    else {
-      Documents.remove(docId);
-      LunrIndex.generate();
-
       return true;
     }
   }

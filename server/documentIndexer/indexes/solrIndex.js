@@ -33,7 +33,7 @@ export default class SolrIndex {
     SolrIndex.load(Meteor.bindEnvironment((err, res) => {
       if (!err) {
         let docs = Documents.find().fetch(),
-         idxDocs = [];
+         idxDocs = [],
           idxCnt = 0,
           idxErr = 0;
         
@@ -159,15 +159,5 @@ export default class SolrIndex {
         callback(err);
       }
     }));
-  }
-
-  static randomInteger(low, high) {
-    // dgacitua: https://blog.tompawlak.org/generate-random-values-nodejs-javascript
-    return Math.floor(Math.random() * (high - low + 1) + low);
-  }
-
-  static getVarType(obj) {
-    // dgacitua: http://stackoverflow.com/a/28475765
-    return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
   }
 }

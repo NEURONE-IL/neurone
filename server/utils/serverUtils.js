@@ -54,7 +54,7 @@ export default class ServerUtils {
     // Note that this doesn't handle
     // toString and valueOf enumeration bugs in IE < 9
     for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
+      if (hasOwnProperty.call(obj, key)) return false;
     }
 
     return true;
@@ -85,6 +85,18 @@ export default class ServerUtils {
   // http://stackoverflow.com/a/9436948
   static isString(testStr) {
     return (typeof testStr === 'string' || testStr instanceof String);
+  }
+
+  // dgacitua: Generate a random integer between two numbers
+  // https://blog.tompawlak.org/generate-random-values-nodejs-javascript
+  static randomInteger(low, high) {
+    return Math.floor(Math.random() * (high - low + 1) + low);
+  }
+
+  // dgacitua: Get variable type as string
+  // http://stackoverflow.com/a/28475765
+  static getVarType(obj) {
+    return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
   }
 
   static isTesting() {
