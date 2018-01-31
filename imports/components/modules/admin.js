@@ -12,6 +12,7 @@ import { name as ContentCreator } from './admin/contentCreator';
 import { name as FormBuilder } from './admin/formBuilder';
 import { name as DocumentLoader } from './admin/documentLoader';
 import { name as DocumentManager } from './admin/documentManager';
+import { name as DocumentView } from './admin/documentView';
 import { name as StudyManager } from './admin/studyManager';
 import { name as Enrollment } from './admin/enrollment';
 
@@ -60,6 +61,7 @@ export default angular.module(name, [
   FormBuilder,
   DocumentLoader,
   DocumentManager,
+  DocumentView,
   StudyManager,
   Enrollment
 ])

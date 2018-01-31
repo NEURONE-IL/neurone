@@ -3,9 +3,9 @@ import angularMeteor from 'angular-meteor';
 import angularSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 
-import template from './displayPage.html';
+import template from './documentView.html';
 
-class DisplayPage {
+class DocumentView {
   constructor($scope, $rootScope, $reactive, $state, $stateParams, UserDataService) {
     'ngInject';
 
@@ -15,34 +15,20 @@ class DisplayPage {
     this.uds = UserDataService;
        
     $scope.$on('$stateChangeStart', (event) => {
-      Session.set('lockButtons', true);
-
+      Session.set('standbyMode', false);
       this.uds.setSession({
-        bookmarkButton: false,
-        unbookmarkButton: false,
-        bookmarkList: false,
-        backButton: false,
-        readyButton: false
-      });
+        readyButton: false,
+        statusMessage: ''
+      }, (err, res) => {});
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      var limit = this.uds.getConfigs().minBookmarks;
-      var setReady = !!(this.uds.getSession().bookmarkCount >= limit);
-
+      Session.set('standbyMode', true);
       this.uds.setSession({
-        bookmarkList: true,
-        backButton: true,
-        readyButton: setReady
-      }, (err, res) => {
-        if (!err) {
-          this.$rootScope.$broadcast('updateNavigation');
-          this.$rootScope.$broadcast('updateBookmarkButton');
-        }
-        else {
-          console.error('Error while loading Stage!', err);
-        } 
-      });
+        readyButton: false,
+        statusMessage: '',
+        stageHome: 'admin'
+      }, (err, res) => {});
     });
 
     $reactive(this).attach($scope);
@@ -58,19 +44,17 @@ class DisplayPage {
   }
 }
 
-const name = 'displayPage';
+const name = 'documentView';
 
 export default angular.module(name, [
   angularMeteor,
   angularSanitize,
   uiRouter
-  //Logger,
-  //ActionBlocker
 ])
 .component(name, {
   template: template.default,
   controllerAs: name,
-  controller: DisplayPage,
+  controller: DocumentView,
   bindings: {
     previousState: '='
   }
@@ -80,9 +64,9 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider.state('displayPage', {
-    url: '/page/:docName',
-    template: '<display-page previous-state="$resolve.previousState"></display-page>',
+  $stateProvider.state('documentView', {
+    url: '/preview/:docName',
+    template: '<document-view previous-state="$resolve.previousState"></document-view>',
     resolve: {
       userLogged($q) {
         if (!!Meteor.userId()) return $q.resolve();
@@ -95,8 +79,13 @@ function config($stateProvider) {
           (err) => { return $q.reject('USERDATA_NOT_READY') }
         );
       },
+      checkAdmin(dataReady, $q, UserDataService) {
+        let uds = UserDataService;
+        if (uds.getRole() === 'researcher') return $q.resolve();
+        else return $q.reject('NO_ADMIN');
+      },
       // dgacitua: http://stackoverflow.com/a/25945003
-      previousState($state, dataReady) {
+      previousState($state, checkAdmin) {
         var currentStateData = {
           name: $state.current.name,
           params: $state.params,
