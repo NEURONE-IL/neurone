@@ -1,5 +1,5 @@
-node_modules/
-build/
-assets/
+/node_modules/
+/build/
+/assets/
 
 npm-debug.log

@@ -1,4 +1,4 @@
-build/
-assets/
+/build/
+/assets/
 
 npm-debug.log
