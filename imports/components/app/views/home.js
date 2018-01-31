@@ -9,18 +9,19 @@ class Home {
   constructor($scope, $rootScope, $reactive, UserDataService) {
     'ngInject';
 
+    this.$rootScope = $rootScope;
     this.uds = UserDataService;
 
     $scope.$on('$stateChangeStart', (event) => {
       if (!!Meteor.userId()) {
         Session.set('lockButtons', true);
-        this.uds.setSession({ standbyMode: false });
+        Session.set('standbyMode', false);
       }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       if (!!Meteor.userId()) {
-        this.uds.setSession({ standbyMode: true });
+        Session.set('standbyMode', true);
         this.$rootScope.$broadcast('updateNavigation');
       }
     });

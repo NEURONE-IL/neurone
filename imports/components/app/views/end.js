@@ -3,7 +3,7 @@ import template from './end.html';
 const name = 'end';
 
 class End {
-  constructor($scope, $rootScope, $state, $reactive, UserDataService, FlowService) {
+  constructor($scope, $rootScope, $state, $reactive, $timeout, UserDataService, FlowService) {
     'ngInject';
 
     this.$state = $state;
@@ -13,18 +13,23 @@ class End {
 
     $scope.$on('$stateChangeStart', (event) => {
       if (!!Meteor.userId()) {
-        this.uds.setSession({ standbyMode: false });
+        Session.set('lockButtons', true);
+        Session.set('standbyMode', false);
       }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       if (!!Meteor.userId()) {
-        this.uds.setSession({ standbyMode: true });
+        Session.set('standbyMode', true);
         this.$rootScope.$broadcast('updateNavigation');  
       }
     });
 
     $reactive(this).attach($scope);
+
+    $timeout(() => {
+      this.$state.go('logout');
+    }, 5000);
   }
 }
 
@@ -64,14 +69,6 @@ function config($stateProvider) {
 
         if (csst !== stst) return $q.reject('WRONG_STAGE');
         else return $q.resolve();
-      },
-      logout($q, AuthService, stageLock) {
-        const auth = AuthService;
-
-        return auth.logout((err, res) => {
-          if (!err) return $q.resolve();
-          else return $q.reject('WRONG_STAGE');
-        });
       }
     }
   });

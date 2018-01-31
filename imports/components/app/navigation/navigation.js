@@ -51,13 +51,10 @@ class Navigation {
     $reactive(this).attach($scope);
 
     this.autorun(() => {
-      var isLoggedIn = !!Meteor.userId();
-
-      if (isLoggedIn) {
-        //this.sub0 = {} //this.uds.check();
+      if (!!Meteor.userId()) {
         this.sub1 = $promiser.subscribe('userBookmarks');
         this.sub2 = $promiser.subscribe('userSnippets');
-        console.log('Subscription AUTORUN!');
+        console.log('Navigation Subscription AUTORUN!');
       }
     });
 
@@ -168,10 +165,13 @@ class Navigation {
           return this.uds.getSession().stageNumber;
         },
         standbyMode: () => {
-          return this.uds.getSession().standbyMode;
+          return Session.get('standbyMode');
         },
         lockButtons: () => {
           return Session.get('lockButtons');
+        },
+        isAdmin: () => {
+          return (Session.get('userRole') === 'researcher');
         }
       });
     });

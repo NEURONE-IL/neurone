@@ -5,6 +5,9 @@
     </div>
 
     <div class="navbar-header pull-right">
+      <div class="nav pull-left" ng-if="navigation.isLoggedIn && navigation.isAdmin">
+        <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
+      </div>
       <div class="nav pull-left" ng-if="navigation.isLoggedIn && !navigation.standbyMode">
         <div id="navbarMessage" class="navbar-text pull-left horizontal-button-margin navbar-message">{{navigation.statusMessage}}</div>
         <button type="button" class="btn btn-back navbar-btn horizontal-button-margin" ng-if="navigation.enableBack" ng-disabled="navigation.lockButtons" ng-click="navigation.backAction()"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{"nav.backButton" | translate}}</button>
@@ -12,10 +15,6 @@
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableBookmark" ng-disabled="navigation.lockButtons" ng-click="navigation.saveBookmark()"><i class="fa fa-bookmark" aria-hidden="true"></i> {{"nav.bookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-warning navbar-btn horizontal-button-margin" ng-if="navigation.enableUnbookmark" ng-disabled="navigation.lockButtons" ng-click="navigation.removeBookmark()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> {{"nav.unbookmarkButton" | translate}}</button>
         <button type="button" class="btn btn-success navbar-btn horizontal-button-margin" ng-if="navigation.enableReady" ng-disabled="navigation.lockButtons" ng-click="navigation.readyAction(navigation.stageNumber)"><i class="fa fa-check" aria-hidden="true"></i> {{"nav.readyButton" | translate}}</button>
-      </div>
-      <!--<div class="nav pull-left" ng-if="navigation.isLoggedIn">-->
-      <div class="nav pull-left" ng-if="false">
-        <button type="button" class="btn btn-danger navbar-btn horizontal-button-margin" ng-click="navigation.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"auth.logoutButton" | translate}}</button>
       </div>
       <div class="nav pull-left horizontal-button-margin" role="group" ng-if="!navigation.isLoggedIn">
         <button type="button" class="btn btn-success navbar-btn" ui-sref="register" ng-if="false"><i class="fa fa-user-plus" aria-hidden="true"></i> {{"auth.registerButton" | translate}}</button>
@@ -42,24 +41,10 @@
           </ul>
         </li>
         <!--<li ng-if="navigation.enableSnippetCounter">-->
-        <li ng-if="false"><a href="javascript:void(0);"><i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.snippetCount" | translate: navigation.counters }}</a></li>
-        <li class="dropdown" ng-if="navigation.enableShowcase">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-eye" aria-hidden="true"></i> {{"app.showcase" | translate}} <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/stage0">Stage 0</a></li>
-            <li><a href="/stage1">Stage 1</a></li>
-            <li><a href="/stage2">Stage 2</a></li>
-            <li><a href="/stage3">Stage 3</a></li>
-            <li><a href="/search">{{"app.search" | translate}}</a></li>
-            <li><a href="/form?id=st1">{{"app.forms" | translate}}</a></li>
-            <li><a href="/synthesis?id=syn3">{{"app.synthesis" | translate}}</a></li>
-            <li><a href="/flow">{{"app.flow" | translate}}</a></li>
-            <li><a href="/documents">{{"app.documents" | translate}}</a></li>
-            <li><a href="/visitedLinks">{{"app.visitedLinks" | translate}}</a></li>
-            <li><a href="/snippets">{{"app.snippets" | translate}}</a></li>
-            <li><a href="/bookmarks">{{"app.bookmarks" | translate}}</a></li>
-            <li><a href="/internationalization">{{"app.i18n" | translate}}</a></li>
-          </ul>
+        <li ng-if="false">
+          <a href="javascript:void(0);">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i> {{"nav.snippetCount" | translate: navigation.counters }}
+          </a>
         </li>
       </ul>
     </div>

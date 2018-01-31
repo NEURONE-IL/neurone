@@ -17,13 +17,13 @@ class Start {
 
     $scope.$on('$stateChangeStart', (event) => {
       if (!!Meteor.userId()) {
-        this.uds.setSession({ standbyMode: false });
+        Session.set('standbyMode', false);
       }
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
       if (!!Meteor.userId()) {
-        this.uds.setSession({ standbyMode: true });
+        Session.set('standbyMode', true);
         this.$rootScope.$broadcast('updateNavigation');  
       }
     });

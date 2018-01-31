@@ -28,17 +28,17 @@ class Admin {
     this.auth = AuthService;
 
     $scope.$on('$stateChangeStart', (event) => {
+      Session.set('standbyMode', false);
       this.uds.setSession({
         readyButton: false,
-        standbyMode: false,
         statusMessage: ''
       }, (err, res) => {});
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
+      Session.set('standbyMode', true);
       this.uds.setSession({
         readyButton: false,
-        standbyMode: true,
         statusMessage: '',
         stageHome: 'start'
       }, (err, res) => {});
@@ -115,7 +115,6 @@ function config($stateProvider) {
       },
       checkAdmin(dataReady, $q, UserDataService) {
         let uds = UserDataService;
-
         if (uds.getRole() === 'researcher') return $q.resolve();
         else return $q.reject('NO_ADMIN');
       }

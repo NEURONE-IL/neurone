@@ -15,19 +15,17 @@ class Logout {
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
-      this.uds.setSession({ standbyMode: false });
+      Session.set('standbyMode', false);
     });
 
     $scope.$on('$stateChangeSuccess', (event) => {
-      this.uds.setSession({ standbyMode: true });
+      Session.set('standbyMode', true);
       this.$rootScope.$broadcast('updateNavigation');
     });
 
     $reactive(this).attach($scope);
 
-    $timeout(() => {
-      this.logout();
-    }, 1500);
+    $timeout(this.logout(), 1000);
   }
 
   logout() {

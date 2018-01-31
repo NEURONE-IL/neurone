@@ -65,7 +65,7 @@ class App {
       if (!err) {
         Session.set('locale', res.locale);
         $translate.use(Session.get('locale')).then(() => {
-          console.log('Using Client Locale', Session.get('locale'));
+          console.log('Using Default Locale', Session.get('locale'));
         });
       }
     });

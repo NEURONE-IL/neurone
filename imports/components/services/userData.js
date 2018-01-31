@@ -95,9 +95,12 @@ class UserDataService {
     Meteor.call('userRole', (err, res) => {
       if (!err) {
         this.role = res;
+        Session.set('userRole', this.role);
         dfr.resolve();
       }
       else {
+        this.role = '';
+        Session.set('userRole', this.role);
         console.error(err);
         dfr.reject();
       }
@@ -119,8 +122,9 @@ class UserDataService {
   }
 
   changeLocale() {
-    let locale = this.getConfigs().locale || 'en';
+    let locale = this.getConfigs().locale;
     this.$translate.use(locale);
+    Session.set('locale', locale);
     console.log('Changing Locale!', locale);
   }
 
@@ -130,6 +134,9 @@ class UserDataService {
     this.userSession.set([], {});
     this.userConfigs.set([], {});
     this.role = '';
+
+    Session.set('locale', 'en');
+    Session.set('userRole', this.role);
 
     return dfr.resolve();
   }
