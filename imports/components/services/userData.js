@@ -123,9 +123,12 @@ class UserDataService {
 
   changeLocale() {
     let locale = this.getConfigs().locale;
-    this.$translate.use(locale);
-    Session.set('locale', locale);
-    console.log('Changing Locale!', locale);
+
+    if (!!locale) {
+      this.$translate.use(locale);
+      Session.set('locale', locale);
+      console.log('Changing Locale!', locale);
+    }
   }
 
   flush() {
