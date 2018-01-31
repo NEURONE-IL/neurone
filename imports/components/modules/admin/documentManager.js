@@ -7,10 +7,11 @@ import { Documents } from '../../../database/documents/index';
 import { FlowComponents } from '../../../database/flowComponents/index';
 
 class DocumentManager {
-  constructor($scope, $reactive, ModalService) {
+  constructor($scope, $reactive, ModalService, LoadingService) {
     'ngInject';
 
     this.modal = ModalService;
+    this.loading = LoadingService;
 
     $reactive(this).attach($scope);
 
@@ -85,13 +86,13 @@ class DocumentManager {
         console.error('Cannot delete document!', deletedDoc.docId, err);
       }
     });
+  }
 
-    /*
-    this.call('deleteDocument', docId, (err, res) => {
-      if (!err) console.log('Document deleted!', docId);
-      else console.error('Cannot delete document!', docId, err);
+  reindex() {
+    this.call('reindex', (err, res) => {
+      if (!err) alert('Inverted Index reloaded!');
+      else console.error('Cannot regenerate Inverted Index!', err);
     });
-    */
   }
 }
 

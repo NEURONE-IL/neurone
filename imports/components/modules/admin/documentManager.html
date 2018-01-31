@@ -1,6 +1,10 @@
 <div class="container-fluid">
   <div class="row">
-    The NEURONE Document Manager lists all documents loaded into the platform.
+    <p>The NEURONE Document Manager lists all documents loaded into the platform.
+      <button type="button" class="btn btn-sm btn-success pull-right" ng-click="documentManager.reindex()">
+        <i class="fa fa-refresh"></i> Reload Inverted Index
+      </button>
+    </p>
   </div>
   <br>
   <div class="row">
@@ -10,10 +14,10 @@
           <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} ]
         </div>
         <div class="col-md-2">
-          <button type="button" class="btn btn-xs btn-danger pull-right" ng-click="documentManager.deleteDocument(doc)">
+          <button type="button" class="btn btn-xs btn-danger pull-right horizontal-button-margin" ng-click="documentManager.deleteDocument(doc)">
             <i class="fa fa-trash-o"></i> Remove
           </button>
-          <button type="button" class="btn btn-xs btn-info pull-right" ng-click="documentManager.editDocument(doc)">
+          <button type="button" class="btn btn-xs btn-info pull-right horizontal-button-margin" ng-click="documentManager.editDocument(doc)">
             <i class="fa fa-pencil-square-o"></i> Edit
           </button>
         </div>
