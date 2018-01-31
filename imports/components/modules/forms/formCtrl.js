@@ -93,18 +93,13 @@ export default angular.module(name, [
 function config($stateProvider) {
   'ngInject';
 
-  $stateProvider
-    .state('form', {
-      url: '/form?id',
-      template: '<form-ctrl></form-ctrl>',
-      resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        }
-        else {
-          return $q.resolve();
-        }
+  $stateProvider.state('form', {
+    url: '/form?id',
+    template: '<form-ctrl></form-ctrl>',
+    resolve: {
+      userLogged($q) {
+        if (!!Meteor.userId()) return $q.resolve();
+        else return $q.reject('AUTH_REQUIRED');
       }
     }
   });

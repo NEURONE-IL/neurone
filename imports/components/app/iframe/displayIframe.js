@@ -136,13 +136,9 @@ function config($stateProvider) {
 			url: '/iframe/:docName',
 			template: '<display-iframe></display-iframe>',
 			resolve: {
-				currentUser($q) {
-					if (Meteor.userId() === null) {
-						return $q.reject('AUTH_REQUIRED');
-					}
-					else {
-						return $q.resolve();
-					}
+				userLogged($q) {
+					if (!!Meteor.userId()) return $q.resolve();
+					else return $q.reject('AUTH_REQUIRED');
 				}
 			}
 	});
