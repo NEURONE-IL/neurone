@@ -4,8 +4,8 @@ import Utils from '../../../globalUtils';
 import LogUtils from '../../../logUtils';
 import LoggerConfigs from '../../../globalConfigs';
 
-export default class KMTrackIframeService {
-constructor($window, $document, $state) {
+class KMTrackIframeService {
+  constructor($window, $document, $state) {
     'ngInject';
 
     this.$window = $window;
