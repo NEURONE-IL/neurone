@@ -37,4 +37,8 @@ export default class SharedUtils {
       return path.join(rootPath);
     }
   }
+
+  static getReferencePath(newPath) {
+    return path.join('assets', path.normalize(path.relative(this.getAssetPath(), newPath)));
+  }
 }

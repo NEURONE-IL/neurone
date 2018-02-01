@@ -10,6 +10,7 @@ Modals.allowClient();
 Templates.allowClient();
 Images.allowClient();
 
+/*
 Locales.on('afterUpload', (fileRef) => {
   // 'this' context is the Images (FilesCollection) instance
   let sourcePath = path.join(fileRef.path),
@@ -69,3 +70,4 @@ Images.on('afterUpload', (fileRef) => {
   fs.copySync(sourcePath, newPath);
   Images.update(fileRef._id, { $set: metadata });
 });
+*/
