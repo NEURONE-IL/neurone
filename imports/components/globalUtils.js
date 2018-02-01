@@ -68,6 +68,11 @@ export default class Utils {
     navbarMessageElement.hide();
   }
 
+  // dgacitua: Check if element is an array
+  static isArray(element) {
+    return Array.isArray(element);
+  }
+
   // dgacitua: Forces conversion of a single element into an array
   static forceArray(element) {
     if (Array.isArray(element)) {

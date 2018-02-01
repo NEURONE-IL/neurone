@@ -29,7 +29,7 @@ class DocumentManager {
 
   editDocument(doc) {
     let docRef = angular.copy(doc);
-    docRef.keywords.join(', ');
+    docRef.keywords = docRef.keywords.join(', ');
 
     let modalOpts = {
       title: 'Edit document',
@@ -89,9 +89,20 @@ class DocumentManager {
   }
 
   reindex() {
+    let params = { message: `Reloading Inverted Index...` };
+    this.loading.start(params);
+
     this.call('reindex', (err, res) => {
-      if (!err) alert('Inverted Index reloaded!');
-      else console.error('Cannot regenerate Inverted Index!', err);
+      if (!err) {
+        this.loading.stop();
+        console.log('Inverted Index reloaded!');
+        alert('Inverted Index reloaded!');
+      }
+      else {
+        this.loading.stop();
+        console.error('Cannot reload Inverted Index!', err);
+        alert('Cannot reload Inverted Index!');
+      }
     });
   }
 }
