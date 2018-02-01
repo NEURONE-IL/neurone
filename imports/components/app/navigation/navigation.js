@@ -489,44 +489,45 @@ class Navigation {
     this.storeEvent('TimeoutTriggered', { state: currentState, flowStep: stageNumber });
 
     if (currentState === 'search') {
-      let score = 0;
+      let starFormula = (docs, target, stars) => { return Math.round(docs * stars / target) },
+                score = 0;
 
       this.call('getBookmarkScore', (err, res) => {
         if (!err) {
           console.log(res);
           score = res.score;
+
+          var maximumStars = this.uds.getConfigs().maxStars || 3,
+             userBookmarks = UserBookmarks.find().fetch(),
+                  goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+              minBookmarks = this.uds.getConfigs().minBookmarks,
+                     stars = starFormula(goodDocs, minBookmarks, maximumStars);
+
+          console.log(userBookmarks);
+
+          var modalObject = {
+            title: '', //this.$translate.instant('nav.taskResults'),
+            templateAsset: 'modals/ready_search.html',
+            buttonType: 'nextstage',
+            fields: {
+              stars: stars,
+              maxStars: maximumStars,
+              goodPages: goodDocs,
+              bookmarks: userBookmarks,
+              case: (goodDocs >= minBookmarks ? 1 : 3)
+            }
+          };
+
+          this.modal.openModal(modalObject, (err2, res2) => {
+            if (!err2 && goodDocs < minBookmarks) {
+              this.storeEvent('BookmarkScore', { score: score, final: true });
+              this.replaceWithRelevantBookmarks();
+            }
+          });
         }
         else {
           console.error(err);
         }
-
-        var maximumStars = this.uds.getConfigs().maxStars,
-           userBookmarks = UserBookmarks.find().fetch(),
-                goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                   stars = goodDocs,
-            minBookmarks = this.uds.getConfigs().minBookmarks;
-
-        console.log(userBookmarks);
-
-        var modalObject = {
-          title: '', //this.$translate.instant('nav.taskResults'),
-          templateAsset: 'modals/ready_search.html',
-          buttonType: 'nextstage',
-          fields: {
-            stars: stars,
-            maxStars: maximumStars,
-            goodPages: goodDocs,
-            bookmarks: userBookmarks,
-            case: (goodDocs >= minBookmarks ? 1 : 3)
-          }
-        };
-
-        this.modal.openModal(modalObject, (err2, res2) => {
-          if (!err2 && goodDocs < minBookmarks) {
-            this.storeEvent('BookmarkScore', { score: score, final: true });
-            this.replaceWithRelevantBookmarks();
-          }
-        });
       });
     }
     else if (currentState === 'criticalEval') {
@@ -600,50 +601,52 @@ class Navigation {
     }
     else if (currentState === 'search') {
       // dgacitua: Modal template location is relative to NEURONE's Asset Path
-      let score = 0;
+      let starFormula = (docs, target, stars) => { return Math.round(docs * stars / target) },
+                score = 0;
+        
 
       this.call('getBookmarkScore', (err, res) => {
         if (!err) {
           console.log(res);
           score = res.score;
+            
+          var maximumStars = this.uds.getConfigs().maxStars || 3,
+             userBookmarks = UserBookmarks.find().fetch(),
+                  goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
+              minBookmarks = this.uds.getConfigs().minBookmarks,
+                     stars = starFormula(goodDocs, minBookmarks, maximumStars);
+
+          console.log(userBookmarks);
+
+          var modalObject = {
+            title: '', //this.$translate.instant('nav.taskResults'),
+            templateAsset: 'modals/ready_search.html',
+            buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
+            fields: {
+              stars: stars,
+              maxStars: maximumStars,
+              goodPages: goodDocs,
+              bookmarks: userBookmarks,
+              case: (goodDocs >= minBookmarks ? 1 : 2)
+            }
+          };
+
+          this.modal.openModal(modalObject, (err2, res2) => {
+            if (!err2) {
+              if (res2.message === 'ok' && goodDocs >= minBookmarks) {
+                this.storeEvent('BookmarkScore', { score: score, final: true });
+                this.$rootScope.$broadcast('endStage', stageNumber);
+              }
+              else {
+                this.storeEvent('BookmarkScore', { score: score, final: false });
+                this.removeNonRelevantBookmarks();
+              }
+            }
+          });
         }
         else {
           console.error(err);
         }
-        
-        var maximumStars = this.uds.getConfigs().maxStars,
-           userBookmarks = UserBookmarks.find().fetch(),
-                goodDocs = this.$filter('filter')(userBookmarks, { relevant: true }).length,
-                   stars = goodDocs,    // TODO Make score formula
-            minBookmarks = this.uds.getConfigs().minBookmarks;
-
-        console.log(userBookmarks);
-
-        var modalObject = {
-          title: '', //this.$translate.instant('nav.taskResults'),
-          templateAsset: 'modals/ready_search.html',
-          buttonType: (goodDocs >= minBookmarks ? 'okcancel' : 'back'),
-          fields: {
-            stars: stars,
-            maxStars: maximumStars,
-            goodPages: goodDocs,
-            bookmarks: userBookmarks,
-            case: (goodDocs >= minBookmarks ? 1 : 2)
-          }
-        };
-
-        this.modal.openModal(modalObject, (err2, res2) => {
-          if (!err2) {
-            if (res2.message === 'ok' && goodDocs >= minBookmarks) {
-              this.storeEvent('BookmarkScore', { score: score, final: true });
-              this.$rootScope.$broadcast('endStage', stageNumber);
-            }
-            else {
-              this.storeEvent('BookmarkScore', { score: score, final: false });
-              this.removeNonRelevantBookmarks();
-            }
-          }
-        });
       });
     }
     else if (currentState === 'collection' || currentState === 'criticalEval') {
