@@ -432,7 +432,7 @@ class Navigation {
         title: this.$translate.instant('nav.tutorialButton'),
         templateAsset: 'modals/tutorial_stages.html',
         fields: {
-          slides: stageData.tutorial
+          slides: stageData.slides
         }
       };
 
