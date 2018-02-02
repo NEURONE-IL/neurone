@@ -116,4 +116,40 @@ export default class SnippetTrackService {
       }
     });
   }
+
+  bindWordCounter() {
+    // TODO Centralized reference to pageContainer
+    var elem = document.getElementById(LoggerConfigs.iframeId);
+    /*
+    angular.element(elem).ready(() => {
+      angular.element(elem).on('mouseup', this.wordCounter);
+      console.log('BIND!', 'Snippet', elem);
+    });
+    */
+  }
+
+  unbindWordCounter() {
+    /*
+    var elem = document.getElementById(LoggerConfigs.iframeId);
+    angular.element(elem).ready(() => {
+      angular.element(elem).off('mouseup', this.wordCounter);
+      console.log('UNBIND!', 'Snippet', elem);
+    });
+    */
+  }
+
+  wordCounter() {
+    var iframeElement = document.getElementById(LoggerConfigs.iframeId),
+         iframeWindow = iframeElement ? iframeElement.contentWindow || iframeElement.contentDocument.defaultView : null,
+              snippet = iframeWindow ? iframeWindow.getSelection().toString() : '';
+    
+    if (!Utils.isEmpty(snippet)) {
+      var wordCount = snippet.match(/\S+/g).length;
+      console.log('wcY', snippet, wordCount);
+      this.$rootScope._counters.words = wordCount;
+    }
+    else {
+      console.log('wcN', snippet);
+    }
+  }
 }
