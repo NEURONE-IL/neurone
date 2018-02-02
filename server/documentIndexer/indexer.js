@@ -39,12 +39,12 @@ export default class Indexer {
         var total2 = documentList.length;
 
         documentList.forEach((doc, idx2, arr2) => {
-          if (doc.route && doc.title && doc.task && doc.domain && doc.locale) {
+          if (doc.route && doc.title && doc.task && doc.domain && doc.locale && doc.url) {
             var docRoute = path.join(assetPath, doc.route);
             var fn = path.basename(doc.route);
 
             if (fs.existsSync(docRoute)) {
-              var check = DocumentParser.cleanDocument(docRoute);
+              var check = DocumentParser.cleanDocument(docRoute, doc.url);
 
               var docObj = {};
               var docInfo = DocumentParser.getDocumentInfo(docRoute);

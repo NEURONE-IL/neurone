@@ -52,9 +52,6 @@ export default class DocumentDownloader {
       directory: downloadPath,
       filenameGenerator: 'bySiteStructure', //'byType',
       recursive: false,
-      sources: [
-        { selector: 'iframe:not(src)', attr: 'src' }
-      ],
       httpResponseHandler: (response) => {
         const htmlBody = response.headers['content-type'].startsWith('text/html') && response.body;
         const re = /((https?:\/\/)(\w+)(.disqus.com))/;
@@ -117,7 +114,7 @@ export default class DocumentDownloader {
       if (!err) {
         indexedDocument.route = res.route;
 
-        let check = DocumentParser.cleanDocument(res.fullPath);
+        let check = DocumentParser.cleanDocument(res.fullPath, indexedDocument.url);
         let docInfo = DocumentParser.getDocumentInfo(res.fullPath);
 
         for (var attrname in docInfo) { if(Utils.isEmpty(indexedDocument[attrname])) indexedDocument[attrname] = docInfo[attrname]; }
@@ -195,7 +192,7 @@ export default class DocumentDownloader {
         if (!err) {
           document.route = res.route;
 
-          let check = DocumentParser.cleanDocument(res.fullPath);
+          let check = DocumentParser.cleanDocument(res.fullPath, document.url);
           let docInfo = DocumentParser.getDocumentInfo(res.fullPath);
   
           for (var attrname in docInfo) { if(Utils.isEmpty(document[attrname])) document[attrname] = docInfo[attrname]; }

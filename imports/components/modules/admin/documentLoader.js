@@ -34,7 +34,7 @@ class DocumentLoader {
 
       console.log('Document download request sent!', this.docObj);
 
-      this.call('fetchDocument', this.docObj, (err, res) => {
+      this.apply('fetchDocument', [ this.docObj ], { noRetry: true }, (err, res) => {
         if (!err) {
           // console.log(res);
           this.doc = res;
@@ -65,7 +65,7 @@ class DocumentLoader {
 
       console.log('Document preview request sent!', this.docObj);
 
-      this.call('previewDocument', this.docObj, (err, res) => {
+      this.apply('previewDocument', [ this.docObj ], { noRetry: true }, (err, res) => {
         if (!err) {
           // console.log(res);
           this.doc = res;
