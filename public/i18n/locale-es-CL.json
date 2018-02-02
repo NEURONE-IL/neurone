@@ -126,19 +126,19 @@
     "nextStageInstructions": "Ahora puedes ir a la siguiente etapa",
     "goBackInstructions": "¡Vuelve y sigue buscando!",
     "timeWarning": "¡Te has quedado sin tiempo!",
-    "confirmChanges": "¿Estás seguro de que quieres continuar con la siguiente etapa?",
+    "confirmChanges": "¿Estás seguro o segura de que quieres continuar con la siguiente etapa?",
     "keepSearching": "Sigue buscando mejores páginas",
     "timeup": {
       "title": "Continuar a la siguiente etapa",
-      "instruction": "¿Estás seguro de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
+      "instruction": "¿Estás seguro o segura de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
     },
     "confirm": {
       "title": "Continuar a la siguiente etapa",
-      "instruction": "¿Estás seguro de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
+      "instruction": "¿Estás seguro o segura de que quieres continuar? Tus respuestas serán enviadas y no podrás volver atrás."
     },
     "logout": {
       "title": "Cerrar sesión",
-      "confirm": "¿Estás seguro de que deseas cerrar la sesión?",
+      "confirm": "¿Estás seguro o segura de que deseas cerrar la sesión?",
       "action": "Saliendo de NEURONE"
     },
     "general": {
