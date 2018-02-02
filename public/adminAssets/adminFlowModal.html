@@ -146,7 +146,7 @@
           <ui-select-match placeholder="Select stages">{{ $item.id }}</ui-select-match>
           <ui-select-choices repeat="stage in modal.fields.stages | filter: { id: $select.search }">
             <div>{{ stage.id }}</div>
-            <small>Type: {{ stage.state }} · Time Limit: {{ stage.state }} · URL Params: {{ stage.urlParams.stage }}</small>
+            <small>Type: {{ stage.state }} · Time Limit: {{ stage.time }} · URL Params: {{ stage.urlParams.stage }}</small>
           </ui-select-choices>
         </ui-select>
       </div>

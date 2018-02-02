@@ -65,7 +65,7 @@ class Affective {
     var stageNumber = this.uds.getSession().currentStageNumber,
        currentStage = this.uds.getConfigs().stages[stageNumber];
 
-    this.type = currentStage.type;
+    this.answerType = currentStage.answerType;
     this.samTemplate = currentStage.template || currentStage.page;
     this.avatar = this.uds.getConfigs().avatar;
   }
@@ -117,7 +117,7 @@ class Affective {
       userId: Meteor.userId(),
       username: Meteor.user().username || Meteor.user().emails[0].address,
       action: 'AnsweredSAM',
-      reason: this.type,
+      reason: this.answerType,
       answer: answers,
       localTimestamp: Utils.getTimestamp()
     }
