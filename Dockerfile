@@ -41,7 +41,7 @@ RUN cp ./src/.deploy/docker/neurone.conf /etc/nginx/sites-enabled/neurone.conf \
 ENV PATH $PATH:$HOME/.meteor
 
 # Set Build Memory Limit
-ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=2048 --gc_interval=100
+ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=1536 --gc_interval=100
 
 # Installation and packaging script
 RUN /sbin/setuser $username ./meteorBuild.sh
