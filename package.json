@@ -9,6 +9,8 @@
     "start": "./scripts/deploy-dev.sh",
     "build": "./scripts/build.sh",
     "test": "./scripts/test.sh",
+    "dev-start": "./scripts/docker-dev-up.sh",
+    "dev-stop": "./scripts/docker-dev-down.sh",
     "unittest": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package dispatch:mocha",
     "unittest-watch": "TEST_WATCH=1 TEST_BROWSER_DRIVER=phantomjs meteor test --driver-package dispatch:mocha",
     "apptest": "TEST_BROWSER_DRIVER=phantomjs meteor test --full-app --once --driver-package dispatch:mocha",

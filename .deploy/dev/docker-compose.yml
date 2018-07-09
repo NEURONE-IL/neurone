@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  database:
+    build: ../mongo
+    image: dgacitua/mongo:3.4
+    restart: on-failure
+    networks:
+      - neurone-dev
+    ports:
+      - ${NEURONE_DB_PORT:-1313}:27017
+    volumes:
+      - ${NEURONE_MONGO_PATH:-~/neuroneDatabase}:/data/db
+    environment:
+      - MONGODB_ADMIN_USER=${NEURONE_ADMIN_DB_USER:-admin}
+      - MONGODB_ADMIN_PASS=${NEURONE_ADMIN_DB_PASS:-neurone2017}
+      - MONGODB_APPLICATION_DATABASE=${NEURONE_DB:-neurone}
+      - MONGODB_APPLICATION_USER=${NEURONE_DB_USER:-neurone}
+      - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone2017}
+  search:
+    image: solr:6.5
+    restart: on-failure
+    networks:
+      - neurone-dev
+    ports:
+      - ${NEURONE_INDEX_PORT:-1313}:8983
+    volumes:
+      - ${NEURONE_INDEX_PATH:-~/neuroneIndex}:/opt/solr/server/solr/mycores
+    entrypoint:
+      - solr-precreate
+      - ${NEURONE_SOLR_CORE:-neurone}
+
+networks:
+  neurone-dev:
+    name: neurone-dev
