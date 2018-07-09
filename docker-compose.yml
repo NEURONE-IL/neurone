@@ -6,7 +6,7 @@ services:
     image: dgacitua/mongo:3.4
     restart: on-failure
     ports:
-      - 1313:27017
+      - ${NEURONE_DB_PORT:-1313}:27017
     volumes:
       - ${NEURONE_MONGO_PATH:-~/neuroneDatabase}:/data/db
     environment:
@@ -19,7 +19,7 @@ services:
     image: solr:6.5
     restart: on-failure
     ports:
-      - 1314:8983
+      - ${NEURONE_INDEX_PORT:-1313}:8983
     volumes:
       - ${NEURONE_INDEX_PATH:-~/neuroneIndex}:/opt/solr/server/solr/mycores
     entrypoint:
@@ -34,7 +34,7 @@ services:
     image: dgacitua/neurone
     restart: on-failure
     ports:
-     - 80:80
+     - ${NEURONE_APP_PORT:-80}:80
     volumes:
      - ${NEURONE_ASSET_PATH:-~/neuroneAssets}:/assets
     links:
@@ -56,7 +56,7 @@ services:
     image: dgacitua/neurone
     restart: on-failure
     ports:
-     - 81:80
+     - ${NEURONE_FALLBACK_APP_PORT:-81}:80
     volumes:
      - ${NEURONE_ASSET_PATH:-~/neuroneAssets}:/assets
     links:
