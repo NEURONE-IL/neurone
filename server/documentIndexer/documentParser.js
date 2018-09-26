@@ -8,7 +8,7 @@ import sha from 'sha';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 import uppercamelcase from 'uppercamelcase';
-import * as AdBlock from 'is-ad';
+import * as AdBlock from 'contains-ads';
 
 import Utils from '../utils/serverUtils';
 
@@ -118,7 +118,7 @@ export default class DocumentParser {
         // dgacitua: Remove all elements with blockable URLs
         // https://stackoverflow.com/a/2725168
         $('[href]').not('link').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('href'), pageDomain)) {
+          if (AdBlock.containsAds($(elem).attr('href'), pageDomain)) {
             $(elem).remove();
           }
           else {
@@ -128,23 +128,23 @@ export default class DocumentParser {
         });
 
         $('[src]').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('src'), pageDomain)) $(elem).remove();
+          if (AdBlock.containsAds($(elem).attr('src'), pageDomain)) $(elem).remove();
         });
 
         $('[action]').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('action'), pageDomain)) $(elem).remove();
+          if (AdBlock.containsAds($(elem).attr('action'), pageDomain)) $(elem).remove();
         });
 
         $('[formaction]').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('formaction'), pageDomain)) $(elem).remove();
+          if (AdBlock.containsAds($(elem).attr('formaction'), pageDomain)) $(elem).remove();
         });
 
         $('[cite]').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('cite'), pageDomain)) $(elem).remove();
+          if (AdBlock.containsAds($(elem).attr('cite'), pageDomain)) $(elem).remove();
         });
 
         $('[data]').each((i, elem) => {
-          if (AdBlock.isAd($(elem).attr('data'), pageDomain)) $(elem).remove();
+          if (AdBlock.containsAds($(elem).attr('data'), pageDomain)) $(elem).remove();
         });
 
         // dgacitua: Remove all elements with ad-like ids

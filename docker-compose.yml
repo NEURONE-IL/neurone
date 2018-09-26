@@ -18,7 +18,7 @@ services:
       - MONGODB_APPLICATION_USER=${NEURONE_DB_USER:-neurone}
       - MONGODB_APPLICATION_PASS=${NEURONE_DB_PASS:-neurone2017}
   search:
-    image: solr:6.5
+    image: solr:6
     restart: on-failure
     networks:
       - neurone-network
