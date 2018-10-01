@@ -1,4 +1,4 @@
-NEURONE_USERNAME=neurone
+NEURONE_USERNAME=$(whoami)
 NEURONE_USERID=$(id -u)
 NEURONE_MONGO_PATH=~/neuroneDatabase
 NEURONE_ASSET_PATH=~/neuroneAssets
