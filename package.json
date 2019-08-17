@@ -34,7 +34,6 @@
     "bcrypt": "^0.8.7",
     "charset": "^1.0.0",
     "cheerio": "^0.22.0",
-    "contains-ads": "0.2.5",
     "core-js": "^2.4.1",
     "file-type": "^4.3.0",
     "fs-extra": "^3.0.1",

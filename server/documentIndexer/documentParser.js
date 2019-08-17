@@ -8,7 +8,6 @@ import sha from 'sha';
 import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 import uppercamelcase from 'uppercamelcase';
-import * as AdBlock from 'contains-ads';
 
 import Utils from '../utils/serverUtils';
 
@@ -94,10 +93,6 @@ export default class DocumentParser {
 
   static cleanDocument(documentPath, originUrl) {
     try {
-      let adblockLists = this.getBlockLists(),
-        blockedClasses = this.getBlockedClasses(adblockLists),
-            blockedIds = this.getBlockedIds(adblockLists);
-  
       let relPath = documentPath,
           fileDir = path.dirname(relPath),
           fileExt = path.extname(relPath),
@@ -111,116 +106,75 @@ export default class DocumentParser {
 
       const parseClass = (classValue) => { return classValue.split(' ') };
       
-      AdBlock.initialize().then(() => {
-        // dgacitua: Parse AdBlock lists
-        adblockLists.forEach((list) => { AdBlock.client.parse(list) });
-
-        // dgacitua: Remove all elements with blockable URLs
-        // https://stackoverflow.com/a/2725168
-        $('[href]').not('link').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('href'), pageDomain)) {
+      // dgacitua: Remove all elements with ad-like ids
+      /*
+      $('div[id],aside[id],section[id]').each((i, elem) => {
+        blockedIds.some((id) => {
+          if (!!id && $(elem).is(`#${id}`)) {
+            console.log('blockedid', id);
             $(elem).remove();
+            return true;
           }
-          else {
-            $(elem).attr('href', 'javascript:void(0)');
-            $(elem).removeAttr('target');
-          }
-        });
-
-        $('[src]').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('src'), pageDomain)) $(elem).remove();
-        });
-
-        $('[action]').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('action'), pageDomain)) $(elem).remove();
-        });
-
-        $('[formaction]').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('formaction'), pageDomain)) $(elem).remove();
-        });
-
-        $('[cite]').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('cite'), pageDomain)) $(elem).remove();
-        });
-
-        $('[data]').each((i, elem) => {
-          if (AdBlock.containsAds($(elem).attr('data'), pageDomain)) $(elem).remove();
-        });
-
-        // dgacitua: Remove all elements with ad-like ids
-        /*
-        $('div[id],aside[id],section[id]').each((i, elem) => {
-          blockedIds.some((id) => {
-            if (!!id && $(elem).is(`#${id}`)) {
-              console.log('blockedid', id);
-              $(elem).remove();
-              return true;
-            }
-          });          
-        });
-        */
-        
-        // dgacitua: Remove all elements with ad-like classes
-        /*
-        $('div[class],aside[class],section[class]').each((i, elem) => {
-          blockedClasses.some((className) => {
-            if (!!className && $(elem).is(`.${className}`)) {
-              console.log('blockedclass', className);
-              $(elem).remove();
-              return true;
-            }
-          });
-        });
-        */
-
-        // dgacitua: Remove all iframes and frames
-        $('iframe,frame').each((i, elem) => {
-          $(elem).remove();
-        });
-
-        // dgacitua: Remove javascript
-        $('script').each((i, elem) => {
-          $(elem).remove();
-        });
-
-        // dgacitua: Remove onclick attribute from all tags
-        $('[onclick]').each((i, elem) => {
-          $(elem).removeAttr('onclick');
-        });
-
-        // dgacitua: Disable input elements
-        $('input').each((i, elem) => {
-          $(elem).removeAttr('id');
-          $(elem).attr('disabled', 'true');
-        });
-
-        // dgacitua: Disable button elements
-        $('button').each((i, elem) => {
-          $(elem).removeAttr('id');
-          $(elem).attr('disabled', 'true');
-        });
-
-        // dgacitua: Disable submit
-        $('[type="submit"]').each((i, elem) => {
-          $(elem).removeAttr('type');
-        });
-
-        // dgacitua: Disable form action
-        $('form').each((i, elem) => {
-          $(elem).removeAttr('action');
-          $(elem).removeAttr('method');
-        });
-
-        var cleanedHtml = $.html();
-
-        fs.writeFileSync(path.join(fileDir, newFilename), cleanedHtml);
-      
-        return true;
-      })
-      .catch((err) => {
-        console.error(err);
-        return false;
+        });          
       });
+      */
+      
+      // dgacitua: Remove all elements with ad-like classes
+      /*
+      $('div[class],aside[class],section[class]').each((i, elem) => {
+        blockedClasses.some((className) => {
+          if (!!className && $(elem).is(`.${className}`)) {
+            console.log('blockedclass', className);
+            $(elem).remove();
+            return true;
+          }
+        });
+      });
+      */
+
+      // dgacitua: Remove all iframes and frames
+      $('iframe,frame').each((i, elem) => {
+        $(elem).remove();
+      });
+
+      // dgacitua: Remove javascript
+      $('script').each((i, elem) => {
+        $(elem).remove();
+      });
+
+      // dgacitua: Remove onclick attribute from all tags
+      $('[onclick]').each((i, elem) => {
+        $(elem).removeAttr('onclick');
+      });
+
+      // dgacitua: Disable input elements
+      $('input').each((i, elem) => {
+        $(elem).removeAttr('id');
+        $(elem).attr('disabled', 'true');
+      });
+
+      // dgacitua: Disable button elements
+      $('button').each((i, elem) => {
+        $(elem).removeAttr('id');
+        $(elem).attr('disabled', 'true');
+      });
+
+      // dgacitua: Disable submit
+      $('[type="submit"]').each((i, elem) => {
+        $(elem).removeAttr('type');
+      });
+
+      // dgacitua: Disable form action
+      $('form').each((i, elem) => {
+        $(elem).removeAttr('action');
+        $(elem).removeAttr('method');
+      });
+
+      var cleanedHtml = $.html();
+
+      fs.writeFileSync(path.join(fileDir, newFilename), cleanedHtml);
+    
+      return true;
 
       /*
       const blockedIds = [ 'disqus', 'taboola', 'cresta', 'pubexchange', 'newsletter', 'sociales' ];
@@ -361,32 +315,6 @@ export default class DocumentParser {
   static getDomainUrl(originUrl) {
     if (Utils.isString(originUrl)) return url.parse(originUrl).hostname.replace(/^(www\.)(.+)/i, '$2');
     else return '';
-  }
-
-  static getBlockLists() {
-    return [
-      Assets.getText('adblockLists/easylist.txt'),
-      Assets.getText('adblockLists/easyprivacy.txt'),
-      Assets.getText('adblockLists/fanboy-annoyance.txt'),
-      Assets.getText('adblockLists/fanboy-social.txt'),
-      Assets.getText('adblockLists/neurone-custom-list.txt')
-    ];
-  }
-
-  static getBlockedClasses(blockLists) {
-    let classLists = blockLists.map((list) => { return list.replace(/^(?!##\.).+/gm, '').replace(/^\s*[\r\n]/gm, '').replace(/(##\.)/gm, '') }),
-            result = [];
-
-    classLists.forEach((list) => { result = result.concat(list.split(/[\r\n]/gm)) });
-    return result;
-  }
-
-  static getBlockedIds(blockLists) {
-    let idLists = blockLists.map((list) => { return list.replace(/^(?!###).+/gm, '').replace(/^\s*[\r\n]/gm, '').replace(/^###/gm, '') }),
-         result = [];
-
-    idLists.forEach((list) => { result = result.concat(list.split(/[\r\n]/gm)) });
-    return result;
   }
 
   static getDocumentInfo(documentPath) {
