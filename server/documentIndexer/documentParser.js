@@ -132,6 +132,17 @@ export default class DocumentParser {
       });
       */
 
+      // dgacitua: Remove onclick attribute from anchor tags
+      $('a').each((i, elem) => {
+        $(elem).removeAttr('onclick');
+      });
+
+      // dgacitua: Remove all external links
+      $('a[href]').each((i, elem) => {
+        $(elem).attr('href', 'javascript:void(0)');
+        $(elem).removeAttr('target');
+      });
+
       // dgacitua: Remove all iframes and frames
       $('iframe,frame').each((i, elem) => {
         $(elem).remove();
