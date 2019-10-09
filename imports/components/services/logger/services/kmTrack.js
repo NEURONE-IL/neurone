@@ -191,9 +191,10 @@ export default class KMTrackService {
     evt = evt || event;
       
     let t = Utils.getTimestamp(),
-       kc = evt.keyCode,
         w = evt.which,
+       kc = evt.keyCode,        
       chc = evt.charCode,
+      key = evt.key || '',
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
@@ -204,9 +205,10 @@ export default class KMTrackService {
         username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyDown',
         source: 'Window',
-        keyCode: kc,
         which: w,
+        keyCode: kc,
         charCode: chc,
+        key: key,
         chr: chr,
         localTimestamp: t,
         url: src
@@ -217,6 +219,7 @@ export default class KMTrackService {
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
+        ' key:' + key +
         ' char:' + chr +
         (evt.shiftKey ? ' +SHIFT' : '') +
         (evt.ctrlKey ? ' +CTRL' : '') +
@@ -233,9 +236,10 @@ export default class KMTrackService {
     evt = evt || event;
       
     let t = Utils.getTimestamp(),
-       kc = evt.keyCode,
         w = evt.which,
+       kc = evt.keyCode,        
       chc = evt.charCode,
+      key = evt.key || '',
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
@@ -246,9 +250,10 @@ export default class KMTrackService {
         username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyPress',
         source: 'Window',
-        keyCode: kc,
         which: w,
+        keyCode: kc,
         charCode: chc,
+        key: key,
         chr: chr,
         localTimestamp: t,
         url: src
@@ -259,6 +264,52 @@ export default class KMTrackService {
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
+        ' key:' + key +
+        ' char:' + chr +
+        (evt.shiftKey ? ' +SHIFT' : '') +
+        (evt.ctrlKey ? ' +CTRL' : '') +
+        (evt.altKey ? ' +ALT' : '') +
+        (evt.metaKey ? ' +META' : '') +
+        ' src:' + src
+      );
+
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
+    }
+  }
+
+  keyupListener(evt) {
+    evt = evt || event;
+      
+    let t = Utils.getTimestamp(),
+        w = evt.which,
+       kc = evt.keyCode,        
+      chc = evt.charCode,
+      key = evt.key || '',
+      chr = String.fromCharCode(kc || chc),
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
+    
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
+      let keyOutput = {
+        userId: Meteor.userId(),
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
+        type: 'KeyUp',
+        source: 'Window',
+        which: w,
+        keyCode: kc,
+        charCode: chc,
+        key: key,
+        chr: chr,
+        localTimestamp: t,
+        url: src
+      };
+
+      LogUtils.logToConsole('Key Pressed!', keyOutput.source,
+        'timestamp:' + t + 
+        ' keyCode:' + kc + 
+        ' which:' + w + 
+        ' charCode:' + chc +
+        ' key:' + key +
         ' char:' + chr +
         (evt.shiftKey ? ' +SHIFT' : '') +
         (evt.ctrlKey ? ' +CTRL' : '') +
@@ -287,6 +338,7 @@ export default class KMTrackService {
     this.bindEvent(targetDoc, 'click', data, this.mouseClickListener);
     this.bindEvent(targetDoc, 'keydown', data, this.keydownListener);
     this.bindEvent(targetDoc, 'keypress', data, this.keypressListener);
+    this.bindEvent(targetDoc, 'keyup', data, this.keyupListener);
 
     this.isTracking = true;
   }
@@ -299,6 +351,7 @@ export default class KMTrackService {
     this.unbindEvent(targetDoc, 'click', this.mouseClickListener);
     this.unbindEvent(targetDoc, 'keydown', this.keydownListener);
     this.unbindEvent(targetDoc, 'keypress', this.keypressListener);
+    this.unbindEvent(targetDoc, 'keyup', this.keyupListener);
 
     this.isTracking = false;
   }

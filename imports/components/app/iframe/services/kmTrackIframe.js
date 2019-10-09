@@ -177,23 +177,25 @@ class KMTrackIframeService {
   keydownListener(evt) {
     evt = evt || event;
       
-    var t = Utils.getTimestamp(),
-       kc = evt.keyCode,
+    let t = Utils.getTimestamp(),
         w = evt.which,
+       kc = evt.keyCode,        
       chc = evt.charCode,
+      key = evt.key || '',
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
-
+    
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var keyOutput = {
+      let keyOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyDown',
         source: 'Iframe',
-        keyCode: kc,
         which: w,
+        keyCode: kc,
         charCode: chc,
+        key: key,
         chr: chr,
         localTimestamp: t,
         url: src
@@ -204,6 +206,7 @@ class KMTrackIframeService {
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
+        ' key:' + key +
         ' char:' + chr +
         (evt.shiftKey ? ' +SHIFT' : '') +
         (evt.ctrlKey ? ' +CTRL' : '') +
@@ -219,23 +222,25 @@ class KMTrackIframeService {
   keypressListener(evt) {
     evt = evt || event;
       
-    var t = Utils.getTimestamp(),
-       kc = evt.keyCode,
+    let t = Utils.getTimestamp(),
         w = evt.which,
+       kc = evt.keyCode,        
       chc = evt.charCode,
+      key = evt.key || '',
       chr = String.fromCharCode(kc || chc),
         s = evt.data.s,
       src = s.href(s.current.name, s.params, {absolute: false});
-
+    
     if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
-      var keyOutput = {
+      let keyOutput = {
         userId: Meteor.userId(),
-        username: Meteor.user().username || Meteor.user().emails[0].address,
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
         type: 'KeyPress',
         source: 'Iframe',
-        keyCode: kc,
         which: w,
+        keyCode: kc,
         charCode: chc,
+        key: key,
         chr: chr,
         localTimestamp: t,
         url: src
@@ -246,6 +251,52 @@ class KMTrackIframeService {
         ' keyCode:' + kc + 
         ' which:' + w + 
         ' charCode:' + chc +
+        ' key:' + key +
+        ' char:' + chr +
+        (evt.shiftKey ? ' +SHIFT' : '') +
+        (evt.ctrlKey ? ' +CTRL' : '') +
+        (evt.altKey ? ' +ALT' : '') +
+        (evt.metaKey ? ' +META' : '') +
+        ' src:' + src
+      );
+
+      Meteor.apply('storeKeystroke', [ keyOutput ], { noRetry: true }, (err, result) => {});
+    }
+  }
+
+  keyupListener(evt) {
+    evt = evt || event;
+      
+    let t = Utils.getTimestamp(),
+        w = evt.which,
+       kc = evt.keyCode,        
+      chc = evt.charCode,
+      key = evt.key || '',
+      chr = String.fromCharCode(kc || chc),
+        s = evt.data.s,
+      src = s.href(s.current.name, s.params, {absolute: false});
+    
+    if (!!Meteor.userId() && LoggerConfigs.keyboardLogging) {
+      let keyOutput = {
+        userId: Meteor.userId(),
+        username: Meteor.user().username || Meteor.user().emails[0].address || '',
+        type: 'KeyUp',
+        source: 'Iframe',
+        which: w,
+        keyCode: kc,
+        charCode: chc,
+        key: key,
+        chr: chr,
+        localTimestamp: t,
+        url: src
+      };
+
+      LogUtils.logToConsole('Key Pressed!', keyOutput.source,
+        'timestamp:' + t + 
+        ' keyCode:' + kc + 
+        ' which:' + w + 
+        ' charCode:' + chc +
+        ' key:' + key +
         ' char:' + chr +
         (evt.shiftKey ? ' +SHIFT' : '') +
         (evt.ctrlKey ? ' +CTRL' : '') +
@@ -282,6 +333,7 @@ class KMTrackIframeService {
       this.bindEventIframe(targetDoc, 'click', data, this.mouseClickListener);
       this.bindEventIframe(targetDoc, 'keydown', data, this.keydownListener);
       this.bindEventIframe(targetDoc, 'keypress', data, this.keypressListener);
+      this.bindEventIframe(targetDoc, 'keyup', data, this.keyupListener);
     }
 
     this.isTracking = true;
@@ -302,6 +354,7 @@ class KMTrackIframeService {
       this.unbindEventIframe(targetDoc, 'click', this.mouseClickListener);
       this.unbindEventIframe(targetDoc, 'keydown', this.keydownListener);
       this.unbindEventIframe(targetDoc, 'keypress', this.keypressListener);
+      this.unbindEventIframe(targetDoc, 'keyup', this.keyupListener);
     }
 
     this.isTracking = false;
