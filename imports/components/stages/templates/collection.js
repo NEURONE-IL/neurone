@@ -1,6 +1,6 @@
 import angularTruncate from 'angular-truncate-2';
 
-import 'mark.js';
+import Mark from 'mark.js';
 
 import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';

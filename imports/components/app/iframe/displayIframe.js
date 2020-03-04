@@ -1,6 +1,6 @@
 import angularSanitize from 'angular-sanitize';
 
-import 'mark.js';
+import Mark from 'mark.js';
 
 import template from './displayIframe.html';
 
