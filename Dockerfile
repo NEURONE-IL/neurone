@@ -3,7 +3,7 @@
 # https://medium.com/@isohaze/how-to-dockerize-a-meteor-1-4-app-120a34089ddb
 # https://projectricochet.com/blog/production-meteor-and-node-using-docker-part-i
 
-FROM phusion/passenger-nodejs:0.9.35
+FROM phusion/passenger-nodejs:1.0.9
 
 # Contact the maintainer in case of problems
 MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
