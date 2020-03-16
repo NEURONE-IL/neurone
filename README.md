@@ -1,6 +1,6 @@
 # NEURONE: oNlinE inqUiRy experimentatiON systEm
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0) [![Build Status](https://travis-ci.com/dgacitua/neurone.svg?token=bybFYGq2vZ5sYMfosTqM&branch=master)](https://travis-ci.com/dgacitua/neurone)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
 Created by Daniel Gacitua
 
@@ -20,7 +20,7 @@ All NEURONE functionality is described in these manuals:
 - NEURONE's Sysadmin Manual (Describes installation steps in order to deploy NEURONE in a server)
 - NEURONE's Developer Manual (General notes for developing new extensions for NEURONE)
 
-Manuals will be released soon.
+Manuals can be downloaded on the "Releases" section of this repository.
 
 ## Install Instructions
 
@@ -28,7 +28,7 @@ Manuals will be released soon.
 
 **NOTE:** A Linux development machine is highly recommended.
 
-1. In your development machine: Install Meteor 1.6+ and Solr 6.5+
+1. In your development machine: Install Meteor 1.6+ and Solr 6.5+ (see instructions below)
 2. In Solr, create a core (or collection) called `neurone`
 3. Clone this repository (or download as ZIP)
 4. Open a terminal in NEURONE's source code directory, run `meteor npm install` (this is needed only once)
@@ -37,20 +37,20 @@ Manuals will be released soon.
 
 #### Installing Meteor for development
 
-Instructions to install Meteor on Linux distributions:
+Run the following command to install Meteor on Linux distributions:
 
-        $ curl https://install.meteor.com/ | sh
+    $ curl https://install.meteor.com/ | sh
 
 #### Installing Solr for development
 
-Solr requires Java 8 JDK or greater to run. Instructions to install Solr on Linux distributions:
+1. Solr requires Java 8 JDK or greater to run. Run the following commands to install Solr on Linux distributions:
 
         $ cd /tmp
         $ wget https://archive.apache.org/dist/lucene/solr/8.4.1/solr-8.4.1.tgz
         $ tar xzf solr-8.4.1.tgz solr-8.4.1/bin/install_solr_service.sh --strip-components=2
         $ sudo bash ./install_solr_service.sh solr-8.4.1.tgz
 
-Create a new core (collection) in Solr for NEURONE:
+2. Create a new core (collection) in Solr for NEURONE:
 
         $ sudo su - solr -c "/opt/solr/bin/solr create -c neurone -n data_driven_schema_configs"
 
