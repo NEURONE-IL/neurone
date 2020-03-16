@@ -10,7 +10,7 @@ MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 
 # Install basic dependencies
 RUN apt-get -qq update \
-  && apt-get -qq --no-install-recommends install curl ca-certificates wget python unzip bsdtar
+  && apt-get -qq --no-install-recommends install wget curl ca-certificates unzip bsdtar make gcc python python-dev
 
 # Set user
 ARG username=user
