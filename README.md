@@ -28,12 +28,31 @@ Manuals will be released soon.
 
 **NOTE:** A Linux development machine is highly recommended.
 
-1. In your development machine: Install Meteor 1.6+, MongoDB 3.4+ and Solr 6.5+
+1. In your development machine: Install Meteor 1.6+ and Solr 6.5+
 2. In Solr, create a core (or collection) called `neurone`
 3. Clone this repository (or download as ZIP)
 4. Open a terminal in NEURONE's source code directory, run `meteor npm install` (this is needed only once)
 5. Now run `meteor npm start`. Edit any files you need, they will be live-reloaded in your local web browser
 6. When you are done, just abort the terminal (i.e. `CTRL+C`)
+
+#### Installing Meteor for development
+
+Instructions to install Meteor on Linux distributions:
+
+        $ curl https://install.meteor.com/ | sh
+
+#### Installing Solr for development
+
+Solr requires Java 8 JDK or greater to run. Instructions to install Solr on Linux distributions:
+
+        $ cd /tmp
+        $ wget https://archive.apache.org/dist/lucene/solr/8.4.1/solr-8.4.1.tgz
+        $ tar xzf solr-8.4.1.tgz solr-8.4.1/bin/install_solr_service.sh --strip-components=2
+        $ sudo bash ./install_solr_service.sh solr-8.4.1.tgz
+
+Create a new core (collection) in Solr for NEURONE:
+
+        $ sudo su - solr -c "/opt/solr/bin/solr create -c neurone -n data_driven_schema_configs"
 
 ### Production
 
