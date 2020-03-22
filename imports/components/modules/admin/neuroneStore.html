@@ -1,0 +1,47 @@
+<div class="contairner-fliud">
+    <div class="text-center">
+
+        <h1>NEURONE STORE</h1>
+    </div>
+    <div class="main-center">
+        <div ng-if="neuroneStore.token == null">
+
+            <form class="simple-form">
+                <label>E-mail: <input class="form-control" type="email" ng-model="neuroneStore.email" required /></label><br />
+                <label>Password: <input class="form-control" type="password" ng-model="neuroneStore.password" required /></label><br />
+                <input type="submit" ng-click="neuroneStore.loginStore()" value="Login" />
+            </form>
+        </div>
+    </div>
+    <div ng-if="neuroneStore.token != null">
+        <button class="btn btn-primary" ng-click="neuroneStore.loadPublishes()">Load studies</button>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                <th scope="col">Study</th>
+                <th scope="col">Number Stages</th>
+                <th scope="col">Domain</th>
+                <th scope="col">Task</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+                <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="study in neuroneStore.studies">
+                <td>{{study.study.id}}</td>
+                <td>{{study.study.stages.length}} stages</td>
+                <td>{{study.study.domain.name}}</td>
+                <td>{{study.study.task.name}}</td>
+                <td>{{study.date.toString()}}</td>
+                <td>
+                    <button class="btn btn-success" ng-click="neuroneStore.createStudyStore(study)" ng-if="neuroneStore.neededElements === neuroneStore.completedElements">
+                        Load
+                    </button>
+                </td>
+                <td>{{study.status}}</td>
+                </tr>
+            </tbody>
+            </table>
+    </div>
+</div>
