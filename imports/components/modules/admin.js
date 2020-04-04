@@ -15,6 +15,7 @@ import { name as DocumentManager } from './admin/documentManager';
 import { name as DocumentView } from './admin/documentView';
 import { name as StudyManager } from './admin/studyManager';
 import { name as Enrollment } from './admin/enrollment';
+import { name as NeuroneStore } from './admin/neuroneStore';
 
 import template from './admin.html';
 
@@ -63,7 +64,8 @@ export default angular.module(name, [
   DocumentManager,
   DocumentView,
   StudyManager,
-  Enrollment
+  Enrollment,
+  NeuroneStore
 ])
 .component(name, {
   template: template.default,
@@ -101,6 +103,9 @@ function config($stateProvider) {
       },
       'enrollment@admin': {
         template: '<enrollment></enrollment>'
+      },
+      'neuroneStore@admin': {
+        template: '<neurone-store></neurone-store>'
       }
     },
     resolve: {
