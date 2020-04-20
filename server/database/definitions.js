@@ -40,3 +40,7 @@ export { FormQuestionnaires } from '../../imports/database/formQuestionnaires/in
 export { FormAnswers } from '../../imports/database/formAnswers/index';
 export { SynthesisQuestions } from '../../imports/database/synthesisQuestions/index';
 export { SynthesisAnswers } from '../../imports/database/synthesisAnswers/index';
+
+
+//multimedia
+export { ImageSearch, Book, Video } from '../../imports/database/multimediaObjects'

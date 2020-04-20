@@ -1,11 +1,4 @@
-import angularSanitize from 'angular-sanitize';
-import angularTruncate from 'angular-truncate-2';
-import ngCSV from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
-import RandomString from 'randomstring';
-
-import Utils from '../globalUtils';
-import Configs from '../globalConfigs';
 
 import { name as AdminHome } from './admin/adminHome';
 import { name as ContentCreator } from './admin/contentCreator';
@@ -13,6 +6,8 @@ import { name as FormBuilder } from './admin/formBuilder';
 import { name as DocumentLoader } from './admin/documentLoader';
 import { name as DocumentManager } from './admin/documentManager';
 import { name as DocumentView } from './admin/documentView';
+import { name as VideoLoader } from './admin/videoLoader';
+import { name as BookLoader } from './admin/bookLoader';
 import { name as StudyManager } from './admin/studyManager';
 import { name as Enrollment } from './admin/enrollment';
 
@@ -62,6 +57,8 @@ export default angular.module(name, [
   DocumentLoader,
   DocumentManager,
   DocumentView,
+  VideoLoader,
+  BookLoader,
   StudyManager,
   Enrollment
 ])
@@ -95,6 +92,12 @@ function config($stateProvider) {
       },
       'docManager@admin': {
         template: '<document-manager></document-manager>'
+      },
+      'bookLoader@admin': {
+        template: '<book-loader></book-loader>'
+      },
+      'videoLoader@admin': {
+        template:'<video-loader></video-loader>'
       },
       'studyManager@admin': {
         template: '<study-manager></study-manager>'

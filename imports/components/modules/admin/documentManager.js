@@ -5,6 +5,7 @@ import template from './documentManager.html';
 
 import { Documents } from '../../../database/documents/index';
 import { FlowComponents } from '../../../database/flowComponents/index';
+import { ImageSearch, Video, Book } from '../../../database/multimediaObjects';
 
 class DocumentManager {
   constructor($scope, $reactive, ModalService, LoadingService) {
@@ -16,9 +17,16 @@ class DocumentManager {
     $reactive(this).attach($scope);
 
     this.subscribe('documents');
+    this.subscribe('Video');
+    this.subscribe('Book');
+    this.subscribe('ImageSearch');
+   
 
     this.helpers({
       docs: () => Documents.find(),
+      videos: () => Video.find(),
+      books: () => Book.find(),
+      img: () => ImageSearch.find(),
       locales: () => FlowComponents.find({ type: 'locale' }),
       domains: () => FlowComponents.find({ type: 'domain' }),
       tasks: () => FlowComponents.find({ type: 'task' })
@@ -29,7 +37,8 @@ class DocumentManager {
 
   editDocument(doc) {
     let docRef = angular.copy(doc);
-    docRef.keywords = docRef.keywords.join(', ');
+    if (docRef.type != 'video')
+      docRef.keywords = docRef.keywords.join(', ');
 
     let modalOpts = {
       title: 'Edit document',
@@ -52,31 +61,111 @@ class DocumentManager {
         //editedDocument.topic = !!(editedDocument.topic) ? editedDocument.topic.map((obj) => { return obj.properties.alias }) : [];
         editedDocument.keywords = !!(editedDocument.keywords) && (editedDocument.keywords.length > 1) ? editedDocument.keywords.split(',').map((kw) => { return kw.trim() }) : [];
         delete editedDocument._id;
+        if(doc.type == 'book'){
+          Book.update(doc._id, { $set: editedDocument }, (err, res) => {
+            if (!err) {
+              console.log('Document edited in Database!', res);
+  
+              this.call('reindex', (err, res) => {
+                if (!err) console.log('Inverted Index regenerated!');
+                else console.error('Cannot regenerate Inverted Index!', err);
+              });
+            }
+            else {
+              console.error('Error while editing Document!', err);
+            }
+          });
 
-        Documents.update(doc._id, { $set: editedDocument }, (err, res) => {
-          if (!err) {
-            console.log('Document edited in Database!', res);
+        }
+        else if (doc.type == 'video') {
+          Video.update(doc._id, { $set: editedDocument }, (err, res) => {
+            if (!err) {
+              console.log('Document edited in Database!', res);
+  
+              this.call('reindex', (err, res) => {
+                if (!err) console.log('Inverted Index regenerated!');
+                else console.error('Cannot regenerate Inverted Index!', err);
+              });
+            }
+            else {
+              console.error('Error while editing Document!', err);
+            }
+          });
+        }
+        else{
+          Documents.update(doc._id, { $set: editedDocument }, (err, res) => {
+            if (!err) {
+              console.log('Document edited in Database!', res);
 
-            this.call('reindex', (err, res) => {
-              if (!err) console.log('Inverted Index regenerated!');
-              else console.error('Cannot regenerate Inverted Index!', err);
-            });
-          }
-          else {
-            console.error('Error while editing Document!', err);
-          }
-        });
+              this.call('reindex', (err, res) => {
+                if (!err) console.log('Inverted Index regenerated!');
+                else console.error('Cannot regenerate Inverted Index!', err);
+              });
+            }
+            else {
+              console.error('Error while editing Document!', err);
+            }
+          });
+        }
       }
     });
   }
 
   deleteDocument(doc) {
     let deletedDoc = angular.copy(doc);
-    
+    if(doc.type == 'video'){
+
+      Video.remove(deletedDoc._id, (err, res) => {
+        if (!err) {
+          console.log('Document deleted from Database!', deletedDoc.docId);
+          this.call('deleteFile', deletedDoc, (err, res) => {
+            if (!err) console.log('File deleted!');
+            else console.error('Error deleting file!', err);
+          });
+          this.call('reindex', (err, res) => {
+            if (!err) console.log('Inverted Index regenerated!');
+            else console.error('Cannot regenerate Inverted Index!', err);
+          });
+        }
+        else {
+          console.error('Cannot delete document!', deletedDoc.docId, err);
+        }
+      });
+    }
+    else if(doc.type == 'book'){
+      Book.remove(deletedDoc._id, (err, res) => {
+        if (!err) {
+          console.log('Document deleted from Database!', deletedDoc.docId);
+          this.call('deleteFile', deletedDoc, (err, res) => {
+            if (!err) console.log('File deleted!');
+            else console.error('Error deleting file!', err);
+          });
+          this.call('reindex', (err, res) => {
+            if (!err) console.log('Inverted Index regenerated!');
+            else console.error('Cannot regenerate Inverted Index!', err);
+          });
+        }
+        else {
+          console.error('Cannot delete document!', deletedDoc.docId, err);
+        }
+      });
+    }
+    else
     Documents.remove(deletedDoc._id, (err, res) => {
       if (!err) {
         console.log('Document deleted from Database!', deletedDoc.docId);
 
+        ImageSearch.find({route: deletedDoc._id}).fetch().forEach(element => {
+          ImageSearch.remove(element._id, (err, res) => {
+            if (!err) {
+              console.log('Document deleted from Database!', element._id);
+              }
+        else {
+          console.error('Cannot delete document!', element._id, err);
+        }});
+        }); 
+          
+      
         this.call('reindex', (err, res) => {
           if (!err) console.log('Inverted Index regenerated!');
           else console.error('Cannot regenerate Inverted Index!', err);

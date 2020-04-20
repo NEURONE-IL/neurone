@@ -9,6 +9,8 @@ import ServerConfigs from '../utils/serverConfigs';
 import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
+import { ImageSearch } from '../database/definitions';
+import { URL } from 'url';
 
 const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36';
 const errorObj = { msg: 'ERROR!' };
@@ -121,9 +123,52 @@ export default class DocumentDownloader {
 
         let result = Documents.upsert({ route: indexedDocument.route }, indexedDocument);
 
+        var readdir = require('readdir-enhanced'),
+        directory = path.join(res.fullPath,'../..'),
+        currentFolder = path.basename(directory),
+        urlOrigin = new URL(docObj.url).origin.split('://')[1];
+
+        while(currentFolder != urlOrigin && currentFolder != docObj.docName){
+          directory = path.join(directory, '../')
+          currentFolder = path.basename(directory)
+        }
+
+        function getImg(stats){
+          return stats.isFile() && stats.size > 10240 && (stats.path.indexOf('.jpg') >= 0 || stats.path.indexOf('.png') >= 0 || stats.path.indexOf('.jpeg') >= 0)
+        }
+
+        readdir(directory,{filter: getImg , deep: true}, function(err, files){
+          if(err){
+            return console.log(err)
+          }
+          files.forEach(function(file){
+            var image = {
+              docName: path.basename(file),
+              title: path.basename(file, ".jpg"),
+              locale: docObj.locale || 'en',
+              relevant: docObj.relevant || false,
+              task: docObj.task ,
+              domain: docObj.domain ,
+              keywords: docObj.keywords || [],
+              date: docObj.date || Utils.getDate(),
+              url: file,
+              searchSnippet: docObj.searchSnippet || '',
+              indexedBody: 'test',
+              route: Documents.findOne({ route: indexedDocument.route })._id,
+              img: path.join(res.route,'../..')+'/'+file,
+              type: 'image'
+            }
+            ImageSearch.upsert({ route: file }, image)
+          })
+        })
+
+
         if (result.numberAffected > 0) {
           let doc = Documents.findOne({ route: indexedDocument.route });
-
+          this.call(reindex, (err, res) => {
+            if (!err) console.log('Inverted Index regenerated!');
+            else console.error('Cannot regenerate Inverted Index!', err);
+          });
           Indexer.indexDocumentAsync(doc, (err2, res2) => {
             if (!err2) {
               callback(null, doc);  

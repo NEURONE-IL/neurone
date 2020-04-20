@@ -7,6 +7,7 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 import template from './search.html';
+import{ name as mapsSearch} from './mapsSearch'
 
 class Search {
   constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, $sanitize, UserDataService, QueryTrackService, EventTrackService) {
@@ -21,6 +22,7 @@ class Search {
     this.uds = UserDataService;
     this.qts = QueryTrackService;
     this.ets = EventTrackService;
+    this.multimediaObjects = "";
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -52,6 +54,8 @@ class Search {
 
           var stageNumber = this.uds.getSession().currentStageNumber,
              currentStage = this.uds.getConfigs().stages[stageNumber];
+          
+          this.multimediaObjects = currentStage.multimedia;
 
           this.uds.setSession({ currentStageName: currentStage.id, currentStageState: currentStage.state });
 
@@ -64,6 +68,7 @@ class Search {
         }
       });
     });
+
 
     $reactive(this).attach($scope);
 
@@ -99,9 +104,19 @@ class Search {
       this.call('searchDocuments', queryObj, function(err, res) {
         if (!err) {
           this.documents = res;
-          
+          this.images = res.filter(img => img.type == 'image');
+          this.videos = res.filter(vid => vid.type == 'video');
+          this.books = res.filter(book => book.type == 'book');
+
           // dgacitua: Pagination
-          this.totalResults = this.documents.length;
+          var multimediaEnabled = this.uds.getConfigs().stages[this.uds.getSession().currentStageNumber].multimedia;
+          
+          this.videoResults = this.videos.length;
+          this.booksResults = this.books.length;
+          this.totalResults = this.documents.length - 
+                              this.images.length -//(this.images.length * (+ !multimediaEnabled.image)) -
+                              (this.videoResults * (+ !multimediaEnabled.video)) -
+                              (this.booksResults * (+ !multimediaEnabled.book));
           this.currentPage = 1;
           this.resultsPerPage = 10;
           this.paginationMaxSize = 5;
@@ -148,7 +163,8 @@ const name = 'search';
 // create a module
 export default angular.module(name, [
   'ngSanitize',
-  'truncate'
+  'truncate',
+  mapsSearch
 ])
 .component(name, {
   template: template.default,
@@ -162,7 +178,14 @@ function config($stateProvider) {
 
   $stateProvider.state('search', {
     url: '/search?query',
-    template: '<search></search>',
+    views:{
+        '@': {
+        template: '<search></search>'
+      },
+      'mapsSearch@search': {
+        template: '<maps-search></maps-search>'
+      }
+    },
     resolve: {
       userLogged($q) {
         if (!!Meteor.userId()) return $q.resolve();
