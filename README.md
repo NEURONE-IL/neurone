@@ -87,16 +87,17 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
 
 5. You can set some of the following Environment Variables on your production machine to customize deployment, although NEURONE can run perfectly with its default values (take note of those values whether you use the default ones or not):
 
-    | Env Variable Name       | Default Value       | Description                                                |
-    |-------------------------|---------------------|------------------------------------------------------------|
-    | `NEURONE_ASSET_PATH`    | `~/neuroneAssets`   | NEURONE asset folder location in your production machine   |
-    | `NEURONE_MONGO_PATH`    | `~/neuroneDatabase` | MongoDB raw data folder storage in your production machine |
-    | `NEURONE_HOST`          | `localhost`         | IP or DNS domain where NEURONE is hosted                   |
-    | `NEURONE_ADMIN_DB_USER` | `admin`             | MongoDB Admin username                                     |
-    | `NEURONE_ADMIN_DB_PASS` | `neurone2017`       | MongoDB Admin password                                     |
-    | `NEURONE_DB`            | `neurone`           | MongoDB database name                                      |
-    | `NEURONE_DB_USER`       | `neurone`           | MongoDB database username                                  |
-    | `NEURONE_DB_PASS`       | `neurone`           | MongoDB database password                                  |
+    | Env Variable Name       | Default Value          | Description                                                      |
+    |-------------------------|------------------------|------------------------------------------------------------------|
+    | `NEURONE_ASSET_PATH`    | `~/neuroneAssets`      | NEURONE asset folder location in your production machine         |
+    | `NEURONE_MONGO_PATH`    | `~/neuroneDatabase`    | MongoDB raw data folder storage in your production machine       |
+    | `NEURONE_HOST`          | `localhost`            | IP or DNS domain where NEURONE is hosted                         |
+    | `NEURONE_ADMIN_DB_USER` | `admin`                | MongoDB Admin username                                           |
+    | `NEURONE_ADMIN_DB_PASS` | `neurone2017`          | MongoDB Admin password                                           |
+    | `NEURONE_DB`            | `neurone`              | MongoDB database name                                            |
+    | `NEURONE_DB_USER`       | `neurone`              | MongoDB database username                                        |
+    | `NEURONE_DB_PASS`       | `neurone`              | MongoDB database password                                        |
+    | `MAPTILER_KEY`          | `XNctrGMVMOj0xErblNkx` | Maptiler API key (get one for free on https://www.maptiler.com/) |
     
     To override a default value through an environment variable, use the following command as an example:
     
