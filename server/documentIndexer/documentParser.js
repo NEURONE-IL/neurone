@@ -191,7 +191,6 @@ export default class DocumentParser {
       const blockedIds = [ 'disqus', 'taboola', 'cresta', 'pubexchange', 'newsletter', 'sociales' ];
       const blockedClasses = [ 'share', 'entry-share', 'textwidget', 'widget_ad', 'fb-comments', 'fb-social-plugin', 'fb-login-button', 'fb_iframe_widget', 'leikiwidget' ];
       const blockedElements = [ 'iframe', 'object' ];
-
       const adRemover = (elem) => {
         // dgacitua: Remove all onclick events
         $(elem).removeAttr('onclick');
@@ -201,7 +200,6 @@ export default class DocumentParser {
           $(elem).remove();
           return true;
         }
-
         // dgacitua: Minimal ad filter by div class
         blockedClasses.some((el, idx, arr) => {
           if ($(elem).is(`.${el}`)) {
@@ -209,70 +207,57 @@ export default class DocumentParser {
             return true;
           }
         });
-
         return false;
       };
-
       const specialElementsRemover = (elementArray) => {
         elementArray.forEach((el, idx, arr) => {
           $(el).each((i, elem) => { $(elem).remove() });
         });
       };
-
       specialElementsRemover(blockedElements);
       
       // dgacitua: Remove onclick attribute from anchor tags
       $('a').each((i, elem) => {
         $(elem).removeAttr('onclick');
       });
-
       // dgacitua: Remove all external links
       $('a[href]').each((i, elem) => {
         $(elem).attr('href', 'javascript:void(0)');
         $(elem).removeAttr('target');
       });
-
       $('div').each((i, elem) => { adRemover(elem) });
       $('aside').each((i, elem) => { adRemover(elem) });
-
       $('p script').each((i, elem) => {
         if ($(elem).attr('type') === 'text/javascript') {
           $(elem).remove();
         }
       });
-
       $('select').each((i, elem) => {
         $(elem).removeAttr('id');
         $(elem).removeAttr('onchange');
       });
-
       // dgacitua: Remove javascript
       $('script').each((i, elem) => {
         $(elem).removeAttr('src');
         // if ($(elem).attr('type') === 'text/javascript' || $(elem).attr('type') === 'application/javascript') $(elem).remove();
       });
-
       // dgacitua: Disable input elements
       $('input').each((i, elem) => {
         $(elem).removeAttr('id');
         $(elem).attr('disabled', 'true');
       });
-
       // dgacitua: Disable button elements
       $('button').each((i, elem) => {
         $(elem).removeAttr('id');
         $(elem).attr('disabled', 'true');
       });
-
       // dgacitua: Disable submit
       $('input[type="submit"]').each((i, elem) => {
         $(elem).removeAttr('type');
       });
-
       $('button[type="submit"]').each((i, elem) => {
         $(elem).removeAttr('type');
       });
-
       // dgacitua: Disable form action
       $('form').each((i, elem) => {
         $(elem).removeAttr('action');

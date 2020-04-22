@@ -4,6 +4,7 @@ import Utils from '../../utils/serverUtils';
 import RemoveDiacritics from '../../utils/removeDiacritics';
 
 import { Documents } from '../../../imports/database/documents/index';
+import { Book, Video, ImageSearch } from '../../database/definitions';
 
 let searchIndex;
 
@@ -36,7 +37,12 @@ export default class SolrIndex {
          idxDocs = [],
           idxCnt = 0,
           idxErr = 0;
-        
+        let books = Book.find().fetch(),
+            videos = Video.find().fetch(),
+            images = ImageSearch.find().fetch();
+            
+            docs = docs.concat(books.concat(videos).concat(images));
+
         docs.forEach((doc, idx) => {
           let newDoc = {
             id: doc._id,
@@ -48,7 +54,9 @@ export default class SolrIndex {
             indexedBody_t: doc.indexedBody || '',
             keywords_t: doc.keywords || [],
             task_s: doc.task || [],
-            domain_s: doc.domain || []
+            domain_s: doc.domain || [],
+            url_t: doc.url || '',
+            type_t: doc.type || 'page'
           };
 
           idxDocs.push(newDoc);
@@ -92,7 +100,9 @@ export default class SolrIndex {
       indexedBody_t: docObj.indexedBody || '',
       keywords_t: docObj.keywords || [],
       task_s: docObj.task || [],
-      domain_s: docObj.domain || []
+      domain_s: docObj.domain || [],
+      url_t: docObj.url || '',
+      type_t: docObj.type || 'page'
     };
 
     let arrDocs = [ newDoc ];
@@ -140,6 +150,16 @@ export default class SolrIndex {
           let docId = doc.id,
              docObj = Documents.findOne({_id: docId});
 
+             //document multimedia
+             if(docObj == null){
+               docObj = Video.findOne({_id:docId});
+               if(docObj == null){
+                docObj = Book.findOne({_id:docId});
+                }
+                if(docObj == null){
+                  docObj = ImageSearch.findOne({_id:docId});
+                }
+             }
           docObj.searchSnippet = '';
 
           searchHl[docId].indexedBody_t.forEach((snip, idx, arr) => {

@@ -47,18 +47,138 @@
       </div>
     </div>
     <div ng-if="search.resultsReady">
-      <div ng-repeat="doc in search.documents.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage)) track by doc._id">
-        <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">{{doc.title}}</a>
-        <div class="search-result-url">{{doc.url}}</div>
-        <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
-        <br>
+
+      <div class="row admin-row-spacing">
+        <uib-tabset>
+          <uib-tab index="0">
+            <uib-tab-heading>
+              <i class="fa fa-search" aria-hidden="true"></i> Web
+            </uib-tab-heading>
+
+            <div ng-if="search.multimediaObjects.image">
+              <ui-carousel
+                slides="search.images"
+                slides-to-show="4"
+                slides-to-scroll="1">
+                <carousel-item>
+                  <img src="{{item.img}}" alt="{{item.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: item.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: item.route})">
+                </carousel-item>
+                <carousel-prev> 
+                  <i class="fa fa-angle-left fa-5x" aria-hidden="true" ></i>
+                </carousel-prev>
+                <carousel-next> <i class="fa fa-angle-right fa-5x" aria-hidden="true"></i></carousel-next>
+              </ui-carousel>
+            </div>
+
+            <div ng-repeat="doc in search.documents.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage)) track by doc._id">
+              
+              <div ng-if="doc.type == 'video' && search.multimediaObjects.video">
+                  <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">{{doc.title}}</a>
+                  <div class="search-result-url">{{doc.url}} </div>
+                  <div class="row ">
+                  <div class="clearfix visible-xs"></div>
+                    <div class="col-md-2  col-xs-3">
+                      <img src="{{doc.thumbnail}}" alt="{{doc.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">
+                    </div>
+                    <div class="col-md-8 col-xs-7">
+                      <div style="margin-left: 20px;" class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"> </div>
+                    </div>
+                  </div>
+                </div>        
+                <div ng-if="doc.type == 'book' && search.multimediaObjects.book" >
+                     <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">[PDF] {{doc.title}}</a>
+                     <div class="search-result-url">{{doc.url}} </div>
+                     <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
+                </div>
+                <div ng-if="doc.type != 'book' && doc.type != 'video' && doc.type != 'image'" >
+                  <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">{{doc.title}}</a>
+                  <div class="search-result-url">{{doc.url}} </div>
+                  <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
+                </div>
+                <br>
+            </div>
+
+            <div class="pagination-wrapper text-center" ng-if="search.documents.length > 0">
+              <ul uib-pagination total-items="search.totalResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
+            </div>
+            <div ng-if="search.documents.length <= 0" class="text-center">
+              <h3>{{"search.noResults" | translate}}</h3>
+            </div>
+          </uib-tab>
+
+          
+          <uib-tab index="1" disable="!search.multimediaObjects.image">
+            <uib-tab-heading>
+              <i class="fa fa-picture-o" aria-hidden="true"></i>  Images
+            </uib-tab-heading>
+            <div ng-if="search.images.length <= 0" class="text-center">
+              <h3>{{"search.noResults" | translate}}</h3>
+            </div>
+            <md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-lg="5"></md-grid-list>               
+                <md-grid-tile ng-repeat="doc in search.images track by doc._id"  ng-if="doc.type == 'image'" md-colspan="1" md-colspan-sm="3" md-colspan-md="5">
+                  <img src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})">
+                </md-grid-tile>
+              </md-grid-list>
+          </uib-tab>
+
+
+          <uib-tab index="2" disable="!search.multimediaObjects.video">
+            <uib-tab-heading>
+              <i class="fa fa-youtube-play" aria-hidden="true"></i> Videos
+            </uib-tab-heading>
+            <div ng-if="search.videos.length <= 0" class="text-center">
+              <h3>{{"search.noResults" | translate}}</h3>
+            </div>
+            <div ng-repeat="doc in search.videos.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage))  track by doc._id" >
+            <div >
+              <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">{{doc.title}}</a>
+              <div class="search-result-url">{{doc.url}} </div>
+              <div class="row ">
+              <div class="clearfix visible-xs"></div>
+                <div class="col-md-2  col-xs-3">
+                  <img src="{{doc.thumbnail}}" alt="{{doc.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">
+                </div>
+                <div class="col-md-8 col-xs-7">
+                  <div style="margin-left: 20px;" class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"> </div>
+                </div>
+              </div>
+            </div>   
+          </div>
+          <div class="pagination-wrapper text-center" ng-if="search.videos.length > 0">
+            <ul uib-pagination total-items="search.videoResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
+          </div>
+          </uib-tab>
+
+          <uib-tab index="3" disable="!search.multimediaObjects.book">
+            <uib-tab-heading>
+              <i class="fa fa-book" aria-hidden="true"></i> Book
+            </uib-tab-heading>
+            <div ng-if="search.books.length <= 0" class="text-center">
+              <h3>{{"search.noResults" | translate}}</h3>
+            </div>
+            <div ng-repeat="doc in search.books.slice(((search.currentPage-1)*search.resultsPerPage), ((search.currentPage)*search.resultsPerPage)) track by doc._id">
+              <div ng-if="doc.type == 'book'" >
+                <a class="search-result-title" ui-sref="displayPage({ docName: doc._id })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc._id})">[PDF] {{doc.title}}</a>
+                <div class="search-result-url">{{doc.url}}</div>
+                <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
+              </div>
+              <div class="pagination-wrapper text-center" ng-if="search.books.length > 0">
+                <ul uib-pagination total-items="search.bookResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
+              </div>
+
+          </uib-tab>
+
+
+          <uib-tab index="4" disable="!search.multimediaObjects.maps" ng-click="mapsSearch.fixMap()">
+            <uib-tab-heading>
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Maps
+            </uib-tab-heading>
+            <div ui-view="mapsSearch" ></div>
+            
+          </uib-tab>
+        </uib-tabset>
       </div>
-      <div class="pagination-wrapper text-center" ng-if="search.documents.length > 0">
-        <ul uib-pagination total-items="search.totalResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
-      </div>
-      <div ng-if="search.documents.length <= 0" class="text-center">
-        <h3>{{"search.noResults" | translate}}</h3>
-      </div>
+
     </div>
   </div>
 </div>
