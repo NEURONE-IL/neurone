@@ -24,7 +24,7 @@ class ModalCtrl {
     this.buttonName = buttonName;
     this.functions = functions;
 
-    this.showFooter = (this.buttonType === 'okcancel' || this.buttonType === 'nextstage' || this.buttonType === 'next' || this.buttonType === 'back' || this.buttonType === 'button' || this.buttonType === 'save');
+    this.showFooter = (this.buttonType === 'okcancel' || this.buttonType === 'nextstage' || this.buttonType === 'next' || this.buttonType === 'back' || this.buttonType === 'button' || this.buttonType === 'button2' || this.buttonType === 'save');
     this.answers = this.fields.content || {};
     
     this.response = {};

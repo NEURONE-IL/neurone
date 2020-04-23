@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div>
+    Select some evaluators to check page compatibility with screen readers.
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="url" class="col-md-4 control-label">Document URL <span class="required-text">*</span></label>
+    <div class="col-md-8">
+      <input id="urlModal" class="form-control" type="text" value={{modal.fields.url}}  ng-required="true" disabled="true">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="url" class="col-md-12 control-label">Select Evaluations <span class="required-text">*</span></label>
+    <div ng-repeat="(key, evaluate) in modal.fields.evaluations as e">
+      <div class = "col-md-4">
+        <input class="col-md-1 form-control-sm" type="checkbox" ng-model="modal.answers.e[key]" id="{{evaluate[1]}}" name="{{evaluate[1]}}">{{ evaluate[1] }}
+      </div>
+    </div>
+  </div>
+</div>
