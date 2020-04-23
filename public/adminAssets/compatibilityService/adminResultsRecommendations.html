@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="form-group">
+    <div class="row text-center">
+      <h4 class="col-md-3 text-right"> Document URL: </h4> 
+      <h4 class="col-md-9 text-left"> {{modal.fields.url}}</h4>
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <h4 class="col-md-12">Recommendations: </h4>
+    <div ng-repeat="(key, element) in modal.fields.data as d">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ element.tag }}</h3>
+        </div>
+        <div class="panel-body text-center" ng-repeat="(key, recom) in element.recomendations as r">
+          <div class="text-center">
+            <p> Element: <code> {{recom.element}} </code> </p>
+          </div>
+          <div class="text-center">
+            <p> Recomendation: {{recom.recomendation}} % </p>
+          </div>
+        </div>
+        <hr/>
+      </div>
+    </div>
+  </div>
+</div>

@@ -53,6 +53,7 @@ services:
      - NEURONE_SOLR_PORT=8983
      - NEURONE_SOLR_CORE=${NEURONE_SOLR_CORE:-neurone}
      - DISABLE_WEBSOCKETS=0
+     - CS_EVALUATION=${CS_EVALUATION:-"evaluation_service:8000"}
   fallback-app:
     build: 
       context: .

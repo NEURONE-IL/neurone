@@ -30,6 +30,7 @@
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "^0.3.2",
     "array.prototype.move": "^0.0.3",
+    "axios": "^0.19.2",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^3.0.8",
     "charset": "^1.0.0",

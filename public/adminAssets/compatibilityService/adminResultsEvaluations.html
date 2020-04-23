@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="form-group">
+    <div class="row text-center">
+      <h4 class="col-md-3 text-right"> Document URL: </h4> 
+      <h4 class="col-md-9 text-left"> {{modal.fields.url}}</h4>
+    </div>
+    <div class="row text-center">
+      <h4 class="col-md-6 text-right"> Total Amount of Tags in the Content: </h4> 
+      <h4 class="col-md-6 text-left"> {{modal.fields.tagsInContent}} </h4>
+    </div>
+    <div class="row text-center">
+      <h4 class="col-md-6 text-right"> Toral Percentage of Tags Failed: </h4> 
+      <h4 class="col-md-6 text-left"> {{modal.fields.finalPercent}} % </h4>
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <h4 class="col-md-12">Results: </h4>
+    <div class="col-md-6" ng-repeat="(key, result) in modal.fields.data as d">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ result.tag }}</h3>
+        </div>
+        <div class="panel-body text-center">
+          <div class="text-center">
+            <p> Count in Content: {{result.evaluated}} </p>
+          </div>
+          <div class="text-center">
+            <p> With Incompatible Definitions: {{result.failed}} </p>
+          </div>
+          <div class="text-center">
+            <p> Failure Percentage: {{result.percent}} % </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
