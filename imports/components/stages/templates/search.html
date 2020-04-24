@@ -162,6 +162,7 @@
                 <div class="search-result-url">{{doc.url}}</div>
                 <div class="search-result-snippet highlight" ng-bind-html="doc.searchSnippet | words: 50"></div>
               </div>
+            </div>
               <div class="pagination-wrapper text-center" ng-if="search.books.length > 0">
                 <ul uib-pagination total-items="search.bookResults" ng-model="search.currentPage" items-per-page="search.resultsPerPage"></ul>
               </div>

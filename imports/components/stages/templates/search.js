@@ -103,7 +103,7 @@ class Search {
 
       this.call('searchDocuments', queryObj, function(err, res) {
         if (!err) {
-          this.documents = res;
+          this.documents = res.filter(doc => doc.type != 'image');
           this.images = res.filter(img => img.type == 'image');
           this.videos = res.filter(vid => vid.type == 'video');
           this.books = res.filter(book => book.type == 'book');
