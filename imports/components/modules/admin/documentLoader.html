@@ -16,7 +16,14 @@
           <div class="form-group">
             <label for="url" class="col-md-4 control-label">Document URL <span class="required-text">*</span></label>
             <div class="col-md-8">
-              <input id="url" class="form-control" type="text" placeholder="http://assets.mylocalserver.org/pages/blog01/index.html" ng-model="documentLoader.url" ng-required="true">
+              <input id="url" class="form-control" type="text" placeholder="http://assets.mylocalserver.org/pages/blog01/index.html" ng-model="documentLoader.url" ng-required="true" ng-change="documentLoader.changeUrl()">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <button id="buttonEvaluate" type="submit" class="hidden" ng-click="documentLoader.callEvaluate()" disabled="true">
+                <i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i> Evaluate Compatibility With Screen Readers
+              </button>
             </div>
           </div>
           <div class="form-group">
