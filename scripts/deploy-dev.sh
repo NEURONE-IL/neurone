@@ -17,9 +17,9 @@ printf "\e[1;32m>>\e[31m Exporting Asset Path for NEURONE... \e[1;32m<<\e[0m\n"
 export NEURONE_ASSET_PATH=$(cd $ASSET_PATH; pwd)
 
 printf "\e[1;32m>>\e[31m Exporting local Solr Enviroment Variables... \e[1;32m<<\e[0m\n"
-export NEURONE_SOLR_HOST=${NEURONE_HOST:-"127.0.0.1"}
-export NEURONE_SOLR_PORT=${NEURONE_INDEX_PORT:-"8983"}
-export NEURONE_SOLR_CORE=${NEURONE_SOLR_CORE:-"neurone"}
+export NEURONE_SOLR_HOST=${NEURONE_DEV_SOLR_HOST:-"127.0.0.1"}
+export NEURONE_SOLR_PORT=${NEURONE_DEV_SOLR_PORT:-"8983"}
+export NEURONE_SOLR_CORE=${NEURONE_DEV_SOLR_CORE:-"neurone"}
 
 printf "\e[1;32m>>\e[31m Exporting default NEURONE Locale... \e[1;32m<<\e[0m\n"
 export NEURONE_LOCALE="en"
