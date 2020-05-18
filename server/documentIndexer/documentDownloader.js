@@ -144,14 +144,14 @@ export default class DocumentDownloader {
           files.forEach(function(file){
             var image = {
               docName: path.basename(file),
-              title: path.basename(file, ".jpg"),
+              title: path.basename(file, path.extname(file)),
               locale: docObj.locale || 'en',
               relevant: docObj.relevant || false,
               task: docObj.task ,
               domain: docObj.domain ,
               keywords: docObj.keywords || [],
               date: docObj.date || Utils.getDate(),
-              url: file,
+              url: urlOrigin,
               searchSnippet: docObj.searchSnippet || '',
               indexedBody: 'test',
               route: Documents.findOne({ route: indexedDocument.route })._id,
@@ -161,7 +161,6 @@ export default class DocumentDownloader {
             ImageSearch.upsert({ route: file }, image)
           })
         })
-
 
         if (result.numberAffected > 0) {
           let doc = Documents.findOne({ route: indexedDocument.route });

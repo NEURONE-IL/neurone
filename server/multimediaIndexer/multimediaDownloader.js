@@ -53,19 +53,23 @@ export default class MultimediaDownloader {
     }
  
     crawler(obj.url).then(function(response){
-
-      download(obj.url, options, function (err){
-        if (err) throw err;
-    })
-      let res = {
-        docName: fileName,
-        route: 'assets/multimedia/books/'+fileName,
-        text: response.text,
-        url: obj.url
+      if(response.type == 'pdf'){
+        download(obj.url, options, function (err){
+          if (err) throw err;
+      })
+        let res = {
+          docName: fileName,
+          title: obj.title,
+          route: 'assets/multimedia/books/'+fileName,
+          text: response.text,
+          url: obj.url
+        }
+        
+        callback(null,res)
       }
-      
-      callback(null,res)
-
+      else{
+        callback(null,null)
+      }
     })
   }
 
@@ -73,14 +77,18 @@ export default class MultimediaDownloader {
    *
    */
   static downloadVideo(obj, callback){
-
+    this.createDownloadDirs()
     let response,
       downloader = require('youtube-dl'),
       downloadPath = path.join(downloadDir, "videos"),
       video = downloader(obj.url);
+     var thumbnail;
 
-    this.createDownloadDirs()
-    
+     if(obj.url.indexOf('youtube.com') == -1){
+      console.error('The url MUST be a youtube link', errorObj);
+      callback(errorObj);
+     }
+
     options = {
       all: false,
       cwd: downloadPath,
@@ -90,28 +98,41 @@ export default class MultimediaDownloader {
 
     downloader.getThumbs(obj.url, options, function(err, file) {
       if (!err) {
-        console.log('Video download started!');
-        video.on('info', function(info){
-          info.route = downloadPath+"/"+obj.docName+".mp4";
-          response = {
-            categories : info.categories,
-            description : info.description || info.title ,
-            title : info.title,
-            tags : info.tags,
-            route: 'assets/multimedia/videos/'+obj.docName+".mp4",
-            thumbnail: 'assets/multimedia/videos/'+file[0],
-            docName: obj.docName,
-            domain: obj.domain,
-            task: obj.task,
-            locale: obj.locale
-          };
-          callback(null, response)
-          });
+        thumbnail = file[0]
+          console.log('thumbnail downloaded')
         }
         else {
           throw err;
         }
     })
+
+    video.on('error', function error(err){
+      console.log("ERROR, ", err);
+      throw err;
+    })
+    video.on('info', function(info){        
+      console.log('Video download started!');
+      console.log('filename: '+ info._filename)
+      info.route = downloadPath+"/"+obj.docName+".mp4";
+      console.log(thumbnail)
+      response = {
+        categories : info.categories,
+        description : info.description || info.title ,
+        title : info.title,
+        tags : info.tags,
+        route: 'assets/multimedia/videos/'+obj.docName+".mp4",
+        thumbnail: 'assets/multimedia/videos/'+thumbnail,
+        docName: obj.docName,
+        domain: obj.domain,
+        task: obj.task,
+        locale: obj.locale
+      };
+      callback(null, response)
+      });
+
+      video.on('end', function(){
+        console.log('finished downloading!')
+      })
     
   }
 
@@ -157,7 +178,7 @@ export default class MultimediaDownloader {
                 callback(null,doc)
               }
               else{
-                console.error('ERROR INDEXANDE',doc)
+                console.error('Error while indexing video',doc)
                 callback(err)
               }
             })
@@ -178,7 +199,11 @@ export default class MultimediaDownloader {
     else if(obj.type == 'book'){
       MultimediaDownloader.downloadBook(obj, Meteor.bindEnvironment((err, res) => {
         if (!err) {
-
+          if(res == null){
+            console.error('Error while downloading document', obj.url, errorObj);
+            callback(errorObj);
+          }
+          indexedDocument.title = res.title;
           indexedDocument.route = res.route;
           indexedDocument.indexedBody = res.text;
           let result = Book.upsert({ route: indexedDocument.route }, indexedDocument);
@@ -192,7 +217,7 @@ export default class MultimediaDownloader {
                 callback(null,doc)
               }
               else{
-                console.error('ERROR ',doc)
+                console.error('Error while indexing book ',doc)
                 callback(err)
               }
             })
@@ -235,24 +260,17 @@ export default class MultimediaDownloader {
 
   static preview(docObj, callback) {
 
-    const http = require('http');
-    const fileType = require('file-type');
+    const crawler = require('crawler-request')
     if (docObj.type == 'book'){
-
-      console.log(docObj)
-     http.get(docObj.url, response => {
-       response.on('readable',() => {
-         const chunk = response.read(fileType.minimumBytes);
-         response.destroy();
-         console.log(fileType(chunk))
-         if (fileType(chunk).ext == 'pdf' ){
-            callback(null, docObj);
-         }
-         else{
-           callback("BAD TYPE",null)
-         }
-       })
-     })
+      crawler(docObj.url).then(function (res){
+        if(res.type != 'pdf'){
+          console.error('Error. The book must be an PDF file', docObj.url, errorObj);
+            callback(errorObj);
+        }
+        else{
+          callback(null, docObj)
+        }
+      })
 
     }
 
@@ -262,8 +280,7 @@ export default class MultimediaDownloader {
       callback(null, docObj);
     }
     else{
-      console.log('invalid')
-      callback(null)
+      throw new Meteor.Error("Bad url", "The video must be an youtube video")
     }
 
   }

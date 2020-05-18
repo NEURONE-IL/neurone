@@ -31,7 +31,6 @@ import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
 import ngYoutubeEmbed from 'ng-youtube-embed';
 import leafletDirective from 'angular-leaflet-directive';
-
 import uiCarousel from 'angular-ui-carousel'
 
 

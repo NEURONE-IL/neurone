@@ -74,7 +74,7 @@ class BookLoader {
           this.state = 'preview';
         }
         else {
-          console.error('Error while downloading book', err);
+          console.error('Error previewing book '+ this.docObj.url, err);
           this.doc = {};
           this.route = '';
           this.state = 'error';
@@ -93,6 +93,7 @@ class BookLoader {
     
     let form = {
       docName: this.docName,
+      title: this.title,
       relevant: this.relevant || false,
       domain: this.domain || 'test',
       task: this.task,

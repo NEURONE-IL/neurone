@@ -114,11 +114,15 @@
             <div ng-if="search.images.length <= 0" class="text-center">
               <h3>{{"search.noResults" | translate}}</h3>
             </div>
-            <md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-lg="5"></md-grid-list>               
-                <md-grid-tile ng-repeat="doc in search.images track by doc._id"  ng-if="doc.type == 'image'" md-colspan="1" md-colspan-sm="3" md-colspan-md="5">
-                  <img src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})">
-                </md-grid-tile>
-              </md-grid-list>
+            
+            <div id="imgSearch" class="col-md-3" ng-repeat="doc in search.images track by doc._id" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})" >
+              <p ui-sref="displayPage({ docName: doc.route })" >{{doc.url}}</p>
+              <img src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px"  />
+              <label  ui-sref="displayPage({ docName: doc.route })" >{{doc.title}}</label>
+            </div>
+
+
+
           </uib-tab>
 
 

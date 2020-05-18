@@ -424,6 +424,14 @@ img.chat-image {
 }
 */
 
+#imgSearch {
+  border: 1px solid rgb(172, 172, 172);
+  border-radius: 5px;
+  max-height: 150px;
+  overflow: hidden;
+}
+
+
 #map {
   height:480px; 
   width: 100%
