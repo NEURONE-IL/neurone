@@ -1,22 +1,22 @@
 <div class="container-fluid">
     <div class="row">
      NEURONE Video Loader
-      </div>
+    </div>
       <br>
         <div class="row row-equal-height">
           <div class="col-md-5">
             <form name="videoLoader.form" class="form-horizontal">
               <div class="row">
                 <div class="form-group">
-                  <label for="docName" class="col-md-4 control-label">Video Name <span class="required-text">*</span></label>
+                  <label for="vidName" class="col-md-4 control-label">Video Name <span class="required-text">*</span></label>
                   <div class="col-md-8">
-                    <input id="docName" class="form-control" type="text" placeholder="video-01" ng-model="videoLoader.docName" ng-required="true">
+                    <input id="vidName" class="form-control" type="text" placeholder="video-01" ng-model="videoLoader.vidName" ng-required="true">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="url" class="col-md-4 control-label">video URL <span class="required-text">*</span></label>
+                  <label for="vidUrl" class="col-md-4 control-label">video URL <span class="required-text">*</span></label>
                   <div class="col-md-8">
-                    <input id="url" class="form-control" type="text" placeholder="https://www.youtube.com/watch?v=123abc" ng-model="videoLoader.url" ng-required="true">
+                    <input id="vidUrl" class="form-control" type="text" placeholder="https://www.youtube.com/watch?v=123abc" ng-model="videoLoader.vidUrl" ng-required="true">
                   </div>
                 </div>
                 <div class="form-group">
@@ -40,7 +40,6 @@
                       </ui-select-choices>
                     </ui-select>
                   </div>
-                </div>
                 </div>
                 <div class="form-group">
                   <label for="task" class="col-md-4 control-label">Task <span class="required-text">*</span></label>
@@ -73,6 +72,7 @@
                     <span class="required-text">*</span> Required field
                   </div>
                 </div>
+              </div>
               <div class="row">
                 <div class="col-md-6 text-center">
                   <button type="submit" class="btn btn-info" ng-click="videoLoader.previewVideo()">
@@ -98,16 +98,16 @@
             <div ng-if="videoLoader.state === 'error'">
               <h3>Error while downloading!</h3>
             </div>
-            <div ng-if="videoLoader.state === 'preview'" >
-              <ng-youtube-embed width="480p" height="360px" video= videoLoader.doc.url></ng-youtube-embed>
+            <div ng-if="videoLoader.state === 'preview'" class="iframe-parent">
+              <youtube class="iframe-parent" id="youtubePlayer" width="100%"  video-id={{videoLoader.source}} ></youtube>
             </div>
-            <div ng-if= "videoLoader.state === 'show'">
+            <div ng-if= "videoLoader.state === 'show'" class="iframe-parent">
                 <p><strong>Downloaded!</strong> {{videoLoader.doc.url}} </p>
-                <video controls width="480" height="360" >
+                <video class="iframe-parent" controls >
                     <source src='{{videoLoader.doc.route}}' type="video/mp4">
                 </video>
             </div>
           </div>
       </div>
-  </div>
+</div>
   

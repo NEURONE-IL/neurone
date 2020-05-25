@@ -92,13 +92,13 @@ class BookLoader {
   parseBookForm() {
     
     let form = {
-      docName: this.docName,
+      docName: this.bookName,
       title: this.title,
       relevant: this.relevant || false,
       domain: this.domain || 'test',
       task: this.task,
       keywords: !!(this.keywords) && (this.keywords.length > 1) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
-      url: this.url,
+      url: this.bookUrl,
     };
 
     return form;

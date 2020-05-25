@@ -8,9 +8,9 @@
         <form name="bookLoader.form" class="form-horizontal">
           <div class="row">
             <div class="form-group">
-              <label for="docName" class="col-md-4 control-label">Book Name <span class="required-text">*</span></label>
+              <label for="bookName" class="col-md-4 control-label">Book Name <span class="required-text">*</span></label>
               <div class="col-md-8">
-                <input id="docName" class="form-control" type="text" placeholder="b-01.pdf" ng-model="bookLoader.docName" ng-required="true">
+                <input id="bookName" class="form-control" type="text" placeholder="b-01.pdf" ng-model="bookLoader.bookName" ng-required="true">
               </div>
             </div>
             <div class="form-group">
@@ -20,9 +20,9 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="url" class="col-md-4 control-label">Book URL <span class="required-text">*</span></label>
+              <label for="bookUrl" class="col-md-4 control-label">Book URL <span class="required-text">*</span></label>
               <div class="col-md-8">
-                <input id="url" class="form-control" type="text" placeholder="https://www.example.com/file/123abc.pdf" ng-model="bookLoader.url" ng-required="true">
+                <input id="bookUrl" class="form-control" type="text" placeholder="https://www.example.com/file/123abc.pdf" ng-model="bookLoader.bookUrl" ng-required="true">
               </div>
             </div>
             <div class="form-group">
@@ -103,12 +103,13 @@
         <div ng-if="bookLoader.state === 'error'">
           <h3>Error while downloading!</h3>
         </div>
-        <div ng-if="bookLoader.state === 'preview'" >
+        <div ng-if="bookLoader.state === 'preview'" class="iframe-parent" >
           <strong>PREVIEW {{bookLoader.doc.url}}</strong>
-          <iframe class="iframe-child" ng-src= "{{bookLoader.doc.url | trusted}}"></iframe>
+          <iframe  ng-src= "{{bookLoader.doc.url | trusted}}"></iframe>
         </div>
-        <div ng-if= "bookLoader.state === 'show'">
+        <div ng-if= "bookLoader.state === 'show'" class="iframe-parent">
             <p><strong>Downloaded!</strong> {{bookLoader.doc.url}} </p>
+            <iframe ng-src= "{{bookLoader.doc.url | trusted}}"></iframe>
         </div>
       </div>
     </div>

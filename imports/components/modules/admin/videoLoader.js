@@ -61,7 +61,7 @@ class VideoLoader {
 
     if (this.form.$valid) {
       this.docObj = this.parseVideoForm();
-
+      this.source = this.docObj.url.split('=')[1]
       console.log('Video preview request sent!', this.docObj);
 
       console.log(this.docObj);
@@ -80,13 +80,13 @@ class VideoLoader {
   parseVideoForm() {
     
     let form = {
-      docName: this.docName,
+      docName: this.vidName,
       relevant: this.relevant || false,
       domain: this.domain,
       locale: this.locale,
       task: this.task,
       keywords: !!(this.keywords) && (this.keywords.length > 1) ? this.keywords.split(',').map((kw) => { return kw.trim() }) : [],
-      url: this.url,
+      url: this.vidUrl,
     };
 
     return form;

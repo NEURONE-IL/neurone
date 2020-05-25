@@ -29,7 +29,7 @@ import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
-import ngYoutubeEmbed from 'ng-youtube-embed';
+import ngYoutube from 'ng-youtube-embed-iframe';
 import leafletDirective from 'angular-leaflet-directive';
 import uiCarousel from 'angular-ui-carousel'
 
@@ -86,7 +86,7 @@ export default angular.module(name, [
   'ngSanitize',
   'ui.select',
   'ui.carousel',
-  'ngYoutubeEmbed',
+  'ngYoutube',
   'leaflet-directive',
   uiRouter,
   uiBootstrap,
