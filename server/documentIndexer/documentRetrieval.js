@@ -5,6 +5,7 @@ import Indexer from './indexer';
 import Utils from '../utils/serverUtils';
 
 import { Documents } from '../../imports/database/documents/index';
+import { Video, Book } from '../database/definitions';
 
 export default class DocumentRetrieval {
   static getDocument(documentName, callback) {
@@ -15,10 +16,27 @@ export default class DocumentRetrieval {
       callback(null, doc);
     }
     else {
-      var err = 'Document not found!';
-      callback(err);
+      doc = Book.findOne({ _id: documentName})
+      if (doc && doc._id && doc.route) {
+        doc.routeUrl = '/' + doc.route;
+        callback(null, doc);
+      }
+      else{
+        doc = Video.findOne({ _id: documentName})
+        if (doc && doc._id && doc.route) {
+          doc.routeUrl = '/' + doc.route;
+          callback(null, doc);
+        }
+        else{
+        var err = 'Document not found!';
+        callback(err);
+        }
+      }
+      
     }
   }
+
+ 
 
   // dgacitua: Custom sorting algorithm for iFuCo Project
   // PARAMS:  documentArray  Array with resulting documents from Lunr

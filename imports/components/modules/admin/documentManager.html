@@ -8,10 +8,10 @@
   </div>
   <br>
   <div class="row">
-    <div class="well well-sm" ng-repeat="doc in documentManager.docs track by $index">
+    <div class="well well-sm" ng-repeat="doc in documentManager.videos track by $index">
       <div class="row">
         <div class="col-md-10">
-          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} ]
+          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} | <b>Type:</b> Video]
         </div>
         <div class="col-md-2">
           <button type="button" class="btn btn-xs btn-danger pull-right horizontal-button-margin" ng-click="documentManager.deleteDocument(doc)">
@@ -33,4 +33,84 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="well well-sm" ng-repeat="doc in documentManager.books track by $index">
+      <div class="row">
+        <div class="col-md-10">
+          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} | <b>Type:</b> Book]
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-xs btn-danger pull-right horizontal-button-margin" ng-click="documentManager.deleteDocument(doc)">
+            <i class="fa fa-trash-o"></i> Remove
+          </button>
+          <button type="button" class="btn btn-xs btn-info pull-right horizontal-button-margin" ng-click="documentManager.editDocument(doc)">
+            <i class="fa fa-pencil-square-o"></i> Edit
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a class="search-result-title" ui-sref="documentView({ docName: doc._id })" target="_blank">{{doc.title}}</a>
+          <div>
+            <span class="search-result-url">{{doc.url}}</span>
+          </div>
+          <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well well-sm" ng-repeat="doc in documentManager.docs track by $index">
+      <div class="row">
+        <div class="col-md-10">
+          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} | <b>Type:</b> Page]
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-xs btn-danger pull-right horizontal-button-margin" ng-click="documentManager.deleteDocument(doc)">
+            <i class="fa fa-trash-o"></i> Remove
+          </button>
+          <button type="button" class="btn btn-xs btn-info pull-right horizontal-button-margin" ng-click="documentManager.editDocument(doc)">
+            <i class="fa fa-pencil-square-o"></i> Edit
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a class="search-result-title" ui-sref="documentView({ docName: doc._id })" target="_blank">{{doc.title}}</a>
+          <div>
+            <span class="search-result-url">{{doc.url}}</span>
+          </div>
+          <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="well well-sm" ng-repeat="doc in documentManager.img track by $index">
+      <div class="row">
+        <div class="col-md-10">
+          <b>Document Name:</b> {{doc.docName}}  [ <b>Relevant:</b> {{ !!(doc.relevant) }} | <b>Locale:</b> {{ doc.locale }} | <b>Domain:</b> {{ doc.domain[0] }} | <b>Task:</b> {{ doc.task[0] }} ]
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-xs btn-danger pull-right horizontal-button-margin" ng-click="documentManager.deleteDocument(doc)">
+            <i class="fa fa-trash-o"></i> Remove
+          </button>
+          <button type="button" class="btn btn-xs btn-info pull-right horizontal-button-margin" ng-click="documentManager.editDocument(doc)">
+            <i class="fa fa-pencil-square-o"></i> Edit
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <img src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px" /> 
+          <a class="search-result-title" ui-sref="documentView({ docName: doc.route })" target="_blank">{{doc.title}}</a>
+          <div>
+            <span class="search-result-url">{{doc.url}}</span>
+          </div>
+          <div class="search-result-snippet highlight">{{doc.searchSnippet | words: 50}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

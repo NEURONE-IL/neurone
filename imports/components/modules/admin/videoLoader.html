@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="row">
+     NEURONE Video Loader
+    </div>
+      <br>
+        <div class="row row-equal-height">
+          <div class="col-md-5">
+            <form name="videoLoader.form" class="form-horizontal">
+              <div class="row">
+                <div class="form-group">
+                  <label for="vidName" class="col-md-4 control-label">Video Name <span class="required-text">*</span></label>
+                  <div class="col-md-8">
+                    <input id="vidName" class="form-control" type="text" placeholder="video-01" ng-model="videoLoader.vidName" ng-required="true">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="vidUrl" class="col-md-4 control-label">video URL <span class="required-text">*</span></label>
+                  <div class="col-md-8">
+                    <input id="vidUrl" class="form-control" type="text" placeholder="https://www.youtube.com/watch?v=123abc" ng-model="videoLoader.vidUrl" ng-required="true">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="locale" class="col-md-4 control-label">Locale Code <span class="required-text">*</span></label>
+                  <div class="col-md-8">
+                    <ui-select id="locale" ng-model="videoLoader.locale" ng-required="true">
+                      <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+                      <ui-select-choices repeat="locale.properties.code as locale in videoLoader.locales | filter: { name: $select.search }">
+                        {{ locale.name }} <small>{{ locale.properties.code }}</small>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="domain" class="col-md-4 control-label">Domain <span class="required-text">*</span></label>
+                  <div class="col-md-8">
+                    <ui-select multiple id="domain" ng-model="videoLoader.domain" sortable="true" close-on-select="false" ng-required="true">
+                      <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
+                      <ui-select-choices repeat="domain.properties.alias as domain in videoLoader.domains | filter: { name: $select.search }">
+                        {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="task" class="col-md-4 control-label">Task <span class="required-text">*</span></label>
+                  <div class="col-md-8">
+                    <ui-select multiple id="task" ng-model="videoLoader.task" sortable="true" close-on-select="false" ng-required="true">
+                      <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
+                      <ui-select-choices repeat="task.properties.alias as task in videoLoader.tasks | filter: { name: $select.search }">
+                        {{ task.name }} <small>{{ task.properties.alias }}</small>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="keyword" class="col-md-4 control-label">Keywords</label>
+                  <div class="col-md-8">
+                    <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="videoLoader.keywords">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-offset-4 col-md-8">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" ng-model="videoLoader.relevant"> Relevant
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-offset-4 col-md-8">
+                    <span class="required-text">*</span> Required field
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 text-center">
+                  <button type="submit" class="btn btn-info" ng-click="videoLoader.previewVideo()">
+                    <em class="fa fa-eye" aria-hidden="true"></em> Preview video
+                  </button>
+                </div>
+                <div class="col-md-6 text-center">
+                  <button type="submit" class="btn btn-success" ng-click="videoLoader.downloadVideo()">
+                    <em class="fa fa-download" aria-hidden="true"></em> Download video
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-7 flexbox-center-parent">
+            <div ng-if="videoLoader.state === 'wait'">
+              <h3>Waiting for input...</h3>
+            </div>
+            <div ng-if="videoLoader.state === 'load'">
+              <em class="fa fa-spinner fa-pulse fa-3x fa-fw"></em>
+              <span class="sr-only">Downloading...</span>
+            </div>
+            <div ng-if="videoLoader.state === 'error'">
+              <h3>Error while downloading!</h3>
+            </div>
+            <div ng-if="videoLoader.state === 'preview'" class="iframe-parent">
+              <youtube class="iframe-parent" id="youtubePlayer" width="100%"  video-id={{videoLoader.source}} ></youtube>
+            </div>
+            <div ng-if= "videoLoader.state === 'show'" class="iframe-parent">
+                <p><strong>Downloaded!</strong> {{videoLoader.doc.url}} </p>
+                <video class="iframe-parent" controls >
+                    <source src='{{videoLoader.doc.route}}' type="video/mp4">
+                </video>
+            </div>
+          </div>
+      </div>
+</div>
+  

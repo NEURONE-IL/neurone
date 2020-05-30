@@ -52,6 +52,21 @@
         <input id="urlparams" class="form-control" type="text" placeholder="instructions-begin" ng-model="modal.answers.urlParams.stage">
       </div>
     </div>
+    <div class="form-group form-group-fix">
+      <label for="multimediaSearch" class="col-md-4 control-label">Enable objects to search</label>
+      <div class="col-md-4">
+        <input id="image" type="checkbox" value="imgEnable" ng-model="modal.answers.multimedia.image"> Image
+      </div>
+      <div class="col-md-4">
+        <input id="video" type="checkbox" value="videoEnable" ng-model="modal.answers.multimedia.video"> Video
+      </div>
+      <div class="col-md-4">
+        <input id="book" type="checkbox" value="bookEnable" ng-model="modal.answers.multimedia.book"> Books
+      </div>
+      <div class="col-md-4">
+        <input id="maps" type="checkbox" value="mapsEnable" ng-model="modal.answers.multimedia.maps"> Maps
+      </div>
+    </div>
   </div>
   <!--<pre>{{ modal.answers | json: 2 }}</pre>-->
 </div>

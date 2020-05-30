@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="row">
+     NEURONE Book Loader
+    </div>
+    <br>
+    <div class="row row-equal-height">
+      <div class="col-md-5">
+        <form name="bookLoader.form" class="form-horizontal">
+          <div class="row">
+            <div class="form-group">
+              <label for="bookName" class="col-md-4 control-label">Book Name <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <input id="bookName" class="form-control" type="text" placeholder="b-01.pdf" ng-model="bookLoader.bookName" ng-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="title" class="col-md-4 control-label">Book Title <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <input id="title" class="form-control" type="text" placeholder="b-01" ng-model="bookLoader.title" ng-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bookUrl" class="col-md-4 control-label">Book URL <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <input id="bookUrl" class="form-control" type="text" placeholder="https://www.example.com/file/123abc.pdf" ng-model="bookLoader.bookUrl" ng-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="locale" class="col-md-4 control-label">Locale Code <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <ui-select id="locale" ng-model="bookLoader.locale" ng-required="true">
+                  <ui-select-match placeholder="Select locale">{{ $select.selected.name }}</ui-select-match>
+                  <ui-select-choices repeat="locale.properties.code as locale in bookLoader.locales | filter: { name: $select.search }">
+                    {{ locale.name }} <small>{{ locale.properties.code }}</small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="domain" class="col-md-4 control-label">Domain <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <ui-select multiple id="domain" ng-model="bookLoader.domain" sortable="true" close-on-select="false" ng-required="true">
+                  <ui-select-match placeholder="Select domains">{{ $item.name }}</ui-select-match>
+                  <ui-select-choices repeat="domain.properties.alias as domain in bookLoader.domains | filter: { name: $select.search }">
+                    {{ domain.name }} <small>{{ domain.properties.alias }}</small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="task" class="col-md-4 control-label">Task <span class="required-text">*</span></label>
+              <div class="col-md-8">
+                <ui-select multiple id="task" ng-model="bookLoader.task" sortable="true" close-on-select="false" ng-required="true">
+                  <ui-select-match placeholder="Select tasks">{{ $item.name }}</ui-select-match>
+                  <ui-select-choices repeat="task.properties.alias as task in bookLoader.tasks | filter: { name: $select.search }">
+                    {{ task.name }} <small>{{ task.properties.alias }}</small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="keyword" class="col-md-4 control-label">Keywords</label>
+              <div class="col-md-8">
+                <input id="keyword" class="form-control" type="text" placeholder="meteor, blog article, computers" ng-model="bookLoader.keywords">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-4 col-md-8">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" ng-model="bookLoader.relevant"> Relevant
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-4 col-md-8">
+                <span class="required-text">*</span> Required field
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <button type="submit" class="btn btn-info" ng-click="bookLoader.previewBook()">
+                <em class="fa fa-eye" aria-hidden="true"></em> Preview Book
+              </button>
+            </div>
+            <div class="col-md-6 text-center">
+              <button type="submit" class="btn btn-success" ng-click="bookLoader.downloadBook()">
+                <i class="fa fa-download" aria-hidden="true"></i> Download book
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-7 flexbox-center-parent">
+        <div ng-if="bookLoader.state === 'wait'">
+          <h3>Waiting for input...</h3>
+        </div>
+        <div ng-if="bookLoader.state === 'load'">
+          <em class="fa fa-spinner fa-pulse fa-3x fa-fw"></em>
+          <span class="sr-only">Downloading...</span>
+        </div>
+        <div ng-if="bookLoader.state === 'error'">
+          <h3>Error while downloading!</h3>
+        </div>
+        <div ng-if="bookLoader.state === 'preview'" class="iframe-parent" >
+          <strong>PREVIEW {{bookLoader.doc.url}}</strong>
+          <iframe  ng-src= "{{bookLoader.doc.url | trusted}}"></iframe>
+        </div>
+        <div ng-if= "bookLoader.state === 'show'" class="iframe-parent">
+            <p><strong>Downloaded!</strong> {{bookLoader.doc.url}} </p>
+            <iframe ng-src= "{{bookLoader.doc.url | trusted}}"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -29,6 +29,10 @@ import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import angularTranslate from 'angular-translate';
 import angularTranslateLoader from 'angular-translate-loader-static-files';
+import ngYoutube from 'ng-youtube-embed-iframe';
+import leafletDirective from 'angular-leaflet-directive';
+import uiCarousel from 'angular-ui-carousel'
+
 
 import uiSelect from 'ui-select';
 import 'ui-select/dist/select.css';
@@ -81,6 +85,9 @@ export default angular.module(name, [
   'angular-meteor-promiser',
   'ngSanitize',
   'ui.select',
+  'ui.carousel',
+  'ngYoutube',
+  'leaflet-directive',
   uiRouter,
   uiBootstrap,
   angularTranslate,
@@ -105,7 +112,11 @@ export default angular.module(name, [
   /* Other modules */
   FormsModule,
   Admin
-])
+]).filter('trusted', ['$sce', function ($sce){
+    return function(url) {
+      return $sce.trustAsResourceUrl(url);
+    };
+}])
 .component(name, {
   template: template.default,
   controllerAs: name,
