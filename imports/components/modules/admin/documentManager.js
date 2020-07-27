@@ -39,6 +39,8 @@ class DocumentManager {
     let docRef = angular.copy(doc);
     if (docRef.type != 'video')
       docRef.keywords = docRef.keywords.join(', ');
+    
+    let titleEdited;
 
     let modalOpts = {
       title: 'Edit document',
@@ -93,9 +95,26 @@ class DocumentManager {
           });
         }
         else{
+          if (editedDocument.title != doc.title ){
+             titleEdited = true;
+          }
+
           Documents.update(doc._id, { $set: editedDocument }, (err, res) => {
             if (!err) {
               console.log('Document edited in Database!', res);
+              console.log( editedDocument._id)
+              if (titleEdited){
+                ImageSearch.find({route: doc._id}).fetch().forEach(element => {
+                  element.title = editedDocument.title;
+                  ImageSearch.update(element._id, { $set: element }, (errImg, resImg) => {
+                    if (!err) {
+                      console.log('Document edited in Database!', element._id);
+                      }
+                      else
+                      console.log(errImg)
+                    })
+                  })
+                }
 
               this.call('reindex', (err, res) => {
                 if (!err) console.log('Inverted Index regenerated!');
