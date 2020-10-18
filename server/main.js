@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import Indexer from './documentIndexer/indexer';
 import DocumentDownloader from './documentIndexer/documentDownloader';
 import ContentLoader from './contentLoader/contentLoader';
+import api from './externalServices/api';
 
 import ServerConfigs from './utils/serverConfigs';
 import Utils from './utils/serverUtils';
@@ -74,6 +75,7 @@ Meteor.startup(() => {
       let idx = Indexer.loadInvertedIndex();
     }
 
+    // dgacitua: We're good to go!
     console.log('NEURONE Server Platform is ready!');
   }
   else {
