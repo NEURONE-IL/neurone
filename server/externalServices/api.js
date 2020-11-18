@@ -1,6 +1,7 @@
 // dgacitua: https://docs.meteor.com/v1.6/packages/webapp.html
 
 import DocumentRetrieval from '../documentIndexer/documentRetrieval';
+import DocumentDownloader from '../documentIndexer/documentDownloader';
 
 const parseBody = (r) => {
   //console.log(r.method, r.url, r.headers);
@@ -41,6 +42,25 @@ WebApp.connectHandlers.use('/v1/document/search', async (req, res, next) => {
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(parseResponse(search));  
+  }
+  catch (error) {
+    console.log(error);
+  }  
+});
+
+WebApp.connectHandlers.use('/v1/document/load', async (req, res, next) => {
+  try {
+    let docObj = await parseBody(req);
+    DocumentDownloader.fetch(docObj, (err, response) => {
+      if(!err){
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(parseResponse(response));  
+      }
+      else{
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(parseResponse(err)); 
+      }
+    });
   }
   catch (error) {
     console.log(error);
