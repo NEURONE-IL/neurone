@@ -3,6 +3,23 @@
 import DocumentRetrieval from '../documentIndexer/documentRetrieval';
 import DocumentDownloader from '../documentIndexer/documentDownloader';
 
+// jmellado: https://stackoverflow.com/questions/36002493/no-access-control-allow-origin-header-in-angular-2-app
+WebApp.rawConnectHandlers.use(function(req, res, next) {
+    // Website you wish to allow to connect
+       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+
+       // Request methods you wish to allow
+       //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+       // Request headers you wish to allow
+       // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token");
+
+       // Set to true if you need the website to include cookies in the requests sent
+       // to the API (e.g. in case you use sessions)
+       //res.setHeader('Access-Control-Allow-Credentials', true);
+  return next();
+});
+
 const parseBody = (r) => {
   //console.log(r.method, r.url, r.headers);
 
