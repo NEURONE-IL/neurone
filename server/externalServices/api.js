@@ -2,6 +2,7 @@
 
 import DocumentRetrieval from '../documentIndexer/documentRetrieval';
 import DocumentDownloader from '../documentIndexer/documentDownloader';
+import MultimediaDownloader from '../multimediaIndexer/multimediaDownloader'
 import { FlowComponents } from '../../imports/database/flowComponents/index';
 
 // jmellado: https://stackoverflow.com/questions/36002493/no-access-control-allow-origin-header-in-angular-2-app
@@ -76,26 +77,50 @@ WebApp.connectHandlers.use('/v1/document/search', async (req, res, next) => {
 
 WebApp.connectHandlers.use('/v1/document/load', async (req, res, next) => {
   let docObj = await parseBody(req);
-  let domain = docObj.domain[0];
-  let flow = await FlowComponents.findOne({name: domain, type: "domain"});
-  if(flow == null){
-    await FlowComponents.insert({name: domain, type: "domain"});
-    await FlowComponents.insert({name: domain, type: "task"});
-    await FlowComponents.insert({name: domain, type: "locale"});
+  let domain = await FlowComponents.findOne({name: docObj.domain[0], type: "domain"});
+  let task = await FlowComponents.findOne({name: docObj.task[0], type: "task"});
+  let locale = await FlowComponents.findOne({name: docObj.locale, type: "locale"});
+  if(domain == null){
+    await FlowComponents.insert({name: docObj.domain[0], type: "domain"});
   }
-  try {
-    DocumentDownloader.fetch(docObj, (err, response) => {
-      if(!err){
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(parseResponse(response));  
-      }
-      else{
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(parseResponse(err)); 
-      }
-    });
+  if(task == null){
+    await FlowComponents.insert({name: docObj.task[0], type: "task"});
   }
-  catch (error) {
-    console.log(error);
-  }  
+  if(locale == null){
+    await FlowComponents.insert({name: docObj.locale, type: "locale"});
+  }
+  if(docObj.type == "book"){
+    try {
+      MultimediaDownloader.indexMultimedia(docObj, (err, response) => {
+        if(!err){
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(parseResponse(response));  
+        }
+        else{
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(parseResponse(err)); 
+        }
+      });
+    }
+    catch (error) {
+      console.log(error);
+    } 
+  }
+  else{
+    try {
+      DocumentDownloader.fetch(docObj, (err, response) => {
+        if(!err){
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(parseResponse(response));  
+        }
+        else{
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(parseResponse(err)); 
+        }
+      });
+    }
+    catch (error) {
+      console.log(error);
+    }  
+  }
 });
