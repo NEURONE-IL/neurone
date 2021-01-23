@@ -379,7 +379,25 @@ class StudyManager {
         //console.log(editedStudyComponent);
 
         targetCollection.update(content._id, { $set: editedStudyComponent }, (err, res) => {
-          if (!err) console.log('Study Component edited!', res, content._id, editedStudyComponent);
+          if (!err) {
+            console.log('Study Component edited!', res, content._id, editedStudyComponent);
+            if (type == 'search'){
+              targetCollection.find({stages: { $elemMatch : { _id:content._id }}}).fetch().forEach(element => {
+                element.stages.forEach(stage => {
+                  if (stage._id == content._id){
+                    element.stages[element.stages.indexOf(stage)] = content
+                    console.log(element)
+                  }
+                })
+                targetCollection.update(element._id , {$set: element}, (error, response) => {
+                  if (!err) {
+                    console.log('Study Component updated!', response, element._id, element);
+                  }
+                  else console.error('Error while updating Study Component!', error);
+                })
+              })
+            }
+          }
           else console.error('Error while creating Study Component!', err);
         });
       }
