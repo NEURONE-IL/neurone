@@ -7,7 +7,10 @@ import Utils from '../../globalUtils';
 import Configs from '../../globalConfigs';
 
 import template from './search.html';
-import{ name as mapsSearch} from './mapsSearch'
+
+import * as L from 'leaflet'
+
+
 
 class Search {
   constructor($scope, $rootScope, $reactive, $document, $state, $stateParams, $sanitize, UserDataService, QueryTrackService, EventTrackService) {
@@ -23,6 +26,7 @@ class Search {
     this.qts = QueryTrackService;
     this.ets = EventTrackService;
     this.multimediaObjects = "";
+    this.key = process.env.MAPTILER_KEY || 'XNctrGMVMOj0xErblNkx'
 
     $scope.$on('$stateChangeStart', (event) => {
       Session.set('lockButtons', true);
@@ -78,6 +82,7 @@ class Search {
     this.firstSearch = false;
     this.resultsReady = false;
     this.getResults(this.$stateParams.query);
+    
   }
 
   doSearch() {
@@ -86,6 +91,7 @@ class Search {
   }
 
   getResults(queryText) {
+    const fetch = require('node-fetch');
     if (!Utils.isEmpty(queryText)) {
       this.firstSearch = true;
       this.qts.saveQuery(queryText);
@@ -107,14 +113,35 @@ class Search {
           this.images = res.filter(img => img.type == 'image');
           this.videos = res.filter(vid => vid.type == 'video');
           this.books = res.filter(book => book.type == 'book');
-
+          console.log(res.length)
+          
           // dgacitua: Pagination
           var multimediaEnabled = this.uds.getConfigs().stages[this.uds.getSession().currentStageNumber].multimedia;
           
+          console.log(multimediaEnabled)
+
+          if (multimediaEnabled.maps) {
+            const container = document.getElementById('map')
+            console.log(container)
+            if(container){
+              this.map.invalidateSize()
+              var urlGet = 'https://api.maptiler.com/geocoding/'+this.$stateParams.query+'.json?key='+this.key,
+                  popup;
+          
+              fetch(urlGet)
+              .then(res => res.json())   
+              .then(json => {
+                this.doc = json.features[0];
+                this.map.fitBounds([[this.doc.bbox[1],[this.doc.bbox[0]]],[this.doc.bbox[3],[this.doc.bbox[2]]]])
+                popup =L.popup().setLatLng(this.doc.center.reverse()).setContent(this.doc.place_type +' '+ this.doc.place_name).openOn(this.map)
+              })
+            }
+          }
+
           this.videoResults = this.videos.length;
           this.booksResults = this.books.length;
           this.totalResults = this.documents.length - 
-                              this.images.length -//(this.images.length * (+ !multimediaEnabled.image)) -
+                              //this.images.length -//(this.images.length * (+ !multimediaEnabled.image)) -
                               (this.videoResults * (+ !multimediaEnabled.video)) -
                               (this.booksResults * (+ !multimediaEnabled.book));
           this.currentPage = 1;
@@ -125,6 +152,28 @@ class Search {
           this.resultsReady = true;
           this.$scope.$apply();
 
+          if (!this.initMap && multimediaEnabled.maps){
+            this.map = L.map('map', {
+              center: [0,0],
+              zoom: 1
+              })
+              L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}@2x.png?key=' + this.key,{//'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+                                        maxZoom: 19,
+                                        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>'})
+              .addTo(this.map); 
+              this.initMap = true;
+             
+              var urlGet = 'https://api.maptiler.com/geocoding/'+this.$stateParams.query+'.json?key='+this.key,
+                  popup;
+          
+              fetch(urlGet)
+              .then(res => res.json())   
+              .then(json => {
+                this.doc = json.features[0];
+                this.map.fitBounds([[this.doc.bbox[1],[this.doc.bbox[0]]],[this.doc.bbox[3],[this.doc.bbox[2]]]])
+                popup =L.popup().setLatLng(this.doc.center.reverse()).setContent(this.doc.place_type +' '+ this.doc.place_name).openOn(this.map)
+              })
+          } 
           //this.highlightSearch(queryText);
           //this.$scope.$apply();
         }
@@ -156,6 +205,9 @@ class Search {
   storeEvent(action, params) {
     this.ets.storeCustomEvent(action, params, (err, res) => {});
   }
+  fix(){
+    this.map.invalidateSize()
+  }
 }
 
 const name = 'search';
@@ -164,7 +216,6 @@ const name = 'search';
 export default angular.module(name, [
   'ngSanitize',
   'truncate',
-  mapsSearch
 ])
 .component(name, {
   template: template.default,
@@ -172,6 +223,11 @@ export default angular.module(name, [
   controller: Search
 })
 .config(config);
+
+function generateMap(map){
+  'ngInject';
+  
+}
 
 function config($stateProvider) {
   'ngInject';
@@ -181,9 +237,6 @@ function config($stateProvider) {
     views:{
         '@': {
         template: '<search></search>'
-      },
-      'mapsSearch@search': {
-        template: '<maps-search></maps-search>'
       }
     },
     resolve: {
