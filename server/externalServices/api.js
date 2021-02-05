@@ -8,7 +8,7 @@ import { FlowComponents } from '../../imports/database/flowComponents/index';
 // jmellado: https://stackoverflow.com/questions/36002493/no-access-control-allow-origin-header-in-angular-2-app
 WebApp.rawConnectHandlers.use(function(req, res, next) {
     // Website you wish to allow to connect
-       res.setHeader('Access-Control-Allow-Origin', 'http://159.65.100.191:4200');
+       res.setHeader('Access-Control-Allow-Origin', '*');
 
        // Request methods you wish to allow
        //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
