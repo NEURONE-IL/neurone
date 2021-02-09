@@ -89,7 +89,7 @@ WebApp.connectHandlers.use('/v1/document/load', async (req, res, next) => {
   if(locale == null){
     await FlowComponents.insert({name: docObj.locale, type: "locale"});
   }
-  if(docObj.type == "book"){
+  if(docObj.type == "book" || docObj.type == "video"){
     try {
       MultimediaDownloader.indexMultimedia(docObj, (err, response) => {
         if(!err){
