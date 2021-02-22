@@ -155,6 +155,7 @@ export default class DocumentDownloader {
               searchSnippet: docObj.searchSnippet || '',
               indexedBody: indexedDocument.indexedBody || 'test',
               route: Documents.findOne({ route: indexedDocument.route })._id,
+              docRoute: indexedDocument.route,
               img: 'assets/downloadedDocs/'+currentFolder+'/'+file,
               type: 'image'
             }
