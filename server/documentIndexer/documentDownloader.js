@@ -151,11 +151,10 @@ export default class DocumentDownloader {
               domain: docObj.domain ,
               keywords: docObj.keywords || [],
               date: docObj.date || Utils.getDate(),
-              url: urlOrigin,
+              url: indexedDocument.route,
               searchSnippet: docObj.searchSnippet || '',
               indexedBody: indexedDocument.indexedBody || 'test',
               route: Documents.findOne({ route: indexedDocument.route })._id,
-              docRoute: indexedDocument.route,
               img: 'assets/downloadedDocs/'+currentFolder+'/'+file,
               type: 'image'
             }
