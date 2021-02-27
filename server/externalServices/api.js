@@ -106,6 +106,7 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
     try {
       MultimediaDownloader.indexMultimedia(docObj, (err, response) => {
         if (!err) {
+          DocumentRetrieval.reindex();
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
         } else {
@@ -120,6 +121,7 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
     try {
       DocumentDownloader.fetch(docObj, (err, response) => {
         if (!err) {
+          DocumentRetrieval.reindex();
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
         } else {
