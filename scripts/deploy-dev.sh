@@ -6,7 +6,7 @@ source dotenv
 set +o allexport
 
 # Set asset path
-ASSET_PATH="./assets"
+ASSET_PATH="~/apps/GAME/Client/src/neuroneFiles/assets"
 mkdir -p $ASSET_PATH
 
 # Override with development environment variables
