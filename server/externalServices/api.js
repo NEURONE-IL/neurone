@@ -108,7 +108,6 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
         if (!err) {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
-          // DocumentRetrieval.reindex();
         } else {
           res.writeHead(400, { "Content-Type": "application/json" });
           res.end(parseResponse(err));
@@ -121,9 +120,9 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
     try {
       DocumentDownloader.fetch(docObj, (err, response) => {
         if (!err) {
+          DocumentRetrieval.reindex();
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
-          // DocumentRetrieval.reindex();
         } else {
           res.writeHead(400, { "Content-Type": "application/json" });
           res.end(parseResponse(err));
