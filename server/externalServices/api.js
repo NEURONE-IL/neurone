@@ -3,6 +3,8 @@
 import DocumentRetrieval from "../documentIndexer/documentRetrieval";
 import DocumentDownloader from "../documentIndexer/documentDownloader";
 import MultimediaDownloader from "../multimediaIndexer/multimediaDownloader";
+import SolrIndex from "../documentIndexer/indexes/solrIndex";
+import Indexer from "../documentIndexer/indexer";
 import { FlowComponents } from "../../imports/database/flowComponents/index";
 import { Documents } from "../../imports/database/documents/index";
 import {
@@ -68,14 +70,29 @@ WebApp.connectHandlers.use("/v1/xd", (req, res, next) => {
 WebApp.connectHandlers.use("/v1/document/search", async (req, res, next) => {
   try {
     let queryObj = await parseBody(req);
-    let search = DocumentRetrieval.searchDocument(queryObj);
-
-    //console.log(queryObj, search);
-
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(parseResponse(search));
+    if (Indexer.checkSolrIndex()) {
+      SolrIndex.searchDocuments(queryObj, (err, response) => {
+        if (err) {
+          console.log(err);
+          res.writeHead(500, { "Content-Type": "application/json" });
+          res.end(err);
+        } else {
+          if (res.length >= 1) {
+            response = DocumentRetrieval.iFuCoSort(response, 3, 2);
+          }
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(parseResponse(response));
+        }
+      });
+    }
+    else {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end('Indexer not OK');
+    }
   } catch (error) {
     console.log(error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(error);
   }
 });
 
