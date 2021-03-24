@@ -1,13 +1,13 @@
 import SolrNode from 'solr-node';
-
+ 
 import Utils from '../../utils/serverUtils';
 import RemoveDiacritics from '../../utils/removeDiacritics';
-
+ 
 import { Documents } from '../../../imports/database/documents/index';
 import { Book, Video, ImageSearch } from '../../database/definitions';
-
+ 
 let searchIndex;
-
+ 
 export default class SolrIndex {
   static load(callback) {
     let options = {
@@ -16,9 +16,9 @@ export default class SolrIndex {
       core: process.env.NEURONE_SOLR_CORE || 'neurone',
       debugLevel: 'ERROR'
     }
-
+ 
     searchIndex = new SolrNode(options);
-
+ 
     searchIndex.ping((err, res) => {
       if (!err) {
         console.log('Solr index loaded successfully');
@@ -29,7 +29,7 @@ export default class SolrIndex {
       }
     });
   }
-
+ 
   static generate(callback) {
     SolrIndex.load(Meteor.bindEnvironment((err, res) => {
       if (!err) {
@@ -42,7 +42,7 @@ export default class SolrIndex {
             images = ImageSearch.find().fetch();
             
             docs = docs.concat(books.concat(videos).concat(images));
-
+ 
         docs.forEach((doc, idx) => {
           let newDoc = {
             id: doc._id,
@@ -58,10 +58,10 @@ export default class SolrIndex {
             url_t: doc.url || '',
             type_t: doc.type || 'page'
           };
-
+ 
           idxDocs.push(newDoc);
         });
-
+ 
         // dgacitua: Deleting old documents
         searchIndex.delete({ '*':'*' }, (err2, res2) => {
           if (!err2) {
@@ -88,7 +88,7 @@ export default class SolrIndex {
       }
     }));
   }
-
+ 
   static index(docObj, callback) {
     let newDoc = {
       id: docObj._id,
@@ -104,9 +104,9 @@ export default class SolrIndex {
       url_t: docObj.url || '',
       type_t: docObj.type || 'page'
     };
-
+ 
     let arrDocs = [ newDoc ];
-
+ 
     searchIndex._requestPost('update?commit=true', arrDocs, {}, (err, res) => {
       if (!err) {
         callback(null, true);
@@ -116,15 +116,15 @@ export default class SolrIndex {
       }
     });
   }
-
+ 
   static searchDocuments(queryObject, callback) {
     check(queryObject, Object);
-
+ 
     let queryString = queryObject.query,
         queryLocale = queryObject.locale ? queryObject.locale : null,
           queryTask = queryObject.task ? queryObject.task : null,
         queryDomain = queryObject.domain ? queryObject.domain : null;
-
+ 
     let q1 = `(title_t:${queryString} OR indexedBody_t: ${queryString} OR keywords_t: ${queryString})`,
         q2 = queryLocale ? ` AND locale_s:${queryLocale}` : '',
         q3 = queryTask ? ` AND task_s:${queryTask}` : '',
@@ -134,11 +134,11 @@ export default class SolrIndex {
         q7 = `hl=on&hl.q=${queryString}&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>`,
         q8 = `hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300`,
      query = `q=(${q1}${q2}${q3}${q4})&${q5}&${q6}&${q7}&${q8}&wt=json`;
-
+ 
     //console.log('SearchQuery', query);
-
+ 
     let respDocs = [];
-
+ 
     searchIndex.search(encodeURI(query), Meteor.bindEnvironment((err, res) => {
       if (!err) {
         let searchResponse = res,
@@ -149,7 +149,7 @@ export default class SolrIndex {
         searchDocs.forEach((doc) => {
           let docId = doc.id,
              docObj = Documents.findOne({_id: docId});
-
+ 
              //document multimedia
              if(docObj == null){
                docObj = Video.findOne({_id:docId});
@@ -161,17 +161,19 @@ export default class SolrIndex {
                 }
              }
           docObj.searchSnippet = '';
-
-          searchHl[docId].indexedBody_t.forEach((snip, idx, arr) => {
-            docObj.searchSnippet += snip;
-            if (idx < arr.length-1) docObj.searchSnippet += ' ... ';
-          });
-
+ 
+          if (searchHl[docId] && searchHl[docId].indexedBody_t) {
+            searchHl[docId].indexedBody_t.forEach((snip, idx, arr) => {
+              docObj.searchSnippet += snip;
+              if (idx < arr.length-1) docObj.searchSnippet += ' ... ';
+            });
+          }
+ 
           delete docObj.indexedBody;
           
           respDocs.push(docObj);
         });
-
+ 
         callback(null, respDocs);
       }
       else {

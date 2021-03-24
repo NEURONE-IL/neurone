@@ -76,6 +76,7 @@ WebApp.connectHandlers.use("/v1/document/search", async (req, res, next) => {
     res.end(parseResponse(search));
   } catch (error) {
     console.log(error);
+    throw new Meteor.Error(500, "Cannot search documents!", error);
   }
 });
 
@@ -109,12 +110,14 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
         } else {
-          res.writeHead(400, { "Content-Type": "application/json" });
+          res.writeHead(500, { "Content-Type": "application/json" });
           res.end(parseResponse(err));
         }
       });
     } catch (error) {
       console.log(error);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(parseResponse(error));
     }
   } else {
     try {
@@ -124,12 +127,14 @@ WebApp.connectHandlers.use("/v1/document/load", async (req, res, next) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(parseResponse(response));
         } else {
-          res.writeHead(400, { "Content-Type": "application/json" });
+          res.writeHead(500, { "Content-Type": "application/json" });
           res.end(parseResponse(err));
         }
       });
     } catch (error) {
       console.log(error);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(parseResponse(error));
     }
   }
 });
