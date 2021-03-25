@@ -133,7 +133,7 @@ export default class DocumentDownloader {
           let docInfo = DocumentParser.getDocumentInfo(res.fullPath);
 
           if (!docInfo.indexedBody || docInfo.indexedBody === "") {
-            let errorObj = { msg: "Empty document body!" };
+            let errorObj = { msg: "COULDNT_DOWNLOAD_DOC" };
             callback(errorObj);
           } else {
             for (var attrname in docInfo) {
@@ -247,7 +247,7 @@ export default class DocumentDownloader {
             );
             callback(null, res);
           } else {
-            callback(errorObj);
+            callback(err);
           }
         })
       );
