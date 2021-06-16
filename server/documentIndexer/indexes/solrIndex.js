@@ -125,7 +125,7 @@ export default class SolrIndex {
           queryTask = queryObject.task ? queryObject.task : null,
         queryDomain = queryObject.domain ? queryObject.domain : null;
  
-    let q1 = `(title_t:${queryString} OR indexedBody_t: ${queryString} OR keywords_t: ${queryString})`,
+    let q1 = `${queryString}`,
         q2 = queryLocale ? ` AND locale_s:${queryLocale}` : '',
         q3 = queryTask ? ` AND task_s:${queryTask}` : '',
         q4 = queryDomain ? ` AND domain_s:${queryDomain}` : '',
@@ -133,7 +133,8 @@ export default class SolrIndex {
         q6 = `df=indexedBody_t`,
         q7 = `hl=on&hl.q=${queryString}&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>`,
         q8 = `hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300`,
-     query = `q=(${q1}${q2}${q3}${q4})&${q5}&${q6}&${q7}&${q8}&wt=json`;
+        q9 = `defType=dismax&qf=title_t^1.5+indexedBody_t^1.0+keywords_t^2.0`, //Query Boosting, ajustar estos valores de ser necesario para mejorar la busqueda.
+     query = `q=(${q1}${q2}${q3}${q4})&${q5}&${q6}&${q7}&${q8}&${q9}&wt=json`;
  
     //console.log('SearchQuery', query);
  
