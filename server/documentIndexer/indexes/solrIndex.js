@@ -133,8 +133,8 @@ export default class SolrIndex {
         q6 = `df=indexedBody_t`,
         q7 = `hl=on&hl.q=${queryString}&hl.fl=indexedBody_t&hl.snippets=3&hl.simple.pre=<em class="hl">&hl.simple.post=</em>`,
         q8 = `hl.fragmenter=regex&hl.regex.slop=0.2&hl.alternateField=body_t&hl.maxAlternateFieldLength=300`,
-        q9 = `defType=dismax&qf=title_t^1.5+indexedBody_t^1.0+keywords_t^2.0`, //Query Boosting, ajustar estos valores de ser necesario para mejorar la busqueda.
-     query = `q=(${q1}${q2}${q3}${q4})&${q5}&${q6}&${q7}&${q8}&${q9}&wt=json`;
+        q9 = `defType=edismax&qf=title_t^1.5+indexedBody_t^1.0+keywords_t^2.0`, //Query Boosting, ajustar estos valores de ser necesario para mejorar la busqueda.
+     query = `q=(${q1}${q2}${q3}${q4})&${q5}&${q6}&${q7}&${q8}&wt=json`;
  
     //console.log('SearchQuery', query);
  
@@ -169,12 +169,13 @@ export default class SolrIndex {
               if (idx < arr.length-1) docObj.searchSnippet += ' ... ';
             });
           }
- 
+
           delete docObj.indexedBody;
           
           respDocs.push(docObj);
         });
  
+        //console.log(query, respDocs.length);
         callback(null, respDocs);
       }
       else {
