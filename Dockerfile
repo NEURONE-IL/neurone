@@ -3,14 +3,31 @@
 # https://medium.com/@isohaze/how-to-dockerize-a-meteor-1-4-app-120a34089ddb
 # https://projectricochet.com/blog/production-meteor-and-node-using-docker-part-i
 
-FROM phusion/passenger-nodejs:1.0.9
+FROM phusion/passenger-customizable:2.0.0
 
 # Contact the maintainer in case of problems
 MAINTAINER Daniel Gacitua <daniel.gacitua@usach.cl>
 
+# Replace shell with bash so we can source files
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # Install basic dependencies
 RUN apt-get -qq update \
-  && apt-get -qq --no-install-recommends install wget curl ca-certificates unzip bsdtar make gcc python python-dev
+  && apt-get -qq --no-install-recommends install wget curl ca-certificates libarchive-tools unzip make gcc python python-dev
+
+# Install Node.js through nvm
+# https://gist.github.com/remarkablemark/aacf14c29b3f01d6900d13137b21db3a
+ENV NVM_DIR /nvm
+ENV NODE_VERSION 8.17.0
+RUN mkdir -p $NVM_DIR \
+  && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+RUN source $NVM_DIR/nvm.sh \
+  && nvm install $NODE_VERSION \
+  && nvm alias default $NODE_VERSION \
+  && nvm use default
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+RUN node -v && npm -v
 
 # Set user
 ARG username=user
@@ -42,6 +59,10 @@ ENV PATH $PATH:$HOME/.meteor
 
 # Set Build Memory Limit
 ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=1536 --gc_interval=100
+
+# Handle Let's Encrypt expired certificate
+# https://docs.meteor.com/expired-certificate.html
+ENV NODE_TLS_REJECT_UNAUTHORIZED 0
 
 # Installation and packaging script
 RUN /sbin/setuser $username ./meteorBuild.sh
