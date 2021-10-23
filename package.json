@@ -51,6 +51,7 @@
     "iconv": "^2.3.5",
     "ip": "^1.1.5",
     "jschardet": "^1.4.1",
+    "just-clone": "^4.0.0",
     "leaflet": "^1.6.0",
     "lunr": "^0.7.2",
     "lunr-languages": "0.0.4",

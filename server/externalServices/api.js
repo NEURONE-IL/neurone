@@ -1,5 +1,7 @@
 // dgacitua: https://docs.meteor.com/v1.6/packages/webapp.html
 
+import Utils from "../utils/serverUtils";
+
 import DocumentRetrieval from "../documentIndexer/documentRetrieval";
 import DocumentDownloader from "../documentIndexer/documentDownloader";
 import MultimediaDownloader from "../multimediaIndexer/multimediaDownloader";
@@ -68,12 +70,17 @@ WebApp.connectHandlers.use("/v1/xd", (req, res, next) => {
 WebApp.connectHandlers.use("/v1/document/search", async (req, res, next) => {
   try {
     let queryObj = await parseBody(req);
-    let search = DocumentRetrieval.searchDocument(queryObj);
+    let search1 = DocumentRetrieval.searchDocument(queryObj);
 
-    //console.log(queryObj, search);
+    let allDocsQuery = Utils.cloneObject(queryObj);
+    allDocsQuery.query = "*";
+    let search2 = DocumentRetrieval.searchDocument(allDocsQuery);
+
+    let searchFinal = Utils.documentUnion(search1, search2);
+    console.log(queryObj, searchFinal);
 
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(parseResponse(search));
+    res.end(parseResponse(searchFinal));
   } catch (error) {
     console.log(error);
     throw new Meteor.Error(500, "Cannot search documents!", error);

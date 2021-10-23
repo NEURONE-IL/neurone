@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import clone from 'just-clone';
 
 const rootPath = path.resolve('.');
 const absolutePath = rootPath.split(path.sep + '.meteor')[0];
@@ -153,5 +154,19 @@ export default class ServerUtils {
     });
 
     return flag;
+  }
+
+  // dgacitua: Unique merge object array by docName
+  // https://stackoverflow.com/a/54134237
+  static documentUnion(arr1, arr2) {
+    let ids = new Set(arr1.map(item => item.docName));
+    let ans = [ ...arr1, ...arr2.filter(item => !ids.has(item.docName)) ];
+    return ans;
+  }
+
+  // dgacitua: Shallow copy an object
+  // https://stackoverflow.com/a/122704
+  static cloneObject(obj) {
+    return clone(obj);
   }
 }
