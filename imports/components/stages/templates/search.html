@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+
 <!-- dgacitua: Home mode -->
 <div class="container" ng-if="!search.firstSearch">
   <div class="text-center">
@@ -115,10 +119,10 @@
               <h3>{{"search.noResults" | translate}}</h3>
             </div>
             
-            <div id="imgSearch" class="col-md-3" ng-repeat="doc in search.images track by doc._id" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})" >
-              <p ui-sref="displayPage({ docName: doc.route })" >{{doc.url}}</p>
-              <img src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px"  />
-              <label  ui-sref="displayPage({ docName: doc.route })" >{{doc.title}}</label>
+            <div  class="col-md-3" ng-repeat="doc in search.images track by doc._id"  >
+              <img id="imgSearch" src="{{doc.img}}" alt="{{doc.title}}" height="100px" width="150px" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})"/>
+              <div id="imgTitle" ui-sref="displayPage({ docName: doc.route })" ng-click="search.storeEvent('SearchResultSelected', {docId: doc.route})"><b>{{doc.title}}</b><p>{{doc.url}}</p></div>
+              
             </div>
 
 
@@ -174,11 +178,11 @@
           </uib-tab>
 
 
-          <uib-tab index="4" disable="!search.multimediaObjects.maps" ng-click="mapsSearch.fixMap()">
+          <uib-tab index="4" disable="!search.multimediaObjects.maps" select="search.fix()">
             <uib-tab-heading>
               <i class="fa fa-map-marker" aria-hidden="true"></i> Maps
             </uib-tab-heading>
-            <div ui-view="mapsSearch" ></div>
+              <div id="map"></div>
             
           </uib-tab>
         </uib-tabset>

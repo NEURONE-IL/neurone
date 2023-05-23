@@ -90,7 +90,7 @@ export default class MultimediaDownloader {
      }
 
     options = {
-      all: false,
+      all: true,
       cwd: downloadPath,
     }
 
@@ -99,7 +99,7 @@ export default class MultimediaDownloader {
     downloader.getThumbs(obj.url, options, function(err, file) {
       if (!err) {
         thumbnail = file[0]
-          console.log('thumbnail downloaded')
+          console.log('thumbnail downloaded', file)
         }
         else {
           throw err;

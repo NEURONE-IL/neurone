@@ -5,7 +5,7 @@ set -e
 
 # Load environment variables from file
 set -o allexport
-source dotenv
+source ./dotenv
 set +o allexport
 
 # Create directories in filesystem
