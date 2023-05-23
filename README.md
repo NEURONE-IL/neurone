@@ -62,30 +62,35 @@ Run the following command to install Meteor on Linux distributions:
 
 The following instructions are for Ubuntu Server, adapt them if another distribution is used:
 
-1. In your production machine, install Docker:
+1. Install required dependencies for Docker
 
         $ sudo apt-get update
-        $ sudo apt-get install apt-transport-https ca-certificates curl software-properties-common unzip
-        $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        $ sudo apt-key fingerprint 0EBFCD88
-        $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        $ sudo apt-get update
-        $ sudo apt-get install docker-ce
+        $ sudo apt-get install ca-certificates curl gnupg lsb-release
 
-2. Enable Docker for your current user (so you don't need `sudo` anymore):
+2. Add Docker's GPG key
+
+        $ sudo mkdir -p /etc/apt/keyrings
+        $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg 
+
+3. Set up Docker's repository
+
+        $ echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+4. Install Docker and Docker Compose
+
+        $ sudo apt-get update
+        $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+5. Enable using Docker for current user (without requiring `sudo`):
 
         $ sudo usermod -aG docker $(whoami)
         $ logout
 
-3. Install Docker Compose:
+6. Copy NEURONE's source code into a folder on your home (for this example, `neurone-master` will be assumed as your source code folder)
 
-        $ sudo apt-get update
-        $ sudo apt-get -y install python python-pip
-        $ sudo pip install docker-compose
-
-4. Copy NEURONE's source code into a folder on your home (for this example, `neurone-master` will be assumed as your source code folder)
-
-5. You can set some of the following Environment Variables on your production machine to customize deployment, although NEURONE can run perfectly with its default values (take note of those values whether you use the default ones or not):
+7. You can set some of the following Environment Variables on your production machine to customize deployment, although NEURONE can run perfectly with its default values (take note of those values whether you use the default ones or not):
 
     | Env Variable Name       | Default Value          | Description                                                      |
     |-------------------------|------------------------|------------------------------------------------------------------|
@@ -103,13 +108,13 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
     
         $ export NEURONE_HOST=123.45.67.89
 
-6. Create your asset and raw data folder at the locations defined on Step 5, also copy your assets (example will assume `myAssets.zip` as source) to your NEURONE asset folder
+8. Create your asset and raw data folder at the locations defined on Step 5, also copy your assets (example will assume `myAssets.zip` as source) to your NEURONE asset folder
 
         $ mkdir -p ~/neuroneAssets
         $ mkdir -p ~/neuroneDatabase
         $ unzip myAssets.zip -d ~/neuroneAssets
 
-7. Run bundled scripts for building and deploying NEURONE:
+9. Run bundled scripts for building and deploying NEURONE:
 
         $ cd ~/neurone-master
         $ ./neurone-build.sh
@@ -120,7 +125,7 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
         $ cd ~/neurone-master
         $ ./neurone-stop.sh
 
-8. You can access your NEURONE simulation instance through a web browser by entering your IP or DNS address or use the following ports to access and configure NEURONE when deployed:
+10. You can access your NEURONE simulation instance through a web browser by entering your IP or DNS address or use the following ports to access and configure NEURONE when deployed:
  
     | Application | Port   | Description                                                                        |
     |-------------|--------|------------------------------------------------------------------------------------|
