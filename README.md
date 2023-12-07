@@ -56,7 +56,7 @@ Run the following command to install Meteor on Linux distributions:
 
 ### Production
 
-**NOTE:** A Linux Virtual Private Server (VPS) or a Linux local machine with SSH access is needed to run this project in production mode.
+**NOTE:** A Linux Virtual Private Server (VPS) or a Linux local machine with SSH access is needed to run this project in production mode. At least 2GB of RAM is required for building Docker images.
 
 #### Quick deploy (through Docker and Docker Compose)
 
@@ -107,6 +107,8 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
     To override a default value through an environment variable, use the following command as an example:
     
         $ export NEURONE_HOST=123.45.67.89
+    
+    Alternatively, you can customize these environment variables by editing the `dotenv` file in the project's root directory.
 
 8. Create your asset and raw data folder at the locations defined on Step 5, also copy your assets (example will assume `myAssets.zip` as source) to your NEURONE asset folder
 
@@ -133,6 +135,8 @@ The following instructions are for Ubuntu Server, adapt them if another distribu
     | MongoDB     | `1313` | NEURONE Database Module (access through a MongoDB client)                          |
     | Solr        | `1314` | NEURONE Information Retrieval Module (access through web browser or REST requests) |
 
+11. You can further customize NEURONE by setting the language for the Solr core and/or configuring a firewall. See the Appendix section of this README for more information.
+
 #### Custom deploy (through Node.js)
 
 Check NEURONE's Sysadmin Manual for complete instructions for a custom deploy using Node.js, Nginx and PM2.
@@ -157,3 +161,93 @@ And also referencing the following publications:
 
 - González‐Ibáñez, R., Gacitúa, D., Sormunen, E., & Kiili, C. (2017). NEURONE: oNlinE inqUiRy experimentatiON systEm. Proceedings of the Association for Information Science and Technology, 54(1), 687-689.
 - Sormunen, E., González-Ibáñez, R., Kiili, C., Leppänen, P. H., Mikkilä-Erdmann, M., Erdmann, N., & Escobar-Macaya, M. (2017, September). A Performance-based Test for Assessing Students’ Online Inquiry Competences in Schools. In European Conference on Information Literacy (pp. 673-682). Springer, Cham.
+
+## Appendix
+
+### Configure UFW as firewall
+
+It is important to block all ports on the server that are not used to interact with the platform in order to avoid malicious attacks. In Ubuntu Server, UFW is the default firewall for this purpose. Follow these steps to enable UFW for NEURONE:
+
+1. **Set all UFW policies to default values**
+
+        $ sudo ufw default deny incoming
+        $ sudo ufw default allow outgoing
+
+2. **Allow rules for SSH connections**
+
+        $ sudo ufw allow ssh
+
+3. **Enable UFW**
+
+        $ sudo ufw enable
+
+4. **Allow rules for NEURONE**
+    This example assumes that port 80 is being used for the main NEURONE application and port 81 for the fallback NEURONE application. Notice that database and inverted index services must be kept behind the firewall.
+
+        $ sudo ufw allow 80
+        $ sudo ufw allow 81
+        $ sudo ufw reload
+
+Source: <https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-22-04>
+
+### SSH Tunnel to access NEURONE modules
+
+In order to access NEURONE modules from a developer or sysadmin machine protected by a firewall, it is possible to deploy a SSH Tunnel to temporary bypass it. The following bash script shows an example on how to do this (from a local machine):
+
+```bash
+#!/bin/bash
+
+# Customize the following variables
+REMOTE_USERNAME="neurone"                 # NEURONE server username
+REMOTE_HOST="neurone.myschool.info"       # NEURONE server domain or IP address
+REMOTE_PORT=1313    # NEURONE server port to redirect
+LOCAL_PORT=3000     # Local machine port where the NEURONE server port is redirected
+
+echo -e "Tunneling to $REMOTE_HOST from remote port $REMOTE_PORT to local port $LOCAL_PORT"
+
+ssh $REMOTE_USERNAME@$REMOTE_HOST -p 22 -L $LOCAL_PORT:localhost:$REMOTE_PORT
+```
+
+### Setting language for the Solr core
+
+It is possible to change the language of the Solr core to take advantage of language-specific autoindexing techniques (like stopwords and stemming), therefore making the search experience more similar to commercial search engines. After NEURONE is deployed in the server and before loading any documents, customize the following snippet and run it (as a single command) from the terminal:
+
+```bash
+curl --location 'http://localhost:1314/solr/neurone/schema/fields?wt=json' \
+--header 'Content-Type: application/json' \
+--data '{
+    "add-field": [
+        {
+            "name": "title_t",
+            "type": "text_es",
+            "indexed": true,
+            "stored": true,
+            "termVectors": true,
+            "termPositions": true
+        },
+        {
+            "name": "indexedBody_t",
+            "type": "text_es",
+            "indexed": true,
+            "stored": true,
+            "termVectors": true,
+            "termPositions": true
+        },
+        {
+            "name": "keywords_t",
+            "type": "text_es",
+            "indexed": true,
+            "stored": true,
+            "multiValued": true,
+            "termVectors": true,
+            "termPositions": true
+        }
+    ]
+}'
+```
+
+This command requires `curl` to run. The following parameters of the command above can be customized:
+
+*  `localhost:1314`: Replace this with the proper domain/IP address and port of the deployed NEURONE Solr module.
+*  `"add-field"`: If the command is going to be run before adding documents, leave it like it is. If there are documents already loaded to NEURONE, replace it with `"replace-field"`, run the command, and then reload the inverted index from the NEURONE's Admin Panel.
+* `"type": "text_es"`: The `text_es` part changes the Solr core autoindexing to Spanish language. This can be modified for other languages too, like `text_en` (for English), `text_fi` (for Finnish), or any other language compatible with Solr (see [here](https://solr.apache.org/guide/6_6/language-analysis.html#language-analysis) for more information). Remember to change all coincidences of this value to the desired language to work properly.
