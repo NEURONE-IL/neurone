@@ -1,46 +1,65 @@
 # NEURONE Dockerfile
 # Adapted for deploy-diinf (using deployment-kit templates)
 
-FROM node:8.17.0
+FROM phusion/passenger-customizable:2.0.0
 
-# Install system dependencies required for Meteor and bsdtar
-RUN apt-get update && apt-get install -y \
-    curl \
-    python \
-    build-essential \
-    libarchive-tools \
-    && rm -rf /var/lib/apt/lists/*
+# Replace shell with bash so we can source files
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Create working directory
-WORKDIR /app
+# Install basic dependencies (similar to original Dockerfile)
+RUN apt-get -qq update \
+  && apt-get -qq --no-install-recommends install wget curl ca-certificates libarchive-tools unzip make gcc python python-dev
+
+# Install Node.js through nvm (same as original)
+ENV NVM_DIR /nvm
+ENV NODE_VERSION 8.17.0
+RUN mkdir -p $NVM_DIR \
+  && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+RUN source $NVM_DIR/nvm.sh \
+  && nvm install $NODE_VERSION \
+  && nvm alias default $NODE_VERSION \
+  && nvm use default
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# Set user (simplified, no need for custom user in our case)
+RUN useradd -m -s /bin/bash neurone
+USER neurone
+ENV HOME /home/neurone
+
+# Set working directory
+RUN mkdir -p /home/neurone/app
+WORKDIR /home/neurone/app
 
 # Copy project files
-COPY . .
+COPY --chown=neurone:neurone . ./src
 
-# Variables de entorno para build
-ENV TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=1536 --gc_interval=100"
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+# Copy and run the meteor build script (reuse the existing one)
+RUN cp ./src/.deploy/docker/meteorBuild.sh ./meteorBuild.sh && chmod +x ./meteorBuild.sh
 
-# Copy and make executable the meteor build script
-RUN cp ./.deploy/docker/meteorBuild.sh ./meteorBuild.sh && chmod +x ./meteorBuild.sh
+# Set Meteor Framework location as environment variable
+ENV PATH $PATH:$HOME/.meteor
 
-# Run the meteor build script (this handles everything: install meteor, build, cleanup)
+# Set Build Memory Limit
+ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=1536 --gc_interval=100
+ENV NODE_TLS_REJECT_UNAUTHORIZED 0
+
+# Run the meteor build script
 RUN ./meteorBuild.sh
 
-# Create assets directory
-RUN mkdir -p /assets
+# Create NEURONE assets directory
+RUN mkdir -p /home/neurone/assets
 
-# Variables de entorno de runtime
-ENV NEURONE_ASSET_PATH=/assets
+# Set environment variables
+ENV NEURONE_ASSET_PATH /home/neurone/assets
 ENV PORT=3000
 ENV ROOT_URL=http://localhost:3000
 
 # Expose port
 EXPOSE 3000
 
-# Volume for assets
-VOLUME ["/assets"]
+# Set working directory to the built app
+WORKDIR /home/neurone/app/neurone
 
 # Start the app
-WORKDIR /app/neurone
 CMD ["node", "main.js"]
