@@ -3,28 +3,31 @@
 
 FROM node:8.17.0
 
-# Instalar Meteor versión específica 1.6.0.1 compatible con Node.js 8
-RUN curl "https://packages.meteor.com/bootstrap-link?arch=os.linux.x86_64&release=1.6.0.1" | sh
+# Install system dependencies required for Meteor and bsdtar
+RUN apt-get update && apt-get install -y \
+    curl \
+    python \
+    build-essential \
+    libarchive-tools \
+    && rm -rf /var/lib/apt/lists/*
 
-# Crear directorio de trabajo
+# Create working directory
 WORKDIR /app
 
-# Copiar archivos del proyecto
+# Copy project files
 COPY . .
 
 # Variables de entorno para build
 ENV TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=1536 --gc_interval=100"
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-# Instalar dependencias y construir aplicación
-RUN meteor npm install --production
-RUN meteor build --directory /app/build --server-only
+# Copy and make executable the meteor build script
+RUN cp ./.deploy/docker/meteorBuild.sh ./meteorBuild.sh && chmod +x ./meteorBuild.sh
 
-# Cambiar al directorio de build
-WORKDIR /app/build/bundle/programs/server
-RUN npm install --production
+# Run the meteor build script (this handles everything: install meteor, build, cleanup)
+RUN ./meteorBuild.sh
 
-# Crear directorio de assets
+# Create assets directory
 RUN mkdir -p /assets
 
 # Variables de entorno de runtime
@@ -32,12 +35,12 @@ ENV NEURONE_ASSET_PATH=/assets
 ENV PORT=3000
 ENV ROOT_URL=http://localhost:3000
 
-# Exponer puerto interno (Nginx externo hará proxy)
+# Expose port
 EXPOSE 3000
 
-# Volumen para assets
+# Volume for assets
 VOLUME ["/assets"]
 
-# Comando de inicio
-WORKDIR /app/build/bundle
+# Start the app
+WORKDIR /app/neurone
 CMD ["node", "main.js"]
