@@ -1,0 +1,43 @@
+# NEURONE Dockerfile
+# Adapted for deploy-diinf (using deployment-kit templates)
+
+FROM node:8.17.0
+
+# Instalar Meteor
+RUN curl https://install.meteor.com/ | sh
+
+# Crear directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos del proyecto
+COPY . .
+
+# Variables de entorno para build
+ENV TOOL_NODE_FLAGS="--optimize_for_size --max_old_space_size=1536 --gc_interval=100"
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# Instalar dependencias y construir aplicación
+RUN meteor npm install --production
+RUN meteor build --directory /app/build --server-only
+
+# Cambiar al directorio de build
+WORKDIR /app/build/bundle/programs/server
+RUN npm install --production
+
+# Crear directorio de assets
+RUN mkdir -p /assets
+
+# Variables de entorno de runtime
+ENV NEURONE_ASSET_PATH=/assets
+ENV PORT=3000
+ENV ROOT_URL=http://localhost:3000
+
+# Exponer puerto interno (Nginx externo hará proxy)
+EXPOSE 3000
+
+# Volumen para assets
+VOLUME ["/assets"]
+
+# Comando de inicio
+WORKDIR /app/build/bundle
+CMD ["node", "main.js"]
