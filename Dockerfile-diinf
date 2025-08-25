@@ -55,9 +55,11 @@ RUN cd src \
 RUN cp -r neurone/bundle/. neurone/ \
     && rm -rf neurone/bundle
 
-# Install production dependencies (this usually works better than the full install)
+# Install production dependencies and rebuild native modules
 RUN cd neurone/programs/server \
-    && npm install --production --quiet --ignore-scripts
+    && npm install --production --quiet --ignore-scripts \
+    && npm rebuild iconv --quiet || echo "iconv rebuild failed, continuing..." \
+    && npm rebuild bcrypt --quiet || echo "bcrypt rebuild failed, continuing..."
 
 # Copy permission fix script before cleanup
 RUN cp ./src/.deploy/docker/fixPermissions.sh ./fixPermissions.sh && chmod +x ./fixPermissions.sh
