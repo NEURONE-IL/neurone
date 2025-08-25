@@ -3,8 +3,8 @@
 
 FROM node:8.17.0
 
-# Instalar Meteor
-RUN curl https://install.meteor.com/ | sh
+# Instalar Meteor versión específica 1.6.0.1 compatible con Node.js 8
+RUN curl "https://packages.meteor.com/bootstrap-link?arch=os.linux.x86_64&release=1.6.0.1" | sh
 
 # Crear directorio de trabajo
 WORKDIR /app
