@@ -1,5 +1,5 @@
-# NEURONE Dockerfile
-# Adapted for deploy-diinf (using deployment-kit templates)
+# NEURONE Dockerfile - Alternative version for deploy-diinf
+# Uses direct meteor build instead of meteorBuild.sh to avoid npm install issues
 
 FROM phusion/passenger-customizable:2.0.0
 
@@ -34,9 +34,6 @@ WORKDIR /home/neurone/app
 # Copy project files
 COPY --chown=neurone:neurone . ./src
 
-# Copy and run the meteor build script (reuse the existing one)
-RUN cp ./src/.deploy/docker/meteorBuild.sh ./meteorBuild.sh && chmod +x ./meteorBuild.sh
-
 # Set Meteor Framework location as environment variable
 ENV PATH $PATH:$HOME/.meteor
 
@@ -44,11 +41,37 @@ ENV PATH $PATH:$HOME/.meteor
 ENV TOOL_NODE_FLAGS --optimize_for_size --max_old_space_size=1536 --gc_interval=100
 ENV NODE_TLS_REJECT_UNAUTHORIZED 0
 
-# Run the meteor build script
-RUN ./meteorBuild.sh
+# Install Meteor Framework
+RUN curl https://install.meteor.com -o /tmp/install_meteor.sh \
+    && sed -i.bak "s/tar -xzf.*/bsdtar -xf \"\$TARBALL_FILE\" -C \"\$INSTALL_TMPDIR\"/g" /tmp/install_meteor.sh \
+    && sh /tmp/install_meteor.sh
 
-# Create NEURONE assets directory
+# Alternative approach: Skip problematic npm packages and build directly
+RUN cd src \
+    && meteor npm install --quiet --ignore-scripts || meteor npm install --quiet --ignore-scripts --force \
+    && meteor build ../neurone --directory --server-only
+
+# Move app to final location
+RUN cp -r neurone/bundle/. neurone/ \
+    && rm -rf neurone/bundle
+
+# Install production dependencies (this usually works better than the full install)
+RUN cd neurone/programs/server \
+    && npm install --production --quiet --ignore-scripts
+
+# Copy permission fix script before cleanup
+RUN cp ./src/.deploy/docker/fixPermissions.sh ./fixPermissions.sh && chmod +x ./fixPermissions.sh
+
+# Cleanup source code
+RUN rm -rf src
+
+# Switch to root temporarily to create and fix permissions on assets directory
+USER root
 RUN mkdir -p /home/neurone/assets
+RUN ./fixPermissions.sh /home/neurone/assets neurone
+
+# Switch back to neurone user
+USER neurone
 
 # Set environment variables
 ENV NEURONE_ASSET_PATH /home/neurone/assets
