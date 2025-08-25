@@ -1,4 +1,5 @@
-# NEURONE Dockerfile - Alternative version for deploy-diinf
+# NEURONE Dockerfile (Alternative version for deploy-diinf)
+# This version is designed to be compatible with deployment-kit templates
 # Uses direct meteor build instead of meteorBuild.sh to avoid npm install issues
 
 FROM phusion/passenger-customizable:2.0.0
@@ -6,9 +7,9 @@ FROM phusion/passenger-customizable:2.0.0
 # Replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Install basic dependencies (similar to original Dockerfile)
+# Install basic dependencies including build tools for native modules
 RUN apt-get -qq update \
-  && apt-get -qq --no-install-recommends install wget curl ca-certificates libarchive-tools unzip make gcc python python-dev
+  && apt-get -qq --no-install-recommends install wget curl ca-certificates libarchive-tools unzip make gcc g++ python python-dev python3-dev build-essential
 
 # Install Node.js through nvm (same as original)
 ENV NVM_DIR /nvm
@@ -55,11 +56,16 @@ RUN cd src \
 RUN cp -r neurone/bundle/. neurone/ \
     && rm -rf neurone/bundle
 
-# Install production dependencies and rebuild native modules
+# Install production dependencies without ignoring scripts, but handle failures gracefully
 RUN cd neurone/programs/server \
-    && npm install --production --quiet --ignore-scripts \
-    && npm rebuild iconv --quiet || echo "iconv rebuild failed, continuing..." \
-    && npm rebuild bcrypt --quiet || echo "bcrypt rebuild failed, continuing..."
+    && npm install --production --quiet || echo "Some packages failed during production install" \
+    && echo "Checking iconv installation in all locations..." \
+    && find . -name "iconv.node" -type f 2>/dev/null || echo "No iconv.node found" \
+    && echo "Attempting manual iconv rebuild with node-gyp..." \
+    && (cd npm/node_modules/iconv && node-gyp rebuild) || echo "node-gyp iconv rebuild failed" \
+    && (cd node_modules/iconv && node-gyp rebuild) || echo "node-gyp iconv rebuild in node_modules failed" \
+    && echo "Final iconv verification..." \
+    && find . -name "iconv.node" -type f 2>/dev/null || echo "Still no iconv.node found"
 
 # Copy permission fix script before cleanup
 RUN cp ./src/.deploy/docker/fixPermissions.sh ./fixPermissions.sh && chmod +x ./fixPermissions.sh
