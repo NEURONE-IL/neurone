@@ -84,7 +84,7 @@ USER neurone
 # Set environment variables
 ENV NEURONE_ASSET_PATH /home/neurone/assets
 ENV PORT=3000
-ENV ROOT_URL=http://localhost:3000
+ENV ROOT_URL=https://bogano.diinf.usach.cl/neurone-api
 
 # Expose port
 EXPOSE 3000
